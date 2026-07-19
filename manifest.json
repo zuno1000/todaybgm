@@ -1,11 +1,11 @@
 {
   "name": "今日の作業テーマ曲",
-  "short_name": "作業テーマ曲",
+  "short_name": "テーマ曲",
   "description": "アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#12141a",
-  "theme_color": "#12141a",
+  "background_color": "#E8EDF5",
+  "theme_color": "#E8EDF5",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }

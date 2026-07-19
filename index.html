@@ -2,360 +2,487 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>今日の作業テーマ曲</title>
 <meta name="description" content="アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。">
-<meta name="theme-color" content="#12141a">
+<meta name="theme-color" content="#E8EDF5">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #12141a;
-    --bg-card: #1c1f28;
-    --bg-elev: #262a36;
-    --text: #e8eaf0;
-    --text-dim: #9aa0b0;
-    --accent: #7aa2f7;
-    --accent-strong: #5d87e8;
-    --star: #f7c948;
-    --danger: #e06c75;
-    --radius: 14px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Segoe UI", Meiryo, sans-serif;
-    line-height: 1.6;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-  }
-  header {
-    padding: 20px 16px 12px;
-    text-align: center;
-  }
-  header h1 { font-size: 1.3rem; letter-spacing: .04em; }
-  header p { font-size: .8rem; color: var(--text-dim); margin-top: 2px; }
-  main {
-    flex: 1;
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 8px 16px 88px;
-  }
-  .view { display: none; }
-  .view.active { display: block; }
+/* ============================================================
+   デザイントークン(デザインリニューアル手順書 SoftUI版 準拠)
+   ============================================================ */
+:root {
+  --bg:        #E8EDF5;  /* ページ背景 = 全要素の基本面色 */
+  --bg-deep:   #DDE4EF;  /* 凹み面の底 */
+  --sh-light:  rgba(255, 255, 255, 0.90);
+  --sh-dark:   rgba(136, 152, 184, 0.42);
+  --text:      #3D4A63;
+  --text-sub:  #8A96AD;
+  --accent:      #5B6CFF;
+  --accent-deep: #4353E8;
+  --accent-soft: #AAB4FF;
+  --star:      #FFB547;
+  --danger:    #C25B6A;
+  --r-card: 28px;
+  --r-btn:  18px;
+  --r-full: 999px;
+}
 
-  /* ---- 今日のテーマ曲カード ---- */
-  .song-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0,0,0,.35);
-  }
-  .thumb-wrap {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: #000;
-  }
-  .thumb-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .thumb-wrap iframe, .thumb-wrap #player {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    border: 0;
-  }
-  .live-badge {
-    position: absolute; top: 10px; left: 10px;
-    background: rgba(224,50,50,.9);
-    color: #fff; font-size: .7rem; font-weight: bold;
-    padding: 2px 8px; border-radius: 4px;
-  }
-  .song-body { padding: 16px; }
-  .song-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tag {
-    font-size: .72rem;
-    background: var(--bg-elev);
-    color: var(--text-dim);
-    padding: 3px 10px;
-    border-radius: 999px;
-  }
-  .tag.genre { color: var(--accent); }
-  .btn-row { display: flex; gap: 10px; }
-  button {
-    font-family: inherit;
-    font-size: .95rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .btn-play {
-    flex: 1.6;
-    background: var(--accent-strong);
-    color: #fff;
-    padding: 13px 8px;
-    font-weight: bold;
-  }
-  .btn-play:active { transform: scale(.98); }
-  .btn-reroll {
-    flex: 1;
-    background: var(--bg-elev);
-    color: var(--text);
-    padding: 13px 8px;
-  }
-  .btn-reroll:active { transform: scale(.98); }
-  .btn-yt {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    padding: 12px 8px;
-    border: 1px solid var(--bg-elev);
-    border-radius: 10px;
-    font-size: .85rem;
-    color: var(--text-dim);
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .btn-yt:active { background: var(--bg-elev); }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
 
-  /* ---- 評価UI ---- */
-  .rating-box {
-    display: none;
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    margin-top: 14px;
-    padding: 16px;
-    text-align: center;
-  }
-  .rating-box.visible { display: block; }
-  .rating-box p { font-size: .85rem; color: var(--text-dim); margin-bottom: 6px; }
-  .stars { display: inline-flex; gap: 8px; }
-  .stars button {
-    background: none;
-    font-size: 2rem;
-    line-height: 1;
-    color: #4a4f5e;
-    padding: 4px;
-  }
-  .stars button.on { color: var(--star); }
-  .rated-msg { font-size: .8rem; color: var(--accent); margin-top: 6px; min-height: 1.2em; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 500;
+  line-height: 1.6;
+  min-height: 100%;
+}
+body { padding-bottom: 100px; }
 
-  .notice {
-    background: var(--bg-card);
-    border: 1px solid var(--bg-elev);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    font-size: .82rem;
-    color: var(--text-dim);
-    margin-bottom: 14px;
-  }
-  .notice a { color: var(--accent); cursor: pointer; text-decoration: underline; }
+button { font-family: inherit; border: none; cursor: pointer; color: inherit; background: none; }
+a { color: var(--accent); text-decoration: none; }
 
-  /* ---- 設定 ---- */
-  h2 { font-size: 1.05rem; margin: 10px 0 12px; }
-  fieldset {
-    border: none;
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 16px;
-  }
-  legend {
-    font-size: .85rem;
-    color: var(--text-dim);
-    padding: 0;
-    margin-bottom: 4px;
-    float: left; /* legendをカード内に収める */
-    width: 100%;
-  }
-  .choice {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 2px;
-    font-size: .95rem;
-    cursor: pointer;
-  }
-  .choice input { width: 19px; height: 19px; accent-color: var(--accent); flex-shrink: 0; }
-  .btn-save {
-    width: 100%;
-    background: var(--accent-strong);
-    color: #fff;
-    padding: 14px;
-    font-weight: bold;
-  }
-  .save-msg { text-align: center; font-size: .82rem; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
+/* ---- 影レシピ(この4種のみ) ---- */
+.raised {
+  background: var(--bg);
+  box-shadow: -6px -6px 14px var(--sh-light), 6px 6px 14px var(--sh-dark);
+}
+.raised-lg {
+  background: var(--bg);
+  box-shadow: -10px -10px 24px var(--sh-light), 10px 10px 24px var(--sh-dark);
+}
+.inset {
+  background: var(--bg-deep);
+  box-shadow: inset -4px -4px 8px var(--sh-light), inset 4px 4px 8px var(--sh-dark);
+}
+.accent-raised {
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  color: #fff;
+  box-shadow: -6px -6px 14px var(--sh-light), 6px 6px 16px rgba(91, 108, 255, 0.45);
+}
 
-  /* ---- 履歴 ---- */
-  .history-list { list-style: none; }
-  .history-list li {
-    background: var(--bg-card);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
-  }
-  .history-list .h-title { font-size: .88rem; margin-bottom: 2px; }
-  .history-list .h-meta { font-size: .78rem; color: var(--text-dim); display: flex; justify-content: space-between; }
-  .history-list .h-stars { color: var(--star); letter-spacing: 2px; }
-  .empty { color: var(--text-dim); font-size: .88rem; text-align: center; padding: 30px 0; }
-  .btn-reset {
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--danger);
-    color: var(--danger);
-    padding: 12px;
-    margin-top: 18px;
-    border-radius: 10px;
-  }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 
-  /* ---- 好み(可視化) ---- */
-  .taste-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-  .tile { background: var(--bg-card); border-radius: 10px; padding: 12px 6px; text-align: center; }
-  .tile .t-val { font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
-  .tile .t-label { font-size: .68rem; color: var(--text-dim); }
-  .aff-card { background: var(--bg-card); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; }
-  .aff-card h3 { font-size: .85rem; color: var(--text-dim); font-weight: normal; margin-bottom: 2px; }
-  .aff-scale { display: flex; justify-content: space-between; font-size: .68rem; color: var(--text-dim); margin: 0 0 8px 98px; }
-  .aff-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .aff-label { width: 88px; font-size: .8rem; text-align: right; flex-shrink: 0;
-               overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .aff-track { position: relative; flex: 1; height: 12px; }
-  .aff-track::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px;
-                       width: 2px; margin-left: -1px; background: #4a4f5e; }
-  .aff-bar { position: absolute; top: 1px; height: 10px; }
-  .aff-bar.pos { left: 50%; background: var(--accent); border-radius: 0 4px 4px 0; }
-  .aff-bar.neg { right: 50%; background: #fb923c; border-radius: 4px 0 0 4px; }
+/* ============================================================
+   レイアウト
+   ============================================================ */
+.app { max-width: 440px; margin: 0 auto; padding: 20px 22px 0; }
 
-  /* ---- フッターナビ ---- */
-  nav {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(18,20,26,.92);
-    backdrop-filter: blur(8px);
-    border-top: 1px solid var(--bg-elev);
-    display: flex;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  nav button {
-    flex: 1;
-    background: none;
-    color: var(--text-dim);
-    font-size: .78rem;
-    padding: 10px 0 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-  nav button .ico { font-size: 1.25rem; }
-  nav button.active { color: var(--accent); }
-  footer.credit {
-    text-align: center;
-    font-size: .7rem;
-    color: var(--text-dim);
-    padding: 10px 0 4px;
-  }
+.caption {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text-sub);
+  padding: 14px 0 4px;
+}
+
+.view { display: none; animation: fadein 0.24s ease; }
+.view.active { display: block; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---- ヒント・通知 ---- */
+.hint {
+  border-radius: var(--r-btn);
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  margin: 14px 0 6px;
+}
+.hint a { cursor: pointer; }
+
+/* ---- サムネイル台座 ---- */
+.pedestal {
+  border-radius: 34px;
+  padding: 10px;
+  margin: 22px auto 0;
+  max-width: 340px;
+}
+.thumb-wrap {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--bg-deep);
+}
+.thumb-wrap.playing { aspect-ratio: 16 / 9; }
+.thumb-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transform: scale(1.37); /* hqdefault(4:3)の上下黒帯を切り落とすズームクロップ */
+}
+.thumb-wrap iframe, .thumb-wrap #player {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; border: 0;
+}
+.live-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(61, 74, 99, 0.72);
+  color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  padding: 4px 12px; border-radius: var(--r-full);
+  backdrop-filter: blur(4px);
+}
+
+/* ---- 曲情報 ---- */
+.song-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 22px 8px 0;
+}
+.song-meta {
+  display: flex; justify-content: center; gap: 10px;
+  margin-top: 14px; flex-wrap: wrap;
+}
+.pill {
+  border-radius: var(--r-full);
+  padding: 7px 16px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+/* 小さい要素に標準の凹み影(4px/8px)は過大で、塗りが右下にずれて見える。弱い影に差し替える */
+.pill.inset, .aff-val.inset {
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
+.pill.genre { color: var(--accent); font-weight: 700; }
+
+/* ---- 円形ボタン列 ---- */
+.controls {
+  display: flex; justify-content: center; align-items: flex-start;
+  gap: 30px; margin-top: 30px;
+}
+.control-item { text-align: center; }
+.icon-btn {
+  width: 56px; height: 56px;
+  border-radius: var(--r-full);
+  display: grid; place-items: center;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.icon-btn svg { width: 22px; height: 22px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn:active:not([disabled]) {
+  transform: scale(0.97);
+  background: var(--bg-deep);
+  box-shadow: inset -4px -4px 8px var(--sh-light), inset 4px 4px 8px var(--sh-dark);
+}
+.icon-btn.main {
+  width: 74px; height: 74px;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: -6px -6px 14px var(--sh-light), 6px 6px 16px rgba(91, 108, 255, 0.45);
+}
+.icon-btn.main svg { width: 28px; height: 28px; stroke: #fff; fill: #fff; }
+.icon-btn.main:active:not([disabled]) {
+  background: linear-gradient(145deg, var(--accent-deep), var(--accent));
+  box-shadow: inset 3px 3px 8px rgba(40, 50, 160, 0.5);
+}
+.icon-btn.main.playing {
+  box-shadow: -6px -6px 14px var(--sh-light), 6px 6px 22px rgba(91, 108, 255, 0.62);
+}
+.icon-btn[disabled] { opacity: 0.45; cursor: default; }
+.icon-btn.main[disabled] { opacity: 1; cursor: default; }
+.btn-label {
+  display: block; text-align: center;
+  font-size: 11px; color: var(--text-sub); margin-top: 8px;
+}
+
+/* ---- 評価トレイ ---- */
+.rating-tray {
+  display: none;
+  border-radius: var(--r-card);
+  padding: 18px 20px;
+  margin: 26px auto 0;
+  max-width: 320px;
+  text-align: center;
+}
+.rating-tray.show { display: block; animation: fadein 0.2s ease; }
+.rating-tray p { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
+.stars { display: flex; justify-content: center; gap: 8px; }
+.star-btn { padding: 4px; transition: transform 0.12s; }
+.star-btn svg { width: 30px; height: 30px; fill: var(--bg); stroke: var(--text-sub); stroke-width: 1.5; filter: drop-shadow(1px 2px 2px var(--sh-dark)); }
+.star-btn.on svg { fill: var(--star); stroke: var(--star); }
+.star-btn.pop { transform: scale(1.2); }
+.rated-msg { font-size: 12px; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
+
+/* ---- YouTubeリンク・注記 ---- */
+.yt-link {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin: 26px auto 0;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.yt-link svg { width: 14px; height: 14px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.footnote {
+  text-align: center; font-size: 11px; color: var(--text-sub);
+  opacity: 0.75; margin-top: 26px;
+}
+
+/* ============================================================
+   設定・好み・履歴 画面
+   ============================================================ */
+.section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--text-sub); margin: 26px 4px 14px;
+}
+.pill-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.toggle-pill {
+  border-radius: var(--r-full);
+  padding: 11px 20px;
+  font-size: 13px; font-weight: 700;
+  color: var(--text-sub);
+  background: var(--bg);
+  box-shadow: -5px -5px 10px var(--sh-light), 5px 5px 10px var(--sh-dark);
+  transition: box-shadow 0.15s, color 0.15s;
+}
+.toggle-pill.on {
+  color: var(--accent);
+  background: var(--bg-deep);
+  box-shadow: inset -4px -4px 8px var(--sh-light), inset 4px 4px 8px var(--sh-dark), inset 0 0 0 1px rgba(91, 108, 255, 0.25);
+}
+.save-btn {
+  display: block;
+  margin: 34px auto 10px;
+  width: 100%; max-width: 240px;
+  padding: 15px 0;
+  border-radius: var(--r-btn);
+  font-size: 15px; font-weight: 700;
+  transition: transform 0.15s;
+}
+.save-btn:active { transform: scale(0.97); }
+.save-msg { text-align: center; font-size: 12px; color: var(--accent); min-height: 18px; }
+
+/* ---- 好み(統計タイル+発散バー) ---- */
+.taste-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+.tile { border-radius: var(--r-btn); padding: 14px 6px; text-align: center; }
+.tile .t-val { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.tile .t-label { font-size: 10px; color: var(--text-sub); }
+
+.aff-card { border-radius: var(--r-card); padding: 22px 20px; }
+.aff-scale {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text-sub);
+  padding: 0 58px 10px 104px;
+}
+.aff-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.aff-row:last-child { margin-bottom: 4px; }
+.aff-label {
+  width: 92px; font-size: 13px; flex-shrink: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.aff-track {
+  flex: 1; height: 16px;
+  border-radius: var(--r-full);
+  position: relative;
+}
+.aff-track::after { /* 中央の中立線 */
+  content: "";
+  position: absolute; top: -3px; bottom: -3px; left: 50%;
+  width: 2px; margin-left: -1px;
+  background: var(--text-sub);
+  opacity: 0.45;
+  border-radius: 2px;
+}
+.aff-fill {
+  position: absolute; top: 3px; bottom: 3px;
+  border-radius: var(--r-full);
+  transition: width 0.4s ease;
+}
+.aff-fill.pos { left: 50%; background: linear-gradient(90deg, var(--accent-soft), var(--accent)); }
+.aff-fill.neg { right: 50%; background: linear-gradient(270deg, #E7B3BC, #C25B6A); }
+.aff-val {
+  width: 44px; flex-shrink: 0;
+  text-align: center;
+  font-size: 11px; font-weight: 700;
+  border-radius: var(--r-full);
+  padding: 4px 0;
+}
+.aff-val.pos { color: var(--accent); }
+.aff-val.neg { color: var(--danger); }
+.empty { font-size: 13px; color: var(--text-sub); line-height: 1.8; padding: 8px 4px; text-align: center; }
+
+/* ---- 履歴 ---- */
+.hist-list { list-style: none; }
+.hist-item {
+  border-radius: var(--r-btn);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.hist-title { font-size: 13px; line-height: 1.5; flex: 1; }
+.hist-side { text-align: right; flex-shrink: 0; }
+.hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; }
+.hist-date { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+.danger-btn {
+  display: block; margin: 30px auto 10px;
+  padding: 12px 28px;
+  border-radius: var(--r-btn);
+  font-size: 13px; color: var(--danger); font-weight: 700;
+}
+
+/* ============================================================
+   タブバー
+   ============================================================ */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--bg);
+  box-shadow: 0 -6px 16px rgba(136, 152, 184, 0.22);
+  display: flex; justify-content: space-around;
+  padding: 10px 8px calc(12px + env(safe-area-inset-bottom));
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--text-sub);
+  padding: 4px 14px;
+  position: relative;
+}
+.tab svg { width: 22px; height: 22px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.15s; }
+.tab.active { color: var(--accent); }
+.tab.active svg { stroke: var(--accent); }
+.tab.active::after {
+  content: ""; position: absolute; bottom: -4px;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, .view { animation: none !important; transition: none !important; }
+}
 </style>
 </head>
 <body>
+<div class="app">
+  <div class="caption">今日の作業テーマ曲</div>
 
-<header>
-  <h1>🎵 今日の作業テーマ曲</h1>
-  <p>開いた瞬間、今日のBGMが決まっている。</p>
-</header>
-
-<main>
-  <!-- ===== メイン画面 ===== -->
+  <!-- ===== 今日の曲 ===== -->
   <section id="view-main" class="view active">
-    <div id="setup-notice" class="notice" style="display:none">
+    <div id="setup-notice" class="hint inset" style="display:none">
       まだ好みが設定されていません。<a id="goto-settings">設定</a>でジャンルと時間を選ぶと、おすすめが自分好みになります。
     </div>
-    <div id="error-notice" class="notice" style="display:none"></div>
-    <div class="song-card">
+    <div id="error-notice" class="hint inset" style="display:none"></div>
+
+    <div class="pedestal raised-lg">
       <div class="thumb-wrap" id="thumb-wrap">
-        <img id="thumb" src="" alt="サムネイル">
+        <img id="thumb" src="" alt="曲のサムネイル">
         <span id="live-badge" class="live-badge" style="display:none">LIVE</span>
       </div>
-      <div class="song-body">
-        <div class="song-title" id="song-title"></div>
-        <div class="tags" id="song-tags"></div>
-        <div class="btn-row">
-          <button class="btn-play" id="btn-play">▶ 再生する</button>
-          <button class="btn-reroll" id="btn-reroll">🔄 別の曲にする</button>
-        </div>
-        <a id="btn-yt" class="btn-yt" target="_blank" rel="noopener">📱 YouTubeアプリで開く(バックグラウンド再生はこちら)</a>
+    </div>
+
+    <h1 class="song-title" id="song-title"></h1>
+    <div class="song-meta" id="song-tags"></div>
+
+    <div class="controls" id="controls">
+      <div class="control-item">
+        <button class="icon-btn raised" id="btn-prev" aria-label="前の曲に戻る" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+        </button>
+        <span class="btn-label">前の曲</span>
+      </div>
+      <div class="control-item">
+        <button class="icon-btn main" id="btn-play" aria-label="再生する">
+          <svg id="ic-play" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        </button>
+        <span class="btn-label" id="play-label">再生</span>
+      </div>
+      <div class="control-item">
+        <button class="icon-btn raised" id="btn-next" aria-label="次の曲へ">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </button>
+        <span class="btn-label">次の曲</span>
       </div>
     </div>
-    <div class="rating-box" id="rating-box">
-      <p>この曲はどうでしたか?</p>
-      <div class="stars" id="stars">
-        <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+
+    <div class="rating-tray inset" id="rating-box">
+      <p>この曲は作業に合いましたか?</p>
+      <div class="stars" id="stars" role="radiogroup" aria-label="5段階評価">
+        <button class="star-btn" data-v="1" role="radio" aria-label="星1"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="2" role="radio" aria-label="星2"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="3" role="radio" aria-label="星3"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="4" role="radio" aria-label="星4"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="5" role="radio" aria-label="星5"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
       </div>
       <div class="rated-msg" id="rated-msg"></div>
     </div>
+
+    <a id="btn-yt" class="yt-link" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      YouTubeアプリで開く(バックグラウンド再生はこちら)
+    </a>
   </section>
 
-  <!-- ===== 設定画面 ===== -->
-  <section id="view-settings" class="view">
-    <h2>⚙️ 事前設定</h2>
-    <fieldset id="genre-set">
-      <legend>好みのジャンル(複数選択可)</legend>
-    </fieldset>
-    <fieldset id="duration-set">
-      <legend>動画時間の希望</legend>
-    </fieldset>
-    <button class="btn-save" id="btn-save">保存する</button>
-    <div class="save-msg" id="save-msg"></div>
-  </section>
-
-  <!-- ===== 好み画面 ===== -->
+  <!-- ===== 好み ===== -->
   <section id="view-taste" class="view">
-    <h2>📊 あなたの好み</h2>
+    <h2 class="section-title">あなたの好み</h2>
     <div class="taste-tiles">
-      <div class="tile"><div class="t-val" id="t-count">0</div><div class="t-label">評価した曲</div></div>
-      <div class="tile"><div class="t-val" id="t-avg">─</div><div class="t-label">平均★</div></div>
-      <div class="tile"><div class="t-val" id="t-top">─</div><div class="t-label">いちばん好き</div></div>
+      <div class="tile raised"><div class="t-val" id="t-count">0</div><div class="t-label">評価した曲</div></div>
+      <div class="tile raised"><div class="t-val" id="t-avg">─</div><div class="t-label">平均★</div></div>
+      <div class="tile raised"><div class="t-val" id="t-top">─</div><div class="t-label">いちばん好き</div></div>
     </div>
-    <div class="aff-card" id="aff-genres-card">
-      <h3>ジャンルの好み(評価から学習)</h3>
-      <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
-      <div id="aff-genres"></div>
+    <div id="aff-genres-card">
+      <h2 class="section-title">ジャンルの好み(評価から学習)</h2>
+      <div class="aff-card raised">
+        <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+        <div id="aff-genres"></div>
+      </div>
     </div>
-    <div class="aff-card" id="aff-moods-card">
-      <h3>ムードの好み</h3>
-      <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
-      <div id="aff-moods"></div>
+    <div id="aff-moods-card">
+      <h2 class="section-title">雰囲気の好み</h2>
+      <div class="aff-card raised">
+        <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+        <div id="aff-moods"></div>
+      </div>
     </div>
     <div class="empty" id="taste-empty" style="display:none">
       ★4以上 / ★2以下の評価がたまると、ここに好みが見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
     </div>
+    <p class="footnote">★4以上で好み、★2以下で苦手として学習します</p>
   </section>
 
-  <!-- ===== 履歴画面 ===== -->
+  <!-- ===== 設定 ===== -->
+  <section id="view-settings" class="view">
+    <h2 class="section-title">好きなジャンル(複数選択可)</h2>
+    <div class="pill-grid" id="genre-pills"></div>
+    <h2 class="section-title">動画時間の希望</h2>
+    <div class="pill-grid" id="dur-pills"></div>
+    <button class="save-btn accent-raised" id="btn-save">保存する</button>
+    <div class="save-msg" id="save-msg"></div>
+  </section>
+
+  <!-- ===== 履歴 ===== -->
   <section id="view-history" class="view">
-    <h2>📖 評価履歴</h2>
-    <ul class="history-list" id="history-list"></ul>
+    <h2 class="section-title">評価した曲</h2>
+    <ul class="hist-list" id="history-list"></ul>
     <div class="empty" id="history-empty" style="display:none">まだ評価した曲がありません。</div>
-    <button class="btn-reset" id="btn-reset">データをすべてリセット</button>
+    <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
   </section>
 
-  <footer class="credit">全データは端末内(localStorage)にのみ保存されます</footer>
-</main>
+  <p class="footnote">全データは端末内(localStorage)にのみ保存されます</p>
+</div>
 
-<nav>
-  <button data-view="main" class="active"><span class="ico">🎵</span>今日の曲</button>
-  <button data-view="taste"><span class="ico">📊</span>好み</button>
-  <button data-view="settings"><span class="ico">⚙️</span>設定</button>
-  <button data-view="history"><span class="ico">📖</span>履歴</button>
+<!-- ===== タブバー ===== -->
+<nav class="tabbar" role="tablist">
+  <button class="tab active" data-view="main" role="tab" aria-selected="true">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    今日の曲
+  </button>
+  <button class="tab" data-view="taste" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+    好み
+  </button>
+  <button class="tab" data-view="settings" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    設定
+  </button>
+  <button class="tab" data-view="history" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    履歴
+  </button>
 </nav>
 
 <script>
@@ -543,9 +670,20 @@ function repick(daily) {
 /* ============ 画面描画 ============ */
 let currentSong = null;
 let player = null;
-let playerReady = false;
 
 const $ = id => document.getElementById(id);
+
+const ICON_PLAY = '<polygon points="6 4 20 12 6 20 6 4"/>';
+const ICON_PAUSE = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+
+function setPlayButton(playing) {
+  const btn = $("btn-play");
+  btn.disabled = playing;
+  btn.classList.toggle("playing", playing);
+  btn.setAttribute("aria-label", playing ? "再生中" : "再生する");
+  $("ic-play").innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $("play-label").textContent = playing ? "再生中" : "再生";
+}
 
 function durationText(song) {
   if (song.live) return "ライブ配信(エンドレス)";
@@ -557,6 +695,7 @@ function durationText(song) {
 function renderSong(song) {
   currentSong = song;
   destroyPlayer();
+  $("thumb-wrap").classList.remove("playing");
   $("thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
   $("thumb").style.display = "";
   $("live-badge").style.display = song.live ? "" : "none";
@@ -565,17 +704,58 @@ function renderSong(song) {
   tags.innerHTML = "";
   for (const g of song.genres) {
     const el = document.createElement("span");
-    el.className = "tag genre";
+    el.className = "pill inset genre";
     el.textContent = "# " + GENRE_LABELS[g];
     tags.appendChild(el);
   }
   const dur = document.createElement("span");
-  dur.className = "tag";
-  dur.textContent = "⏱ " + durationText(song);
+  dur.className = "pill inset";
+  dur.textContent = durationText(song);
   tags.appendChild(dur);
-  $("btn-play").style.display = "";
+  setPlayButton(false);
+  updateNavButtons();
   $("btn-yt").href = `https://www.youtube.com/watch?v=${song.id}`;
   renderRating();
+}
+
+/* ---- 前の曲/次の曲ナビゲーション(当日の提示履歴を辿る) ---- */
+function shownSequence() {
+  const daily = getDaily();
+  const dead = load(LS.DEAD, []);
+  return daily.shownIds.filter(id => !dead.includes(id) && SONGS.some(s => s.id === id));
+}
+
+function updateNavButtons() {
+  const seq = shownSequence();
+  const i = currentSong ? seq.indexOf(currentSong.id) : -1;
+  $("btn-prev").disabled = i <= 0;
+}
+
+function prevSong() {
+  const daily = getDaily();
+  const seq = shownSequence();
+  const i = seq.indexOf(daily.currentId);
+  if (i <= 0) return;
+  daily.currentId = seq[i - 1];
+  save(LS.DAILY, daily);
+  renderSong(SONGS.find(s => s.id === daily.currentId));
+}
+
+function nextSong() {
+  const daily = getDaily();
+  const seq = shownSequence();
+  const i = seq.indexOf(daily.currentId);
+  if (i >= 0 && i < seq.length - 1) {
+    // 戻った位置から先に進む(提示済みの並びを辿る)
+    daily.currentId = seq[i + 1];
+    save(LS.DAILY, daily);
+    renderSong(SONGS.find(s => s.id === daily.currentId));
+  } else {
+    // 末尾なら新しい曲を選ぶ(従来の「別の曲にする」と同じ。提示済みIDは残す=同日中の再提示を防ぐ)
+    daily.currentId = null;
+    save(LS.DAILY, daily);
+    init(true);
+  }
 }
 
 function renderRating() {
@@ -583,10 +763,12 @@ function renderRating() {
   const ratings = load(LS.RATINGS, {});
   const r = currentSong ? ratings[currentSong.id] : null;
   // 再生開始後、または評価済みなら表示(仕様3.1)
-  box.classList.toggle("visible", playerStarted || !!r);
+  box.classList.toggle("show", playerStarted || !!r);
   const val = r ? r.rating : 0;
-  document.querySelectorAll("#stars button").forEach(b => {
-    b.classList.toggle("on", Number(b.dataset.v) <= val);
+  document.querySelectorAll("#stars .star-btn").forEach(b => {
+    const on = Number(b.dataset.v) <= val;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-checked", Number(b.dataset.v) === val ? "true" : "false");
   });
   $("rated-msg").textContent = r ? `★${r.rating} で評価済み(タップで変更できます)` : "";
 }
@@ -613,8 +795,9 @@ let ratingFallbackTimer = null;
 async function playCurrent() {
   if (!currentSong) return;
   const songAtPlay = currentSong;
-  $("btn-play").style.display = "none";
+  setPlayButton(true);
   const wrap = $("thumb-wrap");
+  wrap.classList.add("playing");
   const div = document.createElement("div");
   div.id = "player";
   wrap.appendChild(div);
@@ -666,33 +849,44 @@ function destroyPlayer() {
   if (p) p.remove();
 }
 
-/* ---- 設定画面 ---- */
+/* ---- 設定画面(ピル型トグル) ---- */
 function renderSettings() {
   const settings = load(LS.SETTINGS, { genres: [], duration: "any" });
-  const gs = $("genre-set");
-  gs.querySelectorAll(".choice").forEach(e => e.remove());
+  const gs = $("genre-pills");
+  gs.innerHTML = "";
   for (const [key, label] of Object.entries(GENRE_LABELS)) {
-    const lab = document.createElement("label");
-    lab.className = "choice";
-    lab.innerHTML = `<input type="checkbox" name="genre" value="${key}"> ${label}`;
-    lab.querySelector("input").checked = settings.genres.includes(key);
-    gs.appendChild(lab);
+    const b = document.createElement("button");
+    b.className = "toggle-pill" + (settings.genres.includes(key) ? " on" : "");
+    b.textContent = label;
+    b.dataset.key = key;
+    b.setAttribute("aria-pressed", settings.genres.includes(key));
+    b.addEventListener("click", () => {
+      b.classList.toggle("on");
+      b.setAttribute("aria-pressed", b.classList.contains("on"));
+    });
+    gs.appendChild(b);
   }
-  const ds = $("duration-set");
-  ds.querySelectorAll(".choice").forEach(e => e.remove());
+  const ds = $("dur-pills");
+  ds.innerHTML = "";
   for (const [key, label] of Object.entries(DURATION_LABELS)) {
-    const lab = document.createElement("label");
-    lab.className = "choice";
-    lab.innerHTML = `<input type="radio" name="duration" value="${key}"> ${label}`;
-    lab.querySelector("input").checked = settings.duration === key;
-    ds.appendChild(lab);
+    const b = document.createElement("button");
+    b.className = "toggle-pill" + (settings.duration === key ? " on" : "");
+    b.textContent = label;
+    b.dataset.key = key;
+    b.setAttribute("aria-pressed", settings.duration === key);
+    b.addEventListener("click", () => {
+      ds.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("on");
+      b.setAttribute("aria-pressed", "true");
+    });
+    ds.appendChild(b);
   }
 }
 
 function saveSettings() {
-  const genres = [...document.querySelectorAll('input[name="genre"]:checked')].map(i => i.value);
-  const durEl = document.querySelector('input[name="duration"]:checked');
-  const settings = { genres, duration: durEl ? durEl.value : "any" };
+  const genres = [...$("genre-pills").querySelectorAll(".toggle-pill.on")].map(b => b.dataset.key);
+  const durBtn = $("dur-pills").querySelector(".toggle-pill.on");
+  const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
   save(LS.SETTINGS, settings);
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
   const daily = getDaily();
@@ -718,10 +912,11 @@ function renderHistory() {
   $("history-empty").style.display = entries.length ? "none" : "";
   for (const e of entries) {
     const li = document.createElement("li");
+    li.className = "hist-item raised";
     const stars = "★".repeat(e.rating) + "☆".repeat(5 - e.rating);
-    const date = new Date(e.ratedAt).toLocaleDateString("ja-JP");
-    li.innerHTML = `<div class="h-title"></div><div class="h-meta"><span class="h-stars">${stars}</span><span>${date}</span></div>`;
-    li.querySelector(".h-title").textContent = e.song.title;
+    const date = new Date(e.ratedAt).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" });
+    li.innerHTML = `<span class="hist-title"></span><span class="hist-side"><span class="hist-stars">${stars}</span><div class="hist-date">${date}</div></span>`;
+    li.querySelector(".hist-title").textContent = e.song.title;
     list.appendChild(li);
   }
 }
@@ -730,18 +925,26 @@ function renderHistory() {
 function affRow(label, value) {
   const row = document.createElement("div");
   row.className = "aff-row";
+  const score = Math.round(value * 100);
+  const cls = value >= 0 ? "pos" : "neg";
   const lab = document.createElement("span");
   lab.className = "aff-label";
   lab.textContent = label;
   const track = document.createElement("div");
-  track.className = "aff-track";
+  track.className = "aff-track inset";
   track.title = `${label}: ${value > 0 ? "+" : ""}${value.toFixed(2)}`;
-  const bar = document.createElement("div");
-  bar.className = "aff-bar " + (value >= 0 ? "pos" : "neg");
-  bar.style.width = (Math.abs(value) * 50) + "%";
-  track.appendChild(bar);
+  if (value !== 0) {
+    const fill = document.createElement("div");
+    fill.className = "aff-fill " + cls;
+    fill.style.width = (Math.abs(value) * 50) + "%";
+    track.appendChild(fill);
+  }
+  const val = document.createElement("span");
+  val.className = "aff-val inset " + cls;
+  val.textContent = score > 0 ? "+" + score : String(score);
   row.appendChild(lab);
   row.appendChild(track);
+  row.appendChild(val);
   return row;
 }
 
@@ -787,7 +990,11 @@ function resetAll() {
 function showView(name) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   $("view-" + name).classList.add("active");
-  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
+  document.querySelectorAll(".tab").forEach(b => {
+    const on = b.dataset.view === name;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-selected", on);
+  });
   if (name === "settings") renderSettings();
   if (name === "history") renderHistory();
   if (name === "taste") renderTaste();
@@ -803,21 +1010,19 @@ function init(forceRepick) {
 }
 
 /* ---- イベント ---- */
-document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
 $("goto-settings").addEventListener("click", () => showView("settings"));
 $("btn-play").addEventListener("click", playCurrent);
-$("btn-reroll").addEventListener("click", () => {
-  const daily = getDaily();
-  daily.currentId = null; // 提示済みIDは残す=同日中の再提示を防ぐ(仕様5.3)
-  save(LS.DAILY, daily);
-  init(true);
-});
-document.querySelectorAll("#stars button").forEach(b => b.addEventListener("click", () => {
+$("btn-prev").addEventListener("click", prevSong);
+$("btn-next").addEventListener("click", nextSong);
+document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("click", () => {
   if (!currentSong) return;
   const ratings = load(LS.RATINGS, {});
   ratings[currentSong.id] = { rating: Number(b.dataset.v), ratedAt: new Date().toISOString() };
   save(LS.RATINGS, ratings);
   renderRating();
+  b.classList.add("pop");
+  setTimeout(() => b.classList.remove("pop"), 140);
 }));
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
@@ -834,8 +1039,7 @@ $("btn-yt").addEventListener("click", () => {
     SONGS = await res.json();
   } catch (e) {
     $("song-title").textContent = "曲データ(songs.json)を読み込めませんでした。file://直開きでは動作しないため、ローカル確認は `python -m http.server` 経由で開いてください。";
-    $("btn-play").style.display = "none";
-    $("btn-reroll").style.display = "none";
+    $("controls").style.display = "none";
     return;
   }
   init(false);
