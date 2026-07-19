@@ -38,3 +38,4 @@ python -m http.server 8000
 | `bgm_ratings` | `{videoId: {rating, ratedAt}}` |
 | `bgm_daily` | 当日の日付・提示済みID・現在の1曲 |
 | `bgm_recent` | 直近3日間の提示履歴(再提示減衰用) |
+| `bgm_dead` | 再生エラーになった動画ID(以後の候補から自動除外) |

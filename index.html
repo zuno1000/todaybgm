@@ -243,6 +243,7 @@
     <div id="setup-notice" class="notice" style="display:none">
       まだ好みが設定されていません。<a id="goto-settings">設定</a>でジャンルと時間を選ぶと、おすすめが自分好みになります。
     </div>
+    <div id="error-notice" class="notice" style="display:none"></div>
     <div class="song-card">
       <div class="thumb-wrap" id="thumb-wrap">
         <img id="thumb" src="" alt="サムネイル">
@@ -306,7 +307,7 @@
  * ========================================================= */
 const SONGS = [
   // --- Lo-fi ---
-  { id: "jfKfPfyJRdk", title: "lofi hip hop radio 📚 beats to relax/study to", genres: ["lofi"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "calm"] },
+  { id: "CFGLoQIhmow", title: "lofi hip hop mix 📚 beats to relax/study to (Part 1)", genres: ["lofi"], durationMin: 171, durationClass: "long", mood: ["focus", "calm"] },
   { id: "lTRiuFIWV54", title: "1 A.M Study Session 📚 [lofi hip hop]", genres: ["lofi"], durationMin: 61, durationClass: "long", mood: ["night", "calm"] },
   { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾", genres: ["lofi", "jazz"], durationMin: null, durationClass: "long", live: true, mood: ["focus"] },
   { id: "n61ULEU7CO0", title: "Best of lofi hip hop 2021 ✨", genres: ["lofi"], durationMin: 371, durationClass: "long", mood: ["focus"] },
@@ -363,6 +364,7 @@ const LS = {
   RATINGS: "bgm_ratings",
   DAILY: "bgm_daily",
   RECENT: "bgm_recent", // 直近提示履歴 {date: [ids]} — 3日減衰用(仕様5.3)
+  DEAD: "bgm_dead",     // 再生エラーになった動画ID(以後の候補から除外)
 };
 function load(key, fallback) {
   try {
@@ -452,17 +454,20 @@ function pickSong(excludeIds) {
   const table = buildAffinityTable(ratings);
   const recent = recentIds();
 
-  // ★1〜2は原則除外(仕様5.3)
+  const dead = load(LS.DEAD, []);
+
+  // 再生不能動画・★1〜2は原則除外(仕様5.3)
   let candidates = SONGS.filter(s => {
-    if (excludeIds.includes(s.id)) return false;
+    if (dead.includes(s.id) || excludeIds.includes(s.id)) return false;
     const r = ratings[s.id];
     return !(r && r.rating <= 2);
   });
   // 全滅時は低評価除外だけ緩和して再抽選できるようにする
   if (candidates.length === 0) {
-    candidates = SONGS.filter(s => !excludeIds.includes(s.id));
+    candidates = SONGS.filter(s => !dead.includes(s.id) && !excludeIds.includes(s.id));
   }
-  // 当日中に全曲提示し尽くした場合は再提示を許可する
+  // 当日中に全曲提示し尽くした場合は再提示を許可する(再生不能だけは除外を維持)
+  if (candidates.length === 0) candidates = SONGS.filter(s => !dead.includes(s.id));
   if (candidates.length === 0) candidates = SONGS.slice();
 
   const scored = candidates.map(s => {
@@ -585,8 +590,11 @@ function loadYtApi() {
   });
 }
 
+let ratingFallbackTimer = null;
+
 async function playCurrent() {
   if (!currentSong) return;
+  const songAtPlay = currentSong;
   $("btn-play").style.display = "none";
   const wrap = $("thumb-wrap");
   const div = document.createElement("div");
@@ -605,15 +613,35 @@ async function playCurrent() {
           renderRating();
         }
       },
+      // 再生不能(削除済み・埋め込み不可・配信終了など)は自動で別の曲へ
+      onError: () => handlePlaybackError(songAtPlay),
     },
   });
   $("thumb").style.display = "none";
   // 自動再生がブロックされる環境でも評価UIは出す(ユーザー操作起点のため)
-  setTimeout(() => { if (!playerStarted) { playerStarted = true; renderRating(); } }, 4000);
+  ratingFallbackTimer = setTimeout(() => {
+    if (!playerStarted) { playerStarted = true; renderRating(); }
+  }, 4000);
+}
+
+function handlePlaybackError(deadSong) {
+  // 曲が切り替わった後の遅延イベントや、再生開始後の一時的エラーは対象外
+  if (!currentSong || currentSong.id !== deadSong.id || playerStarted) return;
+  const dead = load(LS.DEAD, []);
+  if (!dead.includes(deadSong.id)) { dead.push(deadSong.id); save(LS.DEAD, dead); }
+  const daily = getDaily();
+  daily.currentId = null; // 提示済み扱いは維持しつつ選び直す
+  save(LS.DAILY, daily);
+  init(true);
+  const n = $("error-notice");
+  n.textContent = `「${deadSong.title}」はYouTube側で再生できなくなっているため、別の曲に切り替えました。この曲は今後提示されません。`;
+  n.style.display = "";
+  setTimeout(() => { n.style.display = "none"; }, 10000);
 }
 
 function destroyPlayer() {
   playerStarted = false;
+  if (ratingFallbackTimer) { clearTimeout(ratingFallbackTimer); ratingFallbackTimer = null; }
   if (player && player.destroy) { try { player.destroy(); } catch (e) {} }
   player = null;
   const p = $("player");
@@ -682,7 +710,7 @@ function renderHistory() {
 
 function resetAll() {
   if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT].forEach(k => localStorage.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD].forEach(k => localStorage.removeItem(k));
   renderHistory();
   showView("main");
   init(true);
