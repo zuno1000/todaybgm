@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>今日の作業テーマ曲</title>
 <meta name="description" content="アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。">
+<meta name="theme-color" content="#12141a">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
 <style>
   :root {
     --bg: #12141a;
@@ -108,6 +113,19 @@
     padding: 13px 8px;
   }
   .btn-reroll:active { transform: scale(.98); }
+  .btn-yt {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 12px 8px;
+    border: 1px solid var(--bg-elev);
+    border-radius: 10px;
+    font-size: .85rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-yt:active { background: var(--bg-elev); }
 
   /* ---- 評価UI ---- */
   .rating-box {
@@ -274,6 +292,7 @@
           <button class="btn-play" id="btn-play">▶ 再生する</button>
           <button class="btn-reroll" id="btn-reroll">🔄 別の曲にする</button>
         </div>
+        <a id="btn-yt" class="btn-yt" target="_blank" rel="noopener">📱 YouTubeアプリで開く(バックグラウンド再生はこちら)</a>
       </div>
     </div>
     <div class="rating-box" id="rating-box">
@@ -555,6 +574,7 @@ function renderSong(song) {
   dur.textContent = "⏱ " + durationText(song);
   tags.appendChild(dur);
   $("btn-play").style.display = "";
+  $("btn-yt").href = `https://www.youtube.com/watch?v=${song.id}`;
   renderRating();
 }
 
@@ -801,6 +821,11 @@ document.querySelectorAll("#stars button").forEach(b => b.addEventListener("clic
 }));
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
+// YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
+$("btn-yt").addEventListener("click", () => {
+  playerStarted = true;
+  renderRating();
+});
 
 (async function boot() {
   try {

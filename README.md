@@ -17,6 +17,8 @@
 
 - 📊 「好み」タブ: 評価から学習したジャンル/ムード親和度をバーで可視化
 - 🔄 曲カタログ(songs.json)の自動更新: 週1のGitHub Actionsが死活チェック+新曲追加
+- 📱 「YouTubeアプリで開く」: YouTube Premium ならアプリ側でバックグラウンド再生できる
+- 🎨 アプリアイコン+manifest 同梱(ホーム画面に追加可能。生成は scripts/make_icon.py)
 
 ## 技術構成
 
