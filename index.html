@@ -199,6 +199,24 @@
     border-radius: 10px;
   }
 
+  /* ---- 好み(可視化) ---- */
+  .taste-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .tile { background: var(--bg-card); border-radius: 10px; padding: 12px 6px; text-align: center; }
+  .tile .t-val { font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
+  .tile .t-label { font-size: .68rem; color: var(--text-dim); }
+  .aff-card { background: var(--bg-card); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; }
+  .aff-card h3 { font-size: .85rem; color: var(--text-dim); font-weight: normal; margin-bottom: 2px; }
+  .aff-scale { display: flex; justify-content: space-between; font-size: .68rem; color: var(--text-dim); margin: 0 0 8px 98px; }
+  .aff-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .aff-label { width: 88px; font-size: .8rem; text-align: right; flex-shrink: 0;
+               overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .aff-track { position: relative; flex: 1; height: 12px; }
+  .aff-track::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px;
+                       width: 2px; margin-left: -1px; background: #4a4f5e; }
+  .aff-bar { position: absolute; top: 1px; height: 10px; }
+  .aff-bar.pos { left: 50%; background: var(--accent); border-radius: 0 4px 4px 0; }
+  .aff-bar.neg { right: 50%; background: #fb923c; border-radius: 4px 0 0 4px; }
+
   /* ---- フッターナビ ---- */
   nav {
     position: fixed;
@@ -280,6 +298,29 @@
     <div class="save-msg" id="save-msg"></div>
   </section>
 
+  <!-- ===== 好み画面 ===== -->
+  <section id="view-taste" class="view">
+    <h2>📊 あなたの好み</h2>
+    <div class="taste-tiles">
+      <div class="tile"><div class="t-val" id="t-count">0</div><div class="t-label">評価した曲</div></div>
+      <div class="tile"><div class="t-val" id="t-avg">─</div><div class="t-label">平均★</div></div>
+      <div class="tile"><div class="t-val" id="t-top">─</div><div class="t-label">いちばん好き</div></div>
+    </div>
+    <div class="aff-card" id="aff-genres-card">
+      <h3>ジャンルの好み(評価から学習)</h3>
+      <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+      <div id="aff-genres"></div>
+    </div>
+    <div class="aff-card" id="aff-moods-card">
+      <h3>ムードの好み</h3>
+      <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+      <div id="aff-moods"></div>
+    </div>
+    <div class="empty" id="taste-empty" style="display:none">
+      ★4以上 / ★2以下の評価がたまると、ここに好みが見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
+    </div>
+  </section>
+
   <!-- ===== 履歴画面 ===== -->
   <section id="view-history" class="view">
     <h2>📖 評価履歴</h2>
@@ -293,6 +334,7 @@
 
 <nav>
   <button data-view="main" class="active"><span class="ico">🎵</span>今日の曲</button>
+  <button data-view="taste"><span class="ico">📊</span>好み</button>
   <button data-view="settings"><span class="ico">⚙️</span>設定</button>
   <button data-view="history"><span class="ico">📖</span>履歴</button>
 </nav>
@@ -301,60 +343,16 @@
 "use strict";
 
 /* =========================================================
- * 曲マスタデータ
- * 収録条件: 埋め込み許可を確認済みの動画のみ (2026-07-19 検証)
- * durationMin: null はライブ配信(24/7)
+ * 曲マスタデータ: songs.json から読み込む(scripts/update_songs.py が管理)
+ * 収録条件: 埋め込み許可を確認済みの動画のみ。durationMin: null はライブ配信
  * ========================================================= */
-const SONGS = [
-  // --- Lo-fi ---
-  { id: "CFGLoQIhmow", title: "lofi hip hop mix 📚 beats to relax/study to (Part 1)", genres: ["lofi"], durationMin: 171, durationClass: "long", mood: ["focus", "calm"] },
-  { id: "lTRiuFIWV54", title: "1 A.M Study Session 📚 [lofi hip hop]", genres: ["lofi"], durationMin: 61, durationClass: "long", mood: ["night", "calm"] },
-  { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾", genres: ["lofi", "jazz"], durationMin: null, durationClass: "long", live: true, mood: ["focus"] },
-  { id: "n61ULEU7CO0", title: "Best of lofi hip hop 2021 ✨", genres: ["lofi"], durationMin: 371, durationClass: "long", mood: ["focus"] },
-  { id: "1fueZCTYkpA", title: "Morning Coffee ☕️ [lofi hip hop]", genres: ["lofi"], durationMin: 64, durationClass: "long", mood: ["morning", "calm"] },
-  // --- ジャズ ---
-  { id: "Dx5qFachd3A", title: "Relaxing Jazz Piano Radio - Slow Jazz for Work & Study", genres: ["jazz", "piano"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "calm"] },
-  { id: "DSGyEsJ17cI", title: "Rainy Jazz: Relaxing Jazz & Bossa Nova Radio", genres: ["jazz"], durationMin: null, durationClass: "long", live: true, mood: ["rain", "calm"] },
-  { id: "fEvM-OUbaKs", title: "Coffee Jazz Music - Chill Out Lounge Radio(作業用カフェBGM)", genres: ["jazz"], durationMin: null, durationClass: "long", live: true, mood: ["focus"] },
-  { id: "6uddGul0oAc", title: "TOKYO Cafe: Relaxing Jazz Piano - Night Coffee Shop", genres: ["jazz", "piano"], durationMin: null, durationClass: "long", live: true, mood: ["night", "calm"] },
-  { id: "NJuSStkIZBg", title: "Rainy Jazz Cafe - Slow Jazz in Coffee Shop Ambience", genres: ["jazz"], durationMin: 214, durationClass: "long", mood: ["rain", "calm"] },
-  { id: "HMnrl0tmd3k", title: "Godot - The Fragrance of Dark Coffee(逆転裁判ジャズ)", genres: ["jazz", "game"], durationMin: 6, durationClass: "short", mood: ["night", "calm"] },
-  // --- ピアノ ---
-  { id: "77ZozI0rw7w", title: "Relaxing Piano Music & Water Sounds - Soothing Relaxation", genres: ["piano", "nature"], durationMin: 182, durationClass: "long", mood: ["calm"] },
-  { id: "lFcSrYw-ARY", title: "Beautiful Relaxing Music for Stress Relief(ピアノ)", genres: ["piano"], durationMin: 181, durationClass: "long", mood: ["calm"] },
-  { id: "hlWiI4xVXKY", title: "Sunny Mornings: Piano, Guitar & Bird Sounds - Peder B. Helland", genres: ["piano", "nature"], durationMin: 184, durationClass: "long", mood: ["morning", "calm"] },
-  { id: "9Q634rbsypE", title: "Always: Soft & Relaxing Piano - Peder B. Helland", genres: ["piano"], durationMin: 186, durationClass: "long", mood: ["calm"] },
-  // --- 環境音・自然音 ---
-  { id: "eKFTSSKCzWA", title: "森の滝の自然音 - Natural Calm Forest Waterfall", genres: ["nature"], durationMin: 500, durationClass: "long", mood: ["calm", "focus"] },
-  { id: "mPZkdNFkNps", title: "窓を打つ雨と雷の音 - Rain Sound On Window", genres: ["nature"], durationMin: 480, durationClass: "long", mood: ["rain", "calm"] },
-  { id: "xNN7iTA57jM", title: "Forest Sounds | 森と鳥のさえずり", genres: ["nature"], durationMin: 180, durationClass: "long", mood: ["calm"] },
-  { id: "q76bMs-NwRk", title: "3 Hours of Gentle Night Rain(静かな夜の雨・暗い画面)", genres: ["nature"], durationMin: 182, durationClass: "long", mood: ["rain", "night"] },
-  { id: "nDq6TstdEi8", title: "EPIC THUNDER & RAIN | 雷雨のホワイトノイズ 10時間", genres: ["nature"], durationMin: 600, durationClass: "long", mood: ["rain", "focus"] },
-  { id: "WHPEKLQID4U", title: "Ocean Waves Relaxation | 波の音 10時間", genres: ["nature"], durationMin: 600, durationClass: "long", mood: ["calm"] },
-  // --- ゲームBGM ---
-  { id: "GdzrrWA8e7A", title: "Zelda & Chill(ゼルダ lofiアレンジ)", genres: ["game", "lofi"], durationMin: 41, durationClass: "medium", mood: ["calm", "focus"] },
-  { id: "knoUHYLoE3c", title: "Relaxing Video Game Music 8hr mix(FF・ゼルダ・Skyrim他)", genres: ["game"], durationMin: 492, durationClass: "long", mood: ["calm"] },
-  { id: "55DE_ePBUAU", title: "Video Game Music for Studying 1", genres: ["game"], durationMin: 85, durationClass: "long", mood: ["focus"] },
-  { id: "ZLAFOPBFlHM", title: "Video Game Music for Studying 3", genres: ["game"], durationMin: 79, durationClass: "long", mood: ["focus"] },
-  { id: "8kBlKM71pjc", title: "cozy animal crossing music(あつ森BGM)", genres: ["game"], durationMin: 71, durationClass: "long", mood: ["calm"] },
-  { id: "1wOAhRAqb40", title: "Relaxing Animal Crossing music + rain sounds ♡", genres: ["game", "nature"], durationMin: 60, durationClass: "medium", mood: ["rain", "calm"] },
-  // --- シンセウェーブ ---
-  { id: "4xDzrJKXOOY", title: "synthwave radio 🌌 beats to chill/game to", genres: ["synthwave"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "night"] },
-  { id: "wOMwO5T3yT4", title: "SPACE TRIP [Chillwave - Synthwave - Retrowave Mix]", genres: ["synthwave"], durationMin: 37, durationClass: "medium", mood: ["focus", "night"] },
-  { id: "MV_3Dpw-BRY", title: "Kavinsky - Nightcall(Drive OST)", genres: ["synthwave"], durationMin: 4, durationClass: "short", mood: ["night"] },
-  { id: "rDBbaGCCIhk", title: "Miami Nights 1984 - Accelerated", genres: ["synthwave"], durationMin: 4, durationClass: "short", mood: ["night"] },
-  // --- クラシック ---
-  { id: "jgpJVI3tDbY", title: "The Best of Classical Music(モーツァルト・ベートーヴェン他)", genres: ["classical"], durationMin: 208, durationClass: "long", mood: ["focus"] },
-  { id: "mIYzp5rcTvU", title: "Classical Music for Reading(モーツァルト・ショパン他)", genres: ["classical"], durationMin: 148, durationClass: "long", mood: ["focus", "calm"] },
-  { id: "rOjHhS5MtvA", title: "Muti Conducts Beethoven 9(ベートーヴェン交響曲第9番)", genres: ["classical"], durationMin: 81, durationClass: "long", mood: ["epic"] },
-  { id: "g4N-X2YtNW4", title: "Chopin: Complete Nocturnes(ノクターン全集)", genres: ["classical", "piano"], durationMin: 119, durationClass: "long", mood: ["calm", "night"] },
-  { id: "Nu48Z45ibxQ", title: "ショパン ノクターン Op.9-2(ルービンシュタイン)", genres: ["classical", "piano"], durationMin: 4, durationClass: "short", mood: ["calm"] },
-];
+let SONGS = [];
 
 const GENRE_LABELS = {
   lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", nature: "環境音・自然音",
   game: "ゲームBGM", synthwave: "シンセウェーブ", classical: "クラシック",
 };
+const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
 const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
 
@@ -708,6 +706,55 @@ function renderHistory() {
   }
 }
 
+/* ---- 好み画面(評価データの可視化) ---- */
+function affRow(label, value) {
+  const row = document.createElement("div");
+  row.className = "aff-row";
+  const lab = document.createElement("span");
+  lab.className = "aff-label";
+  lab.textContent = label;
+  const track = document.createElement("div");
+  track.className = "aff-track";
+  track.title = `${label}: ${value > 0 ? "+" : ""}${value.toFixed(2)}`;
+  const bar = document.createElement("div");
+  bar.className = "aff-bar " + (value >= 0 ? "pos" : "neg");
+  bar.style.width = (Math.abs(value) * 50) + "%";
+  track.appendChild(bar);
+  row.appendChild(lab);
+  row.appendChild(track);
+  return row;
+}
+
+function renderTaste() {
+  const ratings = load(LS.RATINGS, {});
+  const entries = Object.values(ratings);
+  $("t-count").textContent = entries.length;
+  $("t-avg").textContent = entries.length
+    ? (entries.reduce((a, r) => a + r.rating, 0) / entries.length).toFixed(1)
+    : "─";
+
+  const table = buildAffinityTable(ratings);
+  const genreTags = Object.keys(GENRE_LABELS).filter(g => table[g] !== undefined);
+  const moodTags = Object.keys(MOOD_LABELS).filter(m => table[m] !== undefined);
+
+  const best = genreTags.filter(g => table[g] > 0).sort((a, b) => table[b] - table[a])[0];
+  $("t-top").textContent = best ? GENRE_LABELS[best] : "─";
+
+  const hasData = genreTags.length > 0 || moodTags.length > 0;
+  $("taste-empty").style.display = hasData ? "none" : "";
+  $("aff-genres-card").style.display = genreTags.length ? "" : "none";
+  $("aff-moods-card").style.display = moodTags.length ? "" : "none";
+
+  const gBox = $("aff-genres");
+  gBox.innerHTML = "";
+  genreTags.sort((a, b) => table[b] - table[a])
+    .forEach(g => gBox.appendChild(affRow(GENRE_LABELS[g], table[g])));
+  const mBox = $("aff-moods");
+  mBox.innerHTML = "";
+  moodTags.sort((a, b) => table[b] - table[a])
+    .forEach(m => mBox.appendChild(affRow(MOOD_LABELS[m], table[m])));
+}
+
 function resetAll() {
   if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
   [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD].forEach(k => localStorage.removeItem(k));
@@ -723,6 +770,7 @@ function showView(name) {
   document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
   if (name === "settings") renderSettings();
   if (name === "history") renderHistory();
+  if (name === "taste") renderTaste();
 }
 
 /* ---- 初期化 ---- */
@@ -754,7 +802,19 @@ document.querySelectorAll("#stars button").forEach(b => b.addEventListener("clic
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 
-init(false);
+(async function boot() {
+  try {
+    const res = await fetch("songs.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(res.status);
+    SONGS = await res.json();
+  } catch (e) {
+    $("song-title").textContent = "曲データ(songs.json)を読み込めませんでした。file://直開きでは動作しないため、ローカル確認は `python -m http.server` 経由で開いてください。";
+    $("btn-play").style.display = "none";
+    $("btn-reroll").style.display = "none";
+    return;
+  }
+  init(false);
+})();
 </script>
 </body>
 </html>

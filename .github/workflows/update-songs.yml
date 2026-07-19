@@ -1,0 +1,46 @@
+name: Update songs catalog
+
+# 週1回、曲カタログ(songs.json)を自動更新する:
+#   - 既存曲の死活チェック(再生不能になった動画を削除)
+#   - ジャンル別クエリで新曲を検索・検証して追加(ジャンル上限あり)
+# 個人の評価・好みデータは一切扱わない(それらは各端末のlocalStorageのみに存在する)。
+#
+# 必要な設定: リポジトリの Settings → Secrets and variables → Actions に
+#   YOUTUBE_API_KEY = YouTube Data API v3 のAPIキー
+# を登録すること。未登録の場合はスクレイピングモードで動くが、
+# GitHub Actionsのランナーからは YouTube にブロックされやすいため API キー推奨。
+
+on:
+  schedule:
+    - cron: "0 21 * * 5"   # 毎週土曜 06:00 JST
+  workflow_dispatch:        # 手動実行も可
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update songs.json
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python scripts/update_songs.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add songs.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "songs.json 自動更新(週次: 死活チェック+新曲追加)"
+            git push
+          fi
