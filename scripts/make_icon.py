@@ -1,31 +1,38 @@
 #!/usr/bin/env python3
 """アプリアイコンのPNG生成(要 Pillow)
 
-デザイン: Soft UI(ニューモーフィズム)版。
-淡青グレー(#E8EDF5系)の面に、2方向の影(左上=白い光/右下=青灰の陰)で
-浮き上がる円盤を置き、その上に青グラデ(#5B6CFF→#4353E8)の角丸プレイボタン。
-アプリ本体のデザイントークン(デザインリニューアル手順書 SoftUI版)と同一パレット。
+デザイン: 白基調のジオメトリック・ミニマリズム版。
+ごく淡いクールグレーへのグラデーションを敷いた白地に、
+青バイオレットのグラデーション(#6B7BFF→#4353E8)で描いた連桁音符(♫)を1つ置く。
+フォーカルポイントは音符グリフのみ。足元にわずかな青の落ち影で浮遊感を出す。
+icon.svg と同一ジオメトリ(512グリッド × SS/512 倍)。
 
 フル塗り(角丸なし)で出力する — iOSは自動で角丸マスク、Androidのmaskableにも対応。
-モチーフはmaskableのセーフゾーン(中央80%)内に収める。
+グリフはmaskableのセーフゾーン(中央80%)内に収める。
 
 出力: icon-512.png / icon-192.png / icon-180.png (リポジトリ直下)
 """
 
 import os
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SS = 2048  # スーパーサンプリング解像度(縮小してアンチエイリアス)
+SS = 2048          # スーパーサンプリング解像度(縮小してアンチエイリアス)
+K = SS / 512       # 512グリッド(icon.svg と共通)→ SS への倍率
 
-BG_TOP = (238, 242, 249)      # #EEF2F9
-BG_BOTTOM = (226, 232, 242)   # #E2E8F2
-DISC_TOP = (241, 245, 251)    # #F1F5FB(光の当たる側)
-DISC_BOTTOM = (228, 234, 244) # #E4EAF4
-SH_DARK = (136, 152, 184)     # 右下の陰(青灰)
-SH_LIGHT = (255, 255, 255)    # 左上の光
-TRI_TOP = (91, 108, 255)      # #5B6CFF
-TRI_BOTTOM = (67, 83, 232)    # #4353E8
+BG_TOP = (255, 255, 255)      # #FFFFFF
+BG_BOTTOM = (242, 245, 250)   # #F2F5FA
+GLYPH_TOP = (107, 123, 255)   # #6B7BFF
+GLYPH_BOTTOM = (67, 83, 232)  # #4353E8
+SHADOW = (67, 83, 232)        # 落ち影(青)
+
+# 512グリッド上のグリフ形状(icon.svg と一致させること)
+STEM_W = 30
+BEAM_W = 58
+STEMS = [((188, 360), (188, 174)), ((360, 332), (360, 146))]
+BEAM = ((188, 174), (360, 146))
+HEADS = [(163, 360), (335, 332)]  # 中心座標
+HEAD_RX, HEAD_RY, HEAD_ROT = 45, 34, 18  # 半径と回転角(度)
 
 
 def lerp(a, b, t):
@@ -40,57 +47,46 @@ def vertical_gradient(size, top, bottom):
     return img
 
 
-def circle_mask(size, cx, cy, r):
-    mask = Image.new("L", (size, size), 0)
-    ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
-    return mask
+def capped_line(draw, p1, p2, width):
+    """丸キャップ付きの太線"""
+    draw.line([p1, p2], fill=255, width=width)
+    r = width / 2
+    for x, y in (p1, p2):
+        draw.ellipse([x - r, y - r, x + r, y + r], fill=255)
 
 
-def rounded_triangle_mask(size, pts, radius):
-    """角丸三角形のマスク(頂点に円+辺に太線+中を塗り)"""
-    mask = Image.new("L", (size, size), 0)
+def glyph_mask():
+    """連桁音符(♫)のマスク。座標は512グリッド→K倍"""
+    mask = Image.new("L", (SS, SS), 0)
     d = ImageDraw.Draw(mask)
-    d.polygon(pts, fill=255)
-    d.line(pts + [pts[0]], fill=255, width=radius * 2, joint="curve")
-    for x, y in pts:
-        d.ellipse([x - radius, y - radius, x + radius, y + radius], fill=255)
+    for p1, p2 in STEMS:
+        capped_line(d, tuple(v * K for v in p1), tuple(v * K for v in p2), round(STEM_W * K))
+    capped_line(d, tuple(v * K for v in BEAM[0]), tuple(v * K for v in BEAM[1]), round(BEAM_W * K))
+    # 符頭: 回転楕円は「レイヤーに水平楕円を描いて中心回転」で作る
+    for cx, cy in HEADS:
+        layer = Image.new("L", (SS, SS), 0)
+        ld = ImageDraw.Draw(layer)
+        ld.ellipse([(cx - HEAD_RX) * K, (cy - HEAD_RY) * K,
+                    (cx + HEAD_RX) * K, (cy + HEAD_RY) * K], fill=255)
+        layer = layer.rotate(HEAD_ROT, center=(cx * K, cy * K), resample=Image.BICUBIC)
+        mask = ImageChops.lighter(mask, layer)
     return mask
-
-
-def soft_shadow(base, mask, offset, blur, color, alpha):
-    """maskの形の影を offset だけずらして base に合成する"""
-    layer = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    shadow = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    tint = Image.new("RGBA", base.size, color + (alpha,))
-    shadow.paste(tint, offset, mask)
-    shadow = shadow.filter(ImageFilter.GaussianBlur(blur))
-    layer.alpha_composite(shadow)
-    return Image.alpha_composite(base, layer)
 
 
 def build():
     img = vertical_gradient(SS, BG_TOP, BG_BOTTOM).convert("RGBA")
+    mask = glyph_mask()
 
-    # --- 円盤(浮き): 左上に光・右下に陰の2方向影 ---
-    cx = cy = SS // 2
-    r = int(SS * 0.31)  # maskableセーフゾーン(中央80%)内
-    disc_mask = circle_mask(SS, cx, cy, r)
-    off = int(SS * 0.024)
-    blur = int(SS * 0.030)
-    img = soft_shadow(img, disc_mask, (off, off), blur, SH_DARK, 115)
-    img = soft_shadow(img, disc_mask, (-off, -off), blur, SH_LIGHT, 230)
-    disc_grad = vertical_gradient(SS, DISC_TOP, DISC_BOTTOM).convert("RGBA")
-    img.paste(disc_grad, (0, 0), disc_mask)
+    # 落ち影(下方向にわずかな青。opacity 0.18相当)
+    shadow = Image.new("RGBA", (SS, SS), (0, 0, 0, 0))
+    tint = Image.new("RGBA", (SS, SS), SHADOW + (46,))
+    shadow.paste(tint, (0, round(10 * K)), mask)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(round(14 * K)))
+    img = Image.alpha_composite(img, shadow)
 
-    # --- プレイボタン(角丸・青グラデ)+青グロー ---
-    tri_pts = [(int(SS * 0.435), int(SS * 0.385)),
-               (int(SS * 0.435), int(SS * 0.615)),
-               (int(SS * 0.645), int(SS * 0.50))]
-    tri_mask = rounded_triangle_mask(SS, tri_pts, int(SS * 0.024))
-    img = soft_shadow(img, tri_mask, (int(SS * 0.008), int(SS * 0.014)),
-                      int(SS * 0.018), TRI_TOP, 110)
-    tri_grad = vertical_gradient(SS, TRI_TOP, TRI_BOTTOM).convert("RGBA")
-    img.paste(tri_grad, (0, 0), tri_mask)
+    # グリフ本体(縦グラデをマスク越しに)
+    grad = vertical_gradient(SS, GLYPH_TOP, GLYPH_BOTTOM).convert("RGBA")
+    img.paste(grad, (0, 0), mask)
 
     img = img.convert("RGB")
     for size in (512, 192, 180):

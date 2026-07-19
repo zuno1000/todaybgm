@@ -1,27 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#EEF2F9"/>
-      <stop offset="1" stop-color="#E2E8F2"/>
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F2F5FA"/>
     </linearGradient>
-    <linearGradient id="disc" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#F1F5FB"/>
-      <stop offset="1" stop-color="#E4EAF4"/>
-    </linearGradient>
-    <linearGradient id="tri" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#5B6CFF"/>
+    <!-- 垂直線は objectBoundingBox だと bbox 幅ゼロでグラデーションが未定義になり
+         描画されないため、userSpaceOnUse でグリフ全体(y=110〜395)に張る -->
+    <linearGradient id="glyph" gradientUnits="userSpaceOnUse" x1="256" y1="110" x2="256" y2="395">
+      <stop offset="0" stop-color="#6B7BFF"/>
       <stop offset="1" stop-color="#4353E8"/>
     </linearGradient>
-    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
-      <feDropShadow dx="14" dy="14" stdDeviation="16" flood-color="#8898B8" flood-opacity="0.45"/>
-      <feDropShadow dx="-14" dy="-14" stdDeviation="16" flood-color="#FFFFFF" flood-opacity="0.9"/>
-    </filter>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feDropShadow dx="6" dy="10" stdDeviation="12" flood-color="#5B6CFF" flood-opacity="0.4"/>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#4353E8" flood-opacity="0.18"/>
     </filter>
   </defs>
   <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <circle cx="256" cy="256" r="158" fill="url(#disc)" filter="url(#soft)"/>
-  <path d="M218 196 q0 -12 10 -6 l102 60 q10 6 0 12 l-102 60 q-10 6 -10 -6 z"
-        fill="url(#tri)" stroke="url(#tri)" stroke-width="26" stroke-linejoin="round" filter="url(#glow)"/>
+  <g filter="url(#lift)">
+    <g fill="url(#glyph)" stroke="url(#glyph)">
+      <line x1="188" y1="360" x2="188" y2="174" stroke-width="30" stroke-linecap="round"/>
+      <line x1="360" y1="332" x2="360" y2="146" stroke-width="30" stroke-linecap="round"/>
+      <line x1="188" y1="174" x2="360" y2="146" stroke-width="58" stroke-linecap="round"/>
+      <ellipse cx="163" cy="360" rx="45" ry="34" transform="rotate(-18 163 360)" stroke="none"/>
+      <ellipse cx="335" cy="332" rx="45" ry="34" transform="rotate(-18 335 332)" stroke="none"/>
+    </g>
+  </g>
 </svg>
