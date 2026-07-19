@@ -118,6 +118,27 @@ button:focus-visible, a:focus-visible {
   background: var(--bg-deep);
 }
 .thumb-wrap.playing { aspect-ratio: 16 / 9; }
+/* 横向き時の自動全画面(擬似フルスクリーン):
+   iOS SafariはクロスオリジンiframeへのFullscreen APIが使えないため、
+   position:fixed でビューポート全面を覆う方式を主機構にする(iOS/Android両対応)。 */
+.thumb-wrap.fs-active {
+  position: fixed; inset: 0; z-index: 9999;
+  width: 100vw; height: 100vh;
+  margin: 0; padding: 0;
+  border-radius: 0; aspect-ratio: auto;
+  background: #000;
+}
+/* Android等でネイティブ全画面が効いた場合の補強(擬似FSと併用しても破綻しない) */
+.thumb-wrap:fullscreen, .thumb-wrap:-webkit-full-screen {
+  width: 100vw; height: 100vh;
+  border-radius: 0; aspect-ratio: auto;
+  background: #000;
+}
+.thumb-wrap.fs-active iframe, .thumb-wrap.fs-active #player,
+.thumb-wrap:fullscreen iframe, .thumb-wrap:-webkit-full-screen iframe,
+.thumb-wrap:fullscreen #player, .thumb-wrap:-webkit-full-screen #player {
+  width: 100%; height: 100%;
+}
 .thumb-wrap img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
@@ -284,6 +305,63 @@ button:focus-visible, a:focus-visible {
 .save-btn:active { transform: scale(0.97); }
 .save-msg { text-align: center; font-size: 12px; color: var(--accent); min-height: 18px; }
 
+/* ---- 探す: 気分ミキサー(スライダー) ---- */
+.mixer-card { border-radius: var(--r-card); padding: 22px 22px 20px; }
+.mixer-row { margin-bottom: 24px; }
+.mixer-ends {
+  display: flex; justify-content: space-between;
+  font-size: 12px; font-weight: 700; color: var(--text-sub);
+  margin-bottom: 10px;
+}
+input[type="range"].mixer {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 14px; margin: 0;
+  border-radius: var(--r-full);
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
+input[type="range"].mixer::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: -2px -2px 5px var(--sh-light), 2px 2px 6px rgba(91, 108, 255, 0.5);
+  cursor: pointer;
+}
+input[type="range"].mixer::-moz-range-thumb {
+  width: 26px; height: 26px; border: none; border-radius: 50%;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: -2px -2px 5px var(--sh-light), 2px 2px 6px rgba(91, 108, 255, 0.5);
+  cursor: pointer;
+}
+input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* ---- 探す: 候補カード ---- */
+.ex-result { margin-top: 26px; }
+.ex-card { border-radius: var(--r-card); padding: 16px 16px 20px; text-align: center; }
+.ex-thumb-wrap {
+  border-radius: 22px; overflow: hidden;
+  aspect-ratio: 16 / 9; background: var(--bg-deep);
+  max-width: 320px; margin: 0 auto;
+}
+.ex-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.37); }
+.ex-title { font-size: 16px; font-weight: 700; line-height: 1.5; margin: 18px 6px 0; }
+.ex-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+.ex-set {
+  padding: 15px 0; border-radius: var(--r-btn);
+  font-size: 15px; font-weight: 700; transition: transform 0.15s;
+}
+.ex-set:active { transform: scale(0.97); }
+.ex-again {
+  padding: 12px 0; border-radius: var(--r-btn);
+  font-size: 13px; font-weight: 700; color: var(--text-sub);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.ex-again:active {
+  transform: scale(0.98);
+  background: var(--bg-deep);
+  box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark);
+}
+
 /* ---- 好み(統計タイル+発散バー) ---- */
 .taste-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
 .tile { border-radius: var(--r-btn); padding: 14px 6px; text-align: center; }
@@ -340,7 +418,22 @@ button:focus-visible, a:focus-visible {
   padding: 14px 16px;
   margin-bottom: 14px;
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  transition: box-shadow 0.15s, transform 0.12s;
 }
+.hist-item:active {
+  transform: scale(0.985);
+  background: var(--bg-deep);
+  box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark);
+}
+.hist-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.hist-play {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: var(--r-full);
+  display: grid; place-items: center;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: 2px 2px 6px rgba(91, 108, 255, 0.4);
+}
+.hist-play svg { width: 13px; height: 13px; fill: #fff; stroke: none; margin-left: 1px; }
 .hist-title { font-size: 13px; line-height: 1.5; flex: 1; }
 .hist-side { text-align: right; flex-shrink: 0; }
 .hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; }
@@ -365,8 +458,9 @@ button:focus-visible, a:focus-visible {
 .tab {
   display: flex; flex-direction: column; align-items: center; gap: 5px;
   font-size: 11px; color: var(--text-sub);
-  padding: 4px 14px;
+  padding: 4px 10px;
   position: relative;
+  white-space: nowrap;
 }
 .tab svg { width: 22px; height: 22px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.15s; }
 .tab.active { color: var(--accent); }
@@ -449,6 +543,44 @@ button:focus-visible, a:focus-visible {
     </a>
   </section>
 
+  <!-- ===== 探す ===== -->
+  <section id="view-explore" class="view">
+    <h2 class="section-title">ジャンル(任意・複数)</h2>
+    <div class="pill-grid" id="explore-genres"></div>
+
+    <h2 class="section-title">気分ミキサー</h2>
+    <div class="mixer-card raised">
+      <div class="mixer-row">
+        <div class="mixer-ends"><span>集中</span><span>癒し</span></div>
+        <input type="range" class="mixer" id="mood1" min="-100" max="100" value="0" step="1" aria-label="集中から癒しまで">
+      </div>
+      <div class="mixer-row" style="margin-bottom:2px">
+        <div class="mixer-ends"><span>静か</span><span>壮大</span></div>
+        <input type="range" class="mixer" id="mood2" min="-100" max="100" value="0" step="1" aria-label="静かから壮大まで">
+      </div>
+    </div>
+
+    <h2 class="section-title">長さ</h2>
+    <div class="pill-grid" id="explore-dur"></div>
+
+    <button class="save-btn accent-raised" id="btn-explore">この条件で探す</button>
+
+    <div id="explore-result" class="ex-result" style="display:none">
+      <div class="ex-card raised">
+        <div class="ex-thumb-wrap">
+          <img id="ex-thumb" class="ex-thumb" src="" alt="候補曲のサムネイル">
+        </div>
+        <div class="ex-title" id="ex-title"></div>
+        <div class="song-meta" id="ex-tags"></div>
+        <div class="ex-actions">
+          <button class="ex-set accent-raised" id="ex-set">これを今日の曲にする</button>
+          <button class="ex-again raised" id="ex-again">別の候補を見る</button>
+        </div>
+      </div>
+    </div>
+    <div class="empty" id="explore-empty" style="display:none">条件に合う曲が見つかりませんでした。条件をゆるめてみてください。</div>
+  </section>
+
   <!-- ===== 好み ===== -->
   <section id="view-taste" class="view">
     <h2 class="section-title">あなたの好み</h2>
@@ -504,17 +636,21 @@ button:focus-visible, a:focus-visible {
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
     今日の曲
   </button>
+  <button class="tab" data-view="explore" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    探す
+  </button>
   <button class="tab" data-view="taste" role="tab" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
     好み
   </button>
-  <button class="tab" data-view="settings" role="tab" aria-selected="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    設定
-  </button>
   <button class="tab" data-view="history" role="tab" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     履歴
+  </button>
+  <button class="tab" data-view="settings" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    設定
   </button>
 </nav>
 
@@ -530,8 +666,9 @@ let SONGS = [];
 const GENRE_LABELS = {
   lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", nature: "環境音・自然音",
   game: "ゲームBGM", synthwave: "シンセウェーブ", classical: "クラシック",
+  celtic: "ケルト音楽", fantasy: "ファンタジー", japanese: "和風",
 };
-const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大" };
+const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
 const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
 
@@ -765,6 +902,7 @@ function renderSong(song) {
   currentSong = song;
   destroyPlayer();
   $("thumb-wrap").classList.remove("playing");
+  setPseudoFullscreen(false); // 曲を切り替えたら擬似全画面は一旦解除(再生開始時に再判定)
   $("thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
   $("thumb").style.display = "";
   $("live-badge").style.display = song.live ? "" : "none";
@@ -914,6 +1052,7 @@ function onPlayerStateChange(e) {
       playerStarted = true;
       renderRating();
     }
+    syncFullscreenToOrientation(); // 横向きで再生開始/次曲移行時に全画面化
   } else if (e.data === YT.PlayerState.PAUSED) {
     setPlayButton("paused");
   } else if (e.data === YT.PlayerState.ENDED) {
@@ -959,6 +1098,52 @@ function queueAdvance() {
   renderRating();
   setPlayButton("playing"); // ロード中もボタンは再生中表示のまま
   player.loadVideoById(song.id); // プレイヤーを維持したまま差し替え(自動再生制限を回避)
+}
+
+/* ---- 横向き時の自動全画面(スマホ) ----
+ * 再生中に端末を横にしたら動画を全画面化し、縦に戻したら解除する。
+ * 連続再生は同じプレイヤー(iframe)を維持するため、全画面のまま次の曲へ移れる。
+ *
+ * 主機構は「擬似フルスクリーン」= thumb-wrap を position:fixed でビューポート全面に広げる方式。
+ * iOS Safari はクロスオリジンの YouTube iframe に Fullscreen API を使えず、物理回転起点の
+ * 全画面要求も許可されないため、CSS だけで完結するこの方式なら iOS/Android 両方で確実に効く。
+ * Android 等では加えてネイティブ全画面も試み(効けば没入表示、ダメでも擬似FSが担保)。 */
+function isPlayingNow() {
+  if (!player || !playerReady || !player.getPlayerState) return false;
+  const st = player.getPlayerState();
+  return st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING;
+}
+function fsElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement || null;
+}
+function requestFs(el) {
+  const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.webkitRequestFullScreen;
+  if (!fn) return;
+  try { const r = fn.call(el); if (r && r.catch) r.catch(() => {}); } catch (e) {}
+}
+function exitFs() {
+  const fn = document.exitFullscreen || document.webkitExitFullscreen;
+  if (!fn) return;
+  try { const r = fn.call(document); if (r && r.catch) r.catch(() => {}); } catch (e) {}
+}
+function isLandscape() {
+  return window.matchMedia("(orientation: landscape)").matches;
+}
+function setPseudoFullscreen(on) {
+  const wrap = $("thumb-wrap");
+  wrap.classList.toggle("fs-active", on);
+  // 全画面の背後でページがスクロールしないように固定
+  document.body.style.overflow = on ? "hidden" : "";
+}
+function syncFullscreenToOrientation() {
+  const wantFs = isLandscape() && isPlayingNow();
+  setPseudoFullscreen(wantFs);          // iOS/Android共通の主機構
+  if (wantFs) {
+    // Android等ではネイティブ全画面も試す(ユーザー操作起点なら成功、回転起点なら握り潰し)
+    if (fsElement() !== $("thumb-wrap")) requestFs($("thumb-wrap"));
+  } else if (fsElement()) {
+    exitFs();
+  }
 }
 
 function handlePlaybackError(deadSong) {
@@ -1052,12 +1237,37 @@ function renderHistory() {
   for (const e of entries) {
     const li = document.createElement("li");
     li.className = "hist-item raised";
+    li.dataset.id = e.id;
+    li.setAttribute("role", "button");
+    li.tabIndex = 0;
+    li.setAttribute("aria-label", `「${e.song.title}」を今日の曲にして再生`);
     const stars = "★".repeat(e.rating) + "☆".repeat(5 - e.rating);
     const date = new Date(e.ratedAt).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" });
-    li.innerHTML = `<span class="hist-title"></span><span class="hist-side"><span class="hist-stars">${stars}</span><div class="hist-date">${date}</div></span>`;
+    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side"><span class="hist-stars">${stars}</span><div class="hist-date">${date}</div></span>`;
     li.querySelector(".hist-title").textContent = e.song.title;
+    li.addEventListener("click", () => playFromHistory(e.id));
+    li.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFromHistory(e.id); }
+    });
     list.appendChild(li);
   }
+}
+
+// 任意の曲を「今日の曲」にセットする。autoplay時はそのまま再生(ユーザー操作起点なので可)
+function setAsToday(song, autoplay) {
+  if (!song) return;
+  const daily = getDaily();
+  daily.currentId = song.id;
+  if (!daily.shownIds.includes(song.id)) daily.shownIds.push(song.id);
+  save(LS.DAILY, daily);
+  showView("main");
+  renderSong(song);
+  if (autoplay) playCurrent();
+}
+
+// 履歴の曲をタップ → 今日の曲にセットして即再生
+function playFromHistory(id) {
+  setAsToday(SONGS.find(s => s.id === id), true);
 }
 
 /* ---- 好み画面(評価データの可視化) ---- */
@@ -1117,6 +1327,141 @@ function renderTaste() {
     .forEach(m => mBox.appendChild(affRow(MOOD_LABELS[m], table[m])));
 }
 
+/* =========================================================
+ * 探す(能動検索): ジャンル/気分ミキサー/長さを明示指定して1曲探す。
+ * 設定(恒久デフォルト)とは独立し、その場の指定だけでスコアリングする。
+ * ========================================================= */
+const SW = { genre: 3.0, mood: 2.0, duration: 1.5, eps: 0.6 };
+
+// ミキサー2軸(各 -1〜+1)→ ムード希望重みに変換
+// mood1: -1 集中(focus) 〜 +1 癒し(calm) / mood2: -1 静か 〜 +1 壮大(epic/fantasy)
+function searchMoodWeights(m1, m2) {
+  const w = { focus: 0, calm: 0, epic: 0, fantasy: 0, night: 0, morning: 0, rain: 0 };
+  if (m1 < 0) w.focus = -m1; else w.calm = m1;
+  if (m2 > 0) { w.epic = m2; w.fantasy = m2; }
+  else { w.calm += (-m2) * 0.4; w.epic = m2; w.fantasy = m2; } // 静か側は壮大系にマイナス
+  return w;
+}
+function searchMoodScore(song, w) {
+  return song.mood.reduce((sum, m) => sum + (w[m] || 0), 0);
+}
+function searchScore(song, crit, w) {
+  let score = SW.mood * searchMoodScore(song, w)
+            + SW.duration * durationMatch(song, crit.duration)
+            + SW.eps * Math.random();
+  if (crit.genres.length) score += SW.genre * genreMatch(song, crit.genres);
+  return score;
+}
+
+function pickSearchSong(crit, excludeIds) {
+  const dead = load(LS.DEAD, []);
+  const w = searchMoodWeights(crit.mood1, crit.mood2);
+  let cands = SONGS.filter(s => !dead.includes(s.id) && !excludeIds.includes(s.id));
+  // ジャンル指定があれば、そのジャンルに合致する曲だけに絞る(指定の尊重)
+  if (crit.genres.length) {
+    const inGenre = cands.filter(s => s.genres.some(g => crit.genres.includes(g)));
+    if (inGenre.length) cands = inGenre;
+  }
+  if (!cands.length) return null;
+  const scored = cands.map(s => ({ s, score: searchScore(s, crit, w) }));
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 6);
+  const min = Math.min(...top.map(t => t.score));
+  const weights = top.map(t => t.score - min + 0.1);
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < top.length; i++) { r -= weights[i]; if (r <= 0) return top[i].s; }
+  return top[top.length - 1].s;
+}
+
+let exploreExclude = [];   // 「別の候補」で除外していくID
+let exploreCandidate = null;
+
+function readExploreCriteria() {
+  const genres = [...$("explore-genres").querySelectorAll(".toggle-pill.on")].map(b => b.dataset.key);
+  const durBtn = $("explore-dur").querySelector(".toggle-pill.on");
+  return {
+    genres,
+    duration: durBtn ? durBtn.dataset.key : "any",
+    mood1: Number($("mood1").value) / 100,
+    mood2: Number($("mood2").value) / 100,
+  };
+}
+
+function renderExplore() {
+  // ジャンルチップ(複数選択・任意)
+  const gs = $("explore-genres");
+  if (!gs.children.length) {
+    for (const [key, label] of Object.entries(GENRE_LABELS)) {
+      const b = document.createElement("button");
+      b.className = "toggle-pill";
+      b.textContent = label;
+      b.dataset.key = key;
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        b.classList.toggle("on");
+        b.setAttribute("aria-pressed", b.classList.contains("on"));
+      });
+      gs.appendChild(b);
+    }
+  }
+  // 長さ(単一選択・既定は不問)
+  const ds = $("explore-dur");
+  if (!ds.children.length) {
+    for (const [key, label] of Object.entries(DURATION_LABELS)) {
+      const b = document.createElement("button");
+      b.className = "toggle-pill" + (key === "any" ? " on" : "");
+      b.textContent = label;
+      b.dataset.key = key;
+      b.setAttribute("aria-pressed", key === "any");
+      b.addEventListener("click", () => {
+        ds.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("on");
+        b.setAttribute("aria-pressed", "true");
+      });
+      ds.appendChild(b);
+    }
+  }
+}
+
+function runExplore() {
+  exploreExclude = [];
+  const crit = readExploreCriteria();
+  const song = pickSearchSong(crit, exploreExclude);
+  showExploreCandidate(song);
+}
+
+function exploreAgain() {
+  if (exploreCandidate) exploreExclude.push(exploreCandidate.id);
+  const song = pickSearchSong(readExploreCriteria(), exploreExclude);
+  // 候補が尽きたら除外をリセットして選び直す(同じ条件で無限に楽しめるように)
+  showExploreCandidate(song || pickSearchSong(readExploreCriteria(), (exploreExclude = [])));
+}
+
+function showExploreCandidate(song) {
+  exploreCandidate = song;
+  const box = $("explore-result");
+  const empty = $("explore-empty");
+  if (!song) { box.style.display = "none"; empty.style.display = ""; return; }
+  empty.style.display = "none";
+  box.style.display = "";
+  $("ex-thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
+  $("ex-title").textContent = song.title;
+  const tags = $("ex-tags");
+  tags.innerHTML = "";
+  for (const g of song.genres) {
+    const el = document.createElement("span");
+    el.className = "pill inset genre";
+    el.textContent = "# " + GENRE_LABELS[g];
+    tags.appendChild(el);
+  }
+  const dur = document.createElement("span");
+  dur.className = "pill inset";
+  dur.textContent = durationText(song);
+  tags.appendChild(dur);
+  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
 function resetAll() {
   if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
   [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE].forEach(k => localStorage.removeItem(k));
@@ -1138,6 +1483,7 @@ function showView(name) {
   if (name === "settings") renderSettings();
   if (name === "history") renderHistory();
   if (name === "taste") renderTaste();
+  if (name === "explore") renderExplore();
 }
 
 /* ---- 初期化 ---- */
@@ -1170,6 +1516,12 @@ document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("c
 }));
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
+$("btn-explore").addEventListener("click", runExplore);
+$("ex-again").addEventListener("click", exploreAgain);
+$("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
+// 端末の向きが変わったら全画面状態を同期(再生中×横向き→全画面、縦→解除)
+window.matchMedia("(orientation: landscape)").addEventListener("change", syncFullscreenToOrientation);
+window.addEventListener("orientationchange", () => setTimeout(syncFullscreenToOrientation, 120));
 // YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
 $("btn-yt").addEventListener("click", () => {
   playerStarted = true;

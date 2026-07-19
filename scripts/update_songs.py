@@ -54,6 +54,7 @@ MOOD_RULES = [
     (re.compile(r"study|work|focus|concentrat|勉強|作業|集中", re.I), "focus"),
     (re.compile(r"sleep|relax|calm|peaceful|chill|healing|癒し|リラックス", re.I), "calm"),
     (re.compile(r"epic|orchestra|symphony", re.I), "epic"),
+    (re.compile(r"fantasy|ethereal|enchant|magical|dreamy|mystic|幻想", re.I), "fantasy"),
 ]
 
 
