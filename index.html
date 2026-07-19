@@ -1129,6 +1129,11 @@ function exitFs() {
 function isLandscape() {
   return window.matchMedia("(orientation: landscape)").matches;
 }
+// タッチ主体の端末(スマホ/タブレット)のみ対象。PC(マウス=pointer:fine、常に横長)では
+// 横向き全画面を発動させない。
+function isMobileLike() {
+  return window.matchMedia("(pointer: coarse)").matches;
+}
 function setPseudoFullscreen(on) {
   const wrap = $("thumb-wrap");
   wrap.classList.toggle("fs-active", on);
@@ -1136,7 +1141,7 @@ function setPseudoFullscreen(on) {
   document.body.style.overflow = on ? "hidden" : "";
 }
 function syncFullscreenToOrientation() {
-  const wantFs = isLandscape() && isPlayingNow();
+  const wantFs = isMobileLike() && isLandscape() && isPlayingNow();
   setPseudoFullscreen(wantFs);          // iOS/Android共通の主機構
   if (wantFs) {
     // Android等ではネイティブ全画面も試す(ユーザー操作起点なら成功、回転起点なら握り潰し)
