@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日の作業テーマ曲</title>
+<meta name="description" content="アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。">
+<style>
+  :root {
+    --bg: #12141a;
+    --bg-card: #1c1f28;
+    --bg-elev: #262a36;
+    --text: #e8eaf0;
+    --text-dim: #9aa0b0;
+    --accent: #7aa2f7;
+    --accent-strong: #5d87e8;
+    --star: #f7c948;
+    --danger: #e06c75;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Segoe UI", Meiryo, sans-serif;
+    line-height: 1.6;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 20px 16px 12px;
+    text-align: center;
+  }
+  header h1 { font-size: 1.3rem; letter-spacing: .04em; }
+  header p { font-size: .8rem; color: var(--text-dim); margin-top: 2px; }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 8px 16px 88px;
+  }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---- 今日のテーマ曲カード ---- */
+  .song-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.35);
+  }
+  .thumb-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .thumb-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb-wrap iframe, .thumb-wrap #player {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .live-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(224,50,50,.9);
+    color: #fff; font-size: .7rem; font-weight: bold;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .song-body { padding: 16px; }
+  .song-title { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag {
+    font-size: .72rem;
+    background: var(--bg-elev);
+    color: var(--text-dim);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .tag.genre { color: var(--accent); }
+  .btn-row { display: flex; gap: 10px; }
+  button {
+    font-family: inherit;
+    font-size: .95rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-play {
+    flex: 1.6;
+    background: var(--accent-strong);
+    color: #fff;
+    padding: 13px 8px;
+    font-weight: bold;
+  }
+  .btn-play:active { transform: scale(.98); }
+  .btn-reroll {
+    flex: 1;
+    background: var(--bg-elev);
+    color: var(--text);
+    padding: 13px 8px;
+  }
+  .btn-reroll:active { transform: scale(.98); }
+
+  /* ---- 評価UI ---- */
+  .rating-box {
+    display: none;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    margin-top: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+  .rating-box.visible { display: block; }
+  .rating-box p { font-size: .85rem; color: var(--text-dim); margin-bottom: 6px; }
+  .stars { display: inline-flex; gap: 8px; }
+  .stars button {
+    background: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: #4a4f5e;
+    padding: 4px;
+  }
+  .stars button.on { color: var(--star); }
+  .rated-msg { font-size: .8rem; color: var(--accent); margin-top: 6px; min-height: 1.2em; }
+
+  .notice {
+    background: var(--bg-card);
+    border: 1px solid var(--bg-elev);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: .82rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .notice a { color: var(--accent); cursor: pointer; text-decoration: underline; }
+
+  /* ---- 設定 ---- */
+  h2 { font-size: 1.05rem; margin: 10px 0 12px; }
+  fieldset {
+    border: none;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  legend {
+    font-size: .85rem;
+    color: var(--text-dim);
+    padding: 0;
+    margin-bottom: 4px;
+    float: left; /* legendをカード内に収める */
+    width: 100%;
+  }
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 2px;
+    font-size: .95rem;
+    cursor: pointer;
+  }
+  .choice input { width: 19px; height: 19px; accent-color: var(--accent); flex-shrink: 0; }
+  .btn-save {
+    width: 100%;
+    background: var(--accent-strong);
+    color: #fff;
+    padding: 14px;
+    font-weight: bold;
+  }
+  .save-msg { text-align: center; font-size: .82rem; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
+
+  /* ---- 履歴 ---- */
+  .history-list { list-style: none; }
+  .history-list li {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .history-list .h-title { font-size: .88rem; margin-bottom: 2px; }
+  .history-list .h-meta { font-size: .78rem; color: var(--text-dim); display: flex; justify-content: space-between; }
+  .history-list .h-stars { color: var(--star); letter-spacing: 2px; }
+  .empty { color: var(--text-dim); font-size: .88rem; text-align: center; padding: 30px 0; }
+  .btn-reset {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 12px;
+    margin-top: 18px;
+    border-radius: 10px;
+  }
+
+  /* ---- フッターナビ ---- */
+  nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(18,20,26,.92);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--bg-elev);
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  nav button {
+    flex: 1;
+    background: none;
+    color: var(--text-dim);
+    font-size: .78rem;
+    padding: 10px 0 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  nav button .ico { font-size: 1.25rem; }
+  nav button.active { color: var(--accent); }
+  footer.credit {
+    text-align: center;
+    font-size: .7rem;
+    color: var(--text-dim);
+    padding: 10px 0 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎵 今日の作業テーマ曲</h1>
+  <p>開いた瞬間、今日のBGMが決まっている。</p>
+</header>
+
+<main>
+  <!-- ===== メイン画面 ===== -->
+  <section id="view-main" class="view active">
+    <div id="setup-notice" class="notice" style="display:none">
+      まだ好みが設定されていません。<a id="goto-settings">設定</a>でジャンルと時間を選ぶと、おすすめが自分好みになります。
+    </div>
+    <div class="song-card">
+      <div class="thumb-wrap" id="thumb-wrap">
+        <img id="thumb" src="" alt="サムネイル">
+        <span id="live-badge" class="live-badge" style="display:none">LIVE</span>
+      </div>
+      <div class="song-body">
+        <div class="song-title" id="song-title"></div>
+        <div class="tags" id="song-tags"></div>
+        <div class="btn-row">
+          <button class="btn-play" id="btn-play">▶ 再生する</button>
+          <button class="btn-reroll" id="btn-reroll">🔄 別の曲にする</button>
+        </div>
+      </div>
+    </div>
+    <div class="rating-box" id="rating-box">
+      <p>この曲はどうでしたか?</p>
+      <div class="stars" id="stars">
+        <button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+      </div>
+      <div class="rated-msg" id="rated-msg"></div>
+    </div>
+  </section>
+
+  <!-- ===== 設定画面 ===== -->
+  <section id="view-settings" class="view">
+    <h2>⚙️ 事前設定</h2>
+    <fieldset id="genre-set">
+      <legend>好みのジャンル(複数選択可)</legend>
+    </fieldset>
+    <fieldset id="duration-set">
+      <legend>動画時間の希望</legend>
+    </fieldset>
+    <button class="btn-save" id="btn-save">保存する</button>
+    <div class="save-msg" id="save-msg"></div>
+  </section>
+
+  <!-- ===== 履歴画面 ===== -->
+  <section id="view-history" class="view">
+    <h2>📖 評価履歴</h2>
+    <ul class="history-list" id="history-list"></ul>
+    <div class="empty" id="history-empty" style="display:none">まだ評価した曲がありません。</div>
+    <button class="btn-reset" id="btn-reset">データをすべてリセット</button>
+  </section>
+
+  <footer class="credit">全データは端末内(localStorage)にのみ保存されます</footer>
+</main>
+
+<nav>
+  <button data-view="main" class="active"><span class="ico">🎵</span>今日の曲</button>
+  <button data-view="settings"><span class="ico">⚙️</span>設定</button>
+  <button data-view="history"><span class="ico">📖</span>履歴</button>
+</nav>
+
+<script>
+"use strict";
+
+/* =========================================================
+ * 曲マスタデータ
+ * 収録条件: 埋め込み許可を確認済みの動画のみ (2026-07-19 検証)
+ * durationMin: null はライブ配信(24/7)
+ * ========================================================= */
+const SONGS = [
+  // --- Lo-fi ---
+  { id: "jfKfPfyJRdk", title: "lofi hip hop radio 📚 beats to relax/study to", genres: ["lofi"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "calm"] },
+  { id: "lTRiuFIWV54", title: "1 A.M Study Session 📚 [lofi hip hop]", genres: ["lofi"], durationMin: 61, durationClass: "long", mood: ["night", "calm"] },
+  { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾", genres: ["lofi", "jazz"], durationMin: null, durationClass: "long", live: true, mood: ["focus"] },
+  { id: "n61ULEU7CO0", title: "Best of lofi hip hop 2021 ✨", genres: ["lofi"], durationMin: 371, durationClass: "long", mood: ["focus"] },
+  { id: "1fueZCTYkpA", title: "Morning Coffee ☕️ [lofi hip hop]", genres: ["lofi"], durationMin: 64, durationClass: "long", mood: ["morning", "calm"] },
+  // --- ジャズ ---
+  { id: "Dx5qFachd3A", title: "Relaxing Jazz Piano Radio - Slow Jazz for Work & Study", genres: ["jazz", "piano"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "calm"] },
+  { id: "DSGyEsJ17cI", title: "Rainy Jazz: Relaxing Jazz & Bossa Nova Radio", genres: ["jazz"], durationMin: null, durationClass: "long", live: true, mood: ["rain", "calm"] },
+  { id: "fEvM-OUbaKs", title: "Coffee Jazz Music - Chill Out Lounge Radio(作業用カフェBGM)", genres: ["jazz"], durationMin: null, durationClass: "long", live: true, mood: ["focus"] },
+  { id: "6uddGul0oAc", title: "TOKYO Cafe: Relaxing Jazz Piano - Night Coffee Shop", genres: ["jazz", "piano"], durationMin: null, durationClass: "long", live: true, mood: ["night", "calm"] },
+  { id: "NJuSStkIZBg", title: "Rainy Jazz Cafe - Slow Jazz in Coffee Shop Ambience", genres: ["jazz"], durationMin: 214, durationClass: "long", mood: ["rain", "calm"] },
+  { id: "HMnrl0tmd3k", title: "Godot - The Fragrance of Dark Coffee(逆転裁判ジャズ)", genres: ["jazz", "game"], durationMin: 6, durationClass: "short", mood: ["night", "calm"] },
+  // --- ピアノ ---
+  { id: "77ZozI0rw7w", title: "Relaxing Piano Music & Water Sounds - Soothing Relaxation", genres: ["piano", "nature"], durationMin: 182, durationClass: "long", mood: ["calm"] },
+  { id: "lFcSrYw-ARY", title: "Beautiful Relaxing Music for Stress Relief(ピアノ)", genres: ["piano"], durationMin: 181, durationClass: "long", mood: ["calm"] },
+  { id: "hlWiI4xVXKY", title: "Sunny Mornings: Piano, Guitar & Bird Sounds - Peder B. Helland", genres: ["piano", "nature"], durationMin: 184, durationClass: "long", mood: ["morning", "calm"] },
+  { id: "9Q634rbsypE", title: "Always: Soft & Relaxing Piano - Peder B. Helland", genres: ["piano"], durationMin: 186, durationClass: "long", mood: ["calm"] },
+  // --- 環境音・自然音 ---
+  { id: "eKFTSSKCzWA", title: "森の滝の自然音 - Natural Calm Forest Waterfall", genres: ["nature"], durationMin: 500, durationClass: "long", mood: ["calm", "focus"] },
+  { id: "mPZkdNFkNps", title: "窓を打つ雨と雷の音 - Rain Sound On Window", genres: ["nature"], durationMin: 480, durationClass: "long", mood: ["rain", "calm"] },
+  { id: "xNN7iTA57jM", title: "Forest Sounds | 森と鳥のさえずり", genres: ["nature"], durationMin: 180, durationClass: "long", mood: ["calm"] },
+  { id: "q76bMs-NwRk", title: "3 Hours of Gentle Night Rain(静かな夜の雨・暗い画面)", genres: ["nature"], durationMin: 182, durationClass: "long", mood: ["rain", "night"] },
+  { id: "nDq6TstdEi8", title: "EPIC THUNDER & RAIN | 雷雨のホワイトノイズ 10時間", genres: ["nature"], durationMin: 600, durationClass: "long", mood: ["rain", "focus"] },
+  { id: "WHPEKLQID4U", title: "Ocean Waves Relaxation | 波の音 10時間", genres: ["nature"], durationMin: 600, durationClass: "long", mood: ["calm"] },
+  // --- ゲームBGM ---
+  { id: "GdzrrWA8e7A", title: "Zelda & Chill(ゼルダ lofiアレンジ)", genres: ["game", "lofi"], durationMin: 41, durationClass: "medium", mood: ["calm", "focus"] },
+  { id: "knoUHYLoE3c", title: "Relaxing Video Game Music 8hr mix(FF・ゼルダ・Skyrim他)", genres: ["game"], durationMin: 492, durationClass: "long", mood: ["calm"] },
+  { id: "55DE_ePBUAU", title: "Video Game Music for Studying 1", genres: ["game"], durationMin: 85, durationClass: "long", mood: ["focus"] },
+  { id: "ZLAFOPBFlHM", title: "Video Game Music for Studying 3", genres: ["game"], durationMin: 79, durationClass: "long", mood: ["focus"] },
+  { id: "8kBlKM71pjc", title: "cozy animal crossing music(あつ森BGM)", genres: ["game"], durationMin: 71, durationClass: "long", mood: ["calm"] },
+  { id: "1wOAhRAqb40", title: "Relaxing Animal Crossing music + rain sounds ♡", genres: ["game", "nature"], durationMin: 60, durationClass: "medium", mood: ["rain", "calm"] },
+  // --- シンセウェーブ ---
+  { id: "4xDzrJKXOOY", title: "synthwave radio 🌌 beats to chill/game to", genres: ["synthwave"], durationMin: null, durationClass: "long", live: true, mood: ["focus", "night"] },
+  { id: "wOMwO5T3yT4", title: "SPACE TRIP [Chillwave - Synthwave - Retrowave Mix]", genres: ["synthwave"], durationMin: 37, durationClass: "medium", mood: ["focus", "night"] },
+  { id: "MV_3Dpw-BRY", title: "Kavinsky - Nightcall(Drive OST)", genres: ["synthwave"], durationMin: 4, durationClass: "short", mood: ["night"] },
+  { id: "rDBbaGCCIhk", title: "Miami Nights 1984 - Accelerated", genres: ["synthwave"], durationMin: 4, durationClass: "short", mood: ["night"] },
+  // --- クラシック ---
+  { id: "jgpJVI3tDbY", title: "The Best of Classical Music(モーツァルト・ベートーヴェン他)", genres: ["classical"], durationMin: 208, durationClass: "long", mood: ["focus"] },
+  { id: "mIYzp5rcTvU", title: "Classical Music for Reading(モーツァルト・ショパン他)", genres: ["classical"], durationMin: 148, durationClass: "long", mood: ["focus", "calm"] },
+  { id: "rOjHhS5MtvA", title: "Muti Conducts Beethoven 9(ベートーヴェン交響曲第9番)", genres: ["classical"], durationMin: 81, durationClass: "long", mood: ["epic"] },
+  { id: "g4N-X2YtNW4", title: "Chopin: Complete Nocturnes(ノクターン全集)", genres: ["classical", "piano"], durationMin: 119, durationClass: "long", mood: ["calm", "night"] },
+  { id: "Nu48Z45ibxQ", title: "ショパン ノクターン Op.9-2(ルービンシュタイン)", genres: ["classical", "piano"], durationMin: 4, durationClass: "short", mood: ["calm"] },
+];
+
+const GENRE_LABELS = {
+  lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", nature: "環境音・自然音",
+  game: "ゲームBGM", synthwave: "シンセウェーブ", classical: "クラシック",
+};
+const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
+const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
+
+/* ============ localStorage ============ */
+const LS = {
+  SETTINGS: "bgm_settings",
+  RATINGS: "bgm_ratings",
+  DAILY: "bgm_daily",
+  RECENT: "bgm_recent", // 直近提示履歴 {date: [ids]} — 3日減衰用(仕様5.3)
+};
+function load(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : fallback;
+  } catch (e) { return fallback; }
+}
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/* =========================================================
+ * レコメンドアルゴリズム(仕様5章)
+ * score = 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity + ε
+ * ========================================================= */
+const W = { genre: 3.0, duration: 1.5, rating: 2.5, eps: 1.0 };
+
+function genreMatch(song, selected) {
+  if (!selected || selected.length === 0) return 0;
+  const hit = song.genres.filter(g => selected.includes(g)).length;
+  return hit / song.genres.length; // 全タグ一致で1.0
+}
+
+function durationMatch(song, pref) {
+  if (!pref || pref === "any") return 1;
+  const a = DURATION_ORDER[song.durationClass];
+  const b = DURATION_ORDER[pref];
+  const diff = Math.abs(a - b);
+  return diff === 0 ? 1 : diff === 1 ? 0.5 : 0;
+}
+
+// 評価履歴 → タグ親和度テーブル(-1〜+1)
+function buildAffinityTable(ratings) {
+  const votes = {};
+  for (const [id, r] of Object.entries(ratings)) {
+    const song = SONGS.find(s => s.id === id);
+    if (!song) continue;
+    let delta = 0;
+    if (r.rating >= 4) delta = r.rating - 3;       // +1, +2
+    else if (r.rating <= 2) delta = -(3 - r.rating); // -1, -2
+    if (delta === 0) continue;
+    for (const tag of [...song.genres, ...song.mood]) {
+      votes[tag] = (votes[tag] || 0) + delta;
+    }
+  }
+  const maxAbs = Math.max(1, ...Object.values(votes).map(Math.abs));
+  const table = {};
+  for (const [tag, v] of Object.entries(votes)) table[tag] = v / maxAbs;
+  return table;
+}
+
+function ratingAffinity(song, table) {
+  const tags = [...song.genres, ...song.mood];
+  if (tags.length === 0) return 0;
+  const sum = tags.reduce((acc, t) => acc + (table[t] || 0), 0);
+  return sum / tags.length;
+}
+
+// 直近3日間に提示された動画IDの集合
+function recentIds() {
+  const recent = load(LS.RECENT, {});
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 3);
+  const ids = new Set();
+  for (const [date, arr] of Object.entries(recent)) {
+    if (new Date(date + "T00:00:00") >= cutoff) arr.forEach(id => ids.add(id));
+  }
+  return ids;
+}
+
+function pruneRecent() {
+  const recent = load(LS.RECENT, {});
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 3);
+  for (const date of Object.keys(recent)) {
+    if (new Date(date + "T00:00:00") < cutoff) delete recent[date];
+  }
+  save(LS.RECENT, recent);
+}
+
+function pickSong(excludeIds) {
+  const settings = load(LS.SETTINGS, null);
+  const ratings = load(LS.RATINGS, {});
+  const table = buildAffinityTable(ratings);
+  const recent = recentIds();
+
+  // ★1〜2は原則除外(仕様5.3)
+  let candidates = SONGS.filter(s => {
+    if (excludeIds.includes(s.id)) return false;
+    const r = ratings[s.id];
+    return !(r && r.rating <= 2);
+  });
+  // 全滅時は低評価除外だけ緩和して再抽選できるようにする
+  if (candidates.length === 0) {
+    candidates = SONGS.filter(s => !excludeIds.includes(s.id));
+  }
+  // 当日中に全曲提示し尽くした場合は再提示を許可する
+  if (candidates.length === 0) candidates = SONGS.slice();
+
+  const scored = candidates.map(s => {
+    let score =
+      W.genre * genreMatch(s, settings ? settings.genres : null) +
+      W.duration * durationMatch(s, settings ? settings.duration : null) +
+      W.rating * ratingAffinity(s, table) +
+      W.eps * Math.random();
+    if (recent.has(s.id)) score *= 0.5; // 直近3日提示分は50%減衰
+    return { s, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 5);
+
+  // 上位5件から重み付きランダム抽選
+  const min = Math.min(...top.map(t => t.score));
+  const weights = top.map(t => t.score - min + 0.1);
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < top.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return top[i].s;
+  }
+  return top[top.length - 1].s;
+}
+
+/* ============ 今日の1曲の管理 ============ */
+function getDaily() {
+  const d = load(LS.DAILY, null);
+  if (d && d.date === todayStr()) return d;
+  return { date: todayStr(), shownIds: [], currentId: null };
+}
+
+function decideToday(forceRepick) {
+  let daily = getDaily();
+  if (daily.currentId && !forceRepick) return SONGS.find(s => s.id === daily.currentId) || repick(daily);
+  return repick(daily);
+}
+
+function repick(daily) {
+  const song = pickSong(daily.shownIds);
+  if (!song) return null;
+  daily.currentId = song.id;
+  if (!daily.shownIds.includes(song.id)) daily.shownIds.push(song.id);
+  save(LS.DAILY, daily);
+  // 3日減衰用の提示履歴にも記録
+  const recent = load(LS.RECENT, {});
+  const t = todayStr();
+  recent[t] = recent[t] || [];
+  if (!recent[t].includes(song.id)) recent[t].push(song.id);
+  save(LS.RECENT, recent);
+  return song;
+}
+
+/* ============ 画面描画 ============ */
+let currentSong = null;
+let player = null;
+let playerReady = false;
+
+const $ = id => document.getElementById(id);
+
+function durationText(song) {
+  if (song.live) return "ライブ配信(エンドレス)";
+  const h = Math.floor(song.durationMin / 60), m = song.durationMin % 60;
+  const t = h > 0 ? `${h}時間${m > 0 ? m + "分" : ""}` : `${m}分`;
+  return `${t}(${DURATION_LABELS[song.durationClass].split("(")[0]})`;
+}
+
+function renderSong(song) {
+  currentSong = song;
+  destroyPlayer();
+  $("thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
+  $("thumb").style.display = "";
+  $("live-badge").style.display = song.live ? "" : "none";
+  $("song-title").textContent = song.title;
+  const tags = $("song-tags");
+  tags.innerHTML = "";
+  for (const g of song.genres) {
+    const el = document.createElement("span");
+    el.className = "tag genre";
+    el.textContent = "# " + GENRE_LABELS[g];
+    tags.appendChild(el);
+  }
+  const dur = document.createElement("span");
+  dur.className = "tag";
+  dur.textContent = "⏱ " + durationText(song);
+  tags.appendChild(dur);
+  $("btn-play").style.display = "";
+  renderRating();
+}
+
+function renderRating() {
+  const box = $("rating-box");
+  const ratings = load(LS.RATINGS, {});
+  const r = currentSong ? ratings[currentSong.id] : null;
+  // 再生開始後、または評価済みなら表示(仕様3.1)
+  box.classList.toggle("visible", playerStarted || !!r);
+  const val = r ? r.rating : 0;
+  document.querySelectorAll("#stars button").forEach(b => {
+    b.classList.toggle("on", Number(b.dataset.v) <= val);
+  });
+  $("rated-msg").textContent = r ? `★${r.rating} で評価済み(タップで変更できます)` : "";
+}
+
+let playerStarted = false;
+
+/* ---- YouTube IFrame Player API ---- */
+let ytApiLoaded = false;
+function loadYtApi() {
+  return new Promise(resolve => {
+    if (window.YT && window.YT.Player) { resolve(); return; }
+    window.onYouTubeIframeAPIReady = () => resolve();
+    if (!ytApiLoaded) {
+      ytApiLoaded = true;
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    }
+  });
+}
+
+async function playCurrent() {
+  if (!currentSong) return;
+  $("btn-play").style.display = "none";
+  const wrap = $("thumb-wrap");
+  const div = document.createElement("div");
+  div.id = "player";
+  wrap.appendChild(div);
+  $("live-badge").style.display = "none";
+  await loadYtApi();
+  player = new YT.Player("player", {
+    videoId: currentSong.id,
+    playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
+    events: {
+      onReady: e => { e.target.playVideo(); },
+      onStateChange: e => {
+        if (e.data === YT.PlayerState.PLAYING && !playerStarted) {
+          playerStarted = true;
+          renderRating();
+        }
+      },
+    },
+  });
+  $("thumb").style.display = "none";
+  // 自動再生がブロックされる環境でも評価UIは出す(ユーザー操作起点のため)
+  setTimeout(() => { if (!playerStarted) { playerStarted = true; renderRating(); } }, 4000);
+}
+
+function destroyPlayer() {
+  playerStarted = false;
+  if (player && player.destroy) { try { player.destroy(); } catch (e) {} }
+  player = null;
+  const p = $("player");
+  if (p) p.remove();
+}
+
+/* ---- 設定画面 ---- */
+function renderSettings() {
+  const settings = load(LS.SETTINGS, { genres: [], duration: "any" });
+  const gs = $("genre-set");
+  gs.querySelectorAll(".choice").forEach(e => e.remove());
+  for (const [key, label] of Object.entries(GENRE_LABELS)) {
+    const lab = document.createElement("label");
+    lab.className = "choice";
+    lab.innerHTML = `<input type="checkbox" name="genre" value="${key}"> ${label}`;
+    lab.querySelector("input").checked = settings.genres.includes(key);
+    gs.appendChild(lab);
+  }
+  const ds = $("duration-set");
+  ds.querySelectorAll(".choice").forEach(e => e.remove());
+  for (const [key, label] of Object.entries(DURATION_LABELS)) {
+    const lab = document.createElement("label");
+    lab.className = "choice";
+    lab.innerHTML = `<input type="radio" name="duration" value="${key}"> ${label}`;
+    lab.querySelector("input").checked = settings.duration === key;
+    ds.appendChild(lab);
+  }
+}
+
+function saveSettings() {
+  const genres = [...document.querySelectorAll('input[name="genre"]:checked')].map(i => i.value);
+  const durEl = document.querySelector('input[name="duration"]:checked');
+  const settings = { genres, duration: durEl ? durEl.value : "any" };
+  save(LS.SETTINGS, settings);
+  // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
+  const daily = getDaily();
+  daily.currentId = null;
+  save(LS.DAILY, daily);
+  $("save-msg").textContent = "保存しました。今日の1曲を選び直します…";
+  setTimeout(() => {
+    $("save-msg").textContent = "";
+    showView("main");
+    init(true);
+  }, 700);
+}
+
+/* ---- 履歴画面 ---- */
+function renderHistory() {
+  const ratings = load(LS.RATINGS, {});
+  const list = $("history-list");
+  list.innerHTML = "";
+  const entries = Object.entries(ratings)
+    .map(([id, r]) => ({ id, ...r, song: SONGS.find(s => s.id === id) }))
+    .filter(e => e.song)
+    .sort((a, b) => new Date(b.ratedAt) - new Date(a.ratedAt));
+  $("history-empty").style.display = entries.length ? "none" : "";
+  for (const e of entries) {
+    const li = document.createElement("li");
+    const stars = "★".repeat(e.rating) + "☆".repeat(5 - e.rating);
+    const date = new Date(e.ratedAt).toLocaleDateString("ja-JP");
+    li.innerHTML = `<div class="h-title"></div><div class="h-meta"><span class="h-stars">${stars}</span><span>${date}</span></div>`;
+    li.querySelector(".h-title").textContent = e.song.title;
+    list.appendChild(li);
+  }
+}
+
+function resetAll() {
+  if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT].forEach(k => localStorage.removeItem(k));
+  renderHistory();
+  showView("main");
+  init(true);
+}
+
+/* ---- ビュー切替 ---- */
+function showView(name) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  $("view-" + name).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
+  if (name === "settings") renderSettings();
+  if (name === "history") renderHistory();
+}
+
+/* ---- 初期化 ---- */
+function init(forceRepick) {
+  pruneRecent();
+  const settings = load(LS.SETTINGS, null);
+  $("setup-notice").style.display = settings && settings.genres.length ? "none" : "";
+  const song = decideToday(!!forceRepick);
+  if (song) renderSong(song);
+}
+
+/* ---- イベント ---- */
+document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
+$("goto-settings").addEventListener("click", () => showView("settings"));
+$("btn-play").addEventListener("click", playCurrent);
+$("btn-reroll").addEventListener("click", () => {
+  const daily = getDaily();
+  daily.currentId = null; // 提示済みIDは残す=同日中の再提示を防ぐ(仕様5.3)
+  save(LS.DAILY, daily);
+  init(true);
+});
+document.querySelectorAll("#stars button").forEach(b => b.addEventListener("click", () => {
+  if (!currentSong) return;
+  const ratings = load(LS.RATINGS, {});
+  ratings[currentSong.id] = { rating: Number(b.dataset.v), ratedAt: new Date().toISOString() };
+  save(LS.RATINGS, ratings);
+  renderRating();
+}));
+$("btn-save").addEventListener("click", saveSettings);
+$("btn-reset").addEventListener("click", resetAll);
+
+init(false);
+</script>
+</body>
+</html>
