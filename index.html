@@ -122,13 +122,14 @@ button:focus-visible, a:focus-visible {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
   transform: scale(1.37); /* hqdefault(4:3)の上下黒帯を切り落とすズームクロップ */
+  position: relative; z-index: 1; /* 裏で先読みしたプレイヤーより手前に置く */
 }
 .thumb-wrap iframe, .thumb-wrap #player {
   position: absolute; inset: 0;
   width: 100%; height: 100%; border: 0;
 }
 .live-badge {
-  position: absolute; top: 12px; left: 12px;
+  position: absolute; top: 12px; left: 12px; z-index: 2;
   background: rgba(61, 74, 99, 0.72);
   color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
   padding: 4px 12px; border-radius: var(--r-full);
@@ -771,6 +772,7 @@ function renderSong(song) {
   setPlayButton("idle");
   updateNavButtons();
   renderRating();
+  preparePlayer(song); // 裏でプレイヤーを先読み生成(1回押しで再生できるように)
 }
 
 /* ---- 前の曲/次の曲ナビゲーション(当日の提示履歴を辿る) ---- */
@@ -836,49 +838,73 @@ function renderRating() {
 let playerStarted = false;
 
 /* ---- YouTube IFrame Player API ---- */
-let ytApiLoaded = false;
+let ytApiPromise = null; // 同時に複数箇所からawaitされてもコールバックを共有する
 function loadYtApi() {
-  return new Promise(resolve => {
-    if (window.YT && window.YT.Player) { resolve(); return; }
-    window.onYouTubeIframeAPIReady = () => resolve();
-    if (!ytApiLoaded) {
-      ytApiLoaded = true;
+  if (window.YT && window.YT.Player) return Promise.resolve();
+  if (!ytApiPromise) {
+    ytApiPromise = new Promise(resolve => {
+      window.onYouTubeIframeAPIReady = () => resolve();
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
-    }
-  });
+    });
+  }
+  return ytApiPromise;
 }
 
 let ratingFallbackTimer = null;
-let loadedSong = null; // プレイヤーに現在ロードされている曲(loadVideoByIdで差し替わる)
+let loadedSong = null;    // プレイヤーに現在ロードされている曲(loadVideoByIdで差し替わる)
+let playerReady = false;  // onReady済みか
+let playWhenReady = false; // onReady前に再生ボタンが押された場合の予約
 
-async function playCurrent() {
-  if (!currentSong) return;
-  loadedSong = currentSong;
-  setPlayButton("playing");
+// 曲の表示時に裏でプレイヤーを生成しておく(サムネの下に隠す)。
+// 再生ボタンはクリックと同期で playVideo() を呼ぶだけになり、1回で再生が始まる
+function createPlayerFor(song) {
   const wrap = $("thumb-wrap");
-  wrap.classList.add("playing");
   const div = document.createElement("div");
   div.id = "player";
   wrap.appendChild(div);
-  $("live-badge").style.display = "none";
-  await loadYtApi();
+  loadedSong = song;
+  playerReady = false;
   player = new YT.Player("player", {
-    videoId: currentSong.id,
-    playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
+    videoId: song.id,
+    playerVars: { playsinline: 1, rel: 0 },
     events: {
-      onReady: e => { e.target.playVideo(); },
+      onReady: e => {
+        playerReady = true;
+        if (playWhenReady) { playWhenReady = false; e.target.playVideo(); }
+      },
       onStateChange: onPlayerStateChange,
       // 再生不能(削除済み・埋め込み不可・配信終了など)は自動で別の曲へ
       onError: () => handlePlaybackError(loadedSong),
     },
   });
+}
+
+async function preparePlayer(song) {
+  await loadYtApi();
+  if (currentSong !== song || player) return; // 曲が替わった/生成済みなら中止
+  createPlayerFor(song);
+}
+
+async function playCurrent() {
+  if (!currentSong) return;
+  const song = currentSong;
+  setPlayButton("playing");
+  $("thumb-wrap").classList.add("playing");
+  $("live-badge").style.display = "none";
   $("thumb").style.display = "none";
   // 自動再生がブロックされる環境でも評価UIは出す(ユーザー操作起点のため)
   ratingFallbackTimer = setTimeout(() => {
     if (!playerStarted) { playerStarted = true; renderRating(); }
   }, 4000);
+  if (player && playerReady) { player.playVideo(); return; } // 通常経路: 同期再生
+  playWhenReady = true; // 準備が済み次第すぐ再生
+  if (!player) {
+    await loadYtApi();
+    if (currentSong !== song) return;
+    if (!player) createPlayerFor(song);
+  }
 }
 
 function onPlayerStateChange(e) {
@@ -896,15 +922,20 @@ function onPlayerStateChange(e) {
   }
 }
 
-// 再生/一時停止トグル。プレイヤー未生成なら新規再生
+// 再生/一時停止トグル。未再生(cued/unstarted/ended)や未準備は playCurrent へ
 function togglePlay() {
-  if (!player || !player.getPlayerState) { playCurrent(); return; }
-  const st = player.getPlayerState();
-  if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) {
-    player.pauseVideo();
-  } else {
-    player.playVideo();
+  if (player && playerReady && player.getPlayerState) {
+    const st = player.getPlayerState();
+    if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) {
+      player.pauseVideo();
+      return;
+    }
+    if (st === YT.PlayerState.PAUSED) {
+      player.playVideo();
+      return;
+    }
   }
+  playCurrent();
 }
 
 /* ---- 連続再生キュー: 曲が終わったら同じプレイヤーで次の曲へ ---- */
@@ -948,6 +979,8 @@ function handlePlaybackError(deadSong) {
 function destroyPlayer() {
   playerStarted = false;
   loadedSong = null;
+  playerReady = false;
+  playWhenReady = false;
   if (ratingFallbackTimer) { clearTimeout(ratingFallbackTimer); ratingFallbackTimer = null; }
   if (player && player.destroy) { try { player.destroy(); } catch (e) {} }
   player = null;
@@ -1154,6 +1187,7 @@ $("btn-yt").addEventListener("click", () => {
     return;
   }
   renderQueueToggle();
+  loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
   init(false);
 })();
 </script>
