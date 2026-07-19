@@ -1,38 +1,3230 @@
 [
-  { "id": "CFGLoQIhmow", "title": "lofi hip hop mix 📚 beats to relax/study to (Part 1)", "genres": ["lofi"], "durationMin": 171, "durationClass": "long", "mood": ["focus", "calm"] },
-  { "id": "lTRiuFIWV54", "title": "1 A.M Study Session 📚 [lofi hip hop]", "genres": ["lofi"], "durationMin": 61, "durationClass": "long", "mood": ["night", "calm"] },
-  { "id": "5yx6BWlEVcY", "title": "Chillhop Radio - jazzy & lofi hip hop beats 🐾", "genres": ["lofi", "jazz"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["focus"] },
-  { "id": "n61ULEU7CO0", "title": "Best of lofi hip hop 2021 ✨", "genres": ["lofi"], "durationMin": 371, "durationClass": "long", "mood": ["focus"] },
-  { "id": "1fueZCTYkpA", "title": "Morning Coffee ☕️ [lofi hip hop]", "genres": ["lofi"], "durationMin": 64, "durationClass": "long", "mood": ["morning", "calm"] },
-  { "id": "Dx5qFachd3A", "title": "Relaxing Jazz Piano Radio - Slow Jazz for Work & Study", "genres": ["jazz", "piano"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["focus", "calm"] },
-  { "id": "DSGyEsJ17cI", "title": "Rainy Jazz: Relaxing Jazz & Bossa Nova Radio", "genres": ["jazz"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["rain", "calm"] },
-  { "id": "fEvM-OUbaKs", "title": "Coffee Jazz Music - Chill Out Lounge Radio(作業用カフェBGM)", "genres": ["jazz"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["focus"] },
-  { "id": "6uddGul0oAc", "title": "TOKYO Cafe: Relaxing Jazz Piano - Night Coffee Shop", "genres": ["jazz", "piano"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["night", "calm"] },
-  { "id": "NJuSStkIZBg", "title": "Rainy Jazz Cafe - Slow Jazz in Coffee Shop Ambience", "genres": ["jazz"], "durationMin": 214, "durationClass": "long", "mood": ["rain", "calm"] },
-  { "id": "HMnrl0tmd3k", "title": "Godot - The Fragrance of Dark Coffee(逆転裁判ジャズ)", "genres": ["jazz", "game"], "durationMin": 6, "durationClass": "short", "mood": ["night", "calm"] },
-  { "id": "77ZozI0rw7w", "title": "Relaxing Piano Music & Water Sounds - Soothing Relaxation", "genres": ["piano", "nature"], "durationMin": 182, "durationClass": "long", "mood": ["calm"] },
-  { "id": "lFcSrYw-ARY", "title": "Beautiful Relaxing Music for Stress Relief(ピアノ)", "genres": ["piano"], "durationMin": 181, "durationClass": "long", "mood": ["calm"] },
-  { "id": "hlWiI4xVXKY", "title": "Sunny Mornings: Piano, Guitar & Bird Sounds - Peder B. Helland", "genres": ["piano", "nature"], "durationMin": 184, "durationClass": "long", "mood": ["morning", "calm"] },
-  { "id": "9Q634rbsypE", "title": "Always: Soft & Relaxing Piano - Peder B. Helland", "genres": ["piano"], "durationMin": 186, "durationClass": "long", "mood": ["calm"] },
-  { "id": "eKFTSSKCzWA", "title": "森の滝の自然音 - Natural Calm Forest Waterfall", "genres": ["nature"], "durationMin": 500, "durationClass": "long", "mood": ["calm", "focus"] },
-  { "id": "mPZkdNFkNps", "title": "窓を打つ雨と雷の音 - Rain Sound On Window", "genres": ["nature"], "durationMin": 480, "durationClass": "long", "mood": ["rain", "calm"] },
-  { "id": "xNN7iTA57jM", "title": "Forest Sounds | 森と鳥のさえずり", "genres": ["nature"], "durationMin": 180, "durationClass": "long", "mood": ["calm"] },
-  { "id": "q76bMs-NwRk", "title": "3 Hours of Gentle Night Rain(静かな夜の雨・暗い画面)", "genres": ["nature"], "durationMin": 182, "durationClass": "long", "mood": ["rain", "night"] },
-  { "id": "nDq6TstdEi8", "title": "EPIC THUNDER & RAIN | 雷雨のホワイトノイズ 10時間", "genres": ["nature"], "durationMin": 600, "durationClass": "long", "mood": ["rain", "focus"] },
-  { "id": "WHPEKLQID4U", "title": "Ocean Waves Relaxation | 波の音 10時間", "genres": ["nature"], "durationMin": 600, "durationClass": "long", "mood": ["calm"] },
-  { "id": "GdzrrWA8e7A", "title": "Zelda & Chill(ゼルダ lofiアレンジ)", "genres": ["game", "lofi"], "durationMin": 41, "durationClass": "medium", "mood": ["calm", "focus"] },
-  { "id": "knoUHYLoE3c", "title": "Relaxing Video Game Music 8hr mix(FF・ゼルダ・Skyrim他)", "genres": ["game"], "durationMin": 492, "durationClass": "long", "mood": ["calm"] },
-  { "id": "55DE_ePBUAU", "title": "Video Game Music for Studying 1", "genres": ["game"], "durationMin": 85, "durationClass": "long", "mood": ["focus"] },
-  { "id": "ZLAFOPBFlHM", "title": "Video Game Music for Studying 3", "genres": ["game"], "durationMin": 79, "durationClass": "long", "mood": ["focus"] },
-  { "id": "8kBlKM71pjc", "title": "cozy animal crossing music(あつ森BGM)", "genres": ["game"], "durationMin": 71, "durationClass": "long", "mood": ["calm"] },
-  { "id": "1wOAhRAqb40", "title": "Relaxing Animal Crossing music + rain sounds ♡", "genres": ["game", "nature"], "durationMin": 60, "durationClass": "medium", "mood": ["rain", "calm"] },
-  { "id": "4xDzrJKXOOY", "title": "synthwave radio 🌌 beats to chill/game to", "genres": ["synthwave"], "durationMin": null, "durationClass": "long", "live": true, "mood": ["focus", "night"] },
-  { "id": "wOMwO5T3yT4", "title": "SPACE TRIP [Chillwave - Synthwave - Retrowave Mix]", "genres": ["synthwave"], "durationMin": 37, "durationClass": "medium", "mood": ["focus", "night"] },
-  { "id": "MV_3Dpw-BRY", "title": "Kavinsky - Nightcall(Drive OST)", "genres": ["synthwave"], "durationMin": 4, "durationClass": "short", "mood": ["night"] },
-  { "id": "rDBbaGCCIhk", "title": "Miami Nights 1984 - Accelerated", "genres": ["synthwave"], "durationMin": 4, "durationClass": "short", "mood": ["night"] },
-  { "id": "jgpJVI3tDbY", "title": "The Best of Classical Music(モーツァルト・ベートーヴェン他)", "genres": ["classical"], "durationMin": 208, "durationClass": "long", "mood": ["focus"] },
-  { "id": "mIYzp5rcTvU", "title": "Classical Music for Reading(モーツァルト・ショパン他)", "genres": ["classical"], "durationMin": 148, "durationClass": "long", "mood": ["focus", "calm"] },
-  { "id": "rOjHhS5MtvA", "title": "Muti Conducts Beethoven 9(ベートーヴェン交響曲第9番)", "genres": ["classical"], "durationMin": 81, "durationClass": "long", "mood": ["epic"] },
-  { "id": "g4N-X2YtNW4", "title": "Chopin: Complete Nocturnes(ノクターン全集)", "genres": ["classical", "piano"], "durationMin": 119, "durationClass": "long", "mood": ["calm", "night"] },
-  { "id": "Nu48Z45ibxQ", "title": "ショパン ノクターン Op.9-2(ルービンシュタイン)", "genres": ["classical", "piano"], "durationMin": 4, "durationClass": "short", "mood": ["calm"] }
+  {
+    "id": "-FlxM_0S2lA",
+    "title": "Best of lofi 2018 🎶 beats to chill/study to",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 114,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "0-AvedkXSVE",
+    "title": "Japanese Lofi Music & Sea Lofi ~ Morning Chillhop Japanese Vibes , Relaxing Lofi",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 82,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "09K79_bD6w0",
+    "title": "The silence of the night makes you stronger.｜Japanese Lo-fi Night 📼 Chill Beats ",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "focus"
+    ]
+  },
+  {
+    "id": "1J4a9cT2lkw",
+    "title": "Upbeat Lofi Mix ⚡️ Beats to Boost Your Energy & Focus",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 268,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "1YmClsk16_U",
+    "title": "Retro Lo-fi Jazzy HipHop ☕️ Coffee and Cozy Autumn Vibes / Study / Work / Focus",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "1fueZCTYkpA",
+    "title": "Morning Coffee ☕️ [lofi hip hop]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 64,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "5yx6BWlEVcY",
+    "title": "Chillhop Radio - jazzy & lofi hip hop beats 🐾",
+    "genres": [
+      "lofi",
+      "jazz"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "8b3fqIBrNW0",
+    "title": "lofi hip hop mix 📚 beats to relax/study to (Part 2)",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 245,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "8iU8LPEa4o0",
+    "title": "Chill Study Beats 4 • jazz & lofi hiphop Mix [2017]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "8ume7VRo2SU",
+    "title": "Sunset Jazz Beats [chill jazzhop and lo-fi hip hop beats]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 70,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "9M4jZuqdw04",
+    "title": "In the Zone 🐾 [lofi focus beats / work mix]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "AMcVJmb5mvk",
+    "title": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 90s Japanese Lofi Hiphop ☕️Nostalgic Chill Vibes",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "BYTxPFj44uo",
+    "title": "Why the rush? - lo-fi beats for work/study / cat jazz",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 211,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "C5bHrit6La4",
+    "title": "lock in and do the work, man :)",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "CBSlu_VMS9U",
+    "title": "jazz lofi mix [3 hours] 🎷 relaxing music to chill/study to",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "CFGLoQIhmow",
+    "title": "lofi hip hop mix 📚 beats to relax/study to (Part 1)",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 171,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "D_uLM5i0Z4c",
+    "title": "Endless Sunday 😌  [Chillhop / instrumental beats]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "EtD7_8kCMHA",
+    "title": "Flow Of Time ☯︎ Japanese LoFi HipHop Mix - Collection 時間の流れ",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 83,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "JCKBaJDRMw4",
+    "title": "chill music for work 💼 lofi beats to stay productive",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "PLLRRXURicM",
+    "title": "Japan Coastal Vibes 🌅 Lofi Mix for Focus and Relaxation",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 145,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "QRFv3HESAtE",
+    "title": "🌱 Chillhop Essentials · Spring 2026 [chill beats / lofi hip hop mix]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "RTXVOczHR_0",
+    "title": "Chillhop Daydream // Coffee & Spliff // Vinyl Selection",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "Rfa3h99J8TM",
+    "title": "Chillhop Yearmix 2019 ☕️ jazz beats & lofi hip hop",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 149,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "ZIWjjE_zjGU",
+    "title": "Swing Beats Jazz Hop  Lo Fi  Chill Mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 52,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "_ITiwPMUzho",
+    "title": "3 AM Coding Session - Lofi Hip Hop Mix [Study & Coding Beats]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 95,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "amfWIRasxtI",
+    "title": "Productivity Boost 📖 Lofi Study Music for Deep Concentration ~ Lofi Study Room [",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "dusfmL_bm1o",
+    "title": "ZETSU ☯︎ Japanese Lofi HipHop Mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 183,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "gwDoRPcPxtc",
+    "title": "Chill Study Beats 2 • Instrumental & Jazz Hip Hop Music [2016]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "h9iEJJOs8nM",
+    "title": "Lo-Fi Jazzy Hip Hop Chill Vibes for Study & Relax MIX / VINYL ONLY / DJ sea / by",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 53,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "i43tkaTXtwI",
+    "title": "Best of lofi hip hop 2022 🎆 - beats to relax/study to",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 191,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "jrTMMG0zJyI",
+    "title": "Samurai ☯ Japanese Lofi HipHop Mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 40,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "kAJ2iTcHwGo",
+    "title": "『世界が意味を失っても音はまだ響くだろうか』｜日本語ラップ/チルラップ/ヒップホップ【邦楽Playlist】",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 59,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "lTRiuFIWV54",
+    "title": "1 A.M Study Session 📚 [lofi hip hop]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "mMw6UFZuL9o",
+    "title": "Shinobi ☯ Japanese Lofi HipHop Mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 42,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "n61ULEU7CO0",
+    "title": "Best of lofi hip hop 2021 ✨",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 371,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "qzyl0f3mRG0",
+    "title": "Jazz Beats [lofi jazz, jazzhop, lo-fi hip hop]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 102,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "rt1mRnRp79A",
+    "title": "coffee & beats 🍵 jazzy japan lofi mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 55,
+    "durationClass": "medium",
+    "mood": [
+      "morning"
+    ]
+  },
+  {
+    "id": "tiyuRJthHwc",
+    "title": "Old Jazz Lo-fi HipHop ☂️ Rainy Chillhop Playlist / Coffee time, Study, Focus, Re",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 176,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "morning"
+    ]
+  },
+  {
+    "id": "zJcakvv31V0",
+    "title": "Lofi hip hop mix - Beats to Relax/Study to [2018]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "1cDrMKQd9Xs",
+    "title": "Smooth Jazz & Soul R&B instrumental –Warm Emotional Melodies for Relaxing & Peac",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 662,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "1ykIPO5g7MM",
+    "title": "【WORK JAZZ】Relaxing Jazz & Bossa Nova Music - Instrumental Cafe Music For Work",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 218,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "2O82Ak4NLSo",
+    "title": "Smooth Jazz & Soul R&B – Warm Melodies for Peaceful & Relaxing Moments",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "4gjHUJt_iWA",
+    "title": "Bossa Nova Jazz - Relaxing Bossa Nova Music & Smooth Coffee Shop Jazz for a Sunn",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "5znVj9VUnGI",
+    "title": "Piano Bar: Smooth Jazz Club at Midnight Buddha Café",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 25,
+    "durationClass": "short",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "6uddGul0oAc",
+    "title": "TOKYO Cafe: Relaxing Jazz Piano - Night Coffee Shop",
+    "genres": [
+      "jazz",
+      "piano"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "6w0im3LHazY",
+    "title": "Lounge Jazz Piano Music - Chill Out Cafe Music For Study, Work - Background Jazz",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 220,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "AvhqzFzSTAo",
+    "title": "(NO ADS) Rainy Jazz Cafe - Slow Jazz Music in Coffee Shop Ambience for Work, Stu",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "morning"
+    ]
+  },
+  {
+    "id": "DDuXSR2Y8Ds",
+    "title": "Chill Rainy Jazz at Night in NYC 🗽 Soft Jazz Piano with Rain Sounds for Peaceful",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "DM-djyegIbI",
+    "title": "Relaxing New York Night Jazz - Soothing Jazz Music for Chill Out & Sleep",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 209,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "DSGyEsJ17cI",
+    "title": "Rainy Jazz: Relaxing Jazz & Bossa Nova Radio",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "Dx5qFachd3A",
+    "title": "Relaxing Jazz Piano Radio - Slow Jazz for Work & Study",
+    "genres": [
+      "jazz",
+      "piano"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "HMnrl0tmd3k",
+    "title": "Godot - The Fragrance of Dark Coffee(逆転裁判ジャズ)",
+    "genres": [
+      "jazz",
+      "game"
+    ],
+    "durationMin": 6,
+    "durationClass": "short",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "I24GTW0O_hc",
+    "title": "Playlistㅣ재즈 UP 능률 UP 🙌ㅣ적당히 신나고 듣기 좋은 경쾌한 카페 음악ㅣ작업할 때, 공부할 때, 집중할 때 ✍ㅣJazz Backgr",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 161,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "IhUuEUj2zWk",
+    "title": "Jazz Piano Bar Music: Restaurant and Club Ambient Music",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 67,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "Lp7MJI01uBk",
+    "title": "Smooth Jazz & Soul R&B instrumental – Warm Sounds for Gentle Relaxing Moments.",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "MYPVQccHhAQ",
+    "title": "4K Cozy Coffee Shop with Smooth Piano Jazz Music for Relaxing, Studying and Work",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 215,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "MjmueZcVhg4",
+    "title": "Relaxing Jazz & Work | Cafe Background Music for Focus, Study & Deep Productivit",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 81,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "NJuSStkIZBg",
+    "title": "Rainy Jazz Cafe - Slow Jazz in Coffee Shop Ambience",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 214,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "Q-Jys6HQ_gg",
+    "title": "ボサノバ カフェ 朝カフェ｜優しい風と海に癒される女性ボーカル リラックス音楽 海カフェ（作業用BGM）（3時間）",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "RA3pcxaCkhg",
+    "title": "Relaxing Bossa Nova for Your Morning Coffee | Smooth Brazilian Jazz Cafe Music",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 125,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "U3n31M81RpE",
+    "title": "Smooth Jazz Saxophone Music - Cool Cafe Vibes • Relaxing Saxophone Instrumental ",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 117,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "UNll41WfYyY",
+    "title": "Refined Jazz Experience in a Luxury Hotel Lobby ✨ A Tranquil Setting for Reflect",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 109,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "VT9jQKQjwCY",
+    "title": "Relaxing Chill Bossa Nova Jazz - Smooth Coffee Shop Jazz Music for Working in Ap",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 114,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "_sI_Ps7JSEk",
+    "title": "New York Jazz Lounge - Bar Jazz Classics",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 50,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "fEvM-OUbaKs",
+    "title": "Coffee Jazz Music - Chill Out Lounge Radio(作業用カフェBGM)",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "h8UHTqQGpjU",
+    "title": "Relaxing Jazz Cafe Ambience for Stress Relief |  Gentle Jazz Piano with Nature S",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 200,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "h9dgeNyj9_E",
+    "title": "Lounge Music: Relaxing Piano Jazz Playlist - Lounge Cafe Jazz Music for Good Moo",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 238,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "jFMkXPSjUM4",
+    "title": "Smooth Jazz & Soulful R&B – Soft Instrumentals for Study, Work & Relaxation",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 185,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "jWfax0-3k8A",
+    "title": "Smooth Jazz Grooves vol.1 (Relaxing Chill Jazz Music)",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 84,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "khG5ZlppKhw",
+    "title": "Piano Bar & Piano Bar Music: Best of Piano Bar Smooth Jazz Club at Midnight Budd",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 126,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "m0h3SgYVe60",
+    "title": "Jazz For Work - Relaxing Cafe Music - Jazz Instrumental Music - Background Jazz ",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 248,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "pfx4r7_WdP8",
+    "title": "Relaxing Jazz in Corner Coffee Shop For Happy Morning | Great Jazz Music For Cal",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 214,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "sSmFBQIyXyE",
+    "title": "Cozy Coffee Shop on a Rainy Day 🍂 Soft Jazz for Relaxation, Study, Work & Calm N",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 194,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "3NycM9lYdRI",
+    "title": "Relaxing Piano Music: Romantic Music, Beautiful Relaxing Music, Sleep Music, Str",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 217,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "5dctOf13aPw",
+    "title": "【Ghibli Piano Music 2026】ジブリメドレーピアノ💖史上最高のジブリピアノコレクション ️🎉となりのトトロ、風の谷のナウシカ、ハウルの動く城",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 1440,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "6X_OEUFV0v4",
+    "title": "Find Your Focus - Soft Piano Session for Immersive Study, Deep Work and Concentr",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "77ZozI0rw7w",
+    "title": "Relaxing Piano Music & Water Sounds - Soothing Relaxation",
+    "genres": [
+      "piano",
+      "nature"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "7BljnwmGEq0",
+    "title": "【ジブリ BGM】ジブリメドレーピアノ🌊 ベストジブリコレクション 📀 ジブリ史上最高のリラックス BGM 🎬 千と千尋の神隠し、火垂るの墓、となりのトトロ、崖",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 223,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "7voSN82FGF0",
+    "title": "おやすみジブリ・夏夜のピアノメドレー【睡眠用BGM、動画中広告なし】Studio Ghibli Summer Night Piano Collection Pi",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 438,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "8WVXk0Gz66E",
+    "title": "10 Hours of Relaxing Music - Calm Piano & Guitar, Sleep Music, Study Music",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 602,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "9Q634rbsypE",
+    "title": "Always: Soft & Relaxing Piano - Peder B. Helland",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 186,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "HGl75kurxok",
+    "title": "Piano Ghibli Collection 1",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 93,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "HSOtku1j600",
+    "title": "2 Hour Beautiful Piano Music for Studying and Sleeping 【BGM】",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 113,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "I4fxYapxu5M",
+    "title": "3 hour of Studio Ghibli | Relaxing Piano Music (relax, study, sleep) Soft and Tr",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "IV8LO-T66ys",
+    "title": "Soft Piano - Calm Classical Pieces | Debussy, Chopin, Beethoven...",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 134,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "Kad5ZP0unoY",
+    "title": "Beautiful Relaxing Music - Piano, Cello & Guitar Music by Soothing Relaxation",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 360,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "MNmnHG53EhU",
+    "title": "[ Nghe thử 3 giây thôi ] và ngủ sâu ngay lập tức với nhạc sóng não delta tuyệt v",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 175,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "S-_yNldXFBQ",
+    "title": "Calm Piano Music - soothing, peaceful, relaxing and study music  [1914]",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 92,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "UKbZ4r88z3Q",
+    "title": "The quiet beauty of everyday life | Piano Playlist",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 34,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "Zu7wu52rakY",
+    "title": "Peaceful Piano - Easy Listening Piano - Relaxing Music For Sleep, Study",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 243,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "bHFKkCcUjW0",
+    "title": "1 hour of Studio Ghibli | Relaxing Piano Music (relax, study, sleep)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 59,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "bZrfMU71W9I",
+    "title": "Ryuichi Sakamoto Slow Piano Music Collection For Working (No Mid-roll Ads)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 375,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "cKxRFlXYquo",
+    "title": "500 Most Famous Beautiful Piano Melodies - The Best Relaxing Piano Instrumental ",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 177,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "hlWiI4xVXKY",
+    "title": "Sunny Mornings: Piano, Guitar & Bird Sounds - Peder B. Helland",
+    "genres": [
+      "piano",
+      "nature"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ]
+  },
+  {
+    "id": "iTJAo6aWGCo",
+    "title": "Beautiful Piano Melodies Songs Ever - Best Relaxing Romantic Piano Instrumental ",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 157,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "jvM3rO4Ihd4",
+    "title": "[Ghibli Piano Collection] Relaxing Piano Music -  Studying, Coffee, Reading, Hea",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 72,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "kMAOey45mJI",
+    "title": "Music for Studying - piano music, relaxing music, smooth music [1934]",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 124,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "lCOF9LN_Zxs",
+    "title": "Beautiful Piano Music, Vol. 1 | Relaxing Music for Focus, Sleep & Relaxation by ",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 59,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "lFcSrYw-ARY",
+    "title": "Beautiful Relaxing Music for Stress Relief(ピアノ)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "oQUA3tQS0To",
+    "title": "Studio Ghibli Summer Night Deep Sleep Piano Medley(No Mid-roll Ads)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 362,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "oiGmGFxsJi8",
+    "title": "Calm Piano Music for Studying, Reading, Relaxation",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 166,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "pRmU9UDsZLM",
+    "title": "3 Hour Relaxing Piano Studio Ghibli Collection",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 143,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "rBadprLH1jM",
+    "title": "Morning Piano Music | Piano music to Study, Work, Ambience,... 🎷 | Best Choice f",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "ru-O5L2uxho",
+    "title": "[Piano ASMR] 3시간 연속듣기 | 빗소리와 함께 듣는 피아노 | 시청각 ASMR | Piano Music & Rain Sounds",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 183,
+    "durationClass": "long",
+    "mood": [
+      "rain"
+    ]
+  },
+  {
+    "id": "sAcj8me7wGI",
+    "title": "Relaxing Piano Music For Study and Focus",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "tzW5OvmCPaU",
+    "title": "a peaceful day in july 🌻 relaxing piano music for calm focus, reading & positive",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 81,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "xd0XIMd2Kco",
+    "title": "a playlist for a quiet morning in July 🌻 soft piano for study & deep focus",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 78,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "1t7g690boao",
+    "title": "4K Forest Stream - Relaxing River Sounds - No Birds - Ultra HD Nature Video -  R",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "2G8LAiHSCAs",
+    "title": "Forest Birdsong Nature Sounds-Relaxing Bird Sounds for Sleeping-Calming Birds Ch",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 500,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "2LMqOdCHQWw",
+    "title": "Beautiful Mountain River Flowing Sound. Forest River, Relaxing Nature Sounds/ Sl",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 604,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "2UxbnP-6ZlM",
+    "title": "Forest River - Stream Sounds for Sleeping - No Birds - Relaxing Nature Video - W",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "6f0y1Iaorug",
+    "title": "Hawaii Ocean Waves White Noise | Sleep, Study, Insomnia Relief | Beach Sounds 10",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "6jW4CZ-AoOg",
+    "title": "Relaxing Sound of Ocean Waves Crashing (10Hrs) WHITE NOISE, Sleep",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 599,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "9oc8Fa7tb8c",
+    "title": "Sleep, Study or Focus with Rain Sounds in The Woods White Noise | 10 Hours",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 601,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "AaMm5kZ3cRw",
+    "title": "Rain Sounds for Studying - Cozy Cabin Ambience with Gentle Rain & Forest View - ",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "D4VpVRtbx7w",
+    "title": "4-HOUR 🌧️ Study With Me • Rain sounds☔+ Lofi bgm • Pomodoro 50-10 • Day131🌳",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 241,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "EHklxmBvzwc",
+    "title": "The Way of the Singing Forest  - 10h REALTIME Birdsong - NO LOOP - Birds Singing",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 610,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "FxAgAyZYXJ8",
+    "title": "4K Deep Forest - 8 Hours NO LOOP Birdsong - Robin & Blackbird Singing - Relaxing",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 505,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "IsPBplWLImI",
+    "title": "4K HDR Bluebell Woods - English Forest - Birds Singing - No Loop - Relaxing Natu",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "IvjMgVS6kng",
+    "title": "Relaxing River Sounds - Peaceful Forest River - 3 Hours Long - HD 1080p - Nature",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "JbJ0sYt9Nyk",
+    "title": "10 Hour | Spiritual Rain Meditation | Insomnia | Study | Focus | Spa | Calming B",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 601,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "JekUNGo-RVk",
+    "title": "Ocean Waves White Noise for Sleeping 10 Hours",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 601,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "Jvgx5HHJ0qw",
+    "title": "Rooftop Study Room with Rain Sounds - Ambience for Studying, Relaxing",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "JxgyRo2u27g",
+    "title": "🌧️🍃 2 HOUR STUDY WITH ME During a Rainstorm / 🕯️ Foggy Forest / Rain Sounds / No",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 112,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "KuVKRIz7qOE",
+    "title": "Ocean Waves Crashing at Stormy Beach w/ Sea Rain | Relaxing Sounds for Sleep & T",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "M0AWBnAv8VE",
+    "title": "Beautiful spring mountain forest. Birdsong in the Caucasus forest.",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 720,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "OyW8yishBL8",
+    "title": "Misty Forest River with Birdsong | Gentle Stream & Relaxing Nature Sounds for Sl",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "RD929GWcPxo",
+    "title": "Glasshouse Study Room with Forest view and Large Windows  -  Rain Sounds for Foc",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "UJZxtO9XNno",
+    "title": "Gentle Stream Sounds | Relaxing Stream Sounds use for Relaxation, Sleep, insomni",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 720,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "V0iaLHhZl7I",
+    "title": "4K Gentle Stream Sounds | Forest River Ambience & Relaxing Nature Sounds for Sle",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "WHPEKLQID4U",
+    "title": "Ocean Waves Relaxation | 波の音 10時間",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "WxfmULzzKoU",
+    "title": "Relax! Ocean Waves Seaside Ambience | for Stress Relief | White Noise Surf Sound",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 601,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "XxP8kxUn5bc",
+    "title": "4K Forest Birdsong 2 - Birds Sing in the Woods - No Loop Realtime Birdsong - Rel",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "_nVwKbA4eN0",
+    "title": "Redwoods Forest River & Birdsong | Relaxing Nature Sounds in 4K | 6 Hours",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 360,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "bn9F19Hi1Lk",
+    "title": "Sleep For 11 Hours Straight, High Quality Stereo Ocean Sounds Of Rolling Waves F",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 677,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "buqt6_CjtuI",
+    "title": "Rain Sounds + Stream for Sleep, Focus, Studying | 4K Nature Video White Noise 10",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "eIoHJBA43lk",
+    "title": "🌧️🐿️ 3 HOUR STUDY WITH ME On a Rainy Day / Forest Rain Sounds / No Music / Pomod",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 172,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "eKFTSSKCzWA",
+    "title": "森の滝の自然音 - Natural Calm Forest Waterfall",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 500,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "focus"
+    ]
+  },
+  {
+    "id": "ekXFslHOvZ8",
+    "title": "10 Hours Rain & Thunder | Rainstorm Sounds for Sleep, Studying or Relaxation | N",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "gVKEM4K8J8A",
+    "title": "Heavy Thunderstorm Sounds | Relaxing Rain, Thunder & Lightning Ambience for Slee",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 240,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "mPZkdNFkNps",
+    "title": "窓を打つ雨と雷の音 - Rain Sound On Window",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "nDq6TstdEi8",
+    "title": "EPIC THUNDER & RAIN | 雷雨のホワイトノイズ 10時間",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "nE_XAauwu1I",
+    "title": "Relaxing Rain & Soothing River Sounds Near a Beautiful Waterfall in the Rocky Mo",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "nta1YhicoGw",
+    "title": "Tropical Beach with Waves crashing on Sandy Shore | White Noise for Meditation &",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 183,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "q76bMs-NwRk",
+    "title": "3 Hours of Gentle Night Rain(静かな夜の雨・暗い画面)",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "xNN7iTA57jM",
+    "title": "Forest Sounds | 森と鳥のさえずり",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "yGjeaMDu9ps",
+    "title": "Ocean Waves for Deep Sleep | White Noise 24 Hours NO ADS",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 1440,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "0_kIy_euC6k",
+    "title": "a playlist nitendo chill music to work, study in the morning",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 154,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "1LV8oY0Litk",
+    "title": "Video game music to be productive to | Upbeat, relaxing vgm study work playlist",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 149,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "1wOAhRAqb40",
+    "title": "Relaxing Animal Crossing music + rain sounds ♡",
+    "genres": [
+      "game",
+      "nature"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "3XOcoU5xYLI",
+    "title": "SuperRedGames - Video Game Music for Studying 19",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 81,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "55DE_ePBUAU",
+    "title": "Video Game Music for Studying 1",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 85,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "7JMvn0wfABQ",
+    "title": "Video game lofi study beats 📚",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "8kBlKM71pjc",
+    "title": "cozy animal crossing music(あつ森BGM)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 71,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "ANkxRGvl1VY",
+    "title": "all of a sudden, everything becomes alright...",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 79,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "BTDQPB1E9GU",
+    "title": "Relaxing Final Fantasy music to sleep to",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 215,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "D29E-jNrbD8",
+    "title": "Final Fantasy • Relaxing Harp Music",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 118,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "EVIWWO19HlE",
+    "title": "Don't think too much... Playlist Animal crossing music for study, work or relax ",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 165,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "EiBLjdlSm40",
+    "title": "Video Game Music for Studying 4",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 113,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "FiRBpHpnZOs",
+    "title": "Final Fantasy X Relaxing Music | 8 hr mix of FFX songs with background wallpaper",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 481,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "GdzrrWA8e7A",
+    "title": "Zelda & Chill(ゼルダ lofiアレンジ)",
+    "genres": [
+      "game",
+      "lofi"
+    ],
+    "durationMin": 41,
+    "durationClass": "medium",
+    "mood": [
+      "calm",
+      "focus"
+    ]
+  },
+  {
+    "id": "JBky-MBfLpI",
+    "title": "Relaxing Zelda Music with Campfire Ambience",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 110,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "JyT6Xvijtis",
+    "title": "Zelda Music To Relax/Study/Work/Game",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 175,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "PbZyBYSwOX4",
+    "title": "Relaxing Final Fantasy Music For 5 Hours",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 305,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "SASzfJ-E05I",
+    "title": "Beautiful Relaxing Music - The Legend of Zelda",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 151,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "TR1Jymo2O4w",
+    "title": "Beautiful Music for Relaxing-Studying  | The Legend of Zelda",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 220,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "ZLAFOPBFlHM",
+    "title": "Video Game Music for Studying 3",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 79,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "ZfZ1jZyT6cs",
+    "title": "Final Fantasy XV Ethereal Piano Collection | 2 Hours of Relaxing Piano",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 137,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "_itXuFaxAII",
+    "title": "Video Game Music for Studying 7",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 88,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "esG-4oXd-Fk",
+    "title": "Tiny Market 🛒｜Warm and Lively Bossa Nova｜Study & Work Music｜Animal Crossing Ambi",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 163,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "h8UpC5JbMU0",
+    "title": "relax, everything will be okay… (minecraft c418 music & ambience)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "ilmRZX2xB0E",
+    "title": "1.5 hour of Calm Music 🌙 FINAL FANTASY Piano Collections w/ SE (Night Beach)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 92,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "j50tCIK5Rn8",
+    "title": "POV : You Fell Asleep In 2012 Minecraft",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 252,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "ji7I9hoFab0",
+    "title": "Relaxing Zelda Music for Working [4 Hours ]",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 236,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "knoUHYLoE3c",
+    "title": "Relaxing Video Game Music 8hr mix(FF・ゼルダ・Skyrim他)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 492,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "m0c1GWofgUM",
+    "title": "90 Minutes of Relaxing Final Fantasy Music (Chill Remix and Rain)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 85,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "nBCFnfHnLbM",
+    "title": "Soothing Deep Sleep • Healing of Stress, Anxiety and Depressive States • Remove ",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 204,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "nCfk_fAlcQY",
+    "title": "Relaxing animal crossing music that feels like a quiet morning | Study & work BG",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 166,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ]
+  },
+  {
+    "id": "p7DVatZamOY",
+    "title": "some peace for hard nights...  (relaxing zelda music & ambience)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 366,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "uRRWSlkePGQ",
+    "title": "[2 Hours] Final Fantasy VII Rebirth OST Compilation | Study, Focus, Sleep & Ambi",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "vCTRNKPJr40",
+    "title": "minecraft music for studying (c418 & lena raine)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "vKG91INzLt0",
+    "title": "3 Hour of Relaxing Zelda Songs to chill/study/sleep",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 210,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "wUJM8mtaUpk",
+    "title": "Relaxing Zelda Music with Campfire Ambience",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 102,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "wb_E3HnLwG4",
+    "title": "1 Hour of Relaxing and Beautiful Zelda Music",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "xtSYnufqAfg",
+    "title": "The Complete Minecraft Soundtrack [26.1]",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 374,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "y9tuE8CeWyA",
+    "title": "The Most Relaxing Final Fantasy 7 Music You've Never Heard (Soothing Ambience fo",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 179,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "yJ6Lbsmb1lY",
+    "title": "no more thinking tonight... (minecraft music w/ soft rain)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 387,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "0FyEM4g4eR0",
+    "title": "Cyberpunk Ambient - [MOODY-ATMOSPHERIC] Music for Rainy Night Walks",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ]
+  },
+  {
+    "id": "0QKQlf8r7ls",
+    "title": "'Back To The 80's' | Marvel83' Edition | Best of Synthwave And Retro Electro Mus",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "3z55w5fXqEQ",
+    "title": "Atmospheric Voyage IV – A Downtempo Chillwave Mix [ Chill - Relax - Study ]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 129,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "4FhsjQ2xess",
+    "title": "Blade Runner Bliss: PURE Ambient Cyberpunk Music - Ethereal Sci Fi Music [ULTRA ",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "4xDzrJKXOOY",
+    "title": "synthwave radio 🌌 beats to chill/game to",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": null,
+    "durationClass": "long",
+    "live": true,
+    "mood": [
+      "focus",
+      "night"
+    ]
+  },
+  {
+    "id": "4yhdyNZsOJk",
+    "title": "1995 Chillwave Study Mix // Chillwave, Vaporwave, Synthwave Mix, Nostalgic and R",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 39,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "6aouLxiL4Cw",
+    "title": "B A D L A N D S - A Synthwave Mix for Galactic Explorers | Vol. 1",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 141,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "6xLxC7a1_fU",
+    "title": "𝟮𝟬𝟵𝟲 𝗘𝗦𝗖𝗔𝗣𝗘 𝗧𝗛𝗘 𝗗𝗥𝗢𝗡𝗘𝗦 // Dark Synth, Synthwave, Vaporwave, Chillwave, Retrowave",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "A4kU-LiaXiE",
+    "title": "🎵 Chill Cybernetic Terrace: Rain and Ambient Music | Cyberpunk Bedroom over the ",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 648,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "Ax9Ur8u4Lgg",
+    "title": "Friday Night 1989 | Sentimental Retro Synthwave Vibes | 80s Beats & Nostalgic Re",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 73,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "GBUCmMxmup0",
+    "title": "ＬＯＮＧ　ＮＩＧＨＴＳ [ Chillwave - Synthwave - Retrowave  Mix ]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 44,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "IlI6kM4FQ7w",
+    "title": "PURE Atmospheric Cyberpunk Ambient - DEEPLY Relaxing Blade Runner Music Vibes",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "JiaDf1ae8J4",
+    "title": "80's Office - Nostalgic Retro Mix ✨ Retro Vaporwave",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 76,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "Kq3EDkRiipI",
+    "title": "VHS Dreams: 80s Retrowave & Synthwave Instrumental Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 207,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "KyfvIw48V6g",
+    "title": "CYBERPUNK 2077 Ambient Music 🎵 Night Chill (CBP 2077 Soundtrack | OST)",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "MV_3Dpw-BRY",
+    "title": "Kavinsky - Nightcall(Drive OST)",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 4,
+    "durationClass": "short",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "NK79Sr1mrzQ",
+    "title": "Upbeat Study Focus 80s Style Synthwave Mix with Beta Isochronic Tones",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "QqjVD-qPZ3M",
+    "title": "Synthwave Electric Mixtape I   For Study Relax",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 145,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "R6GPibqAoFY",
+    "title": "VENDOR: Calm Blade Runner Ambience & Rain | Relaxing Cyberpunk Ambient Music on ",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ]
+  },
+  {
+    "id": "TlWYgGyNnJo",
+    "title": "1 A.M Chill Session 🌌 [synthwave]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 149,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "WqS9qhHyyO8",
+    "title": "1988 ✦ Mecha Soul ✦ Synthwave | Dreamwave | Retrowave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 91,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "XB0e7pI3Q8I",
+    "title": "KIOSK - Calm Blade Runner Ambience & Rain - Soothing Cyberpunk Ambient Music for",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "XWPlbUdrXIo",
+    "title": "ＳＰＡＣＥ　ＴＲＩＰ　ＩＩ [ Chillwave - Synthwave - Retrowave Mix ]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 46,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "XeYWumdKio4",
+    "title": "Atmospheric Voyage II – A Downtempo Chillwave Mix [ Chill - Relax - Study ]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "am1VJP0RnmQ",
+    "title": "Flow State - Chillstep & Synthwave for Deep Focus | Coding Session",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 64,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "cu_vihKMWeA",
+    "title": "Synthwave Coding Mix – Feels Like 𝐓𝐄𝐑𝐌𝐈𝐍𝐀𝐋 𝟏𝟗𝟖𝟕 Never Closed",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "dgCnYsDTiXU",
+    "title": "Cybercity - A Synthwave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 42,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "isIj3tuQTDY",
+    "title": "GLITCH - A Synthwave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 49,
+    "durationClass": "medium",
+    "mood": []
+  },
+  {
+    "id": "jUyk52REKKg",
+    "title": "𝟭𝟵𝟵𝟵 𝗠𝗢𝗠𝗘𝗡𝗧𝗨𝗠 𝗢𝗩𝗘𝗥 𝗙𝗘𝗔𝗥 // Synthwave, Chillwave, Retrowave, Cyberpunk, Futurewav",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 124,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "lT8JepVwxBQ",
+    "title": "ECHOES OF THE 80's | Ultimate Synthwave Retrowave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 74,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "oSX1FE9R7JI",
+    "title": "100 Minutes of Blissful Chillwave",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 100,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "qGo88UjJCwI",
+    "title": "| H I D D E N    G E M S 💎💎💎 | - A NewRetroWave Mix | 1 Hour | Synthwave/ Retrow",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 72,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "qk1nnAHI1mI",
+    "title": "'Back To The 80's' | Best of Synthwave And Retro Electro Music Mix for 2 Hours |",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 127,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "rDBbaGCCIhk",
+    "title": "Miami Nights 1984 - Accelerated",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 4,
+    "durationClass": "short",
+    "mood": [
+      "night"
+    ]
+  },
+  {
+    "id": "ssOmYzEq7VY",
+    "title": "Retrowave Classics Vol. 1",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 78,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "utT6c323pxo",
+    "title": "Synthwave Study Session // Study Core, Ambient Sounds, Chillwave Creativity",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 47,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "wOMwO5T3yT4",
+    "title": "SPACE TRIP [Chillwave - Synthwave - Retrowave Mix]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 37,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "night"
+    ]
+  },
+  {
+    "id": "z-gbKzHhPbc",
+    "title": "Loner - A Cyberpunk Ambient Song for Solitary Souls",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 240,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "zVlQ6F855L0",
+    "title": "ARCADE NIGHTS '94 | 2 Hour Synthwave, Chillwave & Retrowave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 123,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ]
+  },
+  {
+    "id": "-QsXOmMRBX0",
+    "title": "Mozart Relaxing Concerto for Studying 🎵 Classical Study Music for Reading & Conc",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 185,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "-gDinVAmtA0",
+    "title": "Chopin Nocturnes",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 111,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "-oUlaJTaI2s",
+    "title": "Mozart 10 Hours Studying Concentration Relaxation Playlist NONSTOP",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 609,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "0AlK7DMSvZs",
+    "title": "Classical Music for Studying",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 193,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "0UN_HbOTTcI",
+    "title": "Classical Music for Brain Power | Mozart, Beethoven, Vivaldi...",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 196,
+    "durationClass": "long",
+    "mood": [
+      "rain"
+    ]
+  },
+  {
+    "id": "32FpqysC1PY",
+    "title": "Bach - Complete Cello Suites (Massimiliano Martinelli)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 151,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "3AkZazth0a0",
+    "title": "Mozart - Classical Music for Studying, Working & Brain Power",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 188,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "3SMhJep65TI",
+    "title": "Claude Debussy Piano Classical Music - Clair de Lune, Arabesque No_1, Footprints",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "51Gm5q6Z07E",
+    "title": "Mozart | Classical Music for Studying, Working & Brain Power",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 243,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "BMuknRb7woc",
+    "title": "Classical Music for Studying & Brain Power | Mozart, Vivaldi, Tchaikovsky...",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 96,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "EQkNmAARSe0",
+    "title": "Bach Cello Suite 10 Hours",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "GjtwQZq_rWI",
+    "title": "Mozart - Classical Music for Studying, Working & Brain Power",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 131,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ]
+  },
+  {
+    "id": "GrSzbDT7IhM",
+    "title": "6 Hours Mozart for Studying, Concentration, Relaxation",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 364,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "Hlp6aawXVoY",
+    "title": "8 Hours Classical Music for Working",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 481,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "IGM1T0t7qts",
+    "title": "Debussy - Piano Solo",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 108,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "IVpuTD-2SEo",
+    "title": "Chopin: Complete Nocturnes (Luke Faulkner)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 114,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "Jn09UdSb3aA",
+    "title": "The Best of Chopin",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 192,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "KuGrV0ADzOQ",
+    "title": "The Best of Debussy / Classical Piano Music",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "LwTv8S5co5Q",
+    "title": "Classical Focus - Classical Music for Studying",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 137,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "Nu48Z45ibxQ",
+    "title": "ショパン ノクターン Op.9-2(ルービンシュタイン)",
+    "genres": [
+      "classical",
+      "piano"
+    ],
+    "durationMin": 4,
+    "durationClass": "short",
+    "mood": [
+      "calm"
+    ]
+  },
+  {
+    "id": "Nu9MDqGhIak",
+    "title": "Yo Yo Ma - Bach Six Cello Suites - BBC Proms 2015",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 163,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "RzEr66WYcm8",
+    "title": "AD FREE Mozart - Classical Music for Studying and Concentration",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "TmUBH7ZgMSk",
+    "title": "The Complete Chopin Nocturnes",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 118,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "UETuJ2LXJWQ",
+    "title": "Claude Debussy Full Album | Claude Debussy Best Songs - ألبوم كلود ديبوسي كامل",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 74,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "WTe8TYx3QMQ",
+    "title": "Classical Music for Studying | Mozart, Tchaikovsky, Dvořák...",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 163,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "WdJxvBvUHEE",
+    "title": "Johann Sebastian Bach   6 Suites For Cello Solo   Mischa Maisky",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 162,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "cydS5G3uX2g",
+    "title": "J.S. Bach: Cello Suites",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "ePPMrX4YtkM",
+    "title": "J S  Bach   The six cello suites   Pablo Casals, 1936 39",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 130,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "fFPLd2m51Hk",
+    "title": "Chopin – The Best Piano Pieces | Nocturnes, Études, Preludes, Ballades",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 158,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "fLoWzp8gRK4",
+    "title": "3 Hours Classical Music for Studying",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 183,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "g4N-X2YtNW4",
+    "title": "Chopin: Complete Nocturnes(ノクターン全集)",
+    "genres": [
+      "classical",
+      "piano"
+    ],
+    "durationMin": 119,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "night"
+    ]
+  },
+  {
+    "id": "i6D8B2wFJmw",
+    "title": "Debussy and Ravel | Classical Piano Music",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 200,
+    "durationClass": "long",
+    "mood": []
+  },
+  {
+    "id": "iUohO2MSot8",
+    "title": "Mozart - Classical Music for Brain Power",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 106,
+    "durationClass": "long",
+    "mood": [
+      "rain"
+    ]
+  },
+  {
+    "id": "jgpJVI3tDbY",
+    "title": "The Best of Classical Music(モーツァルト・ベートーヴェン他)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 208,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "mGQLXRTl3Z0",
+    "title": "Mischa Maisky plays Bach Cello Suite No.1 in G (full)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 19,
+    "durationClass": "short",
+    "mood": []
+  },
+  {
+    "id": "mIYzp5rcTvU",
+    "title": "Classical Music for Reading(モーツァルト・ショパン他)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 148,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "mdJU5ogrPMY",
+    "title": "Classical Music for Studying",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 148,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ]
+  },
+  {
+    "id": "pzQqvi1-hHE",
+    "title": "Mozart Classical Piano Music 🎼 Relaxing Reading Music for Concentration 📙 Classi",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 186,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ]
+  },
+  {
+    "id": "rOjHhS5MtvA",
+    "title": "Muti Conducts Beethoven 9(ベートーヴェン交響曲第9番)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 81,
+    "durationClass": "long",
+    "mood": [
+      "epic"
+    ]
+  },
+  {
+    "id": "xzN6VwiZYMo",
+    "title": "Bach: Cello Collection",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 189,
+    "durationClass": "long",
+    "mood": []
+  }
 ]
