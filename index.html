@@ -215,6 +215,26 @@ button:focus-visible, a:focus-visible {
 .star-btn.pop { transform: scale(1.2); }
 .rated-msg { font-size: 12px; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
 
+/* ---- 連続再生トグル ---- */
+.queue-row { display: flex; justify-content: center; margin-top: 24px; }
+.queue-toggle {
+  display: flex; align-items: center; gap: 8px;
+  border-radius: var(--r-full);
+  padding: 9px 18px;
+  font-size: 12px; font-weight: 700;
+  color: var(--text-sub);
+  background: var(--bg);
+  box-shadow: -5px -5px 10px var(--sh-light), 5px 5px 10px var(--sh-dark);
+  transition: box-shadow 0.15s, color 0.15s;
+}
+.queue-toggle svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.queue-toggle.on {
+  color: var(--accent);
+  background: var(--bg-deep);
+  /* 小型要素なので凹み影は弱め(2px/4px) */
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark), inset 0 0 0 1px rgba(91, 108, 255, 0.25);
+}
+
 /* ---- YouTubeリンク・注記 ---- */
 .yt-link {
   display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -222,6 +242,7 @@ button:focus-visible, a:focus-visible {
   font-size: 13px;
   color: var(--text-sub);
 }
+.yt-link + .yt-link { margin-top: 14px; }
 .yt-link svg { width: 14px; height: 14px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 .footnote {
   text-align: center; font-size: 11px; color: var(--text-sub);
@@ -402,6 +423,13 @@ button:focus-visible, a:focus-visible {
       </div>
     </div>
 
+    <div class="queue-row">
+      <button class="queue-toggle" id="btn-queue" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        連続再生
+      </button>
+    </div>
+
     <div class="rating-tray inset" id="rating-box">
       <p>この曲は作業に合いましたか?</p>
       <div class="stars" id="stars" role="radiogroup" aria-label="5段階評価">
@@ -413,6 +441,10 @@ button:focus-visible, a:focus-visible {
     <a id="btn-yt" class="yt-link" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       YouTubeアプリで開く(バックグラウンド再生はこちら)
+    </a>
+    <a id="btn-share" class="yt-link" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Xで今日の1曲を共有
     </a>
   </section>
 
@@ -509,6 +541,7 @@ const LS = {
   DAILY: "bgm_daily",
   RECENT: "bgm_recent", // 直近提示履歴 {date: [ids]} — 3日減衰用(仕様5.3)
   DEAD: "bgm_dead",     // 再生エラーになった動画ID(以後の候補から除外)
+  QUEUE: "bgm_queue",   // 連続再生キューのオン/オフ
 };
 function load(key, fallback) {
   try {
@@ -524,10 +557,19 @@ function todayStr() {
 }
 
 /* =========================================================
- * レコメンドアルゴリズム(仕様5章)
- * score = 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity + ε
+ * レコメンドアルゴリズム(仕様5章+v0.3拡張)
+ * score = 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity
+ *       + 0.8*discover(未評価曲) + 1.0*timeMatch(時間帯) + ε
  * ========================================================= */
-const W = { genre: 3.0, duration: 1.5, rating: 2.5, eps: 1.0 };
+const W = { genre: 3.0, duration: 1.5, rating: 2.5, discover: 0.8, time: 1.0, eps: 1.0 };
+
+// 時間帯レコメンド: 現在時刻に合うムードを1つ返す
+function timeSlotMood(hour) {
+  if (hour >= 5 && hour < 11) return "morning";
+  if (hour >= 11 && hour < 17) return "focus";
+  if (hour >= 17 && hour < 22) return "calm";
+  return "night";
+}
 
 function genreMatch(song, selected) {
   if (!selected || selected.length === 0) return 0;
@@ -614,11 +656,15 @@ function pickSong(excludeIds) {
   if (candidates.length === 0) candidates = SONGS.filter(s => !dead.includes(s.id));
   if (candidates.length === 0) candidates = SONGS.slice();
 
+  const slotMood = timeSlotMood(new Date().getHours());
+
   const scored = candidates.map(s => {
     let score =
       W.genre * genreMatch(s, settings ? settings.genres : null) +
       W.duration * durationMatch(s, settings ? settings.duration : null) +
       W.rating * ratingAffinity(s, table) +
+      W.discover * (ratings[s.id] ? 0 : 1) +           // 発見ボーナス: 未評価曲を後押し
+      W.time * (s.mood.includes(slotMood) ? 1 : 0) +   // 時間帯レコメンド
       W.eps * Math.random();
     if (recent.has(s.id)) score *= 0.5; // 直近3日提示分は50%減衰
     return { s, score };
@@ -676,13 +722,14 @@ const $ = id => document.getElementById(id);
 const ICON_PLAY = '<polygon points="6 4 20 12 6 20 6 4"/>';
 const ICON_PAUSE = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
 
-function setPlayButton(playing) {
+// mode: "idle"(未再生) / "playing"(再生中→押すと一時停止) / "paused"(一時停止中→押すと再開)
+function setPlayButton(mode) {
   const btn = $("btn-play");
-  btn.disabled = playing;
+  const playing = mode === "playing";
   btn.classList.toggle("playing", playing);
-  btn.setAttribute("aria-label", playing ? "再生中" : "再生する");
+  btn.setAttribute("aria-label", playing ? "一時停止する" : "再生する");
   $("ic-play").innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
-  $("play-label").textContent = playing ? "再生中" : "再生";
+  $("play-label").textContent = playing ? "再生中" : mode === "paused" ? "再開" : "再生";
 }
 
 function durationText(song) {
@@ -692,13 +739,8 @@ function durationText(song) {
   return `${t}(${DURATION_LABELS[song.durationClass].split("(")[0]})`;
 }
 
-function renderSong(song) {
-  currentSong = song;
-  destroyPlayer();
-  $("thumb-wrap").classList.remove("playing");
-  $("thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
-  $("thumb").style.display = "";
-  $("live-badge").style.display = song.live ? "" : "none";
+// 曲情報(タイトル・タグ・リンク)だけを更新する。プレイヤーには触れない
+function renderSongInfo(song) {
   $("song-title").textContent = song.title;
   const tags = $("song-tags");
   tags.innerHTML = "";
@@ -712,9 +754,22 @@ function renderSong(song) {
   dur.className = "pill inset";
   dur.textContent = durationText(song);
   tags.appendChild(dur);
-  setPlayButton(false);
+  const watchUrl = `https://www.youtube.com/watch?v=${song.id}`;
+  $("btn-yt").href = watchUrl;
+  const shareText = `今日の作業テーマ曲:「${song.title}」\n▶ ${watchUrl}\n#作業用BGM #今日の作業テーマ曲`;
+  $("btn-share").href = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://zuno1000.github.io/todaybgm/")}`;
+}
+
+function renderSong(song) {
+  currentSong = song;
+  destroyPlayer();
+  $("thumb-wrap").classList.remove("playing");
+  $("thumb").src = `https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`;
+  $("thumb").style.display = "";
+  $("live-badge").style.display = song.live ? "" : "none";
+  renderSongInfo(song);
+  setPlayButton("idle");
   updateNavButtons();
-  $("btn-yt").href = `https://www.youtube.com/watch?v=${song.id}`;
   renderRating();
 }
 
@@ -741,7 +796,8 @@ function prevSong() {
   renderSong(SONGS.find(s => s.id === daily.currentId));
 }
 
-function nextSong() {
+// 次の曲を決めて返す(描画はしない)。履歴の途中なら並びを辿り、末尾なら新しく選ぶ
+function gotoNext() {
   const daily = getDaily();
   const seq = shownSequence();
   const i = seq.indexOf(daily.currentId);
@@ -749,13 +805,17 @@ function nextSong() {
     // 戻った位置から先に進む(提示済みの並びを辿る)
     daily.currentId = seq[i + 1];
     save(LS.DAILY, daily);
-    renderSong(SONGS.find(s => s.id === daily.currentId));
-  } else {
-    // 末尾なら新しい曲を選ぶ(従来の「別の曲にする」と同じ。提示済みIDは残す=同日中の再提示を防ぐ)
-    daily.currentId = null;
-    save(LS.DAILY, daily);
-    init(true);
+    return SONGS.find(s => s.id === daily.currentId);
   }
+  // 末尾なら新しい曲を選ぶ(提示済みIDは残す=同日中の再提示を防ぐ)
+  daily.currentId = null;
+  save(LS.DAILY, daily);
+  return decideToday(true);
+}
+
+function nextSong() {
+  const song = gotoNext();
+  if (song) renderSong(song);
 }
 
 function renderRating() {
@@ -791,11 +851,12 @@ function loadYtApi() {
 }
 
 let ratingFallbackTimer = null;
+let loadedSong = null; // プレイヤーに現在ロードされている曲(loadVideoByIdで差し替わる)
 
 async function playCurrent() {
   if (!currentSong) return;
-  const songAtPlay = currentSong;
-  setPlayButton(true);
+  loadedSong = currentSong;
+  setPlayButton("playing");
   const wrap = $("thumb-wrap");
   wrap.classList.add("playing");
   const div = document.createElement("div");
@@ -808,14 +869,9 @@ async function playCurrent() {
     playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
     events: {
       onReady: e => { e.target.playVideo(); },
-      onStateChange: e => {
-        if (e.data === YT.PlayerState.PLAYING && !playerStarted) {
-          playerStarted = true;
-          renderRating();
-        }
-      },
+      onStateChange: onPlayerStateChange,
       // 再生不能(削除済み・埋め込み不可・配信終了など)は自動で別の曲へ
-      onError: () => handlePlaybackError(songAtPlay),
+      onError: () => handlePlaybackError(loadedSong),
     },
   });
   $("thumb").style.display = "none";
@@ -823,6 +879,55 @@ async function playCurrent() {
   ratingFallbackTimer = setTimeout(() => {
     if (!playerStarted) { playerStarted = true; renderRating(); }
   }, 4000);
+}
+
+function onPlayerStateChange(e) {
+  if (e.data === YT.PlayerState.PLAYING) {
+    setPlayButton("playing");
+    if (!playerStarted) {
+      playerStarted = true;
+      renderRating();
+    }
+  } else if (e.data === YT.PlayerState.PAUSED) {
+    setPlayButton("paused");
+  } else if (e.data === YT.PlayerState.ENDED) {
+    setPlayButton("paused");
+    if (queueOn()) queueAdvance();
+  }
+}
+
+// 再生/一時停止トグル。プレイヤー未生成なら新規再生
+function togglePlay() {
+  if (!player || !player.getPlayerState) { playCurrent(); return; }
+  const st = player.getPlayerState();
+  if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) {
+    player.pauseVideo();
+  } else {
+    player.playVideo();
+  }
+}
+
+/* ---- 連続再生キュー: 曲が終わったら同じプレイヤーで次の曲へ ---- */
+function queueOn() { return load(LS.QUEUE, true); }
+
+function renderQueueToggle() {
+  const on = queueOn();
+  const b = $("btn-queue");
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", String(on));
+}
+
+function queueAdvance() {
+  const song = gotoNext();
+  if (!song || !player || !player.loadVideoById) return;
+  currentSong = song;
+  loadedSong = song;
+  playerStarted = false; // 新しい曲の評価トレイはPLAYING検知で出し直す
+  renderSongInfo(song);
+  updateNavButtons();
+  renderRating();
+  setPlayButton("playing"); // ロード中もボタンは再生中表示のまま
+  player.loadVideoById(song.id); // プレイヤーを維持したまま差し替え(自動再生制限を回避)
 }
 
 function handlePlaybackError(deadSong) {
@@ -842,6 +947,7 @@ function handlePlaybackError(deadSong) {
 
 function destroyPlayer() {
   playerStarted = false;
+  loadedSong = null;
   if (ratingFallbackTimer) { clearTimeout(ratingFallbackTimer); ratingFallbackTimer = null; }
   if (player && player.destroy) { try { player.destroy(); } catch (e) {} }
   player = null;
@@ -980,7 +1086,8 @@ function renderTaste() {
 
 function resetAll() {
   if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD].forEach(k => localStorage.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE].forEach(k => localStorage.removeItem(k));
+  renderQueueToggle();
   renderHistory();
   showView("main");
   init(true);
@@ -1012,9 +1119,13 @@ function init(forceRepick) {
 /* ---- イベント ---- */
 document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
 $("goto-settings").addEventListener("click", () => showView("settings"));
-$("btn-play").addEventListener("click", playCurrent);
+$("btn-play").addEventListener("click", togglePlay);
 $("btn-prev").addEventListener("click", prevSong);
 $("btn-next").addEventListener("click", nextSong);
+$("btn-queue").addEventListener("click", () => {
+  save(LS.QUEUE, !queueOn());
+  renderQueueToggle();
+});
 document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("click", () => {
   if (!currentSong) return;
   const ratings = load(LS.RATINGS, {});
@@ -1042,6 +1153,7 @@ $("btn-yt").addEventListener("click", () => {
     $("controls").style.display = "none";
     return;
   }
+  renderQueueToggle();
   init(false);
 })();
 </script>
