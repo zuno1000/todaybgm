@@ -45,7 +45,9 @@ html, body {
   line-height: 1.6;
   min-height: 100%;
 }
-body { padding-bottom: 100px; }
+/* 下部固定タブバー + iPhoneのホームインジケータ(セーフエリア)ぶんを確保し、
+   末尾の注記が見切れないようにする */
+body { padding-bottom: calc(124px + env(safe-area-inset-bottom)); }
 
 button { font-family: inherit; border: none; cursor: pointer; color: inherit; background: none; }
 a { color: var(--accent); text-decoration: none; }
@@ -280,10 +282,10 @@ button:focus-visible, a:focus-visible {
   font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
   color: var(--text-sub); margin: 26px 4px 14px;
 }
-.pill-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.pill-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .toggle-pill {
   border-radius: var(--r-full);
-  padding: 11px 20px;
+  padding: 10px 16px;
   font-size: 13px; font-weight: 700;
   color: var(--text-sub);
   background: var(--bg);
@@ -767,11 +769,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
  * ========================================================= */
 let SONGS = [];
 
+// 表示順は「短いジャンルを長いジャンルの右の空きに入れて行数を減らす」ため最適化した並び
+// (ピアノの右に和風 / ゲームBGMの右にEDM / クラシックの右にかわいい)
 const GENRE_LABELS = {
-  lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", nature: "環境音・自然音",
-  game: "ゲームBGM", synthwave: "シンセウェーブ", classical: "クラシック",
-  celtic: "ケルト音楽", fantasy: "ファンタジー", japanese: "和風",
-  edm: "EDM", kawaii: "かわいい",
+  lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", japanese: "和風",
+  nature: "環境音・自然音", game: "ゲームBGM", edm: "EDM",
+  synthwave: "シンセウェーブ", classical: "クラシック", kawaii: "かわいい",
+  celtic: "ケルト音楽", fantasy: "ファンタジー",
 };
 const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
