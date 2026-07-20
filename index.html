@@ -225,50 +225,33 @@ button:focus-visible, a:focus-visible {
   font-size: 11px; color: var(--text-sub); margin-top: 8px;
 }
 
-/* ---- 評価トレイ ---- */
+/* ---- 評価(軽量・カードなし) ---- */
 .rating-tray {
   display: none;
-  border-radius: var(--r-card);
-  padding: 18px 20px;
-  margin: 26px auto 0;
+  padding: 2px 0 0;
+  margin: 22px auto 0;
   max-width: 320px;
   text-align: center;
 }
 .rating-tray.show { display: block; animation: fadein 0.2s ease; }
-.rating-tray p { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
-.stars { display: flex; justify-content: center; gap: 8px; }
-.star-btn { padding: 4px; transition: transform 0.12s; }
-.star-btn svg { width: 30px; height: 30px; fill: var(--bg); stroke: var(--text-sub); stroke-width: 1.5; filter: drop-shadow(1px 2px 2px var(--sh-dark)); }
+.rating-tray p { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
+.stars { display: flex; justify-content: center; gap: 10px; }
+.star-btn { padding: 3px; transition: transform 0.12s; }
+.star-btn svg { width: 26px; height: 26px; fill: var(--bg); stroke: var(--text-sub); stroke-width: 1.5; filter: drop-shadow(1px 1px 2px var(--sh-dark)); }
 .star-btn.on svg { fill: var(--star); stroke: var(--star); }
 .star-btn.pop { transform: scale(1.2); }
-.rated-msg { font-size: 12px; color: var(--accent); margin-top: 10px; min-height: 1.2em; }
+.rated-msg { font-size: 12px; color: var(--accent); margin-top: 8px; min-height: 1.2em; }
 
-/* ---- 連続再生トグル ---- */
-.queue-row { display: flex; justify-content: center; margin-top: 24px; }
-.queue-toggle {
-  display: flex; align-items: center; gap: 8px;
-  border-radius: var(--r-full);
-  padding: 9px 18px;
-  font-size: 12px; font-weight: 700;
-  color: var(--text-sub);
-  background: var(--bg);
-  box-shadow: -5px -5px 10px var(--sh-light), 5px 5px 10px var(--sh-dark);
-  transition: box-shadow 0.15s, color 0.15s;
-}
-.queue-toggle svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.queue-toggle.on {
-  color: var(--accent);
-  background: var(--bg-deep);
-  /* 小型要素なので凹み影は弱め(2px/4px) */
-  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark), inset 0 0 0 1px rgba(91, 108, 255, 0.25);
-}
-
-/* ---- 共有アイコン列(アプリで開く / Xで共有 / 画像で共有) ---- */
+/* ---- 共有アイコン列(YouTubeで開く / Xで共有 / 画像で共有) ---- */
 .share-row {
-  display: flex; justify-content: center; align-items: flex-start;
-  gap: 34px; margin-top: 30px;
+  display: flex; align-items: flex-start;
+  gap: 0; margin-top: 30px;
 }
+/* 3等分し、各枠内でアイコンを中央寄せ=アイコンが等間隔に並ぶ */
+.share-row .control-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
 .icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
+.icon-btn svg.ytlogo .yt-body { fill: var(--text-sub); stroke: none; }
+.icon-btn svg.ytlogo .yt-tri { fill: var(--bg); stroke: none; }
 
 /* ---- YouTubeリンク・注記 ---- */
 .yt-link {
@@ -601,15 +584,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       </div>
     </div>
 
-    <div class="queue-row">
-      <button class="queue-toggle" id="btn-queue" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        連続再生
-      </button>
-    </div>
-
-    <div class="rating-tray inset" id="rating-box">
-      <p>この曲は作業に合いましたか?</p>
+    <div class="rating-tray" id="rating-box">
+      <p>この曲を評価</p>
       <div class="stars" id="stars" role="radiogroup" aria-label="5段階評価">
         <button class="star-btn" data-v="1" role="radio" aria-label="星1"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="2" role="radio" aria-label="星2"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="3" role="radio" aria-label="星3"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="4" role="radio" aria-label="星4"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button><button class="star-btn" data-v="5" role="radio" aria-label="星5"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
       </div>
@@ -619,9 +595,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="share-row">
       <div class="control-item">
         <a id="btn-yt" class="icon-btn raised" target="_blank" rel="noopener" aria-label="YouTubeアプリで開く(バックグラウンド再生)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <svg class="ytlogo" viewBox="0 0 24 24" aria-hidden="true"><path class="yt-body" d="M23.5 7.2a3 3 0 0 0-2.11-2.12C19.52 4.55 12 4.55 12 4.55s-7.52 0-9.39.53A3 3 0 0 0 .5 7.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 4.8 3 3 0 0 0 2.11 2.12c1.87.53 9.39.53 9.39.53s7.52 0 9.39-.53A3 3 0 0 0 23.5 16.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-4.8Z"/><polygon class="yt-tri" points="9.6 8.4 16 12 9.6 15.6"/></svg>
         </a>
-        <span class="btn-label">アプリで開く</span>
+        <span class="btn-label">YouTubeで開く</span>
       </div>
       <div class="control-item">
         <a id="btn-share" class="icon-btn raised" target="_blank" rel="noopener" aria-label="Xで今日の1曲を共有">
@@ -723,6 +699,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="pill-grid" id="dur-pills"></div>
     <h2 class="section-title">再生方法</h2>
     <div class="pill-grid">
+      <button class="toggle-pill" id="queue-toggle" aria-pressed="false">連続再生(終わったら次の曲へ)</button>
       <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
     </div>
     <p class="hint inset">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
@@ -1261,13 +1238,6 @@ function togglePlay() {
 /* ---- 連続再生キュー: 曲が終わったら同じプレイヤーで次の曲へ ---- */
 function queueOn() { return load(LS.QUEUE, true); }
 
-function renderQueueToggle() {
-  const on = queueOn();
-  const b = $("btn-queue");
-  b.classList.toggle("on", on);
-  b.setAttribute("aria-pressed", String(on));
-}
-
 function queueAdvance() {
   const song = gotoNext();
   if (!song || !player || !player.loadVideoById) return;
@@ -1391,18 +1361,21 @@ function renderSettings() {
     });
     ds.appendChild(b);
   }
-  // 再生方法トグル(常にアプリで開く)
-  const oa = $("openapp-toggle");
-  const on = openAppOn();
-  oa.classList.toggle("on", on);
-  oa.setAttribute("aria-pressed", String(on));
-  if (!oa.dataset.wired) {
-    oa.dataset.wired = "1";
-    oa.addEventListener("click", () => {
-      oa.classList.toggle("on");
-      oa.setAttribute("aria-pressed", oa.classList.contains("on"));
-    });
-  }
+  // 再生方法トグル(連続再生 / 常にアプリで開く)
+  const wireToggle = (id, isOn) => {
+    const b = $(id);
+    b.classList.toggle("on", isOn);
+    b.setAttribute("aria-pressed", String(isOn));
+    if (!b.dataset.wired) {
+      b.dataset.wired = "1";
+      b.addEventListener("click", () => {
+        b.classList.toggle("on");
+        b.setAttribute("aria-pressed", b.classList.contains("on"));
+      });
+    }
+  };
+  wireToggle("queue-toggle", queueOn());
+  wireToggle("openapp-toggle", openAppOn());
 }
 
 function saveSettings() {
@@ -1411,6 +1384,7 @@ function saveSettings() {
   const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
   save(LS.SETTINGS, settings);
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
+  save(LS.QUEUE, $("queue-toggle").classList.contains("on"));
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
   const daily = getDaily();
   daily.currentId = null;
@@ -2215,7 +2189,6 @@ function resetAll() {
   [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP].forEach(k => localStorage.removeItem(k));
   calSelectedDate = null;
   save(LS.PLAYS, {}); // migrate を再発火させない(空履歴として確定)
-  renderQueueToggle();
   renderCalendar();
   showView("main");
   init(true);
@@ -2251,10 +2224,6 @@ $("goto-settings").addEventListener("click", () => showView("settings"));
 $("btn-play").addEventListener("click", togglePlay);
 $("btn-prev").addEventListener("click", prevSong);
 $("btn-next").addEventListener("click", nextSong);
-$("btn-queue").addEventListener("click", () => {
-  save(LS.QUEUE, !queueOn());
-  renderQueueToggle();
-});
 document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("click", () => {
   if (!currentSong) return;
   const ratings = load(LS.RATINGS, {});
@@ -2296,7 +2265,6 @@ $("btn-share-img").addEventListener("keydown", ev => { if (ev.key === "Enter" ||
     return;
   }
   migratePlaysFromRatings(); // 旧ユーザーの評価履歴を日別履歴へ1度だけ復元
-  renderQueueToggle();
   loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
   init(false);
 })();
