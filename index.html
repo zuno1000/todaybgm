@@ -697,9 +697,10 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="pill-grid" id="genre-pills"></div>
     <h2 class="section-title">動画時間の希望</h2>
     <div class="pill-grid" id="dur-pills"></div>
+    <h2 class="section-title">曲が終わったら</h2>
+    <div class="pill-grid" id="playmode-pills"></div>
     <h2 class="section-title">再生方法</h2>
     <div class="pill-grid">
-      <button class="toggle-pill" id="queue-toggle" aria-pressed="false">連続再生(終わったら次の曲へ)</button>
       <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
     </div>
     <p class="hint inset">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
@@ -777,6 +778,7 @@ const GENRE_LABELS = {
 };
 const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
+const PLAYMODE_LABELS = { next: "次の曲へ", repeat: "1曲リピート", stop: "停止" };
 const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
 
 /* ============ localStorage ============ */
@@ -786,9 +788,10 @@ const LS = {
   DAILY: "bgm_daily",
   RECENT: "bgm_recent", // 直近提示履歴 {date: [ids]} — 3日減衰用(仕様5.3)
   DEAD: "bgm_dead",     // 再生エラーになった動画ID(以後の候補から除外)
-  QUEUE: "bgm_queue",   // 連続再生キューのオン/オフ
+  QUEUE: "bgm_queue",   // 旧: 連続再生キューのオン/オフ(PLAYMODEへ移行)
   PLAYS: "bgm_plays",   // 日別の再生履歴 {date: {first: id, plays: [ids]}} — カレンダー・履歴用
   OPENAPP: "bgm_openapp", // 常にYouTubeアプリで開く(Premium広告なし向け)
+  PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
 };
 function load(key, fallback) {
   try {
@@ -1055,8 +1058,10 @@ function renderSongInfo(song) {
   tags.appendChild(dur);
   const watchUrl = `https://www.youtube.com/watch?v=${song.id}`;
   $("btn-yt").href = watchUrl;
+  const SITE = "https://zuno1000.github.io/todaybgm/";
   const shareText = `今日の作業テーマ曲:「${song.title}」\n▶ ${watchUrl}\n#作業用BGM #今日の作業テーマ曲`;
-  $("btn-share").href = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://zuno1000.github.io/todaybgm/")}`;
+  $("btn-share").href = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(SITE)}`;
+  $("btn-share").dataset.msg = `${shareText}\n${SITE}`; // Xアプリ(twitter://)用の本文
 }
 
 function renderSong(song) {
@@ -1214,7 +1219,12 @@ function onPlayerStateChange(e) {
     setPlayButton("paused");
   } else if (e.data === YT.PlayerState.ENDED) {
     setPlayButton("paused");
-    if (queueOn()) queueAdvance();
+    const mode = playMode();
+    if (mode === "repeat") {                 // 1曲リピート: 同じ曲を頭から
+      if (player && player.seekTo) { player.seekTo(0, true); player.playVideo(); }
+    } else if (mode === "next") {             // 連続再生: 次の曲へ
+      queueAdvance();
+    }                                         // stop: 何もしない
   }
 }
 
@@ -1235,8 +1245,12 @@ function togglePlay() {
   playCurrent();
 }
 
-/* ---- 連続再生キュー: 曲が終わったら同じプレイヤーで次の曲へ ---- */
-function queueOn() { return load(LS.QUEUE, true); }
+/* ---- 再生モード: 曲が終わったときの挙動 ---- */
+function playMode() {
+  const m = load(LS.PLAYMODE, null);
+  if (m === "next" || m === "repeat" || m === "stop") return m;
+  return load(LS.QUEUE, true) ? "next" : "stop"; // 旧 bgm_queue から移行
+}
 
 function queueAdvance() {
   const song = gotoNext();
@@ -1361,21 +1375,34 @@ function renderSettings() {
     });
     ds.appendChild(b);
   }
-  // 再生方法トグル(連続再生 / 常にアプリで開く)
-  const wireToggle = (id, isOn) => {
-    const b = $(id);
-    b.classList.toggle("on", isOn);
-    b.setAttribute("aria-pressed", String(isOn));
-    if (!b.dataset.wired) {
-      b.dataset.wired = "1";
-      b.addEventListener("click", () => {
-        b.classList.toggle("on");
-        b.setAttribute("aria-pressed", b.classList.contains("on"));
-      });
-    }
-  };
-  wireToggle("queue-toggle", queueOn());
-  wireToggle("openapp-toggle", openAppOn());
+  // 曲が終わったら(単一選択: 次の曲へ / 1曲リピート / 停止)
+  const pm = playMode();
+  const ps = $("playmode-pills");
+  ps.innerHTML = "";
+  for (const [key, label] of Object.entries(PLAYMODE_LABELS)) {
+    const b = document.createElement("button");
+    b.className = "toggle-pill" + (pm === key ? " on" : "");
+    b.textContent = label;
+    b.dataset.key = key;
+    b.setAttribute("aria-pressed", pm === key);
+    b.addEventListener("click", () => {
+      ps.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("on");
+      b.setAttribute("aria-pressed", "true");
+    });
+    ps.appendChild(b);
+  }
+  // 常にアプリで開くトグル
+  const oa = $("openapp-toggle");
+  oa.classList.toggle("on", openAppOn());
+  oa.setAttribute("aria-pressed", String(openAppOn()));
+  if (!oa.dataset.wired) {
+    oa.dataset.wired = "1";
+    oa.addEventListener("click", () => {
+      oa.classList.toggle("on");
+      oa.setAttribute("aria-pressed", oa.classList.contains("on"));
+    });
+  }
 }
 
 function saveSettings() {
@@ -1384,7 +1411,8 @@ function saveSettings() {
   const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
   save(LS.SETTINGS, settings);
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
-  save(LS.QUEUE, $("queue-toggle").classList.contains("on"));
+  const pmBtn = $("playmode-pills").querySelector(".toggle-pill.on");
+  save(LS.PLAYMODE, pmBtn ? pmBtn.dataset.key : "next");
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
   const daily = getDaily();
   daily.currentId = null;
@@ -2186,7 +2214,7 @@ function showExploreCandidate(song) {
 
 function resetAll() {
   if (!confirm("設定・再生履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP].forEach(k => localStorage.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE].forEach(k => localStorage.removeItem(k));
   calSelectedDate = null;
   save(LS.PLAYS, {}); // migrate を再発火させない(空履歴として確定)
   renderCalendar();
@@ -2249,6 +2277,23 @@ $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
 // 端末の向きが変わったら全画面状態を同期(再生中×横向き→全画面、縦→解除)
 window.matchMedia("(orientation: landscape)").addEventListener("change", syncFullscreenToOrientation);
 window.addEventListener("orientationchange", () => setTimeout(syncFullscreenToOrientation, 120));
+// Xで共有: スマホではXアプリ(twitter://)を試し、未導入ならWEB版intentへフォールバック。
+// PCはそのまま<a>のWEB版intentを新規タブで開く。
+$("btn-share").addEventListener("click", (e) => {
+  if (!currentSong || !isMobileLike()) return; // PCは既定の<a target=_blank>に任せる
+  e.preventDefault();
+  const webUrl = $("btn-share").href;
+  const msg = $("btn-share").dataset.msg || "";
+  const appUrl = `twitter://post?message=${encodeURIComponent(msg)}`;
+  let switched = false;
+  const onHide = () => { switched = true; }; // アプリが開くとページが非表示になる
+  document.addEventListener("visibilitychange", onHide, { once: true });
+  setTimeout(() => {
+    document.removeEventListener("visibilitychange", onHide);
+    if (!switched) window.location.href = webUrl; // 未導入: WEB版へ
+  }, 700);
+  window.location.href = appUrl; // アプリ起動を試みる
+});
 // YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
 $("btn-yt").addEventListener("click", () => { markStarted(); });
 $("btn-share-img").addEventListener("click", shareTodayImage);
