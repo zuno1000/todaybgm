@@ -405,7 +405,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .aff-scale {
   display: flex; justify-content: space-between;
   font-size: 11px; color: var(--text-sub);
-  padding: 0 58px 10px 104px;
+  padding: 0 52px 10px 104px;
 }
 .aff-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .aff-row:last-child { margin-bottom: 4px; }
@@ -426,22 +426,18 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   opacity: 0.45;
   border-radius: 2px;
 }
-.aff-fill {
-  position: absolute; top: 3px; bottom: 3px;
+.aff-fill { /* 0→スコア% で左から伸びる(赤=苦手は廃止し単色アクセント) */
+  position: absolute; top: 3px; bottom: 3px; left: 0;
   border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent-soft), var(--accent));
   transition: width 0.4s ease;
 }
-.aff-fill.pos { left: 50%; background: linear-gradient(90deg, var(--accent-soft), var(--accent)); }
-.aff-fill.neg { right: 50%; background: linear-gradient(270deg, #E7B3BC, #C25B6A); }
 .aff-val {
-  width: 44px; flex-shrink: 0;
-  text-align: center;
-  font-size: 11px; font-weight: 700;
-  border-radius: var(--r-full);
-  padding: 4px 0;
+  width: 40px; flex-shrink: 0;
+  text-align: right;
+  font-size: 13px; font-weight: 700;
+  color: var(--accent);
 }
-.aff-val.pos { color: var(--accent); }
-.aff-val.neg { color: var(--danger); }
 .empty { font-size: 13px; color: var(--text-sub); line-height: 1.8; padding: 8px 4px; text-align: center; }
 
 /* ---- 履歴 ---- */
@@ -459,14 +455,11 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark);
 }
 .hist-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.hist-play {
-  width: 30px; height: 30px; flex-shrink: 0;
-  border-radius: var(--r-full);
-  display: grid; place-items: center;
-  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
-  box-shadow: 2px 2px 6px rgba(91, 108, 255, 0.4);
+.hist-thumb {
+  width: 60px; aspect-ratio: 16 / 9; flex-shrink: 0;
+  border-radius: 8px; object-fit: cover; display: block;
+  background: var(--bg-deep);
 }
-.hist-play svg { width: 13px; height: 13px; fill: #fff; stroke: none; margin-left: 1px; }
 .hist-title { font-size: 13px; line-height: 1.5; flex: 1; }
 .hist-side { text-align: right; flex-shrink: 0; }
 .hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; display: block; margin-top: 4px; }
@@ -672,23 +665,23 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="tile raised"><div class="t-val" id="t-top">─</div><div class="t-label">いちばん好き</div></div>
     </div>
     <div id="aff-genres-card">
-      <h2 class="section-title">ジャンルの好み(評価から学習)</h2>
+      <h2 class="section-title">ジャンルの好み度</h2>
       <div class="aff-card raised">
-        <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+        <div class="aff-scale"><span>0</span><span>50 ふつう</span><span>100</span></div>
         <div id="aff-genres"></div>
       </div>
     </div>
     <div id="aff-moods-card">
-      <h2 class="section-title">雰囲気の好み</h2>
+      <h2 class="section-title">雰囲気の好み度</h2>
       <div class="aff-card raised">
-        <div class="aff-scale"><span>← 苦手</span><span>好き →</span></div>
+        <div class="aff-scale"><span>0</span><span>50 ふつう</span><span>100</span></div>
         <div id="aff-moods"></div>
       </div>
     </div>
     <div class="empty" id="taste-empty" style="display:none">
-      ★4以上 / ★2以下の評価がたまると、ここに好みが見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
+      曲を評価すると、ここに好み度が見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
     </div>
-    <p class="footnote">★4以上で好み、★2以下で苦手として学習します</p>
+    <p class="footnote">★の評価から好み度(0〜100)を学習します。50がふつう、高いほど好みです。</p>
   </section>
 
   <!-- ===== 設定 ===== -->
@@ -1507,7 +1500,8 @@ function renderDayDetail(date) {
     li.setAttribute("aria-label", `「${song.title}」を今日の曲にして再生`);
     const genreLabel = GENRE_LABELS[song.genres[0]] || song.genres[0];
     const rating = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
-    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span>${rating}</span>`;
+    li.innerHTML = `<img class="hist-thumb" loading="lazy" alt=""><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span>${rating}</span>`;
+    li.querySelector(".hist-thumb").src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     li.querySelector(".hist-title").textContent = song.title;
     li.querySelector(".hist-genre").textContent = "# " + genreLabel;
     li.addEventListener("click", () => playFromHistory(id));
@@ -1993,26 +1987,24 @@ function playFromHistory(id) {
 }
 
 /* ---- 好み画面(評価データの可視化) ---- */
+// 好み度を 0〜100(50=ふつう)で表示。value(-1〜+1)→ score = 50 + value*50
 function affRow(label, value) {
+  const score = Math.max(0, Math.min(100, Math.round(50 + value * 50)));
   const row = document.createElement("div");
   row.className = "aff-row";
-  const score = Math.round(value * 100);
-  const cls = value >= 0 ? "pos" : "neg";
   const lab = document.createElement("span");
   lab.className = "aff-label";
   lab.textContent = label;
   const track = document.createElement("div");
   track.className = "aff-track inset";
-  track.title = `${label}: ${value > 0 ? "+" : ""}${value.toFixed(2)}`;
-  if (value !== 0) {
-    const fill = document.createElement("div");
-    fill.className = "aff-fill " + cls;
-    fill.style.width = (Math.abs(value) * 50) + "%";
-    track.appendChild(fill);
-  }
+  track.title = `${label}: ${score}/100`;
+  const fill = document.createElement("div");
+  fill.className = "aff-fill";
+  fill.style.width = score + "%";
+  track.appendChild(fill);
   const val = document.createElement("span");
-  val.className = "aff-val inset " + cls;
-  val.textContent = score > 0 ? "+" + score : String(score);
+  val.className = "aff-val";
+  val.textContent = score;
   row.appendChild(lab);
   row.appendChild(track);
   row.appendChild(val);
@@ -2283,16 +2275,22 @@ $("btn-share").addEventListener("click", (e) => {
   if (!currentSong || !isMobileLike()) return; // PCは既定の<a target=_blank>に任せる
   e.preventDefault();
   const webUrl = $("btn-share").href;
-  const msg = $("btn-share").dataset.msg || "";
-  const appUrl = `twitter://post?message=${encodeURIComponent(msg)}`;
-  let switched = false;
-  const onHide = () => { switched = true; }; // アプリが開くとページが非表示になる
-  document.addEventListener("visibilitychange", onHide, { once: true });
+  const appUrl = `twitter://post?message=${encodeURIComponent($("btn-share").dataset.msg || "")}`;
+  let left = false;
+  const mark = () => { left = true; }; // アプリへ切り替わった合図(離脱/背面化)
+  document.addEventListener("visibilitychange", mark, { once: true });
+  window.addEventListener("pagehide", mark, { once: true });
+  window.addEventListener("blur", mark, { once: true });
+  const start = Date.now();
   setTimeout(() => {
-    document.removeEventListener("visibilitychange", onHide);
-    if (!switched) window.location.href = webUrl; // 未導入: WEB版へ
-  }, 700);
-  window.location.href = appUrl; // アプリ起動を試みる
+    document.removeEventListener("visibilitychange", mark);
+    window.removeEventListener("pagehide", mark);
+    window.removeEventListener("blur", mark);
+    // アプリが開いた(離脱した/背面でタイマーが大きく遅延した/現在非表示)なら WEB版は開かない
+    if (left || document.hidden || Date.now() - start > 1600) return;
+    window.location.href = webUrl; // Xアプリ未導入時のみ WEB版へ
+  }, 1000);
+  window.location.href = appUrl; // Xアプリ起動を試みる
 });
 // YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
 $("btn-yt").addEventListener("click", () => { markStarted(); });
