@@ -1,6 +1,6 @@
 {
   "name": "今日の作業テーマ曲",
-  "short_name": "テーマ曲",
+  "short_name": "今日の作業テーマ曲",
   "description": "アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。",
   "start_url": ".",
   "display": "standalone",

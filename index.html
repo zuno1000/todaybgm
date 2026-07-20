@@ -9,6 +9,8 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="今日の作業テーマ曲">
+<meta name="application-name" content="今日の作業テーマ曲">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1559,6 +1561,12 @@ function drawTracked(ctx, text, x, y, spacing) {
   let cx = x;
   for (const ch of text) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + spacing; }
 }
+// 各行のグリフ左端(左サイドベアリングを補正)を x に揃えて描画する。
+// 和文/欧文で左の空きが異なり文頭がズレて見えるのを防ぐ。
+function fillTextVL(ctx, text, x, y) {
+  const lb = ctx.measureText(text).actualBoundingBoxLeft;
+  ctx.fillText(text, x + (isFinite(lb) ? lb : 0), y);
+}
 // 英単語はできるだけ途中で割らず、長すぎる語(日本語の連なり等)だけ文字単位で折る
 function wrapLines(ctx, text, maxWidth, maxLines) {
   const fits = s => ctx.measureText(s).width <= maxWidth;
@@ -1799,6 +1807,7 @@ function drawNoteIcon(ctx, x, y, size) {
   const s = size / 24;
   ctx.save();
   ctx.translate(x, y); ctx.scale(s, s);
+  ctx.translate(-1.4, 0); // 連桁音符は重心が右上に寄るため、光学的中央へわずかに左寄せ
   ctx.strokeStyle = "#fff"; ctx.fillStyle = "#fff";
   ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
   ctx.beginPath(); ctx.moveTo(9, 18); ctx.lineTo(9, 5); ctx.lineTo(21, 3); ctx.lineTo(21, 16); ctx.stroke();
@@ -1832,7 +1841,7 @@ async function buildShareCanvas(song) {
   ctx.fillStyle = gg; ctx.fill();
   drawNoteIcon(ctx, gx + gs * 0.16, gy + gs * 0.16, gs * 0.68); // 枠中央に音符
   ctx.fillStyle = "#3D4A63"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
-  ctx.font = '900 33px "Zen Kaku Gothic New", sans-serif';
+  ctx.font = '700 33px "Zen Kaku Gothic New", sans-serif';
   ctx.fillText("今日の作業テーマ曲", gx + gs + 20, gy + gs / 2 + 1);
   ctx.fillStyle = "#8A96AD"; ctx.textAlign = "right";
   ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
@@ -1870,7 +1879,7 @@ async function buildShareCanvas(song) {
   const dividerY = panelY - 60;
 
   // ラベル + タイトル + ピル を、台座下〜区切り線の間で縦中央寄せ
-  ctx.font = '900 58px "Zen Kaku Gothic New", sans-serif';
+  ctx.font = '700 58px "Zen Kaku Gothic New", sans-serif';
   const lines = wrapLines(ctx, song.title, W - PAD * 2, 3);
   const labelH = 26, gap1 = 66, lh = 82, gap2 = 50, pillH = 62;
   const groupH = labelH + gap1 + lines.length * lh + gap2 + pillH;
@@ -1883,7 +1892,7 @@ async function buildShareCanvas(song) {
   y += labelH;
   drawTracked(ctx, "TODAY'S BGM", PAD, y, 6);
   ctx.fillStyle = "#3D4A63";
-  ctx.font = '900 58px "Zen Kaku Gothic New", sans-serif';
+  ctx.font = '700 58px "Zen Kaku Gothic New", sans-serif';
   y += gap1;
   for (const ln of lines) { ctx.fillText(ln, PAD, y); y += lh; }
   y = y - lh + gap2; // 最終行ぶんを戻してからピルへ
@@ -1912,17 +1921,17 @@ async function buildShareCanvas(song) {
   const tx = panelX + panel + 48;
   ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#3D4A63";
-  ctx.font = '900 46px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("スキャンして聴く", tx, panelY + 88);
+  ctx.font = '700 46px "Zen Kaku Gothic New", sans-serif';
+  fillTextVL(ctx, "スキャンして聴く", tx, panelY + 88);
   ctx.fillStyle = "#8A96AD";
   ctx.font = '700 31px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("YouTubeでこの曲を再生", tx, panelY + 140);
+  fillTextVL(ctx, "YouTubeでこの曲を再生", tx, panelY + 140);
   ctx.fillStyle = "#8A96AD";
   ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("今日の作業テーマ曲", tx, panelY + 228);
+  fillTextVL(ctx, "今日の作業テーマ曲", tx, panelY + 228);
   ctx.fillStyle = "#AAB4C4";
   ctx.font = '700 25px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("zuno1000.github.io/todaybgm", tx, panelY + 268);
+  fillTextVL(ctx, "zuno1000.github.io/todaybgm", tx, panelY + 268);
 
   return cv;
 }
