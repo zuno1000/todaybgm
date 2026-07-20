@@ -55,6 +55,8 @@ MOOD_RULES = [
     (re.compile(r"sleep|relax|calm|peaceful|chill|healing|癒し|リラックス", re.I), "calm"),
     (re.compile(r"epic|orchestra|symphony", re.I), "epic"),
     (re.compile(r"fantasy|ethereal|enchant|magical|dreamy|mystic|幻想", re.I), "fantasy"),
+    (re.compile(r"kawaii|cute|かわいい", re.I), "morning"),
+    (re.compile(r"\bedm\b|house|electro|dance|future bass", re.I), "focus"),
 ]
 
 

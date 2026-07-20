@@ -122,8 +122,10 @@ button:focus-visible, a:focus-visible {
    iOS SafariはクロスオリジンiframeへのFullscreen APIが使えないため、
    position:fixed でビューポート全面を覆う方式を主機構にする(iOS/Android両対応)。 */
 .thumb-wrap.fs-active {
+  /* inset:0 だけでビューポート全面に固定する。iOSでは 100vw/100vh が可視領域より
+     大きくなり、inset:0 と併用すると食い違って動画が左右にズレるため使わない。 */
   position: fixed; inset: 0; z-index: 9999;
-  width: 100vw; height: 100vh;
+  width: auto; height: auto;
   margin: 0; padding: 0;
   border-radius: 0; aspect-ratio: auto;
   background: #000;
@@ -445,6 +447,38 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   font-size: 13px; color: var(--danger); font-weight: 700;
 }
 
+/* ---- 履歴カレンダー ---- */
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin: 24px 2px 16px; }
+.cal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.cal-nav {
+  width: 42px; height: 42px; border-radius: var(--r-full);
+  display: grid; place-items: center;
+  font-size: 22px; line-height: 1; color: var(--text-sub);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.cal-nav:active { transform: scale(0.96); background: var(--bg-deep); box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark); }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 0 2px 8px; }
+.cal-weekdays span { text-align: center; font-size: 11px; font-weight: 700; color: var(--text-sub); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 0 2px; }
+.cal-cell {
+  position: relative; aspect-ratio: 1;
+  border-radius: 12px; overflow: hidden;
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
+.cal-cell.empty-cell { background: transparent; box-shadow: none; }
+.cal-cell .cal-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.cal-cell.has-thumb::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(0,0,0,0.55), transparent 55%); }
+.cal-cell .cal-day { position: absolute; left: 0; bottom: 0; z-index: 2; font-size: 11px; font-weight: 700; color: var(--text-sub); padding: 3px 6px; }
+.cal-cell.has-thumb .cal-day { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.cal-cell[role="button"] { cursor: pointer; }
+.cal-cell[role="button"]:active { transform: scale(0.96); }
+.cal-cell.today-cell { box-shadow: inset 0 0 0 2px var(--accent-soft); }
+.cal-cell.selected { box-shadow: inset 0 0 0 2px var(--accent); }
+.cal-cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.day-detail { margin-top: 8px; }
+.hist-item .hist-side { min-width: 0; }
+
 /* ============================================================
    タブバー
    ============================================================ */
@@ -554,9 +588,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <div class="mixer-ends"><span>集中</span><span>癒し</span></div>
         <input type="range" class="mixer" id="mood1" min="-100" max="100" value="0" step="1" aria-label="集中から癒しまで">
       </div>
-      <div class="mixer-row" style="margin-bottom:2px">
+      <div class="mixer-row">
         <div class="mixer-ends"><span>静か</span><span>壮大</span></div>
         <input type="range" class="mixer" id="mood2" min="-100" max="100" value="0" step="1" aria-label="静かから壮大まで">
+      </div>
+      <div class="mixer-row" style="margin-bottom:2px">
+        <div class="mixer-ends"><span>朝・昼</span><span>夜・雨</span></div>
+        <input type="range" class="mixer" id="mood3" min="-100" max="100" value="0" step="1" aria-label="朝・昼から夜・雨まで">
       </div>
     </div>
 
@@ -615,15 +653,36 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="pill-grid" id="genre-pills"></div>
     <h2 class="section-title">動画時間の希望</h2>
     <div class="pill-grid" id="dur-pills"></div>
+    <h2 class="section-title">再生方法</h2>
+    <div class="pill-grid">
+      <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
+    </div>
+    <p class="hint inset">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
     <div class="save-msg" id="save-msg"></div>
   </section>
 
-  <!-- ===== 履歴 ===== -->
+  <!-- ===== 履歴(カレンダー) ===== -->
   <section id="view-history" class="view">
-    <h2 class="section-title">評価した曲</h2>
-    <ul class="hist-list" id="history-list"></ul>
-    <div class="empty" id="history-empty" style="display:none">まだ評価した曲がありません。</div>
+    <div class="cal-head">
+      <button class="cal-nav raised" id="cal-prev" aria-label="前の月">‹</button>
+      <div class="cal-title" id="cal-title"></div>
+      <button class="cal-nav raised" id="cal-next" aria-label="次の月">›</button>
+    </div>
+    <div class="cal-weekdays">
+      <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+
+    <div class="day-detail" id="day-detail" style="display:none">
+      <h2 class="section-title" id="day-title"></h2>
+      <ul class="hist-list" id="day-list"></ul>
+      <div class="empty" id="day-empty" style="display:none">この日に再生した曲はありません。</div>
+    </div>
+
+    <div class="empty" id="history-empty" style="display:none">
+      まだ再生した曲がありません。<br>曲を再生すると、その日のサムネイルがカレンダーに並んでいきます。
+    </div>
     <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
   </section>
 
@@ -667,6 +726,7 @@ const GENRE_LABELS = {
   lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", nature: "環境音・自然音",
   game: "ゲームBGM", synthwave: "シンセウェーブ", classical: "クラシック",
   celtic: "ケルト音楽", fantasy: "ファンタジー", japanese: "和風",
+  edm: "EDM", kawaii: "かわいい",
 };
 const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
@@ -680,6 +740,8 @@ const LS = {
   RECENT: "bgm_recent", // 直近提示履歴 {date: [ids]} — 3日減衰用(仕様5.3)
   DEAD: "bgm_dead",     // 再生エラーになった動画ID(以後の候補から除外)
   QUEUE: "bgm_queue",   // 連続再生キューのオン/オフ
+  PLAYS: "bgm_plays",   // 日別の再生履歴 {date: {first: id, plays: [ids]}} — カレンダー・履歴用
+  OPENAPP: "bgm_openapp", // 常にYouTubeアプリで開く(Premium広告なし向け)
 };
 function load(key, fallback) {
   try {
@@ -692,6 +754,58 @@ function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function dateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/* ============ 日別再生履歴(カレンダー・履歴タブ用) ============
+ * bgm_plays = { "YYYY-MM-DD": { first: <その日最初に提示された曲id>, plays: [再生した曲id...] } }
+ * first: カレンダーの各日サムネに使う「その日最初にお勧めされた曲」
+ * plays: その日に実際に再生した曲(重複は初回のみ・再生順) */
+function dayLog(date) {
+  const h = load(LS.PLAYS, {});
+  return h[date] || null;
+}
+// 曲が「今日の曲」として提示された(=最初のおすすめ候補)ことを記録
+function recordShown(song) {
+  if (!song) return;
+  const h = load(LS.PLAYS, {});
+  const t = todayStr();
+  h[t] = h[t] || { first: null, plays: [] };
+  if (!h[t].first) h[t].first = song.id;
+  save(LS.PLAYS, h);
+}
+// 曲が実際に再生された(再生開始を検知)ことを記録
+function recordPlay(song) {
+  if (!song) return;
+  const h = load(LS.PLAYS, {});
+  const t = todayStr();
+  h[t] = h[t] || { first: null, plays: [] };
+  if (!h[t].first) h[t].first = song.id;
+  if (!h[t].plays.includes(song.id)) h[t].plays.push(song.id);
+  save(LS.PLAYS, h);
+}
+// 旧ユーザー向け: 評価履歴(bgm_ratings)から日別履歴を1度だけ復元する
+function migratePlaysFromRatings() {
+  if (localStorage.getItem(LS.PLAYS) != null) return; // 既に履歴があれば何もしない
+  const ratings = load(LS.RATINGS, {});
+  const h = {};
+  for (const [id, r] of Object.entries(ratings)) {
+    if (!r || !r.ratedAt) continue;
+    const d = dateStr(new Date(r.ratedAt));
+    h[d] = h[d] || { first: null, plays: [] };
+    if (!h[d].first) h[d].first = id;
+    if (!h[d].plays.includes(id)) h[d].plays.push(id);
+  }
+  save(LS.PLAYS, h);
+}
+// 再生開始を1回だけ確定させる共通処理(評価トレイ表示+再生記録)
+function markStarted() {
+  if (playerStarted) return;
+  playerStarted = true;
+  renderRating();
+  recordPlay(currentSong);
 }
 
 /* =========================================================
@@ -900,6 +1014,7 @@ function renderSongInfo(song) {
 
 function renderSong(song) {
   currentSong = song;
+  recordShown(song); // その日最初のおすすめをカレンダー用に記録
   destroyPlayer();
   $("thumb-wrap").classList.remove("playing");
   setPseudoFullscreen(false); // 曲を切り替えたら擬似全画面は一旦解除(再生開始時に再判定)
@@ -1033,9 +1148,7 @@ async function playCurrent() {
   $("live-badge").style.display = "none";
   $("thumb").style.display = "none";
   // 自動再生がブロックされる環境でも評価UIは出す(ユーザー操作起点のため)
-  ratingFallbackTimer = setTimeout(() => {
-    if (!playerStarted) { playerStarted = true; renderRating(); }
-  }, 4000);
+  ratingFallbackTimer = setTimeout(() => { markStarted(); }, 4000);
   if (player && playerReady) { player.playVideo(); return; } // 通常経路: 同期再生
   playWhenReady = true; // 準備が済み次第すぐ再生
   if (!player) {
@@ -1048,10 +1161,7 @@ async function playCurrent() {
 function onPlayerStateChange(e) {
   if (e.data === YT.PlayerState.PLAYING) {
     setPlayButton("playing");
-    if (!playerStarted) {
-      playerStarted = true;
-      renderRating();
-    }
+    markStarted();
     syncFullscreenToOrientation(); // 横向きで再生開始/次曲移行時に全画面化
   } else if (e.data === YT.PlayerState.PAUSED) {
     setPlayButton("paused");
@@ -1063,6 +1173,7 @@ function onPlayerStateChange(e) {
 
 // 再生/一時停止トグル。未再生(cued/unstarted/ended)や未準備は playCurrent へ
 function togglePlay() {
+  if (openAppOn() && currentSong) { openInYouTubeApp(); return; } // 常にアプリで開く設定
   if (player && playerReady && player.getPlayerState) {
     const st = player.getPlayerState();
     if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) {
@@ -1210,6 +1321,18 @@ function renderSettings() {
     });
     ds.appendChild(b);
   }
+  // 再生方法トグル(常にアプリで開く)
+  const oa = $("openapp-toggle");
+  const on = openAppOn();
+  oa.classList.toggle("on", on);
+  oa.setAttribute("aria-pressed", String(on));
+  if (!oa.dataset.wired) {
+    oa.dataset.wired = "1";
+    oa.addEventListener("click", () => {
+      oa.classList.toggle("on");
+      oa.setAttribute("aria-pressed", oa.classList.contains("on"));
+    });
+  }
 }
 
 function saveSettings() {
@@ -1217,6 +1340,7 @@ function saveSettings() {
   const durBtn = $("dur-pills").querySelector(".toggle-pill.on");
   const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
   save(LS.SETTINGS, settings);
+  save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
   const daily = getDaily();
   daily.currentId = null;
@@ -1229,31 +1353,91 @@ function saveSettings() {
   }, 700);
 }
 
-/* ---- 履歴画面 ---- */
-function renderHistory() {
-  const ratings = load(LS.RATINGS, {});
-  const list = $("history-list");
+/* ---- 履歴画面(カレンダー) ---- */
+let calView = null;            // 表示中の月 {year, month(0-11)}
+let calSelectedDate = null;    // 選択中の日付 "YYYY-MM-DD"
+
+function renderCalendar() {
+  const h = load(LS.PLAYS, {});
+  const hasAny = Object.values(h).some(v => v && (v.first || (v.plays && v.plays.length)));
+  $("history-empty").style.display = hasAny ? "none" : "";
+
+  if (!calView) { const n = new Date(); calView = { year: n.getFullYear(), month: n.getMonth() }; }
+  const { year, month } = calView;
+  const mm = String(month + 1).padStart(2, "0");
+  $("cal-title").textContent = `${year}年${month + 1}月`;
+
+  const grid = $("cal-grid");
+  grid.innerHTML = "";
+  const startDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = todayStr();
+
+  for (let i = 0; i < startDow; i++) {
+    const c = document.createElement("div");
+    c.className = "cal-cell empty-cell";
+    grid.appendChild(c);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = `${year}-${mm}-${String(d).padStart(2, "0")}`;
+    const log = h[date];
+    const firstId = log && log.first;
+    const cell = document.createElement("div");
+    cell.className = "cal-cell";
+    if (firstId) cell.classList.add("has-thumb");
+    if (date === today) cell.classList.add("today-cell");
+    if (date === calSelectedDate) cell.classList.add("selected");
+    if (log && (firstId || (log.plays && log.plays.length))) {
+      cell.setAttribute("role", "button");
+      cell.tabIndex = 0;
+      cell.setAttribute("aria-label", `${month + 1}月${d}日の再生履歴を見る`);
+      const open = () => { calSelectedDate = date; renderCalendar(); $("day-detail").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+      cell.addEventListener("click", open);
+      cell.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); } });
+    }
+    if (firstId) {
+      const img = document.createElement("img");
+      img.className = "cal-thumb"; img.loading = "lazy"; img.alt = "";
+      img.src = `https://i.ytimg.com/vi/${firstId}/mqdefault.jpg`; // 16:9=黒帯なし
+      cell.appendChild(img);
+    }
+    const num = document.createElement("span");
+    num.className = "cal-day";
+    num.textContent = d;
+    cell.appendChild(num);
+    grid.appendChild(cell);
+  }
+
+  // 選択日が表示中の月に含まれていれば詳細を出す
+  if (calSelectedDate && calSelectedDate.startsWith(`${year}-${mm}`)) renderDayDetail(calSelectedDate);
+  else $("day-detail").style.display = "none";
+}
+
+function renderDayDetail(date) {
+  const h = load(LS.PLAYS, {});
+  const log = h[date];
+  const [, m, d] = date.split("-").map(Number);
+  $("day-detail").style.display = "";
+  $("day-title").textContent = `${m}月${d}日 に再生した曲`;
+  const list = $("day-list");
   list.innerHTML = "";
-  const entries = Object.entries(ratings)
-    .map(([id, r]) => ({ id, ...r, song: SONGS.find(s => s.id === id) }))
-    .filter(e => e.song)
-    .sort((a, b) => new Date(b.ratedAt) - new Date(a.ratedAt));
-  $("history-empty").style.display = entries.length ? "none" : "";
-  for (const e of entries) {
+  const ratings = load(LS.RATINGS, {});
+  const ids = log && log.plays ? log.plays.slice().reverse() : []; // 新しく再生した順
+  $("day-empty").style.display = ids.length ? "none" : "";
+  for (const id of ids) {
+    const song = SONGS.find(s => s.id === id);
+    if (!song) continue;
+    const r = ratings[id];
     const li = document.createElement("li");
     li.className = "hist-item raised";
-    li.dataset.id = e.id;
     li.setAttribute("role", "button");
     li.tabIndex = 0;
-    li.setAttribute("aria-label", `「${e.song.title}」を今日の曲にして再生`);
-    const stars = "★".repeat(e.rating) + "☆".repeat(5 - e.rating);
-    const date = new Date(e.ratedAt).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" });
-    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side"><span class="hist-stars">${stars}</span><div class="hist-date">${date}</div></span>`;
-    li.querySelector(".hist-title").textContent = e.song.title;
-    li.addEventListener("click", () => playFromHistory(e.id));
-    li.addEventListener("keydown", ev => {
-      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFromHistory(e.id); }
-    });
+    li.setAttribute("aria-label", `「${song.title}」を今日の曲にして再生`);
+    const stars = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
+    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side">${stars}</span>`;
+    li.querySelector(".hist-title").textContent = song.title;
+    li.addEventListener("click", () => playFromHistory(id));
+    li.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFromHistory(id); } });
     list.appendChild(li);
   }
 }
@@ -1266,8 +1450,39 @@ function setAsToday(song, autoplay) {
   if (!daily.shownIds.includes(song.id)) daily.shownIds.push(song.id);
   save(LS.DAILY, daily);
   showView("main");
+  // 「常にアプリで開く」時は埋め込み再生せずYouTubeアプリへ委譲
+  if (autoplay && openAppOn()) { renderSong(song); openInYouTubeApp(); return; }
+  // 既存プレイヤーがあれば破棄せず loadVideoById で差し替える。
+  // 破棄→再生成だとクリックのユーザー操作が切れて自動再生がブロックされ「2回押し」になるため
+  // (探す/履歴から「これを今日の曲にする」で自動再生されない不具合の対策)。
+  if (autoplay && player && playerReady && player.loadVideoById) {
+    currentSong = song;
+    loadedSong = song;
+    playerStarted = false;
+    recordShown(song);
+    setPseudoFullscreen(false);
+    $("thumb-wrap").classList.add("playing");
+    $("thumb").style.display = "none";
+    $("live-badge").style.display = "none";
+    renderSongInfo(song);
+    updateNavButtons();
+    renderRating();
+    setPlayButton("playing");
+    if (ratingFallbackTimer) clearTimeout(ratingFallbackTimer);
+    ratingFallbackTimer = setTimeout(() => { markStarted(); }, 4000);
+    player.loadVideoById(song.id); // プレイヤー維持のまま差し替え=自動再生が通る
+    return;
+  }
   renderSong(song);
   if (autoplay) playCurrent();
+}
+
+/* ---- YouTubeアプリ/外部で開く(Premium: 広告なし・バックグラウンド再生向け) ---- */
+function openAppOn() { return load(LS.OPENAPP, false); }
+function openInYouTubeApp() {
+  if (!currentSong) return;
+  window.open(`https://www.youtube.com/watch?v=${currentSong.id}`, "_blank", "noopener");
+  markStarted(); // 戻ってきたときに評価できるよう評価トレイを出す+再生として記録
 }
 
 // 履歴の曲をタップ → 今日の曲にセットして即再生
@@ -1338,13 +1553,18 @@ function renderTaste() {
  * ========================================================= */
 const SW = { genre: 3.0, mood: 2.0, duration: 1.5, eps: 0.6 };
 
-// ミキサー2軸(各 -1〜+1)→ ムード希望重みに変換
+// ミキサー3軸(各 -1〜+1)→ ムード希望重みに変換
 // mood1: -1 集中(focus) 〜 +1 癒し(calm) / mood2: -1 静か 〜 +1 壮大(epic/fantasy)
-function searchMoodWeights(m1, m2) {
+// mood3: -1 朝・昼(morning) 〜 +1 夜・雨(night/rain)
+function searchMoodWeights(m1, m2, m3) {
   const w = { focus: 0, calm: 0, epic: 0, fantasy: 0, night: 0, morning: 0, rain: 0 };
   if (m1 < 0) w.focus = -m1; else w.calm = m1;
   if (m2 > 0) { w.epic = m2; w.fantasy = m2; }
   else { w.calm += (-m2) * 0.4; w.epic = m2; w.fantasy = m2; } // 静か側は壮大系にマイナス
+  if (m3) {
+    if (m3 < 0) w.morning += -m3;               // 朝・昼寄り
+    else { w.night += m3; w.rain += m3 * 0.6; } // 夜・雨寄り
+  }
   return w;
 }
 function searchMoodScore(song, w) {
@@ -1360,7 +1580,7 @@ function searchScore(song, crit, w) {
 
 function pickSearchSong(crit, excludeIds) {
   const dead = load(LS.DEAD, []);
-  const w = searchMoodWeights(crit.mood1, crit.mood2);
+  const w = searchMoodWeights(crit.mood1, crit.mood2, crit.mood3);
   let cands = SONGS.filter(s => !dead.includes(s.id) && !excludeIds.includes(s.id));
   // ジャンル指定があれば、そのジャンルに合致する曲だけに絞る(指定の尊重)
   if (crit.genres.length) {
@@ -1390,6 +1610,7 @@ function readExploreCriteria() {
     duration: durBtn ? durBtn.dataset.key : "any",
     mood1: Number($("mood1").value) / 100,
     mood2: Number($("mood2").value) / 100,
+    mood3: Number($("mood3").value) / 100,
   };
 }
 
@@ -1468,10 +1689,12 @@ function showExploreCandidate(song) {
 }
 
 function resetAll() {
-  if (!confirm("設定・評価履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE].forEach(k => localStorage.removeItem(k));
+  if (!confirm("設定・再生履歴をすべてリセットします。よろしいですか?")) return;
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP].forEach(k => localStorage.removeItem(k));
+  calSelectedDate = null;
+  save(LS.PLAYS, {}); // migrate を再発火させない(空履歴として確定)
   renderQueueToggle();
-  renderHistory();
+  renderCalendar();
   showView("main");
   init(true);
 }
@@ -1486,7 +1709,7 @@ function showView(name) {
     b.setAttribute("aria-selected", on);
   });
   if (name === "settings") renderSettings();
-  if (name === "history") renderHistory();
+  if (name === "history") renderCalendar();
   if (name === "taste") renderTaste();
   if (name === "explore") renderExplore();
 }
@@ -1521,6 +1744,8 @@ document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("c
 }));
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
+$("cal-prev").addEventListener("click", () => { calView.month--; if (calView.month < 0) { calView.month = 11; calView.year--; } renderCalendar(); });
+$("cal-next").addEventListener("click", () => { calView.month++; if (calView.month > 11) { calView.month = 0; calView.year++; } renderCalendar(); });
 $("btn-explore").addEventListener("click", runExplore);
 $("ex-again").addEventListener("click", exploreAgain);
 $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
@@ -1528,10 +1753,7 @@ $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
 window.matchMedia("(orientation: landscape)").addEventListener("change", syncFullscreenToOrientation);
 window.addEventListener("orientationchange", () => setTimeout(syncFullscreenToOrientation, 120));
 // YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
-$("btn-yt").addEventListener("click", () => {
-  playerStarted = true;
-  renderRating();
-});
+$("btn-yt").addEventListener("click", () => { markStarted(); });
 
 (async function boot() {
   try {
@@ -1543,6 +1765,7 @@ $("btn-yt").addEventListener("click", () => {
     $("controls").style.display = "none";
     return;
   }
+  migratePlaysFromRatings(); // 旧ユーザーの評価履歴を日別履歴へ1度だけ復元
   renderQueueToggle();
   loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
   init(false);

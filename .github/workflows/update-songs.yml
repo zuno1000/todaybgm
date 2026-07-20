@@ -31,7 +31,9 @@ jobs:
       - name: Update songs.json
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: python scripts/update_songs.py
+        # --max-per-genre 40 は既定。--per-query 20 で候補を増やし各ジャンル40曲(全12=480)へ寄せる
+        # (search.list のコストは maxResults 50 まで一定=100ユニットなので追加コストなし)
+        run: python scripts/update_songs.py --per-query 20
 
       - name: Commit and push if changed
         run: |
