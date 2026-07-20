@@ -1585,72 +1585,91 @@ function wrapLines(ctx, text, maxWidth, maxLines) {
   }
   return lines.slice(0, maxLines);
 }
-function drawPill(ctx, x, y, text, color) {
-  ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
+// 背景に埋もれないよう「白地+ドロップシャドウ」の浮きピルにする
+function drawPill(ctx, x, y, text, bg, color) {
+  ctx.font = '700 30px "Zen Kaku Gothic New", sans-serif';
   const tw = ctx.measureText(text).width;
-  const padX = 30, h = 56, w = tw + padX * 2;
+  const padX = 32, h = 62, w = tw + padX * 2;
+  ctx.save();
+  ctx.shadowColor = "rgba(136,152,184,0.55)"; ctx.shadowBlur = 16; ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 6;
   roundRectPath(ctx, x, y, w, h, h / 2);
-  ctx.fillStyle = "#DDE4EF"; ctx.fill();
+  ctx.fillStyle = bg; ctx.fill();
+  ctx.restore();
   ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "middle";
   ctx.fillText(text, x + padX, y + h / 2 + 1);
   return w;
 }
 // crossOrigin=anonymous で読む。CORS不可なら onerror → null(canvasをtaintさせない)
-function loadThumb(id) {
+function loadImageCORS(src) {
   return new Promise(resolve => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
-    img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    img.src = src;
   });
+}
+function loadThumb(id) { return loadImageCORS(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`); }
+// QRコード画像(その曲のYouTube URLをエンコード)。外部生成のためCORS付きで読み、失敗時はnull
+function loadQR(data, size) {
+  return loadImageCORS(`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=0&data=${encodeURIComponent(data)}`);
+}
+// 連桁音符アイコン(アプリと同一のグリフ)を24単位座標系で box(x,y,size)内に中央描画
+function drawNoteIcon(ctx, x, y, size) {
+  const s = size / 24;
+  ctx.save();
+  ctx.translate(x, y); ctx.scale(s, s);
+  ctx.strokeStyle = "#fff"; ctx.fillStyle = "#fff";
+  ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(9, 18); ctx.lineTo(9, 5); ctx.lineTo(21, 3); ctx.lineTo(21, 16); ctx.stroke();
+  ctx.beginPath(); ctx.arc(6, 18, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(18, 16, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
 }
 
 async function buildShareCanvas(song) {
   if (document.fonts && document.fonts.load) {
     await Promise.all([
-      document.fonts.load('900 56px "Zen Kaku Gothic New"'),
-      document.fonts.load('700 28px "Zen Kaku Gothic New"'),
+      document.fonts.load('900 58px "Zen Kaku Gothic New"'),
+      document.fonts.load('700 30px "Zen Kaku Gothic New"'),
     ]).catch(() => {});
   }
-  const W = 1080, H = 1350, PAD = 88;
+  const W = 1080, H = 1920, PAD = 88; // 9:16 縦長(スマホ全画面比)
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const ctx = cv.getContext("2d");
 
   // 背景グラデ
-  const bg = ctx.createLinearGradient(W * 0.8, 0, W * 0.2, H);
+  const bg = ctx.createLinearGradient(W * 0.85, 0, W * 0.15, H);
   bg.addColorStop(0, "#EFF3FA"); bg.addColorStop(0.5, "#E5EBF5"); bg.addColorStop(1, "#DCE3EF");
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
-  // ヘッダ: 音符グリフ + アプリ名 + 日付
-  const gs = 60, gx = PAD, gy = PAD;
-  roundRectPath(ctx, gx, gy, gs, gs, 18);
+  // ヘッダ: 音符アイコン + アプリ名 + 日付
+  const gs = 66, gx = PAD, gy = 104;
+  roundRectPath(ctx, gx, gy, gs, gs, 20);
   const gg = ctx.createLinearGradient(gx, gy, gx + gs, gy + gs);
   gg.addColorStop(0, "#5B6CFF"); gg.addColorStop(1, "#4353E8");
   ctx.fillStyle = gg; ctx.fill();
-  ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  ctx.font = '900 34px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("♫", gx + gs / 2, gy + gs / 2 + 2);
-  ctx.fillStyle = "#3D4A63"; ctx.textAlign = "left";
-  ctx.font = '900 30px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("今日の作業テーマ曲", gx + gs + 18, gy + gs / 2 + 2);
+  drawNoteIcon(ctx, gx + gs * 0.16, gy + gs * 0.16, gs * 0.68); // 枠中央に音符
+  ctx.fillStyle = "#3D4A63"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+  ctx.font = '900 33px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText("今日の作業テーマ曲", gx + gs + 20, gy + gs / 2 + 1);
   ctx.fillStyle = "#8A96AD"; ctx.textAlign = "right";
-  ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText(todayStr().replace(/-/g, "."), W - PAD, gy + gs / 2 + 2);
+  ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText(todayStr().replace(/-/g, "."), W - PAD, gy + gs / 2 + 1);
 
   // 台座 + サムネ(16:9)
-  const pedX = PAD, pedY = gy + gs + 44, pedW = W - PAD * 2, pedPad = 24;
+  const pedX = PAD, pedY = gy + gs + 54, pedW = W - PAD * 2, pedPad = 24;
   const thW = pedW - pedPad * 2, thH = Math.round(thW * 9 / 16), pedH = thH + pedPad * 2;
   ctx.save();
-  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 40; ctx.shadowOffsetX = 12; ctx.shadowOffsetY = 16;
-  roundRectPath(ctx, pedX, pedY, pedW, pedH, 40);
+  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 44; ctx.shadowOffsetX = 12; ctx.shadowOffsetY = 18;
+  roundRectPath(ctx, pedX, pedY, pedW, pedH, 44);
   ctx.fillStyle = "#E8EDF5"; ctx.fill();
   ctx.restore();
   const thX = pedX + pedPad, thY = pedY + pedPad;
   const img = await loadThumb(song.id);
   ctx.save();
-  roundRectPath(ctx, thX, thY, thW, thH, 24); ctx.clip();
+  roundRectPath(ctx, thX, thY, thW, thH, 26); ctx.clip();
   if (img && img.width) {
     const scale = Math.max(thW / img.width, thH / img.height) * 1.02; // cover(黒帯を切る)
     const dw = img.width * scale, dh = img.height * scale;
@@ -1659,46 +1678,73 @@ async function buildShareCanvas(song) {
     const fg = ctx.createLinearGradient(thX, thY, thX + thW, thY + thH);
     fg.addColorStop(0, "#5B6CFF"); fg.addColorStop(1, "#AAB4FF");
     ctx.fillStyle = fg; ctx.fillRect(thX, thY, thW, thH);
-    ctx.fillStyle = "rgba(255,255,255,.92)"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.font = '900 140px "Zen Kaku Gothic New", sans-serif';
-    ctx.fillText("♫", thX + thW / 2, thY + thH / 2 + 12);
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    drawNoteIcon(ctx, thX + thW / 2 - 70, thY + thH / 2 - 70, 140);
   }
   ctx.restore();
+  const pedEnd = pedY + pedH;
 
-  // ラベル + タイトル
+  // ---- フッタ(QR + 導線)の位置を先に確定 ----
+  const qr = 260, qpad = 20, panel = qr + qpad * 2;      // QRパネル
+  const panelX = PAD, panelY = H - PAD - panel;
+  const dividerY = panelY - 60;
+
+  // ラベル + タイトル + ピル を、台座下〜区切り線の間で縦中央寄せ
+  ctx.font = '900 58px "Zen Kaku Gothic New", sans-serif';
+  const lines = wrapLines(ctx, song.title, W - PAD * 2, 3);
+  const labelH = 26, gap1 = 66, lh = 82, gap2 = 50, pillH = 62;
+  const groupH = labelH + gap1 + lines.length * lh + gap2 + pillH;
+  const availTop = pedEnd, availBottom = dividerY;
+  let y = availTop + Math.max(30, (availBottom - availTop - groupH) / 2);
+
   ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
-  let y = pedY + pedH + 66;
   ctx.fillStyle = "#5B6CFF";
-  ctx.font = '900 24px "Zen Kaku Gothic New", sans-serif';
+  ctx.font = '900 25px "Zen Kaku Gothic New", sans-serif';
+  y += labelH;
   drawTracked(ctx, "TODAY'S BGM", PAD, y, 6);
   ctx.fillStyle = "#3D4A63";
-  ctx.font = '900 56px "Zen Kaku Gothic New", sans-serif';
-  const lines = wrapLines(ctx, song.title, W - PAD * 2, 3);
-  const lh = 78;
-  for (const ln of lines) { y += lh; ctx.fillText(ln, PAD, y); }
-
-  // メタ(ジャンル + 長さ)
-  y += 46;
+  ctx.font = '900 58px "Zen Kaku Gothic New", sans-serif';
+  y += gap1;
+  for (const ln of lines) { ctx.fillText(ln, PAD, y); y += lh; }
+  y = y - lh + gap2; // 最終行ぶんを戻してからピルへ
   let px = PAD;
-  px += drawPill(ctx, px, y, "# " + (GENRE_LABELS[song.genres[0]] || song.genres[0]), "#5B6CFF") + 14;
-  drawPill(ctx, px, y, durationText(song).split("(")[0], "#8A96AD");
+  px += drawPill(ctx, px, y, "# " + (GENRE_LABELS[song.genres[0]] || song.genres[0]), "#E9ECFF", "#4353E8") + 16;
+  drawPill(ctx, px, y, durationText(song).split("(")[0], "#FFFFFF", "#6E7A93");
 
-  // フッタ: 区切り線 + URL + CTA
-  const fy = H - PAD - 8;
-  ctx.strokeStyle = "rgba(136,152,184,.28)"; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(PAD, fy - 44); ctx.lineTo(W - PAD, fy - 44); ctx.stroke();
-  ctx.fillStyle = "#8A96AD"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
-  ctx.font = '700 27px "Zen Kaku Gothic New", sans-serif';
-  ctx.fillText("zuno1000.github.io/todaybgm", PAD, fy);
-  const cta = "▶ この曲を聴く";
-  ctx.font = '900 28px "Zen Kaku Gothic New", sans-serif';
-  const ctaW = ctx.measureText(cta).width + 64, ctaH = 64, ctaX = W - PAD - ctaW, ctaY = fy - ctaH / 2;
-  roundRectPath(ctx, ctaX, ctaY, ctaW, ctaH, ctaH / 2);
-  const cg = ctx.createLinearGradient(ctaX, ctaY, ctaX + ctaW, ctaY + ctaH);
-  cg.addColorStop(0, "#5B6CFF"); cg.addColorStop(1, "#4353E8");
-  ctx.fillStyle = cg; ctx.fill();
-  ctx.fillStyle = "#fff"; ctx.textAlign = "center";
-  ctx.fillText(cta, ctaX + ctaW / 2, ctaY + ctaH / 2 + 1);
+  // ---- 区切り線 ----
+  ctx.strokeStyle = "rgba(136,152,184,.3)"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(PAD, dividerY); ctx.lineTo(W - PAD, dividerY); ctx.stroke();
+
+  // ---- QRパネル(白地・浮き)+ QR ----
+  ctx.save();
+  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 26; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 8;
+  roundRectPath(ctx, panelX, panelY, panel, panel, 28);
+  ctx.fillStyle = "#FFFFFF"; ctx.fill();
+  ctx.restore();
+  const qrImg = await loadQR(`https://www.youtube.com/watch?v=${song.id}`, qr);
+  if (qrImg && qrImg.width) {
+    ctx.drawImage(qrImg, panelX + qpad, panelY + qpad, qr, qr);
+  } else {
+    ctx.fillStyle = "#8A96AD"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
+    ctx.fillText("QRを生成できません", panelX + panel / 2, panelY + panel / 2);
+  }
+
+  // ---- QR右のテキスト導線 ----
+  const tx = panelX + panel + 48;
+  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#3D4A63";
+  ctx.font = '900 46px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText("スキャンして聴く", tx, panelY + 88);
+  ctx.fillStyle = "#8A96AD";
+  ctx.font = '700 31px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText("YouTubeでこの曲を再生", tx, panelY + 140);
+  ctx.fillStyle = "#8A96AD";
+  ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText("今日の作業テーマ曲", tx, panelY + 228);
+  ctx.fillStyle = "#AAB4C4";
+  ctx.font = '700 25px "Zen Kaku Gothic New", sans-serif';
+  ctx.fillText("zuno1000.github.io/todaybgm", tx, panelY + 268);
 
   return cv;
 }
