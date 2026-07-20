@@ -308,8 +308,45 @@ button:focus-visible, a:focus-visible {
 .save-msg { text-align: center; font-size: 12px; color: var(--accent); min-height: 18px; }
 
 /* ---- 探す: 気分ミキサー(スライダー) ---- */
+.mixer-head { display: flex; align-items: center; justify-content: space-between; margin: 26px 4px 14px; }
+.ex-reset {
+  font-size: 12px; font-weight: 700; color: var(--text-sub);
+  padding: 7px 16px; border-radius: var(--r-full);
+  background: var(--bg);
+  box-shadow: -4px -4px 8px var(--sh-light), 4px 4px 8px var(--sh-dark);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.ex-reset:active {
+  transform: scale(0.96);
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
 .mixer-card { border-radius: var(--r-card); padding: 22px 22px 20px; }
 .mixer-row { margin-bottom: 24px; }
+/* 雨音などのオン/オフ行(スライダーと同じカード内に収める) */
+.mixer-switch-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 22px; padding-top: 18px;
+  border-top: 1px solid rgba(136, 152, 184, 0.18);
+  font-size: 13px; font-weight: 700; color: var(--text-sub);
+}
+.switch {
+  width: 48px; height: 28px; flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+  position: relative; transition: background 0.2s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--bg);
+  box-shadow: -2px -2px 4px var(--sh-light), 2px 2px 5px var(--sh-dark);
+  transition: transform 0.2s;
+}
+.switch.on { background: linear-gradient(145deg, var(--accent), var(--accent-deep)); }
+.switch.on::after { transform: translateX(20px); background: #fff; box-shadow: -1px -1px 3px rgba(255,255,255,0.6), 1px 1px 3px rgba(40,50,160,0.4); }
+.switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .mixer-ends {
   display: flex; justify-content: space-between;
   font-size: 12px; font-weight: 700; color: var(--text-sub);
@@ -583,31 +620,27 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <h2 class="section-title">ジャンル(任意・複数)</h2>
     <div class="pill-grid" id="explore-genres"></div>
 
-    <h2 class="section-title">気分ミキサー</h2>
+    <div class="mixer-head">
+      <h2 class="section-title" style="margin:0">気分ミキサー</h2>
+      <button class="ex-reset" id="btn-explore-reset" type="button">リセット</button>
+    </div>
     <div class="mixer-card raised">
       <div class="mixer-row">
-        <div class="mixer-ends"><span>集中</span><span>癒し</span></div>
-        <input type="range" class="mixer" id="mood1" min="-100" max="100" value="0" step="1" aria-label="集中から癒しまで">
-      </div>
-      <div class="mixer-row">
-        <div class="mixer-ends"><span>静か</span><span>壮大</span></div>
-        <input type="range" class="mixer" id="mood2" min="-100" max="100" value="0" step="1" aria-label="静かから壮大まで">
-      </div>
-      <div class="mixer-row">
         <div class="mixer-ends"><span>朝(明るい)</span><span>夜(落ち着いた)</span></div>
-        <input type="range" class="mixer" id="mood3" min="-100" max="100" value="0" step="1" aria-label="朝から夜まで">
+        <input type="range" class="mixer" id="ax-time" min="-100" max="100" value="0" step="1" aria-label="朝から夜まで">
       </div>
       <div class="mixer-row">
         <div class="mixer-ends"><span>アコースティック</span><span>電子音</span></div>
-        <input type="range" class="mixer" id="mood4" min="-100" max="100" value="0" step="1" aria-label="アコースティックから電子音まで">
+        <input type="range" class="mixer" id="ax-texture" min="-100" max="100" value="0" step="1" aria-label="アコースティックから電子音まで">
       </div>
-      <div class="mixer-row" style="margin-bottom:2px">
+      <div class="mixer-row">
         <div class="mixer-ends"><span>ゆったり</span><span>アップテンポ</span></div>
-        <input type="range" class="mixer" id="mood5" min="-100" max="100" value="0" step="1" aria-label="ゆったりからアップテンポまで">
+        <input type="range" class="mixer" id="ax-tempo" min="-100" max="100" value="0" step="1" aria-label="ゆったりからアップテンポまで">
       </div>
-    </div>
-    <div class="pill-grid" style="margin-top:14px">
-      <button class="toggle-pill" id="rain-toggle" aria-pressed="false">雨音の曲を優先</button>
+      <div class="mixer-switch-row">
+        <span>雨音の曲を優先</span>
+        <button class="switch" id="rain-toggle" role="switch" aria-checked="false" aria-label="雨音の曲を優先"></button>
+      </div>
     </div>
 
     <h2 class="section-title">長さ</h2>
@@ -1580,15 +1613,11 @@ function axisMembership(genre, posSet, negSet) {
   return 0;
 }
 
-// 気分ミキサーのムード軸(各 -1〜+1)→ ムード希望重みに変換
-// mood1: -1 集中(focus) 〜 +1 癒し(calm) / mood2: -1 静か 〜 +1 壮大(epic/fantasy)
-// mood3: -1 朝・明るい(morning) 〜 +1 夜・落ち着いた(night)
-function searchMoodWeights(m1, m2, m3) {
-  const w = { focus: 0, calm: 0, epic: 0, fantasy: 0, night: 0, morning: 0, rain: 0 };
-  if (m1 < 0) w.focus = -m1; else w.calm = m1;
-  if (m2 > 0) { w.epic = m2; w.fantasy = m2; }
-  else { w.calm += (-m2) * 0.4; w.epic = m2; w.fantasy = m2; } // 静か側は壮大系にマイナス
-  if (m3) { if (m3 < 0) w.morning += -m3; else w.night += m3; } // 朝(明るい) ↔ 夜(落ち着いた)
+// 気分ミキサーの時間軸(-1〜+1)→ ムード希望重みに変換
+// time: -1 朝・明るい(morning) 〜 +1 夜・落ち着いた(night)
+function searchMoodWeights(time) {
+  const w = { morning: 0, night: 0 };
+  if (time) { if (time < 0) w.morning = -time; else w.night = time; }
   return w;
 }
 function searchMoodScore(song, w) {
@@ -1611,7 +1640,7 @@ function searchScore(song, crit, w) {
 
 function pickSearchSong(crit, excludeIds) {
   const dead = load(LS.DEAD, []);
-  const w = searchMoodWeights(crit.mood1, crit.mood2, crit.mood3);
+  const w = searchMoodWeights(crit.time);
   let cands = SONGS.filter(s => !dead.includes(s.id) && !excludeIds.includes(s.id));
   // ジャンル指定があれば、そのジャンルに合致する曲だけに絞る(指定の尊重)
   if (crit.genres.length) {
@@ -1639,11 +1668,9 @@ function readExploreCriteria() {
   return {
     genres,
     duration: durBtn ? durBtn.dataset.key : "any",
-    mood1: Number($("mood1").value) / 100,
-    mood2: Number($("mood2").value) / 100,
-    mood3: Number($("mood3").value) / 100,
-    acoustic: Number($("mood4").value) / 100,
-    tempo: Number($("mood5").value) / 100,
+    time: Number($("ax-time").value) / 100,
+    acoustic: Number($("ax-texture").value) / 100,
+    tempo: Number($("ax-tempo").value) / 100,
     rain: $("rain-toggle").classList.contains("on"),
   };
 }
@@ -1691,6 +1718,14 @@ function runExplore() {
   showExploreCandidate(song);
 }
 
+// 気分ミキサーを初期状態へ(スライダーを中央・雨音オフ)
+function resetExplore() {
+  ["ax-time", "ax-texture", "ax-tempo"].forEach(id => { $(id).value = 0; });
+  const rt = $("rain-toggle");
+  rt.classList.remove("on");
+  rt.setAttribute("aria-checked", "false");
+}
+
 function exploreAgain() {
   if (exploreCandidate) exploreExclude.push(exploreCandidate.id);
   const song = pickSearchSong(readExploreCriteria(), exploreExclude);
@@ -1719,7 +1754,7 @@ function showExploreCandidate(song) {
   dur.className = "pill inset";
   dur.textContent = durationText(song);
   tags.appendChild(dur);
-  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function resetAll() {
@@ -1783,8 +1818,9 @@ $("cal-next").addEventListener("click", () => { calView.month++; if (calView.mon
 $("rain-toggle").addEventListener("click", () => {
   const b = $("rain-toggle");
   b.classList.toggle("on");
-  b.setAttribute("aria-pressed", b.classList.contains("on"));
+  b.setAttribute("aria-checked", String(b.classList.contains("on")));
 });
+$("btn-explore-reset").addEventListener("click", resetExplore);
 $("btn-explore").addEventListener("click", runExplore);
 $("ex-again").addEventListener("click", exploreAgain);
 $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
