@@ -1610,9 +1610,189 @@ function loadImageCORS(src) {
   });
 }
 function loadThumb(id) { return loadImageCORS(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`); }
-// QRコード画像(その曲のYouTube URLをエンコード)。外部生成のためCORS付きで読み、失敗時はnull
-function loadQR(data, size) {
-  return loadImageCORS(`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=0&data=${encodeURIComponent(data)}`);
+
+/* =========================================================
+ * 自前QRコード生成(外部サービス不要・オフライン動作)
+ * バイトモード / 誤り訂正レベル H(30%, 中央ロゴを載せても読める)
+ * バージョン1〜10を自動選択。アルゴリズムは QR Code 仕様(Nayuki実装準拠)。
+ * ========================================================= */
+const QR_ECC_PER_BLOCK_H = [0, 17, 28, 22, 16, 22, 28, 26, 26, 24, 28]; // index=version(1..10)
+const QR_NUM_BLOCKS_H    = [0,  1,  1,  2,  4,  4,  4,  5,  6,  8,  8];
+const QR_ALIGN = [[], [], [6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]];
+function qrBit(x, i) { return ((x >>> i) & 1) !== 0; }
+function qrMul(x, y) { // GF(256) 乗算
+  let z = 0;
+  for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; }
+  return z & 0xFF;
+}
+function qrRsDivisor(deg) {
+  const r = new Array(deg).fill(0); r[deg - 1] = 1;
+  let root = 1;
+  for (let i = 0; i < deg; i++) {
+    for (let j = 0; j < r.length; j++) { r[j] = qrMul(r[j], root); if (j + 1 < r.length) r[j] ^= r[j + 1]; }
+    root = qrMul(root, 0x02);
+  }
+  return r;
+}
+function qrRsRemainder(data, divisor) {
+  const r = divisor.map(() => 0);
+  for (const b of data) {
+    const factor = b ^ r.shift(); r.push(0);
+    for (let i = 0; i < r.length; i++) r[i] ^= qrMul(divisor[i], factor);
+  }
+  return r;
+}
+function qrNumRawDataModules(ver) {
+  let r = (16 * ver + 128) * ver + 64;
+  if (ver >= 2) { const na = Math.floor(ver / 7) + 2; r -= (25 * na - 10) * na - 55; if (ver >= 7) r -= 36; }
+  return r;
+}
+function qrNumDataCodewords(ver) {
+  return Math.floor(qrNumRawDataModules(ver) / 8) - QR_ECC_PER_BLOCK_H[ver] * QR_NUM_BLOCKS_H[ver];
+}
+// text → {size, modules(boolean[][])}(誤り訂正H、最良マスク適用済み)
+function qrGenerate(text) {
+  const bytes = [];
+  for (const ch of unescape(encodeURIComponent(text))) bytes.push(ch.charCodeAt(0));
+  const len = bytes.length;
+  let version = -1;
+  for (let v = 1; v <= 10; v++) {
+    const cb = v <= 9 ? 8 : 16;
+    if (4 + cb + 8 * len <= qrNumDataCodewords(v) * 8) { version = v; break; }
+  }
+  if (version < 0) throw new Error("QR: data too long");
+  const size = version * 4 + 17;
+  const countBits = version <= 9 ? 8 : 16;
+
+  // ---- ビット列 → データ符号語 ----
+  const bits = [];
+  const push = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  push(0b0100, 4); push(len, countBits);
+  for (const b of bytes) push(b, 8);
+  const cap = qrNumDataCodewords(version) * 8;
+  push(0, Math.min(4, cap - bits.length));
+  while (bits.length % 8 !== 0) bits.push(0);
+  const pads = [0xEC, 0x11];
+  for (let p = 0; bits.length < cap; p++) push(pads[p % 2], 8);
+  const dataCw = [];
+  for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; dataCw.push(b); }
+
+  // ---- ブロック分割 + 誤り訂正 + インターリーブ ----
+  const numBlocks = QR_NUM_BLOCKS_H[version], eccLen = QR_ECC_PER_BLOCK_H[version];
+  const rawCw = Math.floor(qrNumRawDataModules(version) / 8);
+  const numShort = numBlocks - rawCw % numBlocks;
+  const shortLen = Math.floor(rawCw / numBlocks);
+  const divisor = qrRsDivisor(eccLen);
+  const blocks = []; let k = 0;
+  for (let i = 0; i < numBlocks; i++) {
+    const dataLen = shortLen - eccLen + (i < numShort ? 0 : 1);
+    const dat = dataCw.slice(k, k + dataLen); k += dataLen;
+    blocks.push({ dat, ecc: qrRsRemainder(dat, divisor) });
+  }
+  const result = [];
+  const maxData = Math.max(...blocks.map(b => b.dat.length));
+  for (let i = 0; i < maxData; i++) for (const b of blocks) if (i < b.dat.length) result.push(b.dat[i]);
+  for (let i = 0; i < eccLen; i++) for (const b of blocks) result.push(b.ecc[i]);
+
+  // ---- モジュール配置 ----
+  const mods = Array.from({ length: size }, () => new Array(size).fill(false));
+  const isFn = Array.from({ length: size }, () => new Array(size).fill(false));
+  const setFn = (x, y, v) => { mods[y][x] = v; isFn[y][x] = true; };
+  const finder = (cx, cy) => {
+    for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) {
+      const x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= size || y >= size) continue;
+      const d = Math.max(Math.abs(dx), Math.abs(dy));
+      setFn(x, y, d !== 2 && d !== 4);
+    }
+  };
+  finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+  for (let i = 0; i < size; i++) { if (!isFn[6][i]) setFn(i, 6, i % 2 === 0); if (!isFn[i][6]) setFn(6, i, i % 2 === 0); }
+  const ap = QR_ALIGN[version];
+  for (const ay of ap) for (const ax of ap) {
+    if (isFn[ay][ax]) continue; // ファインダーと重なる位置は置かない
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++)
+      setFn(ax + dx, ay + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+  }
+  setFn(8, size - 8, true); // 常時ダーク
+  // フォーマット情報領域を予約(値は後で)
+  for (let i = 0; i <= 8; i++) { if (i !== 6) { isFn[8][i] = true; isFn[i][8] = true; } }
+  for (let i = 0; i < 8; i++) { isFn[8][size - 1 - i] = true; isFn[size - 1 - i][8] = true; }
+  // バージョン情報領域(v>=7)
+  if (version >= 7) for (let i = 0; i < 18; i++) {
+    const a = size - 11 + i % 3, b = Math.floor(i / 3);
+    let rem = version; for (let t = 0; t < 12; t++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
+    const vbits = (version << 12) | rem;
+    setFn(a, b, qrBit(vbits, i)); setFn(b, a, qrBit(vbits, i));
+  }
+  // データ配置(ジグザグ)
+  let bi = 0;
+  for (let right = size - 1; right >= 1; right -= 2) {
+    if (right === 6) right = 5;
+    for (let v = 0; v < size; v++) for (let j = 0; j < 2; j++) {
+      const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - v : v;
+      if (!isFn[y][x]) { if (bi < result.length * 8) { mods[y][x] = qrBit(result[bi >> 3], 7 - (bi & 7)); bi++; } }
+    }
+  }
+  // マスク選定(ペナルティ最小)+ フォーマット情報
+  const maskCond = (m, x, y) => [
+    (x + y) % 2 === 0, y % 2 === 0, x % 3 === 0, (x + y) % 3 === 0,
+    (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x * y) % 2 + (x * y) % 3 === 0,
+    ((x * y) % 2 + (x * y) % 3) % 2 === 0, ((x + y) % 2 + (x * y) % 3) % 2 === 0
+  ][m];
+  const drawFormat = (grid, mask) => {
+    let d = (0b10 << 3) | mask, rem = d;
+    for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+    const bitsF = ((d << 10) | rem) ^ 0x5412;
+    for (let i = 0; i <= 5; i++) grid[i][8] = qrBit(bitsF, i);
+    grid[7][8] = qrBit(bitsF, 6); grid[8][8] = qrBit(bitsF, 7); grid[8][7] = qrBit(bitsF, 8);
+    for (let i = 9; i < 15; i++) grid[8][14 - i] = qrBit(bitsF, i);
+    for (let i = 0; i < 8; i++) grid[8][size - 1 - i] = qrBit(bitsF, i);
+    for (let i = 8; i < 15; i++) grid[size - 15 + i][8] = qrBit(bitsF, i);
+    grid[size - 8][8] = true;
+  };
+  const penalty = grid => {
+    let s = 0;
+    for (let y = 0; y < size; y++) { let rc = grid[y][0], run = 1; for (let x = 1; x < size; x++) { if (grid[y][x] === rc) { run++; if (run === 5) s += 3; else if (run > 5) s++; } else { rc = grid[y][x]; run = 1; } } }
+    for (let x = 0; x < size; x++) { let rc = grid[0][x], run = 1; for (let y = 1; y < size; y++) { if (grid[y][x] === rc) { run++; if (run === 5) s += 3; else if (run > 5) s++; } else { rc = grid[y][x]; run = 1; } } }
+    for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) { const c = grid[y][x]; if (c === grid[y][x + 1] && c === grid[y + 1][x] && c === grid[y + 1][x + 1]) s += 3; }
+    for (let y = 0; y < size; y++) { let b = 0; for (let x = 0; x < size; x++) { b = ((b << 1) & 0x7FF) | (grid[y][x] ? 1 : 0); if (x >= 10 && (b === 0x05D || b === 0x5D0)) s += 40; } }
+    for (let x = 0; x < size; x++) { let b = 0; for (let y = 0; y < size; y++) { b = ((b << 1) & 0x7FF) | (grid[y][x] ? 1 : 0); if (y >= 10 && (b === 0x05D || b === 0x5D0)) s += 40; } }
+    let dark = 0; for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (grid[y][x]) dark++;
+    const total = size * size;
+    s += (Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+    return s;
+  };
+  let bestPen = Infinity, bestGrid = null; const all = [];
+  for (let m = 0; m < 8; m++) {
+    const g = mods.map(r => r.slice());
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!isFn[y][x] && maskCond(m, x, y)) g[y][x] = !g[y][x];
+    drawFormat(g, m);
+    all.push(g);
+    const p = penalty(g);
+    if (p < bestPen) { bestPen = p; bestGrid = g; }
+  }
+  return { size, modules: bestGrid, all };
+}
+
+// QRを描画(白地に4モジュールのクワイエットゾーン込み+中央にアプリの音符ロゴ)
+function drawQRCode(ctx, x, y, px, text) {
+  let qr;
+  try { qr = qrGenerate(text); } catch (e) { return false; }
+  const n = qr.size, quiet = 4, total = n + quiet * 2, m = px / total;
+  ctx.fillStyle = "#FFFFFF"; ctx.fillRect(x, y, px, px);
+  ctx.fillStyle = "#3D4A63";
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.modules[r][c])
+    ctx.fillRect(x + (c + quiet) * m, y + (r + quiet) * m, Math.ceil(m), Math.ceil(m));
+  // 中央ロゴ(アプリの音符アイコン)
+  const lg = px * 0.24, lx = x + (px - lg) / 2, ly = y + (px - lg) / 2, pad = lg * 0.14;
+  roundRectPath(ctx, lx - pad, ly - pad, lg + 2 * pad, lg + 2 * pad, lg * 0.3);
+  ctx.fillStyle = "#FFFFFF"; ctx.fill();
+  roundRectPath(ctx, lx, ly, lg, lg, lg * 0.26);
+  const g = ctx.createLinearGradient(lx, ly, lx + lg, ly + lg);
+  g.addColorStop(0, "#5B6CFF"); g.addColorStop(1, "#4353E8");
+  ctx.fillStyle = g; ctx.fill();
+  drawNoteIcon(ctx, lx + lg * 0.18, ly + lg * 0.18, lg * 0.64);
+  return true;
 }
 // 連桁音符アイコン(アプリと同一のグリフ)を24単位座標系で box(x,y,size)内に中央描画
 function drawNoteIcon(ctx, x, y, size) {
@@ -1639,9 +1819,9 @@ async function buildShareCanvas(song) {
   cv.width = W; cv.height = H;
   const ctx = cv.getContext("2d");
 
-  // 背景グラデ
-  const bg = ctx.createLinearGradient(W * 0.85, 0, W * 0.15, H);
-  bg.addColorStop(0, "#EFF3FA"); bg.addColorStop(0.5, "#E5EBF5"); bg.addColorStop(1, "#DCE3EF");
+  // 背景: アプリの基調色 #E8EDF5 に忠実に(ごく薄いグラデでニュアンスのみ、暗くしない)
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#EBEFF6"); bg.addColorStop(1, "#E6ECF3");
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
   // ヘッダ: 音符アイコン + アプリ名 + 日付
@@ -1721,10 +1901,8 @@ async function buildShareCanvas(song) {
   roundRectPath(ctx, panelX, panelY, panel, panel, 28);
   ctx.fillStyle = "#FFFFFF"; ctx.fill();
   ctx.restore();
-  const qrImg = await loadQR(`https://www.youtube.com/watch?v=${song.id}`, qr);
-  if (qrImg && qrImg.width) {
-    ctx.drawImage(qrImg, panelX + qpad, panelY + qpad, qr, qr);
-  } else {
+  const okQR = drawQRCode(ctx, panelX + qpad, panelY + qpad, qr, `https://youtu.be/${song.id}`);
+  if (!okQR) {
     ctx.fillStyle = "#8A96AD"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
     ctx.fillText("QRを生成できません", panelX + panel / 2, panelY + panel / 2);
