@@ -45,11 +45,12 @@ html, body {
   font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
   font-weight: 500;
   line-height: 1.6;
-  min-height: 100%;
 }
-/* 下部固定タブバー + iPhoneのホームインジケータ(セーフエリア)ぶんを確保し、
-   末尾の注記が見切れないようにする */
-body { padding-bottom: calc(124px + env(safe-area-inset-bottom)); }
+/* アプリシェル: 画面高(dvh)のフレックス列。内容部(.scroll)だけスクロールし、
+   タブバーは常に最下部に置く。position:fixed(bottom:0)がiOSでツールバー状態変化後に
+   ズレる不具合(好み/履歴タブで発生)を根本から回避する。 */
+body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.scroll { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
 button { font-family: inherit; border: none; cursor: pointer; color: inherit; background: none; }
 a { color: var(--accent); text-decoration: none; }
@@ -81,7 +82,7 @@ button:focus-visible, a:focus-visible {
 /* ============================================================
    レイアウト
    ============================================================ */
-.app { max-width: 440px; margin: 0 auto; padding: 20px 22px 0; }
+.app { max-width: 440px; margin: 0 auto; padding: 20px 22px 24px; }
 
 .caption {
   text-align: center;
@@ -508,7 +509,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
    タブバー
    ============================================================ */
 .tabbar {
-  position: fixed; left: 0; right: 0; bottom: 0;
+  flex: none; /* 通常フローの最下部要素(position:fixedを廃止しiOSのズレを回避) */
   background: var(--bg);
   box-shadow: 0 -6px 16px rgba(136, 152, 184, 0.22);
   display: flex; justify-content: space-around;
@@ -536,6 +537,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 </style>
 </head>
 <body>
+<main class="scroll">
 <div class="app">
   <div class="caption">今日の作業テーマ曲</div>
 
@@ -727,6 +729,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
   <p class="footnote">全データは端末内(localStorage)にのみ保存されます</p>
 </div>
+</main>
 
 <!-- ===== タブバー ===== -->
 <nav class="tabbar" role="tablist">
