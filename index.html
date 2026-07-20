@@ -2277,19 +2277,18 @@ $("btn-share").addEventListener("click", (e) => {
   const webUrl = $("btn-share").href;
   const appUrl = `twitter://post?message=${encodeURIComponent($("btn-share").dataset.msg || "")}`;
   let left = false;
-  const mark = () => { left = true; }; // アプリへ切り替わった合図(離脱/背面化)
+  const mark = () => { left = true; }; // アプリへ切り替わった合図
+  // アプリ起動時は visibilitychange / pagehide が発火する。
+  // ※ blur はiOSの「アドレスが無効です」ダイアログ表示でも発火して誤検知するため使わない
+  //   (未導入時にWEB版へフォールバックできなくなる)。
   document.addEventListener("visibilitychange", mark, { once: true });
   window.addEventListener("pagehide", mark, { once: true });
-  window.addEventListener("blur", mark, { once: true });
-  const start = Date.now();
   setTimeout(() => {
     document.removeEventListener("visibilitychange", mark);
     window.removeEventListener("pagehide", mark);
-    window.removeEventListener("blur", mark);
-    // アプリが開いた(離脱した/背面でタイマーが大きく遅延した/現在非表示)なら WEB版は開かない
-    if (left || document.hidden || Date.now() - start > 1600) return;
-    window.location.href = webUrl; // Xアプリ未導入時のみ WEB版へ
-  }, 1000);
+    if (left || document.hidden) return;  // アプリが開いた → WEB版は開かない
+    window.location.href = webUrl;         // Xアプリ未導入時のみ WEB版intentへ
+  }, 1200);
   window.location.href = appUrl; // Xアプリ起動を試みる
 });
 // YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
