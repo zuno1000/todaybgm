@@ -731,7 +731,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
   </section>
 
-  <p class="footnote">全データは端末内(localStorage)にのみ保存されます</p>
+  <p class="footnote">データは端末内(localStorage)に保存されます。同期を連携すると、あなた自身のGoogleドライブ(アプリ専用領域)にも保存されます。</p>
 </div>
 </main>
 
@@ -2306,8 +2306,9 @@ function collectLocal() {
 }
 // ローカルとリモートを非破壊マージ(評価=ratedAtが新しい方、履歴=和集合、除外=和集合、設定=updatedAtが新しい方)
 function mergeData(local, remote) {
-  if (!remote) return local;
-  const m = {};
+  if (!remote) return Object.assign({ v: 1 }, local);
+  // 未知キー(将来のバージョンが追加したキー)も保持して取りこぼさない=前方互換
+  const m = Object.assign({}, local, remote);
   const lr = local[LS.RATINGS] || {}, rr = remote[LS.RATINGS] || {}, mr = Object.assign({}, lr);
   for (const [id, r] of Object.entries(rr)) if (!mr[id] || new Date(r.ratedAt || 0) > new Date(mr[id].ratedAt || 0)) mr[id] = r;
   m[LS.RATINGS] = mr;
@@ -2324,12 +2325,18 @@ function mergeData(local, remote) {
     m[k] = remoteNewer ? (rv !== undefined ? rv : lv) : (lv !== undefined ? lv : rv);
   });
   m.updatedAt = Math.max(local.updatedAt || 0, remote.updatedAt || 0);
+  m.v = 1;
   return m;
 }
+// リモートJSONが壊れていても不正な型を書き込まないよう、型を検証してから反映する
 function applyData(m) {
-  [LS.RATINGS, LS.PLAYS, LS.DEAD, LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE].forEach(k => {
-    if (m[k] !== undefined) localStorage.setItem(k, JSON.stringify(m[k]));
-  });
+  const isObj = v => v && typeof v === "object" && !Array.isArray(v);
+  if (isObj(m[LS.RATINGS])) localStorage.setItem(LS.RATINGS, JSON.stringify(m[LS.RATINGS]));
+  if (isObj(m[LS.PLAYS])) localStorage.setItem(LS.PLAYS, JSON.stringify(m[LS.PLAYS]));
+  if (Array.isArray(m[LS.DEAD])) localStorage.setItem(LS.DEAD, JSON.stringify(m[LS.DEAD]));
+  if (isObj(m[LS.SETTINGS])) localStorage.setItem(LS.SETTINGS, JSON.stringify(m[LS.SETTINGS]));
+  if (typeof m[LS.OPENAPP] === "boolean") localStorage.setItem(LS.OPENAPP, JSON.stringify(m[LS.OPENAPP]));
+  if (typeof m[LS.PLAYMODE] === "string") localStorage.setItem(LS.PLAYMODE, JSON.stringify(m[LS.PLAYMODE]));
 }
 function refreshAfterSync() {
   const settings = load(LS.SETTINGS, null);
