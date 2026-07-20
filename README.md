@@ -64,3 +64,27 @@ python -m http.server 8000
 | `bgm_daily` | 当日の日付・提示済みID・現在の1曲 |
 | `bgm_recent` | 直近3日間の提示履歴(再提示減衰用) |
 | `bgm_dead` | 再生エラーになった動画ID(以後の候補から自動除外) |
+| `bgm_plays` | 日別の再生履歴 `{date: {first, plays[]}}`(カレンダー・履歴用) |
+| `bgm_playmode` | 曲が終わったら: `next`/`repeat`/`stop` |
+| `bgm_openapp` | 常にYouTubeアプリで開く |
+| `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync}`) |
+
+## データ同期(端末間・Googleドライブ)の設定
+
+ログイン(Googleアカウント)で、評価・履歴・設定を**ユーザー自身のGoogleドライブのアプリ専用領域(appDataFolder)**経由で端末間同期できます。サーバー不要・無料で、データは開発者や第三者のサーバーには保存されません。
+
+使うには、`index.html` の `GOOGLE_CLIENT_ID` を自分のOAuthクライアントIDに置き換えます:
+
+1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを作成
+2. 「APIとサービス」→「ライブラリ」で **Google Drive API** を有効化
+3. 「OAuth 同意画面」を設定(User type: 外部 / 公開ステータスは「テスト」でOK。テストユーザーに自分のGoogleアカウントを追加)。スコープに `.../auth/drive.appdata` を追加
+4. 「認証情報」→「OAuth クライアント ID」を作成(種類: **ウェブアプリケーション**)
+   - **承認済みの JavaScript 生成元**に公開URLとローカルを追加:
+     `https://zuno1000.github.io` と `http://localhost:8000`
+5. 発行された「クライアント ID」(`xxxx.apps.googleusercontent.com`)を、`index.html` の
+   `const GOOGLE_CLIENT_ID = "..."` に貼り付けてコミット
+
+補足:
+- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode`(`bgm_daily`・`bgm_recent` は端末ごとに独立)
+- 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)
+- `drive.appdata` は Google の「機密」スコープ。公開ステータス「テスト」なら審査不要で最大100ユーザーまで利用可(未確認アプリの警告は続行で回避)。一般公開する場合は Google の確認申請が必要
