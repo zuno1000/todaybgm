@@ -2234,7 +2234,7 @@ function showView(name) {
     b.classList.toggle("active", on);
     b.setAttribute("aria-selected", on);
   });
-  if (name === "settings") { renderSettings(); renderSync(); }
+  if (name === "settings") { renderSettings(); renderSync(); if (syncConfigured()) loadGIS().catch(() => {}); } // 設定表示中だけGIS事前ロード(タップ時のポップアップをユーザー操作内で開くため)
   if (name === "history") renderCalendar();
   if (name === "taste") renderTaste();
   if (name === "explore") renderExplore();
@@ -2266,15 +2266,27 @@ function loadGIS() {
   });
   return gisPromise;
 }
-async function getToken(interactive) {
+// トークンはセッション中だけメモリに保持(localStorageには保存しない)。有効期限内なら再利用。
+let cachedToken = null, tokenExpiry = 0;
+function silentToken() { return (cachedToken && Date.now() < tokenExpiry - 60000) ? cachedToken : null; }
+async function ensureGis() {
   await loadGIS();
-  if (!tokenClient) {
-    tokenClient = google.accounts.oauth2.initTokenClient({ client_id: GOOGLE_CLIENT_ID, scope: DRIVE_SCOPE, callback: () => {} });
-  }
+  if (!tokenClient) tokenClient = google.accounts.oauth2.initTokenClient({ client_id: GOOGLE_CLIENT_ID, scope: DRIVE_SCOPE, callback: () => {} });
+  return tokenClient;
+}
+// ポップアップを伴うトークン取得。必ずユーザー操作(タップ)内から呼ぶこと。
+// GISを事前ロード(renderSyncで)しておけば await はマイクロタスクで解決し、ユーザー操作の
+// アクティベーションが保持されるためポップアップがブロックされない。
+function interactiveToken() {
   return new Promise((resolve, reject) => {
-    tokenClient.callback = (r) => r && r.access_token ? resolve(r.access_token) : reject(new Error("認証できませんでした"));
-    tokenClient.error_callback = (e) => reject(e || new Error("認証エラー"));
-    tokenClient.requestAccessToken({ prompt: interactive ? "" : "none" });
+    ensureGis().then(tc => {
+      tc.callback = (r) => {
+        if (r && r.access_token) { cachedToken = r.access_token; tokenExpiry = Date.now() + ((r.expires_in || 3600) * 1000); resolve(r.access_token); }
+        else reject(new Error("認証できませんでした"));
+      };
+      tc.error_callback = (e) => reject(e || new Error("認証エラー"));
+      tc.requestAccessToken({ prompt: "" });
+    }).catch(reject);
   });
 }
 async function driveFind(token) {
@@ -2350,9 +2362,15 @@ function refreshAfterSync() {
 async function driveSync(interactive) {
   if (!syncConfigured()) { if (interactive) alert("同期のセットアップが未完了です(Google Client ID未設定)。"); return; }
   if (syncing) return;
+  let token = silentToken();
+  // 自動同期でトークンが無ければ、ポップアップを出さず静かにスキップ(起動時・再生中の割り込み防止)
+  if (!token && !interactive) return;
+  if (!token) {
+    try { token = await interactiveToken(); } // 手動時のみポップアップ(タップ操作内)
+    catch (e) { alert("ログインに失敗しました: " + (e && e.message ? e.message : e)); return; }
+  }
   syncing = true; renderSync();
   try {
-    const token = await getToken(interactive);
     const id = await driveFind(token);
     let remote = null;
     if (id) { try { remote = await driveDownload(token, id); } catch (e) {} }
@@ -2362,6 +2380,7 @@ async function driveSync(interactive) {
     await driveSave(token, id, JSON.stringify(merged));
     refreshAfterSync();
   } catch (e) {
+    cachedToken = null; tokenExpiry = 0; // 期限切れ等の可能性 → 次回は手動で再認証
     if (interactive) alert("同期に失敗しました: " + (e && e.message ? e.message : e));
     setSyncMeta({ error: true });
   } finally {
@@ -2381,9 +2400,10 @@ function renderSync() {
   const m = syncMeta();
   if (m.linked) {
     const last = m.lastSync ? new Date(m.lastSync).toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "―";
-    box.innerHTML = '<div class="pill-grid"><button class="toggle-pill on" id="sync-now">今すぐ同期</button><button class="toggle-pill" id="sync-out">連携を解除</button></div><p class="footnote" style="text-align:left;margin-top:8px">Googleドライブと連携中(最終同期: ' + last + ')' + (m.error ? ' ⚠ 前回失敗' : '') + '</p>';
+    const active = silentToken() ? "この端末は自動保存中(変更は自動で同期)" : "端末をまたぐときは「今すぐ同期」をタップ";
+    box.innerHTML = '<div class="pill-grid"><button class="toggle-pill on" id="sync-now">今すぐ同期</button><button class="toggle-pill" id="sync-out">連携を解除</button></div><p class="footnote" style="text-align:left;margin-top:8px">Googleドライブと連携中(最終同期: ' + last + ')' + (m.error ? ' ⚠ 前回失敗' : '') + '<br>' + active + '</p>';
     $("sync-now").addEventListener("click", () => driveSync(true));
-    $("sync-out").addEventListener("click", () => { setSyncMeta({ linked: false }); renderSync(); });
+    $("sync-out").addEventListener("click", () => { setSyncMeta({ linked: false }); cachedToken = null; tokenExpiry = 0; renderSync(); });
   } else {
     box.innerHTML = '<div class="pill-grid"><button class="toggle-pill" id="sync-in">Googleでログインして同期</button></div>';
     $("sync-in").addEventListener("click", () => driveSync(true));
