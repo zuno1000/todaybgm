@@ -9,8 +9,8 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta name="apple-mobile-web-app-title" content="今日の作業テーマ曲">
-<meta name="application-name" content="今日の作業テーマ曲">
+<meta name="apple-mobile-web-app-title" content="TODAY'S BGM">
+<meta name="application-name" content="TODAY'S BGM">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -262,6 +262,13 @@ button:focus-visible, a:focus-visible {
   /* 小型要素なので凹み影は弱め(2px/4px) */
   box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark), inset 0 0 0 1px rgba(91, 108, 255, 0.25);
 }
+
+/* ---- 共有アイコン列(アプリで開く / Xで共有 / 画像で共有) ---- */
+.share-row {
+  display: flex; justify-content: center; align-items: flex-start;
+  gap: 34px; margin-top: 30px;
+}
+.icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
 
 /* ---- YouTubeリンク・注記 ---- */
 .yt-link {
@@ -609,18 +616,26 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="rated-msg" id="rated-msg"></div>
     </div>
 
-    <a id="btn-yt" class="yt-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      YouTubeアプリで開く(バックグラウンド再生はこちら)
-    </a>
-    <a id="btn-share" class="yt-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-      Xで今日の1曲を共有
-    </a>
-    <a id="btn-share-img" class="yt-link" role="button" tabindex="0">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-      <span class="sImg-label">画像で今日の1曲を共有</span>
-    </a>
+    <div class="share-row">
+      <div class="control-item">
+        <a id="btn-yt" class="icon-btn raised" target="_blank" rel="noopener" aria-label="YouTubeアプリで開く(バックグラウンド再生)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="btn-label">アプリで開く</span>
+      </div>
+      <div class="control-item">
+        <a id="btn-share" class="icon-btn raised" target="_blank" rel="noopener" aria-label="Xで今日の1曲を共有">
+          <svg class="xlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.9 10.5 21.4 2h-1.78l-6.5 7.4L7.86 2H2l7.9 11.5L2 22h1.78l6.9-7.9L16.14 22H22l-8.1-11.5Zm-2.44 2.8-.8-1.14L4.42 3.3h2.73l5.14 7.35.8 1.14 6.67 9.53h-2.73l-5.45-7.79Z"/></svg>
+        </a>
+        <span class="btn-label">Xで共有</span>
+      </div>
+      <div class="control-item">
+        <button id="btn-share-img" class="icon-btn raised" aria-label="画像で今日の1曲を共有">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </button>
+        <span class="btn-label sImg-label">画像で共有</span>
+      </div>
+    </div>
   </section>
 
   <!-- ===== 探す ===== -->
@@ -1561,11 +1576,17 @@ function drawTracked(ctx, text, x, y, spacing) {
   let cx = x;
   for (const ch of text) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + spacing; }
 }
-// 各行のグリフ左端(左サイドベアリングを補正)を x に揃えて描画する。
-// 和文/欧文で左の空きが異なり文頭がズレて見えるのを防ぐ。
-function fillTextVL(ctx, text, x, y) {
-  const lb = ctx.measureText(text).actualBoundingBoxLeft;
-  ctx.fillText(text, x + (isFinite(lb) ? lb : 0), y);
+// 実際に描いたピクセルの左端オフセットを求める(actualBoundingBoxLeftはiOSで不安定なため
+// オフスクリーンに描いて走査する堅牢な方法)。和文/欧文で文頭が揃って見えるようにするのに使う。
+const _inkCv = document.createElement("canvas"); _inkCv.width = 1000; _inkCv.height = 100;
+const _inkCtx = _inkCv.getContext("2d");
+function inkLeftOffset(font, text) {
+  _inkCtx.clearRect(0, 0, 1000, 100);
+  _inkCtx.font = font; _inkCtx.textAlign = "left"; _inkCtx.textBaseline = "alphabetic"; _inkCtx.fillStyle = "#000";
+  _inkCtx.fillText(text, 30, 65);
+  const d = _inkCtx.getImageData(0, 0, 1000, 100).data;
+  for (let x = 0; x < 1000; x++) for (let y = 0; y < 100; y++) if (d[(y * 1000 + x) * 4 + 3] > 12) return x - 30;
+  return 0;
 }
 // 英単語はできるだけ途中で割らず、長すぎる語(日本語の連なり等)だけ文字単位で折る
 function wrapLines(ctx, text, maxWidth, maxLines) {
@@ -1918,20 +1939,20 @@ async function buildShareCanvas(song) {
   }
 
   // ---- QR右のテキスト導線 ----
-  const tx = panelX + panel + 48;
   ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = "#3D4A63";
-  ctx.font = '700 46px "Zen Kaku Gothic New", sans-serif';
-  fillTextVL(ctx, "スキャンして聴く", tx, panelY + 88);
-  ctx.fillStyle = "#8A96AD";
-  ctx.font = '700 31px "Zen Kaku Gothic New", sans-serif';
-  fillTextVL(ctx, "YouTubeでこの曲を再生", tx, panelY + 140);
-  ctx.fillStyle = "#8A96AD";
-  ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
-  fillTextVL(ctx, "今日の作業テーマ曲", tx, panelY + 228);
-  ctx.fillStyle = "#AAB4C4";
-  ctx.font = '700 25px "Zen Kaku Gothic New", sans-serif';
-  fillTextVL(ctx, "zuno1000.github.io/todaybgm", tx, panelY + 268);
+  const FF = 'Zen Kaku Gothic New", sans-serif';
+  const flines = [
+    { t: "スキャンして聴く", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
+    { t: "YouTubeでこの曲を再生", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
+    { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
+    { t: "zuno1000.github.io/todaybgm", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
+  ];
+  // ブロックをQR右の領域で中央寄せ(右余白とのバランス改善)、文頭はインク左端で揃える
+  let maxW = 0;
+  for (const L of flines) { ctx.font = L.f; maxW = Math.max(maxW, ctx.measureText(L.t).width); }
+  const region0 = panelX + panel, region1 = W - PAD;
+  const tx = Math.max(region0 + 44, region0 + (region1 - region0 - maxW) / 2);
+  for (const L of flines) { ctx.font = L.f; ctx.fillStyle = L.c; ctx.fillText(L.t, tx - inkLeftOffset(L.f, L.t), panelY + L.dy); }
 
   return cv;
 }
