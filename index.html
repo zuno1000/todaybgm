@@ -438,8 +438,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .hist-play svg { width: 13px; height: 13px; fill: #fff; stroke: none; margin-left: 1px; }
 .hist-title { font-size: 13px; line-height: 1.5; flex: 1; }
 .hist-side { text-align: right; flex-shrink: 0; }
-.hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; }
-.hist-date { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+.hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; display: block; margin-top: 4px; }
+.hist-date { font-size: 11px; color: var(--text-sub); margin-top: 4px; display: block; }
+.hist-genre { font-size: 11px; font-weight: 700; color: var(--accent); display: block; }
 .danger-btn {
   display: block; margin: 30px auto 10px;
   padding: 12px 28px;
@@ -592,10 +593,21 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <div class="mixer-ends"><span>静か</span><span>壮大</span></div>
         <input type="range" class="mixer" id="mood2" min="-100" max="100" value="0" step="1" aria-label="静かから壮大まで">
       </div>
-      <div class="mixer-row" style="margin-bottom:2px">
-        <div class="mixer-ends"><span>朝・昼</span><span>夜・雨</span></div>
-        <input type="range" class="mixer" id="mood3" min="-100" max="100" value="0" step="1" aria-label="朝・昼から夜・雨まで">
+      <div class="mixer-row">
+        <div class="mixer-ends"><span>朝(明るい)</span><span>夜(落ち着いた)</span></div>
+        <input type="range" class="mixer" id="mood3" min="-100" max="100" value="0" step="1" aria-label="朝から夜まで">
       </div>
+      <div class="mixer-row">
+        <div class="mixer-ends"><span>アコースティック</span><span>電子音</span></div>
+        <input type="range" class="mixer" id="mood4" min="-100" max="100" value="0" step="1" aria-label="アコースティックから電子音まで">
+      </div>
+      <div class="mixer-row" style="margin-bottom:2px">
+        <div class="mixer-ends"><span>ゆったり</span><span>アップテンポ</span></div>
+        <input type="range" class="mixer" id="mood5" min="-100" max="100" value="0" step="1" aria-label="ゆったりからアップテンポまで">
+      </div>
+    </div>
+    <div class="pill-grid" style="margin-top:14px">
+      <button class="toggle-pill" id="rain-toggle" aria-pressed="false">雨音の曲を優先</button>
     </div>
 
     <h2 class="section-title">長さ</h2>
@@ -1433,9 +1445,11 @@ function renderDayDetail(date) {
     li.setAttribute("role", "button");
     li.tabIndex = 0;
     li.setAttribute("aria-label", `「${song.title}」を今日の曲にして再生`);
-    const stars = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
-    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side">${stars}</span>`;
+    const genreLabel = GENRE_LABELS[song.genres[0]] || song.genres[0];
+    const rating = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
+    li.innerHTML = `<span class="hist-play" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span>${rating}</span>`;
     li.querySelector(".hist-title").textContent = song.title;
+    li.querySelector(".hist-genre").textContent = "# " + genreLabel;
     li.addEventListener("click", () => playFromHistory(id));
     li.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFromHistory(id); } });
     list.appendChild(li);
@@ -1551,28 +1565,45 @@ function renderTaste() {
  * 探す(能動検索): ジャンル/気分ミキサー/長さを明示指定して1曲探す。
  * 設定(恒久デフォルト)とは独立し、その場の指定だけでスコアリングする。
  * ========================================================= */
-const SW = { genre: 3.0, mood: 2.0, duration: 1.5, eps: 0.6 };
+const SW = { genre: 3.0, mood: 2.0, duration: 1.5, axis: 1.6, rain: 2.5, eps: 0.6 };
 
-// ミキサー3軸(各 -1〜+1)→ ムード希望重みに変換
+// ジャンル由来のスライダー(アコースティック↔電子音 / ゆったり↔アップテンポ)用に
+// 各ジャンルを軸の極へ振り分ける
+const ACOUSTIC_GENRES = new Set(["piano", "jazz", "classical", "celtic", "japanese", "nature"]);
+const ELECTRONIC_GENRES = new Set(["lofi", "synthwave", "edm", "kawaii"]);
+const UPBEAT_GENRES = new Set(["edm", "kawaii", "synthwave", "game"]);
+const RELAXED_GENRES = new Set(["piano", "nature", "classical", "celtic", "japanese", "lofi", "jazz"]);
+// 正極(posSet)なら+1 / 負極(negSet)なら-1 / どちらでもなければ0
+function axisMembership(genre, posSet, negSet) {
+  if (posSet.has(genre)) return 1;
+  if (negSet.has(genre)) return -1;
+  return 0;
+}
+
+// 気分ミキサーのムード軸(各 -1〜+1)→ ムード希望重みに変換
 // mood1: -1 集中(focus) 〜 +1 癒し(calm) / mood2: -1 静か 〜 +1 壮大(epic/fantasy)
-// mood3: -1 朝・昼(morning) 〜 +1 夜・雨(night/rain)
+// mood3: -1 朝・明るい(morning) 〜 +1 夜・落ち着いた(night)
 function searchMoodWeights(m1, m2, m3) {
   const w = { focus: 0, calm: 0, epic: 0, fantasy: 0, night: 0, morning: 0, rain: 0 };
   if (m1 < 0) w.focus = -m1; else w.calm = m1;
   if (m2 > 0) { w.epic = m2; w.fantasy = m2; }
   else { w.calm += (-m2) * 0.4; w.epic = m2; w.fantasy = m2; } // 静か側は壮大系にマイナス
-  if (m3) {
-    if (m3 < 0) w.morning += -m3;               // 朝・昼寄り
-    else { w.night += m3; w.rain += m3 * 0.6; } // 夜・雨寄り
-  }
+  if (m3) { if (m3 < 0) w.morning += -m3; else w.night += m3; } // 朝(明るい) ↔ 夜(落ち着いた)
   return w;
 }
 function searchMoodScore(song, w) {
   return song.mood.reduce((sum, m) => sum + (w[m] || 0), 0);
 }
 function searchScore(song, crit, w) {
+  const g = song.genres[0];
   let score = SW.mood * searchMoodScore(song, w)
             + SW.duration * durationMatch(song, crit.duration)
+            // アコースティック(左/-) ↔ 電子音(右/+)
+            + SW.axis * (crit.acoustic || 0) * axisMembership(g, ELECTRONIC_GENRES, ACOUSTIC_GENRES)
+            // ゆったり(左/-) ↔ アップテンポ(右/+)
+            + SW.axis * (crit.tempo || 0) * axisMembership(g, UPBEAT_GENRES, RELAXED_GENRES)
+            // 雨音トグル
+            + SW.rain * (crit.rain && song.mood.includes("rain") ? 1 : 0)
             + SW.eps * Math.random();
   if (crit.genres.length) score += SW.genre * genreMatch(song, crit.genres);
   return score;
@@ -1611,6 +1642,9 @@ function readExploreCriteria() {
     mood1: Number($("mood1").value) / 100,
     mood2: Number($("mood2").value) / 100,
     mood3: Number($("mood3").value) / 100,
+    acoustic: Number($("mood4").value) / 100,
+    tempo: Number($("mood5").value) / 100,
+    rain: $("rain-toggle").classList.contains("on"),
   };
 }
 
@@ -1746,6 +1780,11 @@ $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 $("cal-prev").addEventListener("click", () => { calView.month--; if (calView.month < 0) { calView.month = 11; calView.year--; } renderCalendar(); });
 $("cal-next").addEventListener("click", () => { calView.month++; if (calView.month > 11) { calView.month = 0; calView.year++; } renderCalendar(); });
+$("rain-toggle").addEventListener("click", () => {
+  const b = $("rain-toggle");
+  b.classList.toggle("on");
+  b.setAttribute("aria-pressed", b.classList.contains("on"));
+});
 $("btn-explore").addEventListener("click", runExplore);
 $("ex-again").addEventListener("click", exploreAgain);
 $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
