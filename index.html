@@ -250,6 +250,9 @@ button:focus-visible, a:focus-visible {
 .star-btn.on svg { fill: var(--star); stroke: var(--star); }
 .star-btn.pop { transform: scale(1.2); }
 .rated-msg { font-size: 12px; color: var(--accent); margin-top: 8px; min-height: 1.2em; }
+/* 評価済みメッセージが出ている時だけ、下の共有トレイとの間隔を少し確保する
+   (「この曲を評価」と星の間隔と同程度に。未評価時は空行が余白を担うので追加しない) */
+.rated-msg:not(:empty) { margin-bottom: 6px; }
 
 /* ---- 共有トレイ(YouTubeで開く / Xで共有 / 画像で共有) ----
  * 円形ボタンを並べず、1本のバーに3つのフラットなアクションをまとめる
@@ -335,7 +338,7 @@ button:focus-visible, a:focus-visible {
   font-size: 12px; font-weight: 700; line-height: 1;
   color: var(--text-sub);
   box-shadow: inset 0 0 0 1.5px rgba(138, 150, 173, 0.55);
-  vertical-align: -3px; margin-left: 6px;
+  vertical-align: middle; margin-left: 4px; /* 見出しテキストの光学的中央に揃える */
   transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 .help-btn[aria-expanded="true"] {
@@ -344,6 +347,9 @@ button:focus-visible, a:focus-visible {
   box-shadow: none;
 }
 .help-note { animation: fadein 0.2s ease; }
+/* 「今日の曲」の更新4択は折り返さず等幅で必ず1行に収める */
+#todaymode-pills { flex-wrap: nowrap; gap: 8px; }
+#todaymode-pills .toggle-pill { flex: 1; min-width: 0; padding: 10px 2px; white-space: nowrap; }
 .pill-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .toggle-pill {
   border-radius: var(--r-full);
@@ -786,7 +792,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <h2 class="set-card-title">データ</h2>
       <h3 class="section-title">端末間の同期 <button class="help-btn" data-help="help-sync" aria-expanded="false" aria-label="同期の説明を表示">?</button></h3>
       <div id="sync-box"></div>
-      <p class="set-note help-note" id="help-sync" hidden>Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期できます。データは開発者や第三者のサーバーには送信されません。</p>
+      <p class="set-note help-note" id="help-sync" hidden>データは端末内(localStorage)に保存されます。Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期でき、同ドライブにも保存されます。データは開発者や第三者のサーバーには送信されません。</p>
       <h3 class="section-title">リセット <button class="help-btn" data-help="help-reset" aria-expanded="false" aria-label="リセットの説明を表示">?</button></h3>
       <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
       <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
@@ -817,7 +823,6 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <button class="danger-btn raised" id="btn-reset-history">履歴をリセット</button>
   </section>
 
-  <p class="footnote">データは端末内(localStorage)に保存されます。同期を連携すると、<br>あなた自身のGoogleドライブ(アプリ専用領域)にも保存されます。</p>
 </div>
 </main>
 
@@ -1707,9 +1712,21 @@ function setAsToday(song, autoplay) {
 
 /* ---- YouTubeアプリ/外部で開く(Premium: 広告なし・バックグラウンド再生向け) ---- */
 function openAppOn() { return load(LS.OPENAPP, false); }
+// アプリ内で再生途中なら、その位置からYouTube側で続きを再生できるよう t= を付ける。
+// 二重再生にならないよう、埋め込み側は一時停止してから開く
+function watchUrlWithTime() {
+  let url = `https://www.youtube.com/watch?v=${currentSong.id}`;
+  if (player && playerReady && player.getCurrentTime) {
+    const t = Math.floor(player.getCurrentTime() || 0);
+    if (t > 3) url += `&t=${t}s`;
+  }
+  return url;
+}
 function openInYouTubeApp() {
   if (!currentSong) return;
-  window.open(`https://www.youtube.com/watch?v=${currentSong.id}`, "_blank", "noopener");
+  const url = watchUrlWithTime();
+  if (isPlayingNow()) player.pauseVideo();
+  window.open(url, "_blank", "noopener");
   markStarted(); // 戻ってきたときに評価できるよう評価トレイを出す+再生として記録
 }
 
@@ -2123,7 +2140,8 @@ async function shareTodayImage() {
   try {
     const cv = await buildShareCanvas(song);
     const blob = await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error("toBlob")), "image/png"));
-    const file = new File([blob], "today-bgm.png", { type: "image/png" });
+    const fname = `today-bgm-${todayStr().replace(/-/g, "")}.png`; // 例: today-bgm-20260722.png
+    const file = new File([blob], fname, { type: "image/png" });
     const shareText = `今日の作業テーマ曲:「${song.title}」\n#作業用BGM #今日の作業テーマ曲`;
     // PC(pointer:fine)では共有シートを出さず直接ダウンロードする
     // (PCの共有ダイアログは保存先が分かりにくいため。ボタン表記も「画像を保存」になる)
@@ -2132,7 +2150,7 @@ async function shareTodayImage() {
     } else {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "today-bgm.png";
+      a.href = url; a.download = fname;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
@@ -2670,8 +2688,13 @@ $("btn-share").addEventListener("click", (e) => {
   }, 1200);
   window.location.href = appUrl; // Xアプリ起動を試みる
 });
-// YouTubeアプリ側で再生する場合も、戻ってきたときに評価できるようUIを出しておく
-$("btn-yt").addEventListener("click", () => { markStarted(); });
+// YouTubeで開く: 再生途中ならその位置から続きが再生されるようhrefを差し替え、
+// 埋め込み側は一時停止(二重再生防止)。戻ってきたときに評価できるようUIも出しておく
+$("btn-yt").addEventListener("click", () => {
+  if (currentSong) $("btn-yt").href = watchUrlWithTime();
+  if (isPlayingNow()) player.pauseVideo();
+  markStarted();
+});
 $("btn-share-img").addEventListener("click", shareTodayImage);
 $("btn-share-img").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); shareTodayImage(); } });
 // PCでは共有シートではなくダウンロードになるため、表記も「画像を保存」にする
