@@ -250,9 +250,9 @@ button:focus-visible, a:focus-visible {
 .star-btn.on svg { fill: var(--star); stroke: var(--star); }
 .star-btn.pop { transform: scale(1.2); }
 .rated-msg { font-size: 12px; color: var(--accent); margin-top: 8px; min-height: 1.2em; }
-/* 評価済みメッセージが出ている時だけ、下の共有トレイとの間隔を少し確保する
-   (「この曲を評価」と星の間隔と同程度に。未評価時は空行が余白を担うので追加しない) */
-.rated-msg:not(:empty) { margin-bottom: 6px; }
+/* 評価済みメッセージが出ている時だけ、下の共有トレイとの間隔を確保する
+   (星と青文字の間隔と同じ見た目に。未評価時は空行が余白を担うので追加しない) */
+.rated-msg:not(:empty) { margin-bottom: 10px; }
 
 /* ---- 共有トレイ(YouTubeで開く / Xで共有 / 画像で共有) ----
  * 円形ボタンを並べず、1本のバーに3つのフラットなアクションをまとめる
@@ -338,7 +338,10 @@ button:focus-visible, a:focus-visible {
   font-size: 12px; font-weight: 700; line-height: 1;
   color: var(--text-sub);
   box-shadow: inset 0 0 0 1.5px rgba(138, 150, 173, 0.55);
-  vertical-align: middle; margin-left: 4px; /* 見出しテキストの光学的中央に揃える */
+  /* 「見出し 半角空白 ?」の位置に置く: HTML側の半角空白だけで間隔を作り(margin 0)、
+     CJK見出しの光学的中央(x-height基準のmiddleよりやや上)に合わせて1.5px持ち上げる */
+  vertical-align: middle; margin-left: 0;
+  position: relative; top: -1.5px;
   transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 .help-btn[aria-expanded="true"] {
@@ -773,7 +776,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <h3 class="section-title">いつ選び直すか <button class="help-btn" data-help="help-todaymode" aria-expanded="false" aria-label="各選択肢の説明を表示">?</button></h3>
       <div class="pill-grid" id="todaymode-pills"></div>
       <p class="set-note help-note" id="help-todaymode" hidden>
-        ・<b>1日1曲</b>: その日最初に選ばれた曲を1日じゅう表示します(標準)<br>
+        ・<b>1日1曲</b>: その日最初に選ばれた曲を1日中表示します(標準)<br>
         ・<b>開くたび</b>: アプリを開くたびに違う曲を選び直します<br>
         ・<b>時間ごと</b>: 選んだ間隔が経ったあとに開くと選び直します<br>
         ・<b>前回の曲</b>: 前回閉じたときの曲を翌日以降も続けます<br>
@@ -792,10 +795,10 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <h2 class="set-card-title">データ</h2>
       <h3 class="section-title">端末間の同期 <button class="help-btn" data-help="help-sync" aria-expanded="false" aria-label="同期の説明を表示">?</button></h3>
       <div id="sync-box"></div>
-      <p class="set-note help-note" id="help-sync" hidden>データは端末内(localStorage)に保存されます。Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期でき、同ドライブにも保存されます。データは開発者や第三者のサーバーには送信されません。</p>
+      <p class="set-note help-note" id="help-sync" hidden>データは端末内(localStorage)に保存されます。<br>Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期でき、同ドライブにも保存されます。<br>データは開発者や第三者のサーバーには送信されません。</p>
       <h3 class="section-title">リセット <button class="help-btn" data-help="help-reset" aria-expanded="false" aria-label="リセットの説明を表示">?</button></h3>
       <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
-      <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
+      <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。<br>「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
     </div>
   </section>
 
