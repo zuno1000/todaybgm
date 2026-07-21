@@ -476,7 +476,11 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
 /* ---- 好み(統計タイル+発散バー) ---- */
 .taste-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
-.tile { border-radius: var(--r-btn); padding: 14px 6px; text-align: center; }
+/* 隣のタイルが2行で背が高くなっても中身が上に寄らないよう、上下中央揃えにする */
+.tile {
+  border-radius: var(--r-btn); padding: 14px 6px; text-align: center;
+  display: flex; flex-direction: column; justify-content: center;
+}
 .tile .t-val { font-size: 19px; font-weight: 700; line-height: 1.4; }
 .tile .t-label { font-size: 10px; color: var(--text-sub); }
 
