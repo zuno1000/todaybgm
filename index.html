@@ -82,7 +82,7 @@ button:focus-visible, a:focus-visible {
 /* ============================================================
    レイアウト
    ============================================================ */
-.app { max-width: 440px; margin: 0 auto; padding: 20px 22px 24px; }
+.app { max-width: 440px; margin: 0 auto; padding: 10px 22px 24px; }
 
 .caption {
   text-align: center;
@@ -90,7 +90,7 @@ button:focus-visible, a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.18em;
   color: var(--text-sub);
-  padding: 14px 0 4px;
+  padding: 4px 0 2px;
 }
 
 .view { display: none; animation: fadein 0.24s ease; }
@@ -112,7 +112,7 @@ button:focus-visible, a:focus-visible {
 .pedestal {
   border-radius: 34px;
   padding: 10px;
-  margin: 22px auto 0;
+  margin: 14px auto 0;
   max-width: 340px;
 }
 .thumb-wrap {
@@ -170,11 +170,11 @@ button:focus-visible, a:focus-visible {
   font-size: 19px;
   font-weight: 700;
   line-height: 1.5;
-  margin: 22px 8px 0;
+  margin: 16px 8px 0;
 }
 .song-meta {
   display: flex; justify-content: center; gap: 10px;
-  margin-top: 14px; flex-wrap: wrap;
+  margin-top: 12px; flex-wrap: wrap;
 }
 .pill {
   border-radius: var(--r-full);
@@ -191,7 +191,7 @@ button:focus-visible, a:focus-visible {
 /* ---- 円形ボタン列 ---- */
 .controls {
   display: flex; justify-content: center; align-items: flex-start;
-  gap: 30px; margin-top: 30px;
+  gap: 30px; margin-top: 22px;
 }
 .control-item { text-align: center; }
 .icon-btn {
@@ -230,7 +230,7 @@ button:focus-visible, a:focus-visible {
 .rating-tray {
   display: none;
   padding: 2px 0 0;
-  margin: 22px auto 0;
+  margin: 16px auto 0;
   max-width: 320px;
   text-align: center;
 }
@@ -243,13 +243,18 @@ button:focus-visible, a:focus-visible {
 .star-btn.pop { transform: scale(1.2); }
 .rated-msg { font-size: 12px; color: var(--accent); margin-top: 8px; min-height: 1.2em; }
 
-/* ---- 共有アイコン列(YouTubeで開く / Xで共有 / 画像で共有) ---- */
+/* ---- 共有アイコン列(YouTubeで開く / Xで共有 / 画像で共有) ----
+ * 再生操作(前/再生/次)より一段小さい二次ボタンにして視覚的な序列をつけ、
+ * 縦方向も圧縮して初期表示で画面内に収まるようにする */
 .share-row {
   display: flex; align-items: flex-start;
-  gap: 0; margin-top: 30px;
+  gap: 0; margin-top: 20px;
 }
 /* 3等分し、各枠内でアイコンを中央寄せ=アイコンが等間隔に並ぶ */
 .share-row .control-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.share-row .icon-btn { width: 46px; height: 46px; }
+.share-row .icon-btn svg { width: 18px; height: 18px; }
+.share-row .btn-label { margin-top: 6px; }
 .icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
 .icon-btn svg.ytlogo .yt-body { fill: var(--text-sub); stroke: none; }
 .icon-btn svg.ytlogo .yt-tri { fill: var(--bg); stroke: none; }
@@ -684,6 +689,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       曲を評価すると、ここに好み度が見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
     </div>
     <p class="footnote">★の評価から好み度(0〜100)を学習します。50がふつう、高いほど好みです。</p>
+    <button class="danger-btn raised" id="btn-reset-taste">好み(おすすめの傾向)をリセット</button>
   </section>
 
   <!-- ===== 設定 ===== -->
@@ -699,6 +705,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
     </div>
     <p class="hint inset">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
+    <h2 class="section-title">「今日の曲」の更新</h2>
+    <div class="pill-grid" id="todaymode-pills"></div>
+    <div id="todaymode-hours-box" style="display:none">
+      <h2 class="section-title">更新する間隔</h2>
+      <div class="pill-grid" id="todaymode-hours"></div>
+    </div>
+    <p class="hint inset">どの設定でも、履歴カレンダーの各日のサムネイルは<b>その日最初に表示された曲</b>で記録されます。</p>
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
     <div class="save-msg" id="save-msg"></div>
 
@@ -728,10 +741,11 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="empty" id="history-empty" style="display:none">
       まだ再生した曲がありません。<br>曲を再生すると、その日のサムネイルがカレンダーに並んでいきます。
     </div>
-    <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
+    <button class="danger-btn raised" id="btn-reset-history">履歴をリセット</button>
+    <button class="danger-btn" id="btn-reset" style="margin-top:0">データをすべてリセット</button>
   </section>
 
-  <p class="footnote">データは端末内(localStorage)に保存されます。同期を連携すると、あなた自身のGoogleドライブ(アプリ専用領域)にも保存されます。</p>
+  <p class="footnote">データは端末内(localStorage)に保存されます。同期を連携すると、<br>あなた自身のGoogleドライブ(アプリ専用領域)にも保存されます。</p>
 </div>
 </main>
 
@@ -779,6 +793,10 @@ const GENRE_LABELS = {
 const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
 const PLAYMODE_LABELS = { next: "次の曲へ", repeat: "1曲リピート", stop: "停止" };
+// 「今日の曲」の更新タイミング。どのモードでもカレンダーの日別サムネは
+// 「その日最初に表示された曲」(recordShownのfirst)で固定される
+const TODAYMODE_LABELS = { daily: "1日1曲(その日最初の曲)", always: "開くたびに毎回変える", interval: "一定時間ごとに変える", last: "前回開いていた曲を続ける" };
+const TODAYMODE_HOURS = [1, 2, 3, 6, 12];
 const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
 
 /* ============ localStorage ============ */
@@ -792,6 +810,7 @@ const LS = {
   PLAYS: "bgm_plays",   // 日別の再生履歴 {date: {first: id, plays: [ids]}} — カレンダー・履歴用
   OPENAPP: "bgm_openapp", // 常にYouTubeアプリで開く(Premium広告なし向け)
   PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
+  TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
 };
 function load(key, fallback) {
   try {
@@ -989,9 +1008,29 @@ function pickSong(excludeIds) {
 }
 
 /* ============ 今日の1曲の管理 ============ */
+function todayMode() {
+  const m = load(LS.TODAYMODE, null);
+  const mode = m && ["daily", "always", "interval", "last"].includes(m.mode) ? m.mode : "daily";
+  const hours = m && TODAYMODE_HOURS.includes(m.hours) ? m.hours : 3;
+  return { mode, hours };
+}
+// 「一定時間ごと」モードで、前回の選曲から指定時間が経過したか
+function todayIntervalElapsed() {
+  const tm = todayMode();
+  if (tm.mode !== "interval") return false;
+  const d = load(LS.DAILY, null);
+  return !!(d && d.date === todayStr() && d.pickedAt && Date.now() - d.pickedAt >= tm.hours * 3600 * 1000);
+}
+
 function getDaily() {
   const d = load(LS.DAILY, null);
   if (d && d.date === todayStr()) return d;
+  // 「前回開いていた曲を続ける」モード: 日付が変わっても前回の曲を引き継ぐ
+  if (d && d.currentId && todayMode().mode === "last") {
+    const nd = { date: todayStr(), shownIds: [d.currentId], currentId: d.currentId, pickedAt: d.pickedAt || null };
+    save(LS.DAILY, nd);
+    return nd;
+  }
   return { date: todayStr(), shownIds: [], currentId: null };
 }
 
@@ -1005,6 +1044,7 @@ function repick(daily) {
   const song = pickSong(daily.shownIds);
   if (!song) return null;
   daily.currentId = song.id;
+  daily.pickedAt = Date.now(); // 「一定時間ごと」モードの起点
   if (!daily.shownIds.includes(song.id)) daily.shownIds.push(song.id);
   save(LS.DAILY, daily);
   // 3日減衰用の提示履歴にも記録
@@ -1393,6 +1433,40 @@ function renderSettings() {
     });
     ps.appendChild(b);
   }
+  // 「今日の曲」の更新モード(単一選択)+間隔(intervalモード時のみ表示)
+  const tm = todayMode();
+  const tms = $("todaymode-pills");
+  tms.innerHTML = "";
+  for (const [key, label] of Object.entries(TODAYMODE_LABELS)) {
+    const b = document.createElement("button");
+    b.className = "toggle-pill" + (tm.mode === key ? " on" : "");
+    b.textContent = label;
+    b.dataset.key = key;
+    b.setAttribute("aria-pressed", tm.mode === key);
+    b.addEventListener("click", () => {
+      tms.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("on");
+      b.setAttribute("aria-pressed", "true");
+      $("todaymode-hours-box").style.display = key === "interval" ? "" : "none";
+    });
+    tms.appendChild(b);
+  }
+  const ths = $("todaymode-hours");
+  ths.innerHTML = "";
+  for (const h of TODAYMODE_HOURS) {
+    const b = document.createElement("button");
+    b.className = "toggle-pill" + (tm.hours === h ? " on" : "");
+    b.textContent = h + "時間ごと";
+    b.dataset.key = h;
+    b.setAttribute("aria-pressed", tm.hours === h);
+    b.addEventListener("click", () => {
+      ths.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+      b.classList.add("on");
+      b.setAttribute("aria-pressed", "true");
+    });
+    ths.appendChild(b);
+  }
+  $("todaymode-hours-box").style.display = tm.mode === "interval" ? "" : "none";
   // 常にアプリで開くトグル
   const oa = $("openapp-toggle");
   oa.classList.toggle("on", openAppOn());
@@ -1414,6 +1488,9 @@ function saveSettings() {
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
   const pmBtn = $("playmode-pills").querySelector(".toggle-pill.on");
   save(LS.PLAYMODE, pmBtn ? pmBtn.dataset.key : "next");
+  const tmBtn = $("todaymode-pills").querySelector(".toggle-pill.on");
+  const thBtn = $("todaymode-hours").querySelector(".toggle-pill.on");
+  save(LS.TODAYMODE, { mode: tmBtn ? tmBtn.dataset.key : "daily", hours: thBtn ? Number(thBtn.dataset.key) : 3 });
   setSyncMeta({ updatedAt: Date.now() }); // 設定変更をリモートより新しいものとして扱う
   scheduleAutoSync();
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
@@ -1525,6 +1602,7 @@ function setAsToday(song, autoplay) {
   if (!song) return;
   const daily = getDaily();
   daily.currentId = song.id;
+  daily.pickedAt = Date.now(); // 手動で曲を選んだ時も「一定時間ごと」の起点を更新
   if (!daily.shownIds.includes(song.id)) daily.shownIds.push(song.id);
   save(LS.DAILY, daily);
   showView("main");
@@ -1975,7 +2053,9 @@ async function shareTodayImage() {
     const blob = await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error("toBlob")), "image/png"));
     const file = new File([blob], "today-bgm.png", { type: "image/png" });
     const shareText = `今日の作業テーマ曲:「${song.title}」\n#作業用BGM #今日の作業テーマ曲`;
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    // PC(pointer:fine)では共有シートを出さず直接ダウンロードする
+    // (PCの共有ダイアログは保存先が分かりにくいため。ボタン表記も「画像を保存」になる)
+    if (isMobileLike() && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({ files: [file], text: shareText });
     } else {
       const url = URL.createObjectURL(blob);
@@ -2214,9 +2294,32 @@ function showExploreCandidate(song) {
   box.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+/* ---- リセット(好み / 履歴 / すべて) ----
+ * 同期は非破壊マージ(和集合)なので、単に消すだけだとリモートや他端末から
+ * 古いデータが復活してしまう。リセット時刻(ratingsResetAt/playsResetAt)を
+ * 同期ペイロードに載せ、マージ時にそれ以前のデータを捨てることで両立する。 */
+function resetTaste() {
+  if (!confirm("「好み」(★評価から学習したおすすめの傾向)をリセットします。再生履歴(カレンダー)はそのまま残ります。よろしいですか?")) return;
+  localStorage.removeItem(LS.RATINGS);
+  setSyncMeta({ ratingsResetAt: Date.now() });
+  scheduleAutoSync();
+  renderTaste();
+  renderRating(); // 今日の曲の★表示も消す
+}
+function resetHistory() {
+  if (!confirm("再生履歴(カレンダー)をリセットします。★評価と「好み」はそのまま残ります。よろしいですか?")) return;
+  save(LS.PLAYS, {}); // nullにしない=評価履歴からの再移行(migrate)を防ぐ
+  setSyncMeta({ playsResetAt: Date.now() });
+  calSelectedDate = null;
+  scheduleAutoSync();
+  renderCalendar();
+}
 function resetAll() {
-  if (!confirm("設定・再生履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE, "bgm_sync"].forEach(k => localStorage.removeItem(k));
+  if (!confirm("設定・評価・再生履歴をすべてリセットします。よろしいですか?")) return;
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => localStorage.removeItem(k));
+  // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴が復活しないように)
+  save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now() });
+  cachedToken = null; tokenExpiry = 0;
   calSelectedDate = null;
   save(LS.PLAYS, {}); // migrate を再発火させない(空履歴として確定)
   renderCalendar();
@@ -2248,7 +2351,7 @@ function showView(name) {
 const GOOGLE_CLIENT_ID = "663015425028-i423e2u0us0j8qpd8tqrlqtd2a4p0r41.apps.googleusercontent.com";
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
-const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE];
+const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE];
 let gisPromise = null, tokenClient = null, syncing = false, autoSyncTimer = null;
 
 function syncMeta() { return load("bgm_sync", {}); }
@@ -2312,31 +2415,42 @@ async function driveSave(token, id, content) {
   }
 }
 function collectLocal() {
-  const o = { updatedAt: syncMeta().updatedAt || 0 };
+  const meta = syncMeta();
+  const o = { updatedAt: meta.updatedAt || 0, ratingsResetAt: meta.ratingsResetAt || 0, playsResetAt: meta.playsResetAt || 0 };
   SYNC_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v != null) { try { o[k] = JSON.parse(v); } catch (e) {} } });
   return o;
 }
 // ローカルとリモートを非破壊マージ(評価=ratedAtが新しい方、履歴=和集合、除外=和集合、設定=updatedAtが新しい方)
+// ただしリセット時刻(ratingsResetAt/playsResetAt)より古い評価・履歴は捨てる
+// (「好みだけリセット」「履歴だけリセット」が同期で復活しないようにするため)
 function mergeData(local, remote) {
   if (!remote) return Object.assign({ v: 1 }, local);
   // 未知キー(将来のバージョンが追加したキー)も保持して取りこぼさない=前方互換
   const m = Object.assign({}, local, remote);
-  const lr = local[LS.RATINGS] || {}, rr = remote[LS.RATINGS] || {}, mr = Object.assign({}, lr);
-  for (const [id, r] of Object.entries(rr)) if (!mr[id] || new Date(r.ratedAt || 0) > new Date(mr[id].ratedAt || 0)) mr[id] = r;
+  const resetR = Math.max(local.ratingsResetAt || 0, remote.ratingsResetAt || 0);
+  const keepR = r => r && new Date(r.ratedAt || 0).getTime() > resetR;
+  const lr = local[LS.RATINGS] || {}, rr = remote[LS.RATINGS] || {}, mr = {};
+  for (const [id, r] of Object.entries(lr)) if (keepR(r)) mr[id] = r;
+  for (const [id, r] of Object.entries(rr)) if (keepR(r) && (!mr[id] || new Date(r.ratedAt || 0) > new Date(mr[id].ratedAt || 0))) mr[id] = r;
   m[LS.RATINGS] = mr;
+  const resetP = Math.max(local.playsResetAt || 0, remote.playsResetAt || 0);
+  const resetPDay = resetP ? dateStr(new Date(resetP)) : "";
   const lp = local[LS.PLAYS] || {}, rp = remote[LS.PLAYS] || {}, mp = {};
   for (const d of new Set([...Object.keys(lp), ...Object.keys(rp)])) {
+    if (d < resetPDay) continue; // リセット日より前の履歴は復活させない
     const a = lp[d] || { first: null, plays: [] }, b = rp[d] || { first: null, plays: [] };
     mp[d] = { first: a.first || b.first || null, plays: [...new Set([...(a.plays || []), ...(b.plays || [])])] };
   }
   m[LS.PLAYS] = mp;
   m[LS.DEAD] = [...new Set([...(local[LS.DEAD] || []), ...(remote[LS.DEAD] || [])])];
   const remoteNewer = (remote.updatedAt || 0) > (local.updatedAt || 0);
-  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE].forEach(k => {
+  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE].forEach(k => {
     const rv = remote[k], lv = local[k];
     m[k] = remoteNewer ? (rv !== undefined ? rv : lv) : (lv !== undefined ? lv : rv);
   });
   m.updatedAt = Math.max(local.updatedAt || 0, remote.updatedAt || 0);
+  m.ratingsResetAt = resetR;
+  m.playsResetAt = resetP;
   m.v = 1;
   return m;
 }
@@ -2349,6 +2463,7 @@ function applyData(m) {
   if (isObj(m[LS.SETTINGS])) localStorage.setItem(LS.SETTINGS, JSON.stringify(m[LS.SETTINGS]));
   if (typeof m[LS.OPENAPP] === "boolean") localStorage.setItem(LS.OPENAPP, JSON.stringify(m[LS.OPENAPP]));
   if (typeof m[LS.PLAYMODE] === "string") localStorage.setItem(LS.PLAYMODE, JSON.stringify(m[LS.PLAYMODE]));
+  if (isObj(m[LS.TODAYMODE])) localStorage.setItem(LS.TODAYMODE, JSON.stringify(m[LS.TODAYMODE]));
 }
 function refreshAfterSync() {
   const settings = load(LS.SETTINGS, null);
@@ -2376,7 +2491,7 @@ async function driveSync(interactive) {
     if (id) { try { remote = await driveDownload(token, id); } catch (e) {} }
     const merged = mergeData(collectLocal(), remote);
     applyData(merged);
-    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, lastSync: Date.now(), error: false });
+    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, ratingsResetAt: merged.ratingsResetAt || 0, playsResetAt: merged.playsResetAt || 0, lastSync: Date.now(), error: false });
     await driveSave(token, id, JSON.stringify(merged));
     refreshAfterSync();
   } catch (e) {
@@ -2437,6 +2552,8 @@ document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("c
 }));
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
+$("btn-reset-taste").addEventListener("click", resetTaste);
+$("btn-reset-history").addEventListener("click", resetHistory);
 $("cal-prev").addEventListener("click", () => { calView.month--; if (calView.month < 0) { calView.month = 11; calView.year--; } renderCalendar(); });
 $("cal-next").addEventListener("click", () => { calView.month++; if (calView.month > 11) { calView.month = 0; calView.year++; } renderCalendar(); });
 $("rain-toggle").addEventListener("click", () => {
@@ -2477,6 +2594,24 @@ $("btn-share").addEventListener("click", (e) => {
 $("btn-yt").addEventListener("click", () => { markStarted(); });
 $("btn-share-img").addEventListener("click", shareTodayImage);
 $("btn-share-img").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); shareTodayImage(); } });
+// PCでは共有シートではなくダウンロードになるため、表記も「画像を保存」にする
+if (!isMobileLike()) {
+  const l = document.querySelector(".sImg-label");
+  if (l) l.textContent = "画像を保存";
+  $("btn-share-img").setAttribute("aria-label", "今日の1曲の画像を保存(ダウンロード)");
+}
+// バックグラウンドから戻った時に「今日の曲」を更新モードに従って選び直す。
+// 再生開始済み(再生中・一時停止中)の曲には触れない
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible" || !SONGS.length) return;
+  if (playerStarted || isPlayingNow()) return;
+  const mode = todayMode().mode;
+  const d = load(LS.DAILY, null);
+  const newDay = !d || d.date !== todayStr();
+  if (mode === "always" || newDay || todayIntervalElapsed()) {
+    init(mode === "always" || todayIntervalElapsed());
+  }
+});
 
 (async function boot() {
   try {
@@ -2490,7 +2625,8 @@ $("btn-share-img").addEventListener("keydown", ev => { if (ev.key === "Enter" ||
   }
   migratePlaysFromRatings(); // 旧ユーザーの評価履歴を日別履歴へ1度だけ復元
   loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
-  init(false);
+  // 「開くたびに毎回」は起動ごとに選び直し、「一定時間ごと」は経過していれば選び直す
+  init(todayMode().mode === "always" || todayIntervalElapsed());
   renderSync();
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)
   if (syncConfigured() && syncMeta().linked) driveSync(false);
