@@ -272,6 +272,8 @@ button:focus-visible, a:focus-visible {
   background: var(--bg-deep);
   box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
 }
+/* 評価トレイが出ている間はすぐ下に詰める(評価トレイ自体の上余白と同じ視覚間隔に) */
+.rating-tray.show + .share-tray { margin-top: 4px; }
 .tray-btn svg.xlogo, .icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
 .tray-btn svg.ytlogo .yt-body, .icon-btn svg.ytlogo .yt-body { fill: var(--text-sub); stroke: none; }
 .tray-btn svg.ytlogo .yt-tri, .icon-btn svg.ytlogo .yt-tri { fill: var(--bg); stroke: none; }
@@ -302,29 +304,50 @@ button:focus-visible, a:focus-visible {
  * 保存ボタンは対象となる設定カード群の直後、同期・リセットは独立の「データ」カードへ */
 .set-card {
   border-radius: var(--r-card);
-  padding: 20px 20px 22px;
+  padding: 20px 12px 22px; /* 横は狭め=小さいスマホでもジャンルピルが4行に収まる幅を確保 */
   margin-top: 22px;
 }
+/* カードの横paddingを削った分、テキスト類は少し内側に寄せて見た目を保つ */
+.set-note { margin-left: 6px; margin-right: 6px; }
 .set-card-title {
   display: flex; align-items: center; gap: 8px;
   font-size: 15px; font-weight: 700;
   color: var(--text);
+  margin: 0 6px;
 }
 .set-card-title::before {
   content: ""; width: 5px; height: 18px; border-radius: 3px;
   background: linear-gradient(180deg, var(--accent), var(--accent-deep));
   flex-shrink: 0;
 }
-.set-card .section-title { margin: 18px 2px 12px; font-size: 12px; }
-.set-card .set-note {
+.set-card .section-title { margin: 18px 6px 12px; font-size: 12px; }
+.set-note {
   font-size: 11.5px; color: var(--text-sub); line-height: 1.75;
   margin-top: 14px; opacity: 0.9;
 }
-.set-card .danger-btn { margin: 4px auto 0; }
+/* データカード内のボタンは同期ボタン(ピル)と同じ左揃えに統一 */
+.set-card .danger-btn { margin: 4px 0 0; }
+/* ---- 注釈の「?」トグル: タップで説明(.help-note)を開閉する ---- */
+.help-btn {
+  width: 19px; height: 19px; padding: 0;
+  border-radius: 50%;
+  display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 700; line-height: 1;
+  color: var(--text-sub);
+  box-shadow: inset 0 0 0 1.5px rgba(138, 150, 173, 0.55);
+  vertical-align: -3px; margin-left: 6px;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.help-btn[aria-expanded="true"] {
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: none;
+}
+.help-note { animation: fadein 0.2s ease; }
 .pill-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .toggle-pill {
   border-radius: var(--r-full);
-  padding: 10px 16px;
+  padding: 10px 14px;
   font-size: 13px; font-weight: 700;
   color: var(--text-sub);
   background: var(--bg);
@@ -691,7 +714,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
   <!-- ===== 好み ===== -->
   <section id="view-taste" class="view">
-    <h2 class="section-title">あなたの好み</h2>
+    <h2 class="section-title">あなたの好み <button class="help-btn" data-help="help-taste" aria-expanded="false" aria-label="好み度の説明を表示">?</button></h2>
+    <p class="set-note help-note" id="help-taste" style="margin:0 2px 14px" hidden>★の評価から好み度(0〜100)を学習します。<br>50がふつう、高いほど好みです。</p>
     <div class="taste-tiles">
       <div class="tile raised"><div class="t-val" id="t-count">0</div><div class="t-label">評価した曲</div></div>
       <div class="tile raised"><div class="t-val" id="t-avg">─</div><div class="t-label">平均★</div></div>
@@ -714,7 +738,6 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="empty" id="taste-empty" style="display:none">
       曲を評価すると、ここに好み度が見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
     </div>
-    <p class="footnote">★の評価から好み度(0〜100)を学習します。50がふつう、高いほど好みです。</p>
     <button class="danger-btn raised" id="btn-reset-taste">好み(おすすめの傾向)をリセット</button>
   </section>
 
@@ -732,22 +755,28 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <h2 class="set-card-title">再生</h2>
       <h3 class="section-title">曲が終わったら</h3>
       <div class="pill-grid" id="playmode-pills"></div>
-      <h3 class="section-title">再生方法</h3>
+      <h3 class="section-title">再生方法 <button class="help-btn" data-help="help-openapp" aria-expanded="false" aria-label="再生方法の説明を表示">?</button></h3>
       <div class="pill-grid">
         <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
       </div>
-      <p class="set-note">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
+      <p class="set-note help-note" id="help-openapp" hidden>YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
     </div>
 
     <div class="set-card raised">
       <h2 class="set-card-title">「今日の曲」の更新</h2>
-      <h3 class="section-title">いつ選び直すか</h3>
+      <h3 class="section-title">いつ選び直すか <button class="help-btn" data-help="help-todaymode" aria-expanded="false" aria-label="各選択肢の説明を表示">?</button></h3>
       <div class="pill-grid" id="todaymode-pills"></div>
+      <p class="set-note help-note" id="help-todaymode" hidden>
+        ・<b>1日1曲</b>: その日最初に選ばれた曲を1日じゅう表示します(標準)<br>
+        ・<b>開くたび</b>: アプリを開くたびに違う曲を選び直します<br>
+        ・<b>時間ごと</b>: 選んだ間隔が経ったあとに開くと選び直します<br>
+        ・<b>前回の曲</b>: 前回閉じたときの曲を翌日以降も続けます<br>
+        ※どの設定でも、履歴カレンダーの各日のサムネイルは「その日最初に表示された曲」で記録されます。再生中の曲が勝手に切り替わることはありません。
+      </p>
       <div id="todaymode-hours-box" style="display:none">
         <h3 class="section-title">更新する間隔</h3>
         <div class="pill-grid" id="todaymode-hours"></div>
       </div>
-      <p class="set-note">どの設定でも、履歴カレンダーの各日のサムネイルは<b>その日最初に表示された曲</b>で記録されます。</p>
     </div>
 
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
@@ -755,12 +784,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised">
       <h2 class="set-card-title">データ</h2>
-      <h3 class="section-title">端末間の同期</h3>
+      <h3 class="section-title">端末間の同期 <button class="help-btn" data-help="help-sync" aria-expanded="false" aria-label="同期の説明を表示">?</button></h3>
       <div id="sync-box"></div>
-      <p class="set-note">Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期できます。データは開発者や第三者のサーバーには送信されません。</p>
-      <h3 class="section-title">リセット</h3>
+      <p class="set-note help-note" id="help-sync" hidden>Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期できます。データは開発者や第三者のサーバーには送信されません。</p>
+      <h3 class="section-title">リセット <button class="help-btn" data-help="help-reset" aria-expanded="false" aria-label="リセットの説明を表示">?</button></h3>
       <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
-      <p class="set-note">「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
+      <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
     </div>
   </section>
 
@@ -825,20 +854,21 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
  * ========================================================= */
 let SONGS = [];
 
-// 表示順は「短いジャンルを長いジャンルの右の空きに入れて行数を減らす」ため最適化した並び
-// (ピアノの右に和風 / ゲームBGMの右にEDM / クラシックの右にかわいい)
+// 表示順は「長いジャンルを先頭に置き、短いジャンルで各行の右の空きを埋める」よう
+// 最適化した並び(設定カード内の幅=スマホで約300pxでも4行に収まる組み合わせ)
 const GENRE_LABELS = {
-  lofi: "Lo-fi", jazz: "ジャズ", piano: "ピアノ", japanese: "和風",
-  nature: "環境音・自然音", game: "ゲームBGM", edm: "EDM",
-  synthwave: "シンセウェーブ", classical: "クラシック", kawaii: "かわいい",
-  celtic: "ケルト音楽", fantasy: "ファンタジー",
+  nature: "環境音・自然音", game: "ゲームBGM", japanese: "和風",
+  synthwave: "シンセウェーブ", classical: "クラシック", lofi: "Lo-fi",
+  fantasy: "ファンタジー", celtic: "ケルト音楽", jazz: "ジャズ",
+  kawaii: "かわいい", piano: "ピアノ", edm: "EDM",
 };
 const MOOD_LABELS = { calm: "リラックス", focus: "集中", night: "夜", morning: "朝", rain: "雨", epic: "壮大", fantasy: "幻想的" };
 const DURATION_LABELS = { short: "短め(〜30分)", medium: "普通(30分〜1時間)", long: "長め(1時間〜)", any: "こだわらない" };
 const PLAYMODE_LABELS = { next: "次の曲へ", repeat: "1曲リピート", stop: "停止" };
 // 「今日の曲」の更新タイミング。どのモードでもカレンダーの日別サムネは
-// 「その日最初に表示された曲」(recordShownのfirst)で固定される
-const TODAYMODE_LABELS = { daily: "1日1曲(その日最初の曲)", always: "開くたびに毎回変える", interval: "一定時間ごとに変える", last: "前回開いていた曲を続ける" };
+// 「その日最初に表示された曲」(recordShownのfirst)で固定される。
+// ラベルは短語に留め、詳細説明は設定画面の「?」注釈(help-todaymode)が担う
+const TODAYMODE_LABELS = { daily: "1日1曲", always: "開くたび", interval: "時間ごと", last: "前回の曲" };
 const TODAYMODE_HOURS = [1, 2, 3, 6, 12];
 const DURATION_ORDER = { short: 0, medium: 1, long: 2 };
 
@@ -1498,7 +1528,7 @@ function renderSettings() {
   for (const h of TODAYMODE_HOURS) {
     const b = document.createElement("button");
     b.className = "toggle-pill" + (tm.hours === h ? " on" : "");
-    b.textContent = h + "時間ごと";
+    b.textContent = h + "時間";
     b.dataset.key = h;
     b.setAttribute("aria-pressed", tm.hours === h);
     b.addEventListener("click", () => {
@@ -2596,6 +2626,14 @@ $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 $("btn-reset-taste").addEventListener("click", resetTaste);
 $("btn-reset-history").addEventListener("click", resetHistory);
+// 「?」注釈トグル: data-help のidを持つ説明文(.help-note)を開閉する
+document.querySelectorAll(".help-btn").forEach(b => b.addEventListener("click", () => {
+  const note = $(b.dataset.help);
+  if (!note) return;
+  const open = note.hasAttribute("hidden");
+  if (open) note.removeAttribute("hidden"); else note.setAttribute("hidden", "");
+  b.setAttribute("aria-expanded", String(open));
+}));
 $("cal-prev").addEventListener("click", () => { calView.month--; if (calView.month < 0) { calView.month = 11; calView.year--; } renderCalendar(); });
 $("cal-next").addEventListener("click", () => { calView.month++; if (calView.month > 11) { calView.month = 0; calView.year++; } renderCalendar(); });
 $("rain-toggle").addEventListener("click", () => {
