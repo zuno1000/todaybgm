@@ -188,10 +188,11 @@ button:focus-visible, a:focus-visible {
 }
 .pill.genre { color: var(--accent); font-weight: 700; }
 
-/* ---- 円形ボタン列 ---- */
+/* ---- 再生操作(主役は再生ボタンのみ。前/次は装飾なしのフラットアイコン=
+        SpotifyやApple Music等の標準パターンに合わせてボタンの数感を減らす) ---- */
 .controls {
-  display: flex; justify-content: center; align-items: flex-start;
-  gap: 30px; margin-top: 22px;
+  display: flex; justify-content: center; align-items: center;
+  gap: 34px; margin-top: 24px;
 }
 .control-item { text-align: center; }
 .icon-btn {
@@ -221,6 +222,13 @@ button:focus-visible, a:focus-visible {
 }
 .icon-btn[disabled] { opacity: 0.45; cursor: default; }
 .icon-btn.main[disabled] { opacity: 1; cursor: default; }
+/* 前の曲/次の曲: 円形の台座なし・塗りグリフのフラットボタン */
+.icon-btn.plain { width: 56px; height: 56px; }
+.icon-btn.plain svg { width: 26px; height: 26px; stroke: var(--text-sub); fill: var(--text-sub); }
+.icon-btn.plain:active:not([disabled]) {
+  transform: scale(0.9);
+  background: none; box-shadow: none;
+}
 .btn-label {
   display: block; text-align: center;
   font-size: 11px; color: var(--text-sub); margin-top: 8px;
@@ -243,21 +251,30 @@ button:focus-visible, a:focus-visible {
 .star-btn.pop { transform: scale(1.2); }
 .rated-msg { font-size: 12px; color: var(--accent); margin-top: 8px; min-height: 1.2em; }
 
-/* ---- 共有アイコン列(YouTubeで開く / Xで共有 / 画像で共有) ----
- * 再生操作(前/再生/次)より一段小さい二次ボタンにして視覚的な序列をつけ、
- * 縦方向も圧縮して初期表示で画面内に収まるようにする */
-.share-row {
-  display: flex; align-items: flex-start;
-  gap: 0; margin-top: 20px;
+/* ---- 共有トレイ(YouTubeで開く / Xで共有 / 画像で共有) ----
+ * 円形ボタンを並べず、1本のバーに3つのフラットなアクションをまとめる
+ * (YouTube Music等の「曲名下のアクション行」パターンのSoft UI版)。 */
+.share-tray {
+  display: flex; margin: 24px auto 0;
+  max-width: 340px;
+  border-radius: var(--r-btn);
+  overflow: hidden;
 }
-/* 3等分し、各枠内でアイコンを中央寄せ=アイコンが等間隔に並ぶ */
-.share-row .control-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
-.share-row .icon-btn { width: 46px; height: 46px; }
-.share-row .icon-btn svg { width: 18px; height: 18px; }
-.share-row .btn-label { margin-top: 6px; }
-.icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
-.icon-btn svg.ytlogo .yt-body { fill: var(--text-sub); stroke: none; }
-.icon-btn svg.ytlogo .yt-tri { fill: var(--bg); stroke: none; }
+.tray-btn {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 12px 4px 10px;
+  font-size: 10.5px; font-weight: 500; color: var(--text-sub);
+}
+.tray-btn + .tray-btn { border-left: 1px solid rgba(136, 152, 184, 0.18); }
+.tray-btn svg { width: 19px; height: 19px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tray-btn:active {
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
+.tray-btn svg.xlogo, .icon-btn svg.xlogo { fill: var(--text-sub); stroke: none; }
+.tray-btn svg.ytlogo .yt-body, .icon-btn svg.ytlogo .yt-body { fill: var(--text-sub); stroke: none; }
+.tray-btn svg.ytlogo .yt-tri, .icon-btn svg.ytlogo .yt-tri { fill: var(--bg); stroke: none; }
 
 /* ---- YouTubeリンク・注記 ---- */
 .yt-link {
@@ -280,6 +297,30 @@ button:focus-visible, a:focus-visible {
   font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
   color: var(--text-sub); margin: 26px 4px 14px;
 }
+/* ---- 設定: グループカード(おすすめの条件 / 再生 / 今日の曲 / データ) ----
+ * 項目が増えたため、関連する設定をカードにまとめて区別しやすくする。
+ * 保存ボタンは対象となる設定カード群の直後、同期・リセットは独立の「データ」カードへ */
+.set-card {
+  border-radius: var(--r-card);
+  padding: 20px 20px 22px;
+  margin-top: 22px;
+}
+.set-card-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 700;
+  color: var(--text);
+}
+.set-card-title::before {
+  content: ""; width: 5px; height: 18px; border-radius: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+  flex-shrink: 0;
+}
+.set-card .section-title { margin: 18px 2px 12px; font-size: 12px; }
+.set-card .set-note {
+  font-size: 11.5px; color: var(--text-sub); line-height: 1.75;
+  margin-top: 14px; opacity: 0.9;
+}
+.set-card .danger-btn { margin: 4px auto 0; }
 .pill-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .toggle-pill {
   border-radius: var(--r-full);
@@ -564,24 +605,15 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="song-meta" id="song-tags"></div>
 
     <div class="controls" id="controls">
-      <div class="control-item">
-        <button class="icon-btn raised" id="btn-prev" aria-label="前の曲に戻る" disabled>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-        </button>
-        <span class="btn-label">前の曲</span>
-      </div>
-      <div class="control-item">
-        <button class="icon-btn main" id="btn-play" aria-label="再生する">
-          <svg id="ic-play" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-        </button>
-        <span class="btn-label" id="play-label">再生</span>
-      </div>
-      <div class="control-item">
-        <button class="icon-btn raised" id="btn-next" aria-label="次の曲へ">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-        </button>
-        <span class="btn-label">次の曲</span>
-      </div>
+      <button class="icon-btn plain" id="btn-prev" aria-label="前の曲に戻る" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button class="icon-btn main" id="btn-play" aria-label="再生する">
+        <svg id="ic-play" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      </button>
+      <button class="icon-btn plain" id="btn-next" aria-label="次の曲へ">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
     </div>
 
     <div class="rating-tray" id="rating-box">
@@ -592,25 +624,19 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="rated-msg" id="rated-msg"></div>
     </div>
 
-    <div class="share-row">
-      <div class="control-item">
-        <a id="btn-yt" class="icon-btn raised" target="_blank" rel="noopener" aria-label="YouTubeアプリで開く(バックグラウンド再生)">
-          <svg class="ytlogo" viewBox="0 0 24 24" aria-hidden="true"><path class="yt-body" d="M23.5 7.2a3 3 0 0 0-2.11-2.12C19.52 4.55 12 4.55 12 4.55s-7.52 0-9.39.53A3 3 0 0 0 .5 7.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 4.8 3 3 0 0 0 2.11 2.12c1.87.53 9.39.53 9.39.53s7.52 0 9.39-.53A3 3 0 0 0 23.5 16.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-4.8Z"/><polygon class="yt-tri" points="9.6 8.4 16 12 9.6 15.6"/></svg>
-        </a>
-        <span class="btn-label">YouTubeで開く</span>
-      </div>
-      <div class="control-item">
-        <a id="btn-share" class="icon-btn raised" target="_blank" rel="noopener" aria-label="Xで今日の1曲を共有">
-          <svg class="xlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.9 10.5 21.4 2h-1.78l-6.5 7.4L7.86 2H2l7.9 11.5L2 22h1.78l6.9-7.9L16.14 22H22l-8.1-11.5Zm-2.44 2.8-.8-1.14L4.42 3.3h2.73l5.14 7.35.8 1.14 6.67 9.53h-2.73l-5.45-7.79Z"/></svg>
-        </a>
-        <span class="btn-label">Xで共有</span>
-      </div>
-      <div class="control-item">
-        <button id="btn-share-img" class="icon-btn raised" aria-label="画像で今日の1曲を共有">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </button>
-        <span class="btn-label sImg-label">画像で共有</span>
-      </div>
+    <div class="share-tray raised">
+      <a id="btn-yt" class="tray-btn" target="_blank" rel="noopener" aria-label="YouTubeアプリで開く(バックグラウンド再生)">
+        <svg class="ytlogo" viewBox="0 0 24 24" aria-hidden="true"><path class="yt-body" d="M23.5 7.2a3 3 0 0 0-2.11-2.12C19.52 4.55 12 4.55 12 4.55s-7.52 0-9.39.53A3 3 0 0 0 .5 7.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 4.8 3 3 0 0 0 2.11 2.12c1.87.53 9.39.53 9.39.53s7.52 0 9.39-.53A3 3 0 0 0 23.5 16.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-4.8Z"/><polygon class="yt-tri" points="9.6 8.4 16 12 9.6 15.6"/></svg>
+        <span>YouTubeで開く</span>
+      </a>
+      <a id="btn-share" class="tray-btn" target="_blank" rel="noopener" aria-label="Xで今日の1曲を共有">
+        <svg class="xlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.9 10.5 21.4 2h-1.78l-6.5 7.4L7.86 2H2l7.9 11.5L2 22h1.78l6.9-7.9L16.14 22H22l-8.1-11.5Zm-2.44 2.8-.8-1.14L4.42 3.3h2.73l5.14 7.35.8 1.14 6.67 9.53h-2.73l-5.45-7.79Z"/></svg>
+        <span>Xで共有</span>
+      </a>
+      <button id="btn-share-img" class="tray-btn" aria-label="画像で今日の1曲を共有">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="sImg-label">画像で共有</span>
+      </button>
     </div>
   </section>
 
@@ -694,30 +720,48 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
   <!-- ===== 設定 ===== -->
   <section id="view-settings" class="view">
-    <h2 class="section-title">好きなジャンル(複数選択可)</h2>
-    <div class="pill-grid" id="genre-pills"></div>
-    <h2 class="section-title">動画時間の希望</h2>
-    <div class="pill-grid" id="dur-pills"></div>
-    <h2 class="section-title">曲が終わったら</h2>
-    <div class="pill-grid" id="playmode-pills"></div>
-    <h2 class="section-title">再生方法</h2>
-    <div class="pill-grid">
-      <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
+    <div class="set-card raised">
+      <h2 class="set-card-title">おすすめの条件</h2>
+      <h3 class="section-title">好きなジャンル(複数選択可)</h3>
+      <div class="pill-grid" id="genre-pills"></div>
+      <h3 class="section-title">動画時間の希望</h3>
+      <div class="pill-grid" id="dur-pills"></div>
     </div>
-    <p class="hint inset">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
-    <h2 class="section-title">「今日の曲」の更新</h2>
-    <div class="pill-grid" id="todaymode-pills"></div>
-    <div id="todaymode-hours-box" style="display:none">
-      <h2 class="section-title">更新する間隔</h2>
-      <div class="pill-grid" id="todaymode-hours"></div>
+
+    <div class="set-card raised">
+      <h2 class="set-card-title">再生</h2>
+      <h3 class="section-title">曲が終わったら</h3>
+      <div class="pill-grid" id="playmode-pills"></div>
+      <h3 class="section-title">再生方法</h3>
+      <div class="pill-grid">
+        <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
+      </div>
+      <p class="set-note">YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
     </div>
-    <p class="hint inset">どの設定でも、履歴カレンダーの各日のサムネイルは<b>その日最初に表示された曲</b>で記録されます。</p>
+
+    <div class="set-card raised">
+      <h2 class="set-card-title">「今日の曲」の更新</h2>
+      <h3 class="section-title">いつ選び直すか</h3>
+      <div class="pill-grid" id="todaymode-pills"></div>
+      <div id="todaymode-hours-box" style="display:none">
+        <h3 class="section-title">更新する間隔</h3>
+        <div class="pill-grid" id="todaymode-hours"></div>
+      </div>
+      <p class="set-note">どの設定でも、履歴カレンダーの各日のサムネイルは<b>その日最初に表示された曲</b>で記録されます。</p>
+    </div>
+
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
     <div class="save-msg" id="save-msg"></div>
 
-    <h2 class="section-title">データ同期(端末間)</h2>
-    <div id="sync-box"></div>
-    <p class="hint inset">Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期できます。データは開発者や第三者のサーバーには送信されません。</p>
+    <div class="set-card raised">
+      <h2 class="set-card-title">データ</h2>
+      <h3 class="section-title">端末間の同期</h3>
+      <div id="sync-box"></div>
+      <p class="set-note">Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期できます。データは開発者や第三者のサーバーには送信されません。</p>
+      <h3 class="section-title">リセット</h3>
+      <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
+      <p class="set-note">「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
+    </div>
   </section>
 
   <!-- ===== 履歴(カレンダー) ===== -->
@@ -742,7 +786,6 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       まだ再生した曲がありません。<br>曲を再生すると、その日のサムネイルがカレンダーに並んでいきます。
     </div>
     <button class="danger-btn raised" id="btn-reset-history">履歴をリセット</button>
-    <button class="danger-btn" id="btn-reset" style="margin-top:0">データをすべてリセット</button>
   </section>
 
   <p class="footnote">データは端末内(localStorage)に保存されます。同期を連携すると、<br>あなた自身のGoogleドライブ(アプリ専用領域)にも保存されます。</p>
@@ -1072,7 +1115,6 @@ function setPlayButton(mode) {
   btn.classList.toggle("playing", playing);
   btn.setAttribute("aria-label", playing ? "一時停止する" : "再生する");
   $("ic-play").innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
-  $("play-label").textContent = playing ? "再生中" : mode === "paused" ? "再開" : "再生";
 }
 
 function durationText(song) {
