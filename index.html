@@ -1726,8 +1726,11 @@ function renderDayDetail(date) {
   list.innerHTML = "";
   const ratings = load(LS.RATINGS, {});
   const ids = log && log.plays ? log.plays.slice().reverse() : []; // 新しく再生した順
-  $("day-empty").style.display = ids.length ? "none" : "";
-  for (const id of ids) {
+  // カレンダーのサムネの曲(その日最初に提示された曲=first)が未再生のままでも、
+  // 「未再生」の行として一覧に出し、タップで再生できるようにする
+  const firstUnplayed = log && log.first && !ids.includes(log.first) ? log.first : null;
+  $("day-empty").style.display = (ids.length || firstUnplayed) ? "none" : "";
+  const addRow = (id, unplayed) => {
     // カタログから削除された曲も、控えたメタで表示・再生できるようにする(消さない)
     const song = SONGS.find(s => s.id === id) || externalSong(id);
     const r = ratings[id];
@@ -1737,7 +1740,8 @@ function renderDayDetail(date) {
     li.tabIndex = 0;
     li.setAttribute("aria-label", `「${song.title}」を今日の曲にして再生`);
     const genreLabel = song.genres.length ? (GENRE_LABELS[song.genres[0]] || song.genres[0]) : "カタログ外";
-    const rating = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
+    const rating = unplayed ? `<span class="hist-date">未再生</span>`
+      : r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
     li.innerHTML = `<img class="hist-thumb" loading="lazy" alt=""><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span>${rating}</span>`;
     li.querySelector(".hist-thumb").src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
     li.querySelector(".hist-title").textContent = song.title;
@@ -1745,7 +1749,9 @@ function renderDayDetail(date) {
     li.addEventListener("click", () => playFromHistory(id));
     li.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); playFromHistory(id); } });
     list.appendChild(li);
-  }
+  };
+  for (const id of ids) addRow(id, false);
+  if (firstUnplayed) addRow(firstUnplayed, true);
 }
 
 // 任意の曲を「今日の曲」にセットする。autoplay時はそのまま再生(ユーザー操作起点なので可)
