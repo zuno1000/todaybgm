@@ -893,6 +893,7 @@ const LS = {
   DEAD: "bgm_dead",     // 再生エラーになった動画ID(以後の候補から除外)
   QUEUE: "bgm_queue",   // 旧: 連続再生キューのオン/オフ(PLAYMODEへ移行)
   PLAYS: "bgm_plays",   // 日別の再生履歴 {date: {first: id, plays: [ids]}} — カレンダー・履歴用
+  SONGMETA: "bgm_songmeta", // 再生・提示した曲のメタ控え {id: {t: タイトル, g: 第1ジャンル}} — カタログ削除後の履歴表示用
   OPENAPP: "bgm_openapp", // 常にYouTubeアプリで開く(Premium広告なし向け)
   PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
   TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
@@ -929,6 +930,7 @@ function recordShown(song) {
   h[t] = h[t] || { first: null, plays: [] };
   if (!h[t].first) h[t].first = song.id;
   save(LS.PLAYS, h);
+  saveSongMeta(song);
 }
 // 曲が実際に再生された(再生開始を検知)ことを記録
 function recordPlay(song) {
@@ -939,7 +941,62 @@ function recordPlay(song) {
   if (!h[t].first) h[t].first = song.id;
   if (!h[t].plays.includes(song.id)) h[t].plays.push(song.id);
   save(LS.PLAYS, h);
+  saveSongMeta(song);
   scheduleAutoSync();
+}
+
+/* ---- 曲メタの控え(カタログ削除への備え) ----
+ * songs.json は週次更新で曲が削除される(死活チェック・チャンネル偏りの入れ替え)。
+ * 履歴・評価に登場した曲のタイトル/第1ジャンルを bgm_songmeta に控えておき、
+ * カタログから消えた後も履歴タブでの表示とタップ再生(externalSong)を可能にする。
+ * 動画がYouTube上で生きている限り、IDさえあれば埋め込み再生はできる。 */
+function songMeta() { return load(LS.SONGMETA, {}); }
+function saveSongMeta(song) {
+  // カタログ外曲はタイトルが判明している場合(metaKnown)のみ控える
+  if (!song || !song.id || !song.title || (song.external && !song.metaKnown)) return;
+  const meta = songMeta();
+  const cur = meta[song.id];
+  const g = (song.genres && song.genres[0]) || (cur && cur.g) || "";
+  if (cur && cur.t === song.title && cur.g === g) return;
+  meta[song.id] = { t: song.title, g };
+  save(LS.SONGMETA, meta);
+}
+// 起動時: 履歴・評価が参照する曲のうちカタログ在籍中のもののメタを控え、
+// どこからも参照されなくなったメタは掃除する(サイズを履歴・評価に比例した範囲に保つ)
+function backfillSongMeta() {
+  const plays = load(LS.PLAYS, {});
+  const used = new Set(Object.keys(load(LS.RATINGS, {})));
+  for (const log of Object.values(plays)) {
+    if (!log) continue;
+    if (log.first) used.add(log.first);
+    for (const id of (log.plays || [])) used.add(id);
+  }
+  const meta = songMeta();
+  let changed = false;
+  for (const s of SONGS) {
+    if (!used.has(s.id)) continue;
+    const g = (s.genres && s.genres[0]) || "";
+    const cur = meta[s.id];
+    if (!cur || cur.t !== s.title || cur.g !== g) { meta[s.id] = { t: s.title, g }; changed = true; }
+  }
+  for (const id of Object.keys(meta)) {
+    if (!used.has(id)) { delete meta[id]; changed = true; }
+  }
+  if (changed) save(LS.SONGMETA, meta);
+}
+// カタログから消えた曲を、控えたメタから擬似的な曲オブジェクトとして復元する
+function externalSong(id) {
+  const m = songMeta()[id];
+  return {
+    id,
+    title: (m && m.t) || "カタログ外の曲",
+    genres: (m && m.g) ? [m.g] : [],
+    mood: [],
+    durationMin: 0, // 不明(表示側で時間ピルを省略する)
+    durationClass: "long",
+    external: true,
+    metaKnown: !!(m && m.t),
+  };
 }
 // 旧ユーザー向け: 評価履歴(bgm_ratings)から日別履歴を1度だけ復元する
 function migratePlaysFromRatings() {
@@ -960,6 +1017,13 @@ function markStarted() {
   if (playerStarted) return;
   playerStarted = true;
   renderRating();
+  // タイトル不明のカタログ外曲は、プレイヤーから実タイトルを取得して表示とメタを直す
+  if (currentSong && currentSong.external && !currentSong.metaKnown && player && player.getVideoData) {
+    try {
+      const t = (player.getVideoData() || {}).title;
+      if (t) { currentSong.title = t; currentSong.metaKnown = true; renderSongInfo(currentSong); }
+    } catch (e) {}
+  }
   recordPlay(currentSong);
 }
 
@@ -1174,13 +1238,16 @@ function renderSongInfo(song) {
   for (const g of song.genres) {
     const el = document.createElement("span");
     el.className = "pill inset genre";
-    el.textContent = "# " + GENRE_LABELS[g];
+    el.textContent = "# " + (GENRE_LABELS[g] || g);
     tags.appendChild(el);
   }
-  const dur = document.createElement("span");
-  dur.className = "pill inset";
-  dur.textContent = durationText(song);
-  tags.appendChild(dur);
+  // カタログ外曲(externalSong)は再生時間が不明なので時間ピルを出さない
+  if (song.durationMin || song.live) {
+    const dur = document.createElement("span");
+    dur.className = "pill inset";
+    dur.textContent = durationText(song);
+    tags.appendChild(dur);
+  }
   const watchUrl = `https://www.youtube.com/watch?v=${song.id}`;
   $("btn-yt").href = watchUrl;
   const SITE = "https://zuno1000.github.io/todaybgm/";
@@ -1661,15 +1728,15 @@ function renderDayDetail(date) {
   const ids = log && log.plays ? log.plays.slice().reverse() : []; // 新しく再生した順
   $("day-empty").style.display = ids.length ? "none" : "";
   for (const id of ids) {
-    const song = SONGS.find(s => s.id === id);
-    if (!song) continue;
+    // カタログから削除された曲も、控えたメタで表示・再生できるようにする(消さない)
+    const song = SONGS.find(s => s.id === id) || externalSong(id);
     const r = ratings[id];
     const li = document.createElement("li");
     li.className = "hist-item raised";
     li.setAttribute("role", "button");
     li.tabIndex = 0;
     li.setAttribute("aria-label", `「${song.title}」を今日の曲にして再生`);
-    const genreLabel = GENRE_LABELS[song.genres[0]] || song.genres[0];
+    const genreLabel = song.genres.length ? (GENRE_LABELS[song.genres[0]] || song.genres[0]) : "カタログ外";
     const rating = r ? `<span class="hist-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>` : `<span class="hist-date">未評価</span>`;
     li.innerHTML = `<img class="hist-thumb" loading="lazy" alt=""><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span>${rating}</span>`;
     li.querySelector(".hist-thumb").src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
@@ -2169,8 +2236,10 @@ async function shareTodayImage() {
 }
 
 // 履歴の曲をタップ → 今日の曲にセットして即再生
+// (カタログから削除済みの曲もexternalSongで再生する。動画が生きていれば埋め込みは通り、
+//  死んでいれば既存の再生エラー自動リカバリーが別の曲に差し替える)
 function playFromHistory(id) {
-  setAsToday(SONGS.find(s => s.id === id), true);
+  setAsToday(SONGS.find(s => s.id === id) || externalSong(id), true);
 }
 
 /* ---- 好み画面(評価データの可視化) ---- */
@@ -2448,7 +2517,7 @@ function showView(name) {
 const GOOGLE_CLIENT_ID = "663015425028-i423e2u0us0j8qpd8tqrlqtd2a4p0r41.apps.googleusercontent.com";
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
-const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE];
+const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA];
 let gisPromise = null, tokenClient = null, syncing = false, autoSyncTimer = null;
 
 function syncMeta() { return load("bgm_sync", {}); }
@@ -2540,6 +2609,8 @@ function mergeData(local, remote) {
   }
   m[LS.PLAYS] = mp;
   m[LS.DEAD] = [...new Set([...(local[LS.DEAD] || []), ...(remote[LS.DEAD] || [])])];
+  // 曲メタの控えは和集合(単なるキャッシュなのでトンボストーン不要。不要分は起動時のbackfillが掃除する)
+  m[LS.SONGMETA] = Object.assign({}, remote[LS.SONGMETA] || {}, local[LS.SONGMETA] || {});
   const remoteNewer = (remote.updatedAt || 0) > (local.updatedAt || 0);
   [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE].forEach(k => {
     const rv = remote[k], lv = local[k];
@@ -2556,6 +2627,7 @@ function applyData(m) {
   const isObj = v => v && typeof v === "object" && !Array.isArray(v);
   if (isObj(m[LS.RATINGS])) localStorage.setItem(LS.RATINGS, JSON.stringify(m[LS.RATINGS]));
   if (isObj(m[LS.PLAYS])) localStorage.setItem(LS.PLAYS, JSON.stringify(m[LS.PLAYS]));
+  if (isObj(m[LS.SONGMETA])) localStorage.setItem(LS.SONGMETA, JSON.stringify(m[LS.SONGMETA]));
   if (Array.isArray(m[LS.DEAD])) localStorage.setItem(LS.DEAD, JSON.stringify(m[LS.DEAD]));
   if (isObj(m[LS.SETTINGS])) localStorage.setItem(LS.SETTINGS, JSON.stringify(m[LS.SETTINGS]));
   if (typeof m[LS.OPENAPP] === "boolean") localStorage.setItem(LS.OPENAPP, JSON.stringify(m[LS.OPENAPP]));
@@ -2734,6 +2806,7 @@ document.addEventListener("visibilitychange", () => {
     return;
   }
   migratePlaysFromRatings(); // 旧ユーザーの評価履歴を日別履歴へ1度だけ復元
+  backfillSongMeta(); // 履歴・評価にある曲のメタを控える(カタログから消えた後の履歴表示用)
   loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
   // 「開くたびに毎回」は起動ごとに選び直し、「一定時間ごと」は経過していれば選び直す
   init(todayMode().mode === "always" || todayIntervalElapsed());
