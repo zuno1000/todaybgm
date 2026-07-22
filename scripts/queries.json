@@ -4,27 +4,35 @@
     "lofi beats to work to",
     "chillhop mix",
     "japanese lofi mix",
-    "lofi jazz beats mix"
+    "lofi jazz beats mix",
+    "rainy day lofi playlist",
+    "jazzy lofi beats instrumental"
   ],
   "jazz": [
     "jazz for work cafe music",
     "smooth jazz instrumental mix",
     "bossa nova cafe music",
     "jazz piano bar music",
-    "rainy jazz cafe playlist"
+    "rainy jazz cafe playlist",
+    "late night jazz playlist",
+    "coffee shop jazz instrumental music"
   ],
   "piano": [
     "relaxing piano music for studying",
     "beautiful piano instrumental playlist",
     "peaceful piano playlist",
-    "ghibli piano music"
+    "ghibli piano music",
+    "calm piano music for work",
+    "piano music for reading playlist"
   ],
   "nature": [
     "rain sounds for studying",
     "forest ambience birdsong",
     "ocean waves white noise",
     "river stream nature sounds",
-    "thunderstorm sounds for sleeping"
+    "thunderstorm sounds for sleeping",
+    "campfire crackling ambience",
+    "night forest ambience crickets"
   ],
   "game": [
     "video game music for studying",
@@ -32,14 +40,18 @@
     "final fantasy relaxing music",
     "animal crossing music playlist",
     "minecraft music playlist",
-    "undertale relaxing music"
+    "undertale relaxing music",
+    "stardew valley relaxing music",
+    "skyrim ambient music playlist"
   ],
   "synthwave": [
     "synthwave mix",
     "chillwave study mix",
     "retrowave mix",
     "cyberpunk ambient music",
-    "80s synth instrumental mix"
+    "80s synth instrumental mix",
+    "vaporwave study mix",
+    "space ambient synth music"
   ],
   "classical": [
     "classical music for studying",
@@ -47,14 +59,18 @@
     "mozart for studying",
     "bach cello suites",
     "debussy piano music",
-    "baroque music for studying"
+    "baroque music for studying",
+    "erik satie piano playlist",
+    "vivaldi relaxing music"
   ],
   "celtic": [
     "celtic music mix relaxing",
     "celtic fantasy music playlist",
     "irish traditional instrumental music",
     "celtic harp and flute music",
-    "enya style celtic ambient music"
+    "enya style celtic ambient music",
+    "celtic fiddle instrumental playlist",
+    "medieval tavern music instrumental"
   ],
   "fantasy": [
     "fantasy ambient music mix",
@@ -62,7 +78,9 @@
     "magical forest fantasy music",
     "dreamy fantasy instrumental music",
     "enchanted tavern fantasy ambience",
-    "ethereal fantasy background music"
+    "ethereal fantasy background music",
+    "rpg village music playlist",
+    "elven forest ambient music"
   ],
   "japanese": [
     "和風 bgm 作業用",
@@ -70,7 +88,9 @@
     "koto shakuhachi relaxing music",
     "wafu ambient music mix",
     "和風 幻想的 bgm",
-    "japanese zen meditation music"
+    "japanese zen meditation music",
+    "和楽器 bgm インストゥルメンタル",
+    "japanese garden ambience music"
   ],
   "edm": [
     "chill edm mix study",
@@ -78,7 +98,9 @@
     "future bass mix study",
     "edm gaming music mix",
     "progressive house mix",
-    "edm work focus mix"
+    "edm work focus mix",
+    "deep house instrumental study mix",
+    "tropical house relaxing mix"
   ],
   "kawaii": [
     "kawaii future bass mix",
@@ -86,6 +108,8 @@
     "かわいい bgm 作業用",
     "kawaii aesthetic music mix",
     "anime lofi cute mix",
-    "cute instrumental music playlist"
+    "cute instrumental music playlist",
+    "kawaii lofi bgm mix",
+    "happy cute background music instrumental"
   ]
 }

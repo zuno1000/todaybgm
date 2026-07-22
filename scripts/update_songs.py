@@ -15,9 +15,11 @@
   - ライブ配信ではない(配信は中断・ID変更で壊れやすいため自動追加しない)
   - 再生時間 8分以上(作業用BGMとしてのノイズ除去)
   - タイトルに除外キーワード(reaction, gameplay 等)を含まない
+  - 同一チャンネルの曲がジャンル内で偏らない(--max-per-channel、既定3)
 
 使い方:
-  python scripts/update_songs.py [--max-per-genre 40] [--per-query 12] [--dry-run]
+  python scripts/update_songs.py [--max-per-genre 40] [--per-query 12]
+                                 [--max-per-channel 3] [--dry-run]
 """
 
 import argparse
@@ -129,7 +131,7 @@ def scrape_search_ids(query, limit):
 
 
 def scrape_verify(video_id):
-    """watchページから {title, seconds, live, embeddable, playable} を取得。取得失敗は None。"""
+    """watchページから {title, seconds, live, embeddable, playable, channel} を取得。取得失敗は None。"""
     try:
         page = polite_fetch(f"https://www.youtube.com/watch?v={video_id}&hl=en")
     except Exception:
@@ -139,6 +141,8 @@ def scrape_verify(video_id):
     live = re.search(r'"isLiveContent":(true|false)', page)
     secs = re.search(r'"lengthSeconds":"(\d+)"', page)
     title = re.search(r'<meta property="og:title" content="([^"]*)"', page)
+    chan = re.search(r'"channelId":"(UC[\w-]{22})"', page)
+    chname = re.search(r'"ownerChannelName":"([^"]*)"', page)
     if not status:
         return None
     return {
@@ -148,6 +152,8 @@ def scrape_verify(video_id):
         "live": bool(live) and live.group(1) == "true",
         "seconds": int(secs.group(1)) if secs else 0,
         "title": html.unescape(title.group(1)) if title else "",
+        "channelId": chan.group(1) if chan else "",
+        "channelTitle": html.unescape(chname.group(1)) if chname else "",
     }
 
 
@@ -181,7 +187,8 @@ def parse_iso8601_duration(s):
 def api_verify_batch(video_ids, key):
     """videos.list で一括検証。返り値は {id: info}。APIに存在しないIDは playable=False。"""
     out = {vid: {"id": vid, "playable": False, "embeddable": False,
-                 "live": False, "seconds": 0, "title": ""} for vid in video_ids}
+                 "live": False, "seconds": 0, "title": "",
+                 "channelId": "", "channelTitle": ""} for vid in video_ids}
     for i in range(0, len(video_ids), 50):
         chunk = video_ids[i:i + 50]
         data = api_get("videos", {
@@ -198,6 +205,8 @@ def api_verify_batch(video_ids, key):
                 "seconds": parse_iso8601_duration(
                     it.get("contentDetails", {}).get("duration", "")),
                 "title": it.get("snippet", {}).get("title", ""),
+                "channelId": it.get("snippet", {}).get("channelId", ""),
+                "channelTitle": it.get("snippet", {}).get("channelTitle", ""),
             }
     return out
 
@@ -210,6 +219,8 @@ def main():
                     help="ジャンルごとのカタログ上限(第1ジャンル基準)")
     ap.add_argument("--per-query", type=int, default=12,
                     help="1クエリあたりの候補取得数")
+    ap.add_argument("--max-per-channel", type=int, default=3,
+                    help="ジャンル内で同一チャンネルから収録する上限(多様性確保)")
     ap.add_argument("--dry-run", action="store_true", help="songs.json を書き換えない")
     args = ap.parse_args()
 
@@ -241,6 +252,10 @@ def main():
             kept.append(s)  # 取得失敗(ネットワーク等)は消さない
             continue
         if info["playable"] and info["embeddable"]:
+            # チャンネル情報を既存エントリにバックフィル(多様性カウント用)
+            if info.get("channelId") and not s.get("channelId"):
+                s["channelId"] = info["channelId"]
+                s["channelTitle"] = info.get("channelTitle", "")
             kept.append(s)
         else:
             removed.append(s)
@@ -250,9 +265,13 @@ def main():
 
     # ---- 2. 新曲の検索・検証・追加 ----
     genre_count = {}
+    chan_count = {}  # (ジャンル, channelId) -> 曲数。同一チャンネル偏り防止
     for s in songs:
         g = s["genres"][0]
         genre_count[g] = genre_count.get(g, 0) + 1
+        cid = s.get("channelId")
+        if cid:
+            chan_count[(g, cid)] = chan_count.get((g, cid), 0) + 1
 
     added = []
     for genre, qs in queries.items():
@@ -281,6 +300,7 @@ def main():
                 verified = list(ex.map(scrape_verify, candidate_ids))
 
         n_added = 0
+        skipped_chan = 0
         for info in verified:
             if n_added >= room:
                 break
@@ -289,6 +309,10 @@ def main():
             if info["live"] or info["seconds"] < MIN_SECONDS:
                 continue
             if not info["title"] or TITLE_BLOCKLIST.search(info["title"]):
+                continue
+            cid = info.get("channelId", "")
+            if cid and chan_count.get((genre, cid), 0) >= args.max_per_channel:
+                skipped_chan += 1
                 continue
             minutes = round(info["seconds"] / 60)
             entry = {
@@ -299,16 +323,32 @@ def main():
                 "durationClass": duration_class(minutes),
                 "mood": guess_moods(info["title"]),
             }
+            if cid:
+                entry["channelId"] = cid
+                entry["channelTitle"] = info.get("channelTitle", "")
+                chan_count[(genre, cid)] = chan_count.get((genre, cid), 0) + 1
             songs.append(entry)
             known_ids.add(info["id"])
             added.append(entry)
             n_added += 1
         genre_count[genre] = genre_count.get(genre, 0) + n_added
-        print(f"[{genre}] +{n_added} (total {genre_count[genre]})")
+        print(f"[{genre}] +{n_added} (total {genre_count[genre]}"
+              f", channel-cap skipped {skipped_chan})")
 
     # ---- 3. 保存 ----
     print(f"\nresult: {len(songs)} songs "
           f"(+{len(added)} added, -{len(removed)} removed)")
+    # ジャンル別のチャンネル多様性サマリー
+    by_genre = {}
+    for s in songs:
+        by_genre.setdefault(s["genres"][0], []).append(s.get("channelId", ""))
+    print("channel diversity (unique channels / songs per genre):")
+    for g in queries.keys():
+        ids = by_genre.get(g, [])
+        uniq = len({c for c in ids if c})
+        unknown = sum(1 for c in ids if not c)
+        note = f", {unknown} unknown" if unknown else ""
+        print(f"  [{g}] {uniq} channels / {len(ids)} songs{note}")
     if args.dry_run:
         print("dry-run: songs.json not written")
         return
