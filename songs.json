@@ -10,7 +10,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "0-AvedkXSVE",
@@ -23,7 +25,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UCllO5tTy0Gs7G7kK5cxGlWA",
+    "channelTitle": "Ocean Lofi Vibes"
   },
   {
     "id": "09K79_bD6w0",
@@ -36,7 +40,24 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UCkK2B6D3imy6EnpqfrYm-5A",
+    "channelTitle": "LoFi Tokyo"
+  },
+  {
+    "id": "0Qw8ctDj658",
+    "title": "Calm & Collected✨| Jazzy R&B Trap-Soul Lo-Fi| Deep Focus, Work & Journaling",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 119,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCAqteep1Z1aHjN043TcSXbg",
+    "channelTitle": "SoulFi Room "
   },
   {
     "id": "1J4a9cT2lkw",
@@ -48,7 +69,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCuTj4kZoU6O2-VXmOGGKSsA",
+    "channelTitle": "Lofi Shop 24h"
   },
   {
     "id": "1YmClsk16_U",
@@ -61,7 +84,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCiC2wfbkgr8DU5uOQFz9OrQ",
+    "channelTitle": "chill chill journal"
   },
   {
     "id": "1fueZCTYkpA",
@@ -74,7 +99,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "5yx6BWlEVcY",
@@ -88,7 +115,24 @@
     "live": true,
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
+  },
+  {
+    "id": "6rIlmlx0fYg",
+    "title": "Samurai ☯ Japanese Lofi HipHop Mix [study/sleep]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 40,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCMdf-PTwJzISOt87CWiRhLg",
+    "channelTitle": "chillhop replay"
   },
   {
     "id": "8b3fqIBrNW0",
@@ -101,7 +145,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
+  },
+  {
+    "id": "8fCQwbzuyJE",
+    "title": "R&B Lo-Fi Beats for Studying, Relaxing & Chilling — 90s/2000s Hits 💿",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCiO7TpUMmCTyAVNbPuXrkbg",
+    "channelTitle": "Lofi Simone"
   },
   {
     "id": "8iU8LPEa4o0",
@@ -114,7 +175,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
   },
   {
     "id": "8ume7VRo2SU",
@@ -126,7 +189,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCkKT4qf-TcPFOmpqhTawrGA",
+    "channelTitle": "Settle"
   },
   {
     "id": "9M4jZuqdw04",
@@ -138,7 +203,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
   },
   {
     "id": "AMcVJmb5mvk",
@@ -150,7 +217,53 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCkK2B6D3imy6EnpqfrYm-5A",
+    "channelTitle": "LoFi Tokyo"
+  },
+  {
+    "id": "Ark1hjhQMxs",
+    "title": "Work Lofi - R&B That Sparks a Mood [rnb , lofi hiphop]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 203,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCinqfJ9-v5-HHqTskU2LlIw",
+    "channelTitle": "A Lofi Soul"
+  },
+  {
+    "id": "AznRJvAPtwM",
+    "title": "lofi study mix for homework ~ [lofi hip hop] - beats to chill/study/relax",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 763,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCKVzPeUvluKR9EDTn8Q-bkw",
+    "channelTitle": "Lofi Vibes "
+  },
+  {
+    "id": "BCxTQq0UiFs",
+    "title": "Chill Lofi Beats Mix [chill lo-fi hip hop beats/Study & Relax Music] Vol. 32",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 103,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCl2qLIrrC5hc5LBf2oJYZpQ",
+    "channelTitle": "Art Is Sound"
   },
   {
     "id": "BYTxPFj44uo",
@@ -162,7 +275,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCiC2wfbkgr8DU5uOQFz9OrQ",
+    "channelTitle": "chill chill journal"
   },
   {
     "id": "C5bHrit6La4",
@@ -174,7 +289,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCHKWE0aPwFmWzi5g7rtasFA",
+    "channelTitle": "safe place"
   },
   {
     "id": "CBSlu_VMS9U",
@@ -187,7 +304,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "CFGLoQIhmow",
@@ -200,7 +319,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "D_uLM5i0Z4c",
@@ -212,7 +333,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
   },
   {
     "id": "EtD7_8kCMHA",
@@ -222,7 +345,38 @@
     ],
     "durationMin": 83,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCcXBWfn_ZlbyZlv9dXRIzkg",
+    "channelTitle": "Deebu"
+  },
+  {
+    "id": "Gt9LmnEk2T4",
+    "title": "Daily Focus Vibes ✨ R&B Lo-fi for Work + Study",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCAqteep1Z1aHjN043TcSXbg",
+    "channelTitle": "SoulFi Room "
+  },
+  {
+    "id": "Gtb5JXVujBI",
+    "title": "Study Lofi - Relaxing R&B/Neo Soul For Focus & Flow State",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCinqfJ9-v5-HHqTskU2LlIw",
+    "channelTitle": "A Lofi Soul"
   },
   {
     "id": "JCKBaJDRMw4",
@@ -235,7 +389,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "PLLRRXURicM",
@@ -248,7 +404,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC-PzuWWwlOMynKP7w2BvM6g",
+    "channelTitle": "CALM CITY"
+  },
+  {
+    "id": "Q89Dzox4jAE",
+    "title": "Lofi Work Space 📂 Deep Focus Study/Work Concentration [chill lo-fi hip hop beats",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCsxTsDvh-xQnShEtN1M64zQ",
+    "channelTitle": "𝗖𝗛𝗜𝗟𝗟 𝗩𝗜𝗟𝗟𝗔𝗚𝗘"
   },
   {
     "id": "QRFv3HESAtE",
@@ -260,7 +433,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
   },
   {
     "id": "RTXVOczHR_0",
@@ -273,7 +448,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UC17coaatvLI6x0ojn-_0Ugw",
+    "channelTitle": "Chilled Sundays™"
   },
   {
     "id": "Rfa3h99J8TM",
@@ -285,7 +462,68 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCJlGU9GBdF9wfIZZu-vwmhw",
+    "channelTitle": "Chillhop Records"
+  },
+  {
+    "id": "Tlw1Oac7KxQ",
+    "title": "Lofi Morning Vibes - Chill Beats for a Fresh Start | No Ads | Lofi by EchoLofi",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 274,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ],
+    "channelId": "UCujYzavrnB69uz8-gDijj3A",
+    "channelTitle": "EchoLofi"
+  },
+  {
+    "id": "UYwhisrQ-po",
+    "title": "Work Lofi for Productivity & Focus - Smooth lofi hiphop/ neo soul beats",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCinqfJ9-v5-HHqTskU2LlIw",
+    "channelTitle": "A Lofi Soul"
+  },
+  {
+    "id": "Xf3-4A-uEc8",
+    "title": "Deep Focus Lofi Mix 🍯 Study/Work Concentration [chill lo-fi hip hop beats]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCsxTsDvh-xQnShEtN1M64zQ",
+    "channelTitle": "𝗖𝗛𝗜𝗟𝗟 𝗩𝗜𝗟𝗟𝗔𝗚𝗘"
+  },
+  {
+    "id": "Y9mRoCerrpY",
+    "title": "Cozy Library Coffee Shop Lofi ☕ — Deep Focus to Work, Study & Relax | Lofi Music",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 195,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCNaAEEC2W6lSnzTmmKjMCMg",
+    "channelTitle": "Kodi Lofi"
   },
   {
     "id": "ZIWjjE_zjGU",
@@ -297,7 +535,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCvSWGQIgBKLgP3HOxJoIs4g",
+    "channelTitle": "LOFI Moonlight"
   },
   {
     "id": "_ITiwPMUzho",
@@ -309,7 +549,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCDK54OyzWnOczY7LzEd9V2Q",
+    "channelTitle": "Lofi Ghostie"
   },
   {
     "id": "amfWIRasxtI",
@@ -322,7 +564,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCS1-Rve0Sk30Yap13a1EtHA",
+    "channelTitle": "Lofi Study Room"
   },
   {
     "id": "dusfmL_bm1o",
@@ -332,7 +576,24 @@
     ],
     "durationMin": 183,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCxONCRXEhzv0cRbWCKybOsw",
+    "channelTitle": "LO-FI SENPAI"
+  },
+  {
+    "id": "gUbNlN_SqpE",
+    "title": "Seaside Coffee 🍵 Feel your peace & Relax 🌱 Coffee Morning | Lofi Hip Hop - Chill",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 705,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCmX7v02vRCsw1IFCV4g1k5Q",
+    "channelTitle": "Healing Me"
   },
   {
     "id": "gwDoRPcPxtc",
@@ -345,7 +606,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCOxqgCwgOqC2lMqC5PYz_Dg",
+    "channelTitle": "Chillhop Music"
   },
   {
     "id": "h9iEJJOs8nM",
@@ -358,7 +621,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCVrHPTMJa5nrAgSjABI7Iew",
+    "channelTitle": "INCredible COFFEE"
   },
   {
     "id": "i43tkaTXtwI",
@@ -371,7 +636,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "jrTMMG0zJyI",
@@ -381,7 +648,9 @@
     ],
     "durationMin": 40,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UC0fiLCwTmAukotCXYnqfj0A",
+    "channelTitle": "the bootleg boy"
   },
   {
     "id": "kAJ2iTcHwGo",
@@ -391,7 +660,23 @@
     ],
     "durationMin": 59,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UCfsmpGXkHvQzOLAhCPML91Q",
+    "channelTitle": "TOKYO CHILL LAB"
+  },
+  {
+    "id": "kyqpSycLASY",
+    "title": "Chill Summer Lofi [chill lo-fi hip hop beats]",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 123,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCkKT4qf-TcPFOmpqhTawrGA",
+    "channelTitle": "Settle"
   },
   {
     "id": "lTRiuFIWV54",
@@ -404,7 +689,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "mMw6UFZuL9o",
@@ -414,7 +701,9 @@
     ],
     "durationMin": 42,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UC0fiLCwTmAukotCXYnqfj0A",
+    "channelTitle": "the bootleg boy"
   },
   {
     "id": "n61ULEU7CO0",
@@ -426,7 +715,36 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
+  },
+  {
+    "id": "nNgIMdc6wqU",
+    "title": "Daily Work Office 📒 Lofi Deep Focus Study/Work Concentration [chill lo-fi hip ho",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCsxTsDvh-xQnShEtN1M64zQ",
+    "channelTitle": "𝗖𝗛𝗜𝗟𝗟 𝗩𝗜𝗟𝗟𝗔𝗚𝗘"
+  },
+  {
+    "id": "odhh4sInQW0",
+    "title": "Tokyo / Japanese Lofi HipHop Mix",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 55,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UCYVyQv2rUtCMxJAFSuOSpmg",
+    "channelTitle": "Dreamy"
   },
   {
     "id": "qzyl0f3mRG0",
@@ -436,7 +754,38 @@
     ],
     "durationMin": 102,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCkKT4qf-TcPFOmpqhTawrGA",
+    "channelTitle": "Settle"
+  },
+  {
+    "id": "rO3e5Ws94NA",
+    "title": "Happy Morning 🌻  [ Lofi Hip Hop - Lofi Song ] for Study/Relax/Work || with Lofi ",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCFHHuuy5uE3S-wJaWoY10mQ",
+    "channelTitle": "Lofi Coffee"
+  },
+  {
+    "id": "rhrCG0Vtx3g",
+    "title": "High-Rise Urban Studio | Neo Soul, R&B Lofi Chill Mix 🌇",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCClZiNLIqCqMAiLDLETO6Zw",
+    "channelTitle": "CraftCozy Room"
   },
   {
     "id": "rt1mRnRp79A",
@@ -448,7 +797,24 @@
     "durationClass": "medium",
     "mood": [
       "morning"
-    ]
+    ],
+    "channelId": "UCi8wqezBudeAiTdKOX571ug",
+    "channelTitle": "The Jazz Hop Café"
+  },
+  {
+    "id": "sF80I-TQiW0",
+    "title": "90's Chill Lofi ☕️ Study Music Lofi Rain Chillhop Beats ☔️ Lofi Rain Playlist",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 714,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCuS_-bvOCh4W5Sy11Uf4H5A",
+    "channelTitle": "The Japanese Town"
   },
   {
     "id": "sm6JbN5kaZo",
@@ -461,7 +827,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCAqteep1Z1aHjN043TcSXbg",
+    "channelTitle": "SoulFi Room "
   },
   {
     "id": "tiyuRJthHwc",
@@ -474,7 +842,9 @@
     "mood": [
       "rain",
       "morning"
-    ]
+    ],
+    "channelId": "UCiC2wfbkgr8DU5uOQFz9OrQ",
+    "channelTitle": "chill chill journal"
   },
   {
     "id": "zJcakvv31V0",
@@ -487,7 +857,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCDBdgBahGVw3Bn75IkfiASQ",
+    "channelTitle": "Devon S. McDonald"
+  },
+  {
+    "id": "-EdRTo61T84",
+    "title": "Relaxing Jazz Instrumental Music at Night - Soothing of Sleep Jazz Piano Music &",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 100,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UCxPXeETTmIw6xtzCuR8NTow",
+    "channelTitle": "Relaxing Jazz BGM"
   },
   {
     "id": "-PU9GA9VLTw",
@@ -500,7 +887,23 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UCuJIQ2e3oMVKycaZQhAXd4A",
+    "channelTitle": "Relaxing Piano Life - Topic"
+  },
+  {
+    "id": "-Z2lTeSIQIw",
+    "title": "Jazz & Soul R&B – Warm Sax, Rhodes & Chill Grooves | Feel-Good Smooth Jazz for R",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 193,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC-D8cyvSA_kSWIIuDtFW4AA",
+    "channelTitle": "Mellow Mood Station"
   },
   {
     "id": "1cDrMKQd9Xs",
@@ -512,7 +915,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCvWu115VI_Da4_pYMTHUDbw",
+    "channelTitle": "Soul R&B Studio"
   },
   {
     "id": "1ykIPO5g7MM",
@@ -525,7 +930,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
   },
   {
     "id": "2O82Ak4NLSo",
@@ -537,7 +944,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCuh_ImUSWWrEc1UAc4Hl4Ww",
+    "channelTitle": "Relax R&B Studio"
+  },
+  {
+    "id": "3mka-Br5R4M",
+    "title": "Smooth Jazz & R&B Beat – Relaxing Sax & Guitar Grooves for Chill Moments. Vol.62",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 113,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCFCiqUekvZq199FCuX3r__A",
+    "channelTitle": "Smooth Operator"
   },
   {
     "id": "4gjHUJt_iWA",
@@ -550,7 +973,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UC5lmUb6WxaMHWld2qbexHZw",
+    "channelTitle": "Bossa Verde Café"
   },
   {
     "id": "5znVj9VUnGI",
@@ -562,7 +987,9 @@
     "durationClass": "short",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UCFqtgK0r4EBP3hd4WSmHBMQ",
+    "channelTitle": "Chillout Lounge Relax - Ambient Music Mix"
   },
   {
     "id": "6uddGul0oAc",
@@ -577,7 +1004,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
   },
   {
     "id": "6w0im3LHazY",
@@ -590,7 +1019,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
   },
   {
     "id": "72kUZ1LaI7U",
@@ -603,7 +1034,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCeEw76pT-OeYvkozChfUuIQ",
+    "channelTitle": "Space Jazz"
+  },
+  {
+    "id": "9jVykkV6tvQ",
+    "title": "Italy Café | Relaxing Jazz Instrumental Music & Positive Morning Bossa Nova Pian",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCcVXJ4M2mVEwZQEeJcQMmaQ",
+    "channelTitle": "Cat Coffee"
   },
   {
     "id": "AvhqzFzSTAo",
@@ -616,7 +1064,9 @@
     "mood": [
       "rain",
       "morning"
-    ]
+    ],
+    "channelId": "UCe9sTwSucksWpmgdB9eoyyg",
+    "channelTitle": "Pure Piano Jazz"
   },
   {
     "id": "DDuXSR2Y8Ds",
@@ -629,7 +1079,9 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UCGbAIBuFp3BtX_tpsEzRqNQ",
+    "channelTitle": "Cozy Cafe Ambience"
   },
   {
     "id": "DM-djyegIbI",
@@ -642,7 +1094,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCQtJT-hZA3FDTDHnQt9Qqsg",
+    "channelTitle": "Musictag"
   },
   {
     "id": "DSGyEsJ17cI",
@@ -656,7 +1110,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
   },
   {
     "id": "Dx5qFachd3A",
@@ -671,7 +1127,21 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
+  },
+  {
+    "id": "GmqOc3CJEZo",
+    "title": "SMOOTH JAZZ & SOUL | Pure Jazz Sanctuary 🛜 Live Stream",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 571,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCicGSpg0J8OyQ2r2xs4Zrpw",
+    "channelTitle": "Pure Jazz Sanctuary"
   },
   {
     "id": "HMnrl0tmd3k",
@@ -685,7 +1155,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCQgW4a2aehzp4WPCiZWB9Zw",
+    "channelTitle": "Bloogeyz"
   },
   {
     "id": "I24GTW0O_hc",
@@ -695,7 +1167,9 @@
     ],
     "durationMin": 161,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCbsHYIZwk9pZIMp53ciDjOw",
+    "channelTitle": "JazzNe"
   },
   {
     "id": "IhUuEUj2zWk",
@@ -705,7 +1179,21 @@
     ],
     "durationMin": 67,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCFqtgK0r4EBP3hd4WSmHBMQ",
+    "channelTitle": "Chillout Lounge Relax - Ambient Music Mix"
+  },
+  {
+    "id": "KYRhblQWeTE",
+    "title": "Smooth R&B Jazz Mix by Dj Iceman",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UCs4i8y5EEv8N1gu_6ZGce9A",
+    "channelTitle": "I AM DJ ICEMAN"
   },
   {
     "id": "Lp7MJI01uBk",
@@ -717,7 +1205,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCvWu115VI_Da4_pYMTHUDbw",
+    "channelTitle": "Soul R&B Studio"
   },
   {
     "id": "MYPVQccHhAQ",
@@ -730,7 +1220,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC84t1K5ri-7u9bFCaUKTXDA",
+    "channelTitle": "Relaxing Jazz Piano"
   },
   {
     "id": "MjmueZcVhg4",
@@ -743,7 +1235,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCLeNHzOn4CckqjB7-KYVDDw",
+    "channelTitle": "Focus Mode Jazz"
   },
   {
     "id": "NJuSStkIZBg",
@@ -756,7 +1250,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCJIOFQLGwB3GH9K9waxwynQ",
+    "channelTitle": "Coffee Shop Vibes"
   },
   {
     "id": "PRAGLqfNK1o",
@@ -769,7 +1265,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCQayACcGlT-lbO2XVdpJmTw",
+    "channelTitle": "Jazz Radio Channel"
   },
   {
     "id": "Q-Jys6HQ_gg",
@@ -782,7 +1280,24 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCT0A6j1yHhCYMoV2LIM3HkA",
+    "channelTitle": "Relax Lofi Life"
+  },
+  {
+    "id": "Qa71r2wbQwQ",
+    "title": "Unwind with Warm Morning Jazz Music 🌞 Summer Coffee Shop Ambience & Relaxing Jaz",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ],
+    "channelId": "UCZR3-lM6Z-n5_UGHlwx_Rpw",
+    "channelTitle": "Relax Jazz Cafe"
   },
   {
     "id": "RA3pcxaCkhg",
@@ -795,7 +1310,23 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UC_0fEhARDaXoW06K7Nsr1UQ",
+    "channelTitle": "Bossa Bliss"
+  },
+  {
+    "id": "SwOA0vs3hGc",
+    "title": "Midnight Saxophone Dreams 🌙 Smooth Jazz Instrumentals for Quiet Nights",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 205,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ],
+    "channelId": "UCBodPZV1P63It1I2chGOzxw",
+    "channelTitle": "Paris Melody Lounge"
   },
   {
     "id": "U3n31M81RpE",
@@ -807,7 +1338,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCNJFXYXkXt_P8bJUxb21MpA",
+    "channelTitle": "Dr.SaxLove"
   },
   {
     "id": "UNll41WfYyY",
@@ -817,7 +1350,9 @@
     ],
     "durationMin": 109,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCoOu8U2Fc6BMhW4le67ve_Q",
+    "channelTitle": "Blue in Green"
   },
   {
     "id": "VT9jQKQjwCY",
@@ -830,7 +1365,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC5lmUb6WxaMHWld2qbexHZw",
+    "channelTitle": "Bossa Verde Café"
   },
   {
     "id": "XoWuDjvhAAw",
@@ -843,7 +1380,38 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCPRb30PCq0_M4-moHz6bRFA",
+    "channelTitle": "Prayer & Jazz"
+  },
+  {
+    "id": "Y4anm6w0uiA",
+    "title": "Happy Jazz & Bossa Nova Music - Happy Cafe Music For Work, Study",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 191,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCJMccijuwpzUlVdNcAkXP1A",
+    "channelTitle": "Bossa Nova Jazz"
+  },
+  {
+    "id": "ZY77QVGTKiA",
+    "title": "Relaxing Jazz Instrumental Music for Work, Study 🌸 Spring Coffee Shop Ambience &",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCZR3-lM6Z-n5_UGHlwx_Rpw",
+    "channelTitle": "Relax Jazz Cafe"
   },
   {
     "id": "_sI_Ps7JSEk",
@@ -853,7 +1421,68 @@
     ],
     "durationMin": 50,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UCLue5AhDOIpePYzlc3rOVVQ",
+    "channelTitle": "Jazz and Blues Experience"
+  },
+  {
+    "id": "_ytFg0hFad8",
+    "title": "Smooth Jazz Chillout Lounge • Smooth Jazz Saxophone Instrumental Music for Relax",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCNJFXYXkXt_P8bJUxb21MpA",
+    "channelTitle": "Dr.SaxLove"
+  },
+  {
+    "id": "aYRtRR4kR2w",
+    "title": "Smooth Jazz Grooves vol.2 (Cool,Chill,Jazz Music)",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 70,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UChQUhaPQlnlhvnErfYcH-7Q",
+    "channelTitle": "jmart.radio"
+  },
+  {
+    "id": "c18WZZa4KIA",
+    "title": "Fall Coffee Shop Bookstore Ambience with Relaxing Jazz Music & Rain Sounds",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 482,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "morning"
+    ],
+    "channelId": "UCJuMbdKSMThk2RpALASyXVQ",
+    "channelTitle": "Calmed By Nature"
+  },
+  {
+    "id": "c9xtkAZSK50",
+    "title": "Motown Jazz - Smooth Jazz Music & Jazz Instrumental Music for Relaxing and Study",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 262,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCNJFXYXkXt_P8bJUxb21MpA",
+    "channelTitle": "Dr.SaxLove"
   },
   {
     "id": "fEvM-OUbaKs",
@@ -866,7 +1495,36 @@
     "live": true,
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCQINXHZqCU5i06HzxRkujfg",
+    "channelTitle": "BGM channel"
+  },
+  {
+    "id": "fGTkI_XIl_Y",
+    "title": "Smooth Jazz Instrumental Music ~ Summer Coffee Shop Ambience 🌞 Relaxing Piano Ja",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCZR3-lM6Z-n5_UGHlwx_Rpw",
+    "channelTitle": "Relax Jazz Cafe"
+  },
+  {
+    "id": "gD-jKo-BOxs",
+    "title": "Smooth Jazz & Soul R&B – Good Mood Music for a Bright and Easy Day",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCO2BSQNLVqCbVoYb9CpWyyA",
+    "channelTitle": "Jazz Funk Smooth"
   },
   {
     "id": "h8UHTqQGpjU",
@@ -879,7 +1537,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCp1MGMbNdcfJqUkIpnETJew",
+    "channelTitle": "Tranquil Jazz Indoor"
   },
   {
     "id": "h9dgeNyj9_E",
@@ -892,7 +1552,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
   },
   {
     "id": "jFMkXPSjUM4",
@@ -905,7 +1567,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCvkFS_WX2C3kluCWqBXob5g",
+    "channelTitle": "EQ Lounge"
   },
   {
     "id": "jWfax0-3k8A",
@@ -917,7 +1581,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UChQUhaPQlnlhvnErfYcH-7Q",
+    "channelTitle": "jmart.radio"
   },
   {
     "id": "khG5ZlppKhw",
@@ -929,7 +1595,9 @@
     "durationClass": "long",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UCm9GAPznIYJ6cmMWbY48NIA",
+    "channelTitle": "LewisLuong Relaxation Cafe"
   },
   {
     "id": "m0h3SgYVe60",
@@ -942,7 +1610,21 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
+    "channelTitle": "Cafe Music BGM channel"
+  },
+  {
+    "id": "oNPKYDvJ6VY",
+    "title": "Smooth Jazz & R&B 90s – When the Spring Breeze Rolls In Like Waves | Vol. 111",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCFCiqUekvZq199FCuX3r__A",
+    "channelTitle": "Smooth Operator"
   },
   {
     "id": "ohky3u9WJ74",
@@ -955,7 +1637,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC7bX_RrH3zbdp5V4j5umGgw",
+    "channelTitle": "Relax Music"
   },
   {
     "id": "pfx4r7_WdP8",
@@ -968,7 +1652,38 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCKobI6RiPRSCE8ZB5pUs1nA",
+    "channelTitle": "Cozy Outdoor Jazz"
+  },
+  {
+    "id": "pkW9ftZ6hfo",
+    "title": "🎷 Smooth Jazz & Soulful R&B | Cozy All-Day Listening & Relaxation",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 107,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCakeGhCqn7FeVRfzzvNK6Kw",
+    "channelTitle": "Nova Jazz"
+  },
+  {
+    "id": "qSk38oym3U4",
+    "title": "(NO MID-ROLL ADS) Calm & Relaxing Spring Jazz 🌸 Spring Coffee Shop Ambience",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 203,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ],
+    "channelId": "UCa8uIf1mePRF34SyGPejoAg",
+    "channelTitle": "Chill Jazz Station"
   },
   {
     "id": "sSmFBQIyXyE",
@@ -981,7 +1696,9 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UC44lYkbvNV89fK-ejMA4sAw",
+    "channelTitle": "Cozy Jazz Tunes"
   },
   {
     "id": "x57GYTMVxqI",
@@ -994,7 +1711,38 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCxsdgWbWJmmqtNq9dzK2JAA",
+    "channelTitle": "Jazz For Soul"
+  },
+  {
+    "id": "yY-_uuuBoho",
+    "title": "Cozy Autumn Coffee Jazz 🍁 Peaceful Riverside Café Music for Work, Study & Unwind",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 195,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCQE_Kh18FlLBE0o9aPWabDg",
+    "channelTitle": "Jazz Horizon"
+  },
+  {
+    "id": "3G3vzexbf64",
+    "title": "peaceful piano 🎹 3 hours of relaxing music to read to",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "3NycM9lYdRI",
@@ -1006,7 +1754,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "5dctOf13aPw",
@@ -1016,7 +1766,21 @@
     ],
     "durationMin": 1440,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCY2O2QOIwOB8qJH4G7T0bOg",
+    "channelTitle": "Ghibli Wonderland"
+  },
+  {
+    "id": "5sxKZtGISkg",
+    "title": "beautiful quiet life – piano playlist",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 54,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UC0hpzdQ4JBfygpOl-5HVmSQ",
+    "channelTitle": "Ophelia Wilde"
   },
   {
     "id": "6X_OEUFV0v4",
@@ -1028,7 +1792,38 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCiNpDDZ51Yz5qjma43107wg",
+    "channelTitle": "Giuseppe Centonze"
+  },
+  {
+    "id": "6obKeeH7cQc",
+    "title": "Relaxing Piano Music, Relaxing Music, Meditation, Piano Music, Sleep Music, Pian",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCwobzUc3z-0PrFpoRxNszXQ",
+    "channelTitle": "Yellow Brick Cinema - Relaxing Music"
+  },
+  {
+    "id": "70lRN9mpIwA",
+    "title": "Romantic Classic Piano Love Songs - Top 200 Relaxing Beautiful Love Songs 70s 80",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 208,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCyNjOVtEqv_0xrLf-dvNCpw",
+    "channelTitle": "Romantic Piano"
   },
   {
     "id": "77ZozI0rw7w",
@@ -1041,7 +1836,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "7BljnwmGEq0",
@@ -1053,7 +1850,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC4eiPU93NTym1bJpnVty0fw",
+    "channelTitle": "Softlight Piano Music"
   },
   {
     "id": "7voSN82FGF0",
@@ -1065,7 +1864,9 @@
     "durationClass": "long",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UCulsxDuZ0gU8lzhpPAjUwUg",
+    "channelTitle": "kno Piano Music"
   },
   {
     "id": "8WVXk0Gz66E",
@@ -1078,7 +1879,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
+  },
+  {
+    "id": "8XBpZAetcb8",
+    "title": "Beautiful Piano Music @432Hz ❯ Relaxing Music ❯ Beautiful Soft Soothing Music",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 183,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCM0YvsRfYfsniGAhjvYFOSA",
+    "channelTitle": "Meditative Mind"
   },
   {
     "id": "9Q634rbsypE",
@@ -1090,7 +1907,54 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
+  },
+  {
+    "id": "AnlKTlJLkro",
+    "title": "Classical Piano Music for Brain Power: Piano Music for Studying",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 129,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "E5zroU6vuuo",
+    "title": "Disney Magical Book Piano Music Collection for Studying and Reading (No Mid-roll",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 397,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "fantasy"
+    ],
+    "channelId": "UCVX_4LoUm4mdZBPdpMJkkSQ",
+    "channelTitle": "kno Music"
+  },
+  {
+    "id": "FS93cEWcwQA",
+    "title": "a calm piano playlist for reading, studying or writing ♪",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCcyPAxEjCKOKZ32om6GLnHA",
+    "channelTitle": "Minnz Piano"
   },
   {
     "id": "HGl75kurxok",
@@ -1100,7 +1964,9 @@
     ],
     "durationMin": 93,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCn_BfXemOYNRIxQpxiXkUKw",
+    "channelTitle": "Vangakuz ヴァンガクズ"
   },
   {
     "id": "HSOtku1j600",
@@ -1113,7 +1979,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCUZNK80DemBN3kyxusDLwrA",
+    "channelTitle": "The Soul of Wind"
   },
   {
     "id": "I4fxYapxu5M",
@@ -1126,7 +1994,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCGnClsipVxB9GhlX2W2ujBw",
+    "channelTitle": "Ghibli Music BGM"
   },
   {
     "id": "IV8LO-T66ys",
@@ -1138,7 +2008,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCohcCsF4Eon2BWj3_QD__YQ",
+    "channelTitle": "Essential Classics"
   },
   {
     "id": "Iq-_VoYbmPI",
@@ -1151,7 +2023,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "Kad5ZP0unoY",
@@ -1163,7 +2037,24 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
+  },
+  {
+    "id": "Kx82HuU2qsg",
+    "title": "Relaxing Music Mix  'BEAUTIFUL PIANO' by Epic Music World",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 67,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "epic"
+    ],
+    "channelId": "UCjt3t8ohuVXqmRcXfIdXo_g",
+    "channelTitle": "Mo'nique Kaaz"
   },
   {
     "id": "MNmnHG53EhU",
@@ -1173,7 +2064,9 @@
     ],
     "durationMin": 175,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCOc_FKNsYgdVnlH0rcZej9A",
+    "channelTitle": "HungEker"
   },
   {
     "id": "OeHLHNKQCXA",
@@ -1185,7 +2078,21 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
+  },
+  {
+    "id": "PFLT7G_qZ_4",
+    "title": "Piano Songs for Peace | 2 hour Worship Music Instrumentals Playlist",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCRWuWvH3e-94DSOOhTxixiA",
+    "channelTitle": "In His Presence - Piano"
   },
   {
     "id": "R1r9nLYcqBU",
@@ -1198,7 +2105,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCmOsJjb1uikXqmq028fwpZQ",
+    "channelTitle": "Carrot TD"
   },
   {
     "id": "S-_yNldXFBQ",
@@ -1211,7 +2120,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCc9EzBNAtdnNiDrMw5CAxUw",
+    "channelTitle": "relaxdaily"
   },
   {
     "id": "UKbZ4r88z3Q",
@@ -1221,7 +2132,9 @@
     ],
     "durationMin": 34,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UCw5moLR-RGWtjQG-8AwQ9ww",
+    "channelTitle": "James Quinn"
   },
   {
     "id": "WJ3-F02-F_Y",
@@ -1233,7 +2146,23 @@
     "durationClass": "short",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCPZUQqtVDmcjm4NY5FkzqLA",
+    "channelTitle": "Rousseau"
+  },
+  {
+    "id": "Wt_SR4zmmBg",
+    "title": "4 HOUR LONG Piano Music for Studying, Concentrating, and Focusing Playlist",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 242,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCugb_j1Et8HRUpGiboLsPCw",
+    "channelTitle": "Study Music Project"
   },
   {
     "id": "Zu7wu52rakY",
@@ -1246,7 +2175,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCQINXHZqCU5i06HzxRkujfg",
+    "channelTitle": "BGM channel"
   },
   {
     "id": "bHFKkCcUjW0",
@@ -1259,7 +2190,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC_caRqQRVizD_gMcURKPvMw",
+    "channelTitle": "Vagabond"
   },
   {
     "id": "bZrfMU71W9I",
@@ -1271,7 +2204,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCOifsNemY8Xk39zKUQ-YgRg",
+    "channelTitle": "Little Honda"
   },
   {
     "id": "cKxRFlXYquo",
@@ -1283,7 +2218,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCiQcO_yWHUh-woruzLob70w",
+    "channelTitle": "Beautiful Piano"
   },
   {
     "id": "f2YqqNdSkFo",
@@ -1296,7 +2233,38 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCeirz9DbRvzgYKXf-hC79PQ",
+    "channelTitle": "Peaceful Vibes"
+  },
+  {
+    "id": "f4cAt6X1jQo",
+    "title": "Relaxing Piano Covers | 40 min",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 42,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC3x96-kE7-FKNW2LRgQ0dlg",
+    "channelTitle": "Pianovus"
+  },
+  {
+    "id": "hj83cwfOF3Y",
+    "title": "Peaceful Piano & Soft Rain - Relaxing Sleep Music, A Bitter Rain",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 190,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ],
+    "channelId": "UCUZNK80DemBN3kyxusDLwrA",
+    "channelTitle": "The Soul of Wind"
   },
   {
     "id": "hlWiI4xVXKY",
@@ -1310,7 +2278,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "iTJAo6aWGCo",
@@ -1322,7 +2292,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCiQcO_yWHUh-woruzLob70w",
+    "channelTitle": "Beautiful Piano"
   },
   {
     "id": "jvM3rO4Ihd4",
@@ -1335,7 +2307,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC-LMPavDKvGgAIM0I6V2b2w",
+    "channelTitle": "Dreamy Totoro"
   },
   {
     "id": "kMAOey45mJI",
@@ -1348,7 +2322,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCc9EzBNAtdnNiDrMw5CAxUw",
+    "channelTitle": "relaxdaily"
+  },
+  {
+    "id": "l4-U2AOH-T4",
+    "title": "Be Good To Yourself [calm piano music for study, focus, work, relaxation]",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 79,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCc9EzBNAtdnNiDrMw5CAxUw",
+    "channelTitle": "relaxdaily"
   },
   {
     "id": "lCOF9LN_Zxs",
@@ -1361,7 +2352,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "lFcSrYw-ARY",
@@ -1373,7 +2366,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCb_kshGodseYhLPcDtxWv5w",
+    "channelTitle": "Meditation Relax Music"
   },
   {
     "id": "oQUA3tQS0To",
@@ -1386,7 +2381,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCVX_4LoUm4mdZBPdpMJkkSQ",
+    "channelTitle": "kno Music"
   },
   {
     "id": "oiGmGFxsJi8",
@@ -1399,7 +2396,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "pRmU9UDsZLM",
@@ -1411,7 +2410,47 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCTct16Ehlz3VCBrXlbebrNw",
+    "channelTitle": "Studio Ghibli Piano Music"
+  },
+  {
+    "id": "piaCLiAKm3o",
+    "title": "100 of the Most Beautiful Hymns 💕 Cello & Piano 💕 NO REPEATS",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 283,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UChh_8d48Ps7E8Hlou8Ji5cA",
+    "channelTitle": "Prayer Pray"
+  },
+  {
+    "id": "qsC1rPOHbok",
+    "title": "Disney Relaxing Piano Collection \"Daytime\" for Background Music(No Mid-roll Ads)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 167,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCVX_4LoUm4mdZBPdpMJkkSQ",
+    "channelTitle": "kno Music"
+  },
+  {
+    "id": "r2i6jG0B3Ck",
+    "title": "The 200 Most Beautiful Piano Music In The World For Your Heart - Romantic Love S",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 114,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCiQcO_yWHUh-woruzLob70w",
+    "channelTitle": "Beautiful Piano"
   },
   {
     "id": "rBadprLH1jM",
@@ -1424,7 +2463,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCod6w5kt4MpgubaybkIwiWQ",
+    "channelTitle": "Aom♡"
   },
   {
     "id": "ru-O5L2uxho",
@@ -1436,7 +2477,9 @@
     "durationClass": "long",
     "mood": [
       "rain"
-    ]
+    ],
+    "channelId": "UCf177kjSQKWZneInEnxjXpg",
+    "channelTitle": "소디의 음악공방 SodyPiano"
   },
   {
     "id": "sAcj8me7wGI",
@@ -1449,7 +2492,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCb1ANUIW7arUUDI-Mwz65rw",
+    "channelTitle": "Ocb Relax"
   },
   {
     "id": "ssN7_u08HFY",
@@ -1459,7 +2504,9 @@
     ],
     "durationMin": 65,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCQjKC0g8cQVWiwDzp4Cn5MQ",
+    "channelTitle": "Clavier"
   },
   {
     "id": "tzW5OvmCPaU",
@@ -1472,7 +2519,39 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UChfWL2xErTTNq1zmB9pVqRw",
+    "channelTitle": "Quiet Mornings"
+  },
+  {
+    "id": "umvdJrSVD6s",
+    "title": "soft piano music for reading, studying or sleeping ♪",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCcyPAxEjCKOKZ32om6GLnHA",
+    "channelTitle": "Minnz Piano"
+  },
+  {
+    "id": "v8JRzXCFHrw",
+    "title": "10 Hours of Relaxing Music: Piano Music, Positive Music, Study Music (Madison)",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 602,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCb1ANUIW7arUUDI-Mwz65rw",
+    "channelTitle": "Ocb Relax"
   },
   {
     "id": "xd0XIMd2Kco",
@@ -1485,7 +2564,24 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCNqg9DyZGQT-46vd5zqz40A",
+    "channelTitle": "Fresh Morning Piano"
+  },
+  {
+    "id": "zW3-9bUhbRw",
+    "title": "Beautiful Piano Music - Relaxing Music, Study Music, Stress Relief, Sleep Music ",
+    "genres": [
+      "piano"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCb1ANUIW7arUUDI-Mwz65rw",
+    "channelTitle": "Ocb Relax"
   },
   {
     "id": "1t7g690boao",
@@ -1498,7 +2594,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
+  },
+  {
+    "id": "1wn-OSiNVjE",
+    "title": "FOREST STREAM SOUNDS, GENTLE BIRD SONG, RELAXING NATURE SOUNDS, COLLABORATION WI",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "calm"
+    ],
+    "channelId": "UCNxq4kntqDqjvEm9UAU5NiA",
+    "channelTitle": "Streaming Birds"
   },
   {
     "id": "2G8LAiHSCAs",
@@ -1510,7 +2623,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC4UWbQ23IbWwU-XG7XIWxvQ",
+    "channelTitle": "johnnielawson"
   },
   {
     "id": "2LMqOdCHQWw",
@@ -1522,7 +2637,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCDmvEp5Rtjw817rMw_Z-S1A",
+    "channelTitle": "Nature Zilla"
   },
   {
     "id": "2UxbnP-6ZlM",
@@ -1534,7 +2651,24 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
+  },
+  {
+    "id": "69QdAw3ApNk",
+    "title": "study with me in rain | ⛈ thunderstorm sound | 1-hour pomodoro 2x25",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCRn2G1-EcuBNkXWLmiZzuXw",
+    "channelTitle": "Mango Oatmilk"
   },
   {
     "id": "6f0y1Iaorug",
@@ -1547,7 +2681,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "6jW4CZ-AoOg",
@@ -1559,7 +2695,35 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC6fQYeU_u2emBM2l2GOiLqA",
+    "channelTitle": "LULANKO"
+  },
+  {
+    "id": "6xPXiCtsXE8",
+    "title": "Peaceful Forest Ambience with Birdsong 🌿  Gentle Piano Music for Deep Sleep and ",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 219,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCyreg3oKbkOtvlIg5FGNGoA",
+    "channelTitle": "Absolute Relaxation"
+  },
+  {
+    "id": "91AcVUR0O8I",
+    "title": "74min of Nature Escape with Forest Bird Sounds and Adorable Little Birds (4K HDR",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 75,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UC-DqJ54Dx0a5SzANKdTKwPg",
+    "channelTitle": "Red Squirrel Studios"
   },
   {
     "id": "9oc8Fa7tb8c",
@@ -1572,7 +2736,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "AaMm5kZ3cRw",
@@ -1585,7 +2751,24 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UCXw4yHjKbl8i2fv6Qba60Kw",
+    "channelTitle": "Cosmic Resort"
+  },
+  {
+    "id": "CHFif_y2TyM",
+    "title": "Royal Library | Rain and Thunderstorm Sounds on Study Ambience with Crackling Fi",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UC-gjtyoUTzGEwWM5Y1J4J7Q",
+    "channelTitle": "New Bliss"
   },
   {
     "id": "D4VpVRtbx7w",
@@ -1598,7 +2781,24 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCwMsZb1LwKlkZkhLkAayvMg",
+    "channelTitle": "Emmalilyn"
+  },
+  {
+    "id": "DCt-k9DCWsQ",
+    "title": "Dark Academia Piano Music with Rain Sounds | Gothic Reading Library Ambience | S",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 199,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UC12Eze_Z4Q9ORLbCiMY6N8Q",
+    "channelTitle": "Nostalgic Dark Academia"
   },
   {
     "id": "EHklxmBvzwc",
@@ -1608,7 +2808,21 @@
     ],
     "durationMin": 610,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
+  },
+  {
+    "id": "F-Xs9s-q358",
+    "title": "Harmonious Birds Chirping, Beautiful Stream Sounds,  Lovely Nature Sounds, Cozy ",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCfEIklUzbSphQHTZwjQudMA",
+    "channelTitle": "Forest365"
   },
   {
     "id": "FxAgAyZYXJ8",
@@ -1620,7 +2834,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
+  },
+  {
+    "id": "HAFIyp3xaXU",
+    "title": "🌳 4K - Relaxing Nature Sounds For Stress Relief, Forest Sounds, Bird Song",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 705,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCk3JWjosksXBQx65K_tbBhQ",
+    "channelTitle": "Flowly Nature"
   },
   {
     "id": "IsPBplWLImI",
@@ -1632,7 +2862,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
   },
   {
     "id": "IvjMgVS6kng",
@@ -1644,7 +2876,24 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
+  },
+  {
+    "id": "JFMY5NxXDhw",
+    "title": "Sitting On The Porch On A Stormy Day: Heavy Rain and Fireplace Sounds To Sleep, ",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCVA12g4V_HX_MPQCiFj93PA",
+    "channelTitle": "the white room"
   },
   {
     "id": "JbJ0sYt9Nyk",
@@ -1657,7 +2906,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCl_6vX90htxZcj8fw95bgeg",
+    "channelTitle": "The Tungsten Room - A Meditative Space"
   },
   {
     "id": "JekUNGo-RVk",
@@ -1669,7 +2920,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "Jvgx5HHJ0qw",
@@ -1682,7 +2935,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCXw4yHjKbl8i2fv6Qba60Kw",
+    "channelTitle": "Cosmic Resort"
   },
   {
     "id": "JxgyRo2u27g",
@@ -1695,7 +2950,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCIX118LT9e1GccjQrTsBtwA",
+    "channelTitle": "Sora's Treehouse Study"
   },
   {
     "id": "KuVKRIz7qOE",
@@ -1708,7 +2965,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCycNWQoqcSzsQsF3R8P-pFg",
+    "channelTitle": "Stardust Vibes - Relaxing Sounds"
   },
   {
     "id": "M0AWBnAv8VE",
@@ -1718,7 +2977,23 @@
     ],
     "durationMin": 720,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCAyUBvxnhUaxG0e2ZMLskhg",
+    "channelTitle": "Музыка Живой Природы"
+  },
+  {
+    "id": "Nmmsl2X_--U",
+    "title": "Bird Songs - 8 HOURS of Birds Singing in the Forest - Nature Relaxation Video in",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCjoFckSzE1jUM_kmtVHNlKg",
+    "channelTitle": "Nature Soundscapes"
   },
   {
     "id": "OyW8yishBL8",
@@ -1731,7 +3006,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCBKFF-7j2D-1TR0oFPK0Gyw",
+    "channelTitle": "Naturescapes"
   },
   {
     "id": "RD929GWcPxo",
@@ -1744,7 +3021,21 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCXw4yHjKbl8i2fv6Qba60Kw",
+    "channelTitle": "Cosmic Resort"
+  },
+  {
+    "id": "Tv8wcOn_LpA",
+    "title": "3 Hour Ocean Waves Sounds",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCjYxGJDdou-WWzkbQmhZGrA",
+    "channelTitle": "Relaxing Music - Topic"
   },
   {
     "id": "UJZxtO9XNno",
@@ -1756,7 +3047,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCGfgKimGJ4yueKEtFVPpHtw",
+    "channelTitle": "The Relaxed Guy"
   },
   {
     "id": "V0iaLHhZl7I",
@@ -1768,7 +3061,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCBKFF-7j2D-1TR0oFPK0Gyw",
+    "channelTitle": "Naturescapes"
   },
   {
     "id": "WHPEKLQID4U",
@@ -1780,7 +3075,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "WxfmULzzKoU",
@@ -1792,7 +3089,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "XxP8kxUn5bc",
@@ -1804,7 +3103,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCCkmgsl8W18oR6c_W7UZ1lQ",
+    "channelTitle": "TheSilentWatcher"
   },
   {
     "id": "_nVwKbA4eN0",
@@ -1816,7 +3117,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCBKFF-7j2D-1TR0oFPK0Gyw",
+    "channelTitle": "Naturescapes"
+  },
+  {
+    "id": "aVS7PHjSxdI",
+    "title": "8 HOURS OF RELAXING NATURE SOUNDS AND GENTLE BIRDSONG",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCNxq4kntqDqjvEm9UAU5NiA",
+    "channelTitle": "Streaming Birds"
   },
   {
     "id": "bn9F19Hi1Lk",
@@ -1828,7 +3145,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCNjGqISO6V2WFpOFWPC8pIw",
+    "channelTitle": "Naturaleza Viva - Ocean Sounds For Sleeping"
   },
   {
     "id": "buqt6_CjtuI",
@@ -1841,7 +3160,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "eIoHJBA43lk",
@@ -1854,7 +3175,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCIX118LT9e1GccjQrTsBtwA",
+    "channelTitle": "Sora's Treehouse Study"
   },
   {
     "id": "eKFTSSKCzWA",
@@ -1867,7 +3190,9 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UC4UWbQ23IbWwU-XG7XIWxvQ",
+    "channelTitle": "johnnielawson"
   },
   {
     "id": "ekXFslHOvZ8",
@@ -1880,7 +3205,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "gVKEM4K8J8A",
@@ -1893,7 +3220,24 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCycNWQoqcSzsQsF3R8P-pFg",
+    "channelTitle": "Stardust Vibes - Relaxing Sounds"
+  },
+  {
+    "id": "lP4wSXSH9nM",
+    "title": "Best Rain in the Forest at Night 🌲 | Sleep Deeply with Rain Sounds",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "night"
+    ],
+    "channelId": "UCQn-BUWyUqJ80S-aEuFvjYg",
+    "channelTitle": "The Raining Room"
   },
   {
     "id": "mPZkdNFkNps",
@@ -1906,7 +3250,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UChyRMEp8zRio9nFnAjvzSnA",
+    "channelTitle": "Relaxing Ambience ASMR"
   },
   {
     "id": "nDq6TstdEi8",
@@ -1919,7 +3265,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCbunYN0o9Yaid7zHaor_UHA",
+    "channelTitle": "Relaxing White Noise"
   },
   {
     "id": "nE_XAauwu1I",
@@ -1932,7 +3280,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCZNk2huvU7zJhi0gQJ1xZMQ",
+    "channelTitle": "Relax Sleep ASMR"
   },
   {
     "id": "nta1YhicoGw",
@@ -1944,7 +3294,36 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCS0pbRqDVOf28toP1f0SqFg",
+    "channelTitle": "Geo Relaxation"
+  },
+  {
+    "id": "pj3iV9OjCgM",
+    "title": "Forest Ambience, Water Sounds, Birds Singing, ASMR",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCfEIklUzbSphQHTZwjQudMA",
+    "channelTitle": "Forest365"
+  },
+  {
+    "id": "pvtUt4S6DRM",
+    "title": "Deep Sleep Ocean Waves - 99.9% Drift Into Sleep Instantly with Powerful Ocean Wa",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 706,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UCRgDZCdfVJUShgcHnGqqywA",
+    "channelTitle": "Will and The Ocean"
   },
   {
     "id": "q76bMs-NwRk",
@@ -1957,7 +3336,81 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UCGfgKimGJ4yueKEtFVPpHtw",
+    "channelTitle": "The Relaxed Guy"
+  },
+  {
+    "id": "sa61rE36264",
+    "title": "2 HOUR STUDY WITH ME 🌧️ / Rainy Day In The Forest 🍃🐿️  / Pomodoro 50-10 / Rain S",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 111,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCIX118LT9e1GccjQrTsBtwA",
+    "channelTitle": "Sora's Treehouse Study"
+  },
+  {
+    "id": "tpZjV9WzFtE",
+    "title": "Early Morning Wild Birds Chirping and Activity (Songbirds) (Singing Bird Ambienc",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 100,
+    "durationClass": "long",
+    "mood": [
+      "morning"
+    ],
+    "channelId": "UCyfzggiXvfMdKlK7YdH_GIA",
+    "channelTitle": "Nature Sounds - Topic"
+  },
+  {
+    "id": "uHnaS3sSskQ",
+    "title": "Soothing mixed forest and birdsong. Nightingale, cuckoo, blackbird. 12 Hours of ",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 720,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ],
+    "channelId": "UCAyUBvxnhUaxG0e2ZMLskhg",
+    "channelTitle": "Музыка Живой Природы"
+  },
+  {
+    "id": "uQ-TWK1kW3c",
+    "title": "[ Thunderstorm in the Library] Rainy Morning, Hot Tea & Quiet Reading",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "morning"
+    ],
+    "channelId": "UC-ep5rdJdjy0PTd5Og2aKTw",
+    "channelTitle": "Morning Rain Melodies"
+  },
+  {
+    "id": "v9P7kIH3a3E",
+    "title": "Forest Birdsong Nature Sounds-Relaxing Woodland Bluebells Bird Sounds-Meadow Amb",
+    "genres": [
+      "nature"
+    ],
+    "durationMin": 506,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC4UWbQ23IbWwU-XG7XIWxvQ",
+    "channelTitle": "johnnielawson"
   },
   {
     "id": "xNN7iTA57jM",
@@ -1969,7 +3422,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCvVWCrxq_aZr7fN_KpaGGTA",
+    "channelTitle": "The Guild of Ambience"
   },
   {
     "id": "yGjeaMDu9ps",
@@ -1981,7 +3436,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCrlvuSAjLjofdCu-X9DY7Rg",
+    "channelTitle": "Gentle Wave Serenades"
   },
   {
     "id": "0_kIy_euC6k",
@@ -1994,7 +3451,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC_uncveWHNQXQc6EuviFgiQ",
+    "channelTitle": "Ninteen Gaming"
   },
   {
     "id": "1LV8oY0Litk",
@@ -2007,7 +3466,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCf3VIR0Awl1-dC1OO-C_wQA",
+    "channelTitle": "VGM Sisters"
   },
   {
     "id": "1wOAhRAqb40",
@@ -2021,7 +3482,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCqc8_-cM4s9HDiDoyfPXPWg",
+    "channelTitle": "miffynoa mixes"
   },
   {
     "id": "3XOcoU5xYLI",
@@ -2033,7 +3496,23 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UChEHZMzIkMIZpALw2g4hYkA",
+    "channelTitle": "HiryuBlue"
+  },
+  {
+    "id": "3oypmjuiM0E",
+    "title": "Relaxing The Legend Of Zelda: Twilight Princess Music",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 53,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCOZNh5-VWxqSvBZsRsVtJRw",
+    "channelTitle": "Lou Says"
   },
   {
     "id": "55DE_ePBUAU",
@@ -2045,7 +3524,21 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCawclNLw6yCBajYVkmYtLxA",
+    "channelTitle": "MatthewStar"
+  },
+  {
+    "id": "5jaT_8hy3Vg",
+    "title": "10 Hours of Lofi Video Game Beats",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 602,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCLMVehWkOvFlGMeIetyFIxg",
+    "channelTitle": "Helynt"
   },
   {
     "id": "7JMvn0wfABQ",
@@ -2057,7 +3550,24 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCLMVehWkOvFlGMeIetyFIxg",
+    "channelTitle": "Helynt"
+  },
+  {
+    "id": "8Fw00xXb4xE",
+    "title": "Hollow Knight ⨉ Hollow Knight: Silksong | Relaxing Soundtracks for Studying",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 66,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "focus"
+    ],
+    "channelId": "UC1xsJdAkAMXX5WSu5CeHd7g",
+    "channelTitle": "kravvtc"
   },
   {
     "id": "8kBlKM71pjc",
@@ -2069,7 +3579,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCBL3XGCA5LiRQhVlMibTVpw",
+    "channelTitle": "stellarsheik"
   },
   {
     "id": "ANkxRGvl1VY",
@@ -2079,7 +3591,23 @@
     ],
     "durationMin": 79,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCzwr8DC1l8qrxa9G1-ATmXQ",
+    "channelTitle": "Ambient Crafts"
+  },
+  {
+    "id": "B9rB33PDMBE",
+    "title": "Relaxing The Legend of Zelda: Twilight Princess Music",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 45,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC_eJhHCRTqi5F11NI_DUdfw",
+    "channelTitle": "Délice Musical"
   },
   {
     "id": "BTDQPB1E9GU",
@@ -2091,7 +3619,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCeZj3JRW98atzwMwui5A-dw",
+    "channelTitle": "Bodus Gaming Ambience"
   },
   {
     "id": "D29E-jNrbD8",
@@ -2103,7 +3633,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCgmAaN-DvRHnKf8RrUgOf_g",
+    "channelTitle": "Harpsibored"
   },
   {
     "id": "EVIWWO19HlE",
@@ -2116,7 +3648,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCjNH6xmbKJcVQXbK5QX7Ddg",
+    "channelTitle": "Tom Chillhop"
   },
   {
     "id": "EiBLjdlSm40",
@@ -2128,7 +3662,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCXDs5_9TANFhH1rzghf4wVA",
+    "channelTitle": "MazStar"
   },
   {
     "id": "FiRBpHpnZOs",
@@ -2140,7 +3676,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCWybu_s5918jz_0bbnhGy5g",
+    "channelTitle": "Gaming / Vibes / Audio"
+  },
+  {
+    "id": "FrfJcgeYMN4",
+    "title": "1 Hour of Calm and Relaxing Zelda Music",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCk2Y6Ioc5AnWV9DyfrHrfBw",
+    "channelTitle": "ClickFyre"
   },
   {
     "id": "GdzrrWA8e7A",
@@ -2154,7 +3706,24 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UCDVKYPXwdYUQfgA05CkyFSg",
+    "channelTitle": "GameChops"
+  },
+  {
+    "id": "IOu49b5Kp2s",
+    "title": "you're stressed, go to sleep... (zelda music w/ soft rain)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 498,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ],
+    "channelId": "UCNBZ-slU1NllH3aQtmPAoIA",
+    "channelTitle": "Sleepy Frisk"
   },
   {
     "id": "JBky-MBfLpI",
@@ -2166,7 +3735,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCTtj7Fbg1zBxZLBSdj4dK4g",
+    "channelTitle": "Sam Cisco"
   },
   {
     "id": "JyT6Xvijtis",
@@ -2179,7 +3750,53 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCzDTfEaGvF0CZK3we7q0DkQ",
+    "channelTitle": "Gaming Maestro"
+  },
+  {
+    "id": "KuBCTi6NnNM",
+    "title": "4 Hours of Ambient & Emotional Indie Game Music to Study/Chill/Cry",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 233,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC8rWP2C5FuzIMBJYUqnFD-Q",
+    "channelTitle": "krub"
+  },
+  {
+    "id": "LfdCMBCt2r4",
+    "title": "relaxing zelda music + ocean waves",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 91,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCBL3XGCA5LiRQhVlMibTVpw",
+    "channelTitle": "stellarsheik"
+  },
+  {
+    "id": "MAsudG24NVM",
+    "title": "Just a rainy day... Relaxing Nintendo video game music to put you in a better mo",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 207,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ],
+    "channelId": "UCuQ30EXUJGrJiV0Q41ce9_Q",
+    "channelTitle": "Fancy Fox Gaming"
   },
   {
     "id": "PbZyBYSwOX4",
@@ -2191,7 +3808,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCe7fYwXTq7pmPq5T2RdjneQ",
+    "channelTitle": "Angels2000"
   },
   {
     "id": "SASzfJ-E05I",
@@ -2203,7 +3822,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC_eJhHCRTqi5F11NI_DUdfw",
+    "channelTitle": "Délice Musical"
   },
   {
     "id": "TR1Jymo2O4w",
@@ -2216,7 +3837,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC_eJhHCRTqi5F11NI_DUdfw",
+    "channelTitle": "Délice Musical"
+  },
+  {
+    "id": "UrKwpRangh8",
+    "title": "Let go... Relaxing video game music for three and a half hour",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 215,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCe7fYwXTq7pmPq5T2RdjneQ",
+    "channelTitle": "Angels2000"
   },
   {
     "id": "ZLAFOPBFlHM",
@@ -2228,7 +3865,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCawclNLw6yCBajYVkmYtLxA",
+    "channelTitle": "MatthewStar"
   },
   {
     "id": "ZfZ1jZyT6cs",
@@ -2240,7 +3879,24 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCmliFbO-i2Uqv0cADXgrXJA",
+    "channelTitle": "Atelier Minuette"
+  },
+  {
+    "id": "_ADI33qQF4o",
+    "title": "Relaxing Zelda Breath of the Wild Music  Night Ambience Sound hd",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 76,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UCr0l17Yot-6Rjn_nkcS42CQ",
+    "channelTitle": "Sound Music To Relax"
   },
   {
     "id": "_itXuFaxAII",
@@ -2252,7 +3908,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCawclNLw6yCBajYVkmYtLxA",
+    "channelTitle": "MatthewStar"
   },
   {
     "id": "esG-4oXd-Fk",
@@ -2264,7 +3922,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UChHWD7ZuIe-V6Kt1S-znMhA",
+    "channelTitle": "Solace Crossing"
   },
   {
     "id": "h8UpC5JbMU0",
@@ -2276,7 +3936,38 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC94bNixwZc9pMsahvAk02lw",
+    "channelTitle": "BeforePhantoms"
+  },
+  {
+    "id": "hT02MEaHE3Q",
+    "title": "put your mind at peace... (relaxing zelda music w/ calm waves)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 482,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCNBZ-slU1NllH3aQtmPAoIA",
+    "channelTitle": "Sleepy Frisk"
+  },
+  {
+    "id": "hmgzA7DyCNk",
+    "title": "90 Minutes of Nintendo Music for Studying/relaxing/calming",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 92,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC12mrFQ_SRBnoX8qKYWNuFQ",
+    "channelTitle": "Toestata"
   },
   {
     "id": "ilmRZX2xB0E",
@@ -2289,7 +3980,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCMx60HYcw1ieiPlZZagfqXQ",
+    "channelTitle": "SQUARE ENIX MUSIC Channel"
   },
   {
     "id": "j50tCIK5Rn8",
@@ -2301,7 +3994,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCfnN4_TqoDkZwgLLN61f8kA",
+    "channelTitle": "Ambience Crafting"
   },
   {
     "id": "ji7I9hoFab0",
@@ -2314,7 +4009,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCoR42YaIqPnFr7QSbVA3_EQ",
+    "channelTitle": "癒しの音 吉直堂"
   },
   {
     "id": "knoUHYLoE3c",
@@ -2326,7 +4023,24 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCWybu_s5918jz_0bbnhGy5g",
+    "channelTitle": "Gaming / Vibes / Audio"
+  },
+  {
+    "id": "lovYZqGVPBQ",
+    "title": "6 Hours of The Best Epic Inspirational Music for Studying and Working",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 360,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "epic"
+    ],
+    "channelId": "UC9Si3YrRBwC7x8ifAyDvJ3w",
+    "channelTitle": "Billal Ali"
   },
   {
     "id": "m0c1GWofgUM",
@@ -2339,7 +4053,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UC7ITZ6t1M1YtiGhWrpLHs8w",
+    "channelTitle": "Final Fantasy & Chill"
   },
   {
     "id": "nBCFnfHnLbM",
@@ -2351,7 +4067,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCt7B7huKT8tbUtzttmno4FQ",
+    "channelTitle": "Soft Quiet Music"
   },
   {
     "id": "nCfk_fAlcQY",
@@ -2364,7 +4082,39 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCjNH6xmbKJcVQXbK5QX7Ddg",
+    "channelTitle": "Tom Chillhop"
+  },
+  {
+    "id": "nOmx4ePpuRM",
+    "title": "Epic Gaming Music - Intense Focus, Ambient Orchestral Music, Adventure, Fantasy,",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "epic"
+    ],
+    "channelId": "UCQ-I1Xcrf5i7v2_gv75r3OA",
+    "channelTitle": "Brainwave Music"
+  },
+  {
+    "id": "osLuXZCUsbg",
+    "title": "nintendo music to help you study/focus/relax 🌿",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCBL3XGCA5LiRQhVlMibTVpw",
+    "channelTitle": "stellarsheik"
   },
   {
     "id": "p7DVatZamOY",
@@ -2377,7 +4127,51 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCNBZ-slU1NllH3aQtmPAoIA",
+    "channelTitle": "Sleepy Frisk"
+  },
+  {
+    "id": "qNLy7oTxmMI",
+    "title": "The Relaxing Video Game Music Mega Compilation",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 388,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCM3V01L7Oph084kB2anXqHw",
+    "channelTitle": "Lunar Odyssey"
+  },
+  {
+    "id": "qhZ4GywVguA",
+    "title": "Nintendo music to let’s work slow and easy ️🎧",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCzZDJHzTNhHpuvOn_SMyUMQ",
+    "channelTitle": "Pastel Pixel"
+  },
+  {
+    "id": "rZjBLC8e2Es",
+    "title": "Just relax and stop overthinking. (nintendo relaxing video game w/ music)",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 300,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCuQ30EXUJGrJiV0Q41ce9_Q",
+    "channelTitle": "Fancy Fox Gaming"
   },
   {
     "id": "uRRWSlkePGQ",
@@ -2390,7 +4184,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCEllb89EgIAzTYbDZJ3NaCg",
+    "channelTitle": "Quietly Harmonic VII"
   },
   {
     "id": "vCTRNKPJr40",
@@ -2403,7 +4199,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UC94bNixwZc9pMsahvAk02lw",
+    "channelTitle": "BeforePhantoms"
   },
   {
     "id": "vKG91INzLt0",
@@ -2416,7 +4214,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCJDVgRdLc0lTzEkeqY_eAsw",
+    "channelTitle": "Purple"
   },
   {
     "id": "wUJM8mtaUpk",
@@ -2428,7 +4228,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCTtj7Fbg1zBxZLBSdj4dK4g",
+    "channelTitle": "Sam Cisco"
   },
   {
     "id": "wb_E3HnLwG4",
@@ -2440,7 +4242,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCH9gVKB8heMrzkCkDuWoOVQ",
+    "channelTitle": "Ralph L. Tanaka"
   },
   {
     "id": "xtSYnufqAfg",
@@ -2450,7 +4254,9 @@
     ],
     "durationMin": 374,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCt69fUME0sRchW81cZ7qYcw",
+    "channelTitle": "Ender066"
   },
   {
     "id": "y9tuE8CeWyA",
@@ -2462,7 +4268,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCTn68irGFi8M5EdYrfWqJuQ",
+    "channelTitle": "Ambient Cinematics"
+  },
+  {
+    "id": "yA41iunMG6A",
+    "title": "Coding Stupor ~ video game music to help you focus",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 108,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCixKc2dtScOZZQGx4Q0o-qQ",
+    "channelTitle": "Oakleaf Oasis"
   },
   {
     "id": "yJ6Lbsmb1lY",
@@ -2475,7 +4297,9 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UCLxbf-HtFL9iaktjrQwRm5g",
+    "channelTitle": "Drift Away Ambience"
   },
   {
     "id": "0FyEM4g4eR0",
@@ -2488,7 +4312,9 @@
     "mood": [
       "rain",
       "night"
-    ]
+    ],
+    "channelId": "UCj3460Ylt4JEcEiW6PxCH9Q",
+    "channelTitle": "SpaceWave - Cosmic Relaxation"
   },
   {
     "id": "0QKQlf8r7ls",
@@ -2498,7 +4324,33 @@
     ],
     "durationMin": 63,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCmYTgpKxd-QOJCPDrmaXuqQ",
+    "channelTitle": "ThePrimeThanatos"
+  },
+  {
+    "id": "0er2m_JIBdc",
+    "title": "Cybercity Part 3 - A Synthwave Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCwoTj-pZgZZ8DInOXSSLMmA",
+    "channelTitle": "Odysseus"
+  },
+  {
+    "id": "3N5nnI3dyOM",
+    "title": "BEAM - A Synthwave Mix Special",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 41,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UCpbH_7H71IPKq4eH7CD5spg",
+    "channelTitle": "Astral Throb"
   },
   {
     "id": "3z55w5fXqEQ",
@@ -2511,7 +4363,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCMv-yjuws3f3MV32HKEjH8g",
+    "channelTitle": "Chill Pulse Music"
   },
   {
     "id": "4FhsjQ2xess",
@@ -2523,7 +4377,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCj3460Ylt4JEcEiW6PxCH9Q",
+    "channelTitle": "SpaceWave - Cosmic Relaxation"
   },
   {
     "id": "4xDzrJKXOOY",
@@ -2537,7 +4393,9 @@
     "mood": [
       "focus",
       "night"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
   },
   {
     "id": "4yhdyNZsOJk",
@@ -2550,7 +4408,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC9Io3jYaG67thpeOGarkG2g",
+    "channelTitle": "Vaporwave Fm"
   },
   {
     "id": "6aouLxiL4Cw",
@@ -2560,7 +4420,9 @@
     ],
     "durationMin": 141,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCC--Uf_xQNlCcbJEWF6Ijjg",
+    "channelTitle": "INEXED"
   },
   {
     "id": "6xLxC7a1_fU",
@@ -2572,7 +4434,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCpiM1VjFQ5Ke7lW6LICmYzA",
+    "channelTitle": "Moebius FM"
   },
   {
     "id": "A4kU-LiaXiE",
@@ -2585,7 +4449,9 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCUc8mpd7aQROHAb-KxdoGww",
+    "channelTitle": "View Escape"
   },
   {
     "id": "Ax9Ur8u4Lgg",
@@ -2597,7 +4463,35 @@
     "durationClass": "long",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UC3xQv0EngN6mrSLillWmraw",
+    "channelTitle": "Chill City FM"
+  },
+  {
+    "id": "E8CaKFh52CU",
+    "title": "Ｅ Ｘ Ｏ Ｄ Ｕ Ｓ //  Synthwave - Dreamwave - Retrowave [2026 Remastered]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 137,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCC--Uf_xQNlCcbJEWF6Ijjg",
+    "channelTitle": "INEXED"
+  },
+  {
+    "id": "ELd73RH4qYQ",
+    "title": "DREAMS OF '85 | 2 Hour Synthwave, Chillwave & Retrowave Music Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCVLL3_do-DlPMFcDziXUKyw",
+    "channelTitle": "wiredtales"
   },
   {
     "id": "GBUCmMxmup0",
@@ -2609,7 +4503,23 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCZyXa4H06Ws3Pwom9cYEdDA",
+    "channelTitle": "Asthenic"
+  },
+  {
+    "id": "H1xXIgRUPGY",
+    "title": "1 9 8 8　ＦＥＥＬＩＮＧ // Synthwave, Spacewave, Chillsynth, Lovewave",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 129,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCXSlVr2hM09_ESKZxrxok2g",
+    "channelTitle": "Frequency"
   },
   {
     "id": "IlI6kM4FQ7w",
@@ -2621,7 +4531,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCj3460Ylt4JEcEiW6PxCH9Q",
+    "channelTitle": "SpaceWave - Cosmic Relaxation"
   },
   {
     "id": "JiaDf1ae8J4",
@@ -2631,7 +4543,24 @@
     ],
     "durationMin": 76,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCFaNRQa9hwNfKcBu8EYmOIQ",
+    "channelTitle": "Music Farm"
+  },
+  {
+    "id": "K1k35lDpzdw",
+    "title": "Digital Galaxy 🍄🤖 | Chillwave, Synthwave, Retro Funk, Disco, Electronic Playlist",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "focus"
+    ],
+    "channelId": "UCf0kdSyKH0Nyfp5rVGvVvkw",
+    "channelTitle": "Funkonaut Sound"
   },
   {
     "id": "Kq3EDkRiipI",
@@ -2641,7 +4570,9 @@
     ],
     "durationMin": 207,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCOBAsVXRp7kQnSBR_UOSAjA",
+    "channelTitle": "Silent Depths"
   },
   {
     "id": "KyfvIw48V6g",
@@ -2654,7 +4585,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCuawtNFKzgSjcEleE-va9GA",
+    "channelTitle": "z3n Pnk"
   },
   {
     "id": "MV_3Dpw-BRY",
@@ -2666,7 +4599,9 @@
     "durationClass": "short",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UCZVQF_796_ZqqEu48j7tnBg",
+    "channelTitle": "Record Makers"
   },
   {
     "id": "NK79Sr1mrzQ",
@@ -2678,7 +4613,23 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCrpFW99zAUaJT8cKmqeagkg",
+    "channelTitle": "Jason Lewis - Mind Amend"
+  },
+  {
+    "id": "Oi7SWzcD04Q",
+    "title": "E N T R A N C E - A Synthwave/Chillwave Mix Across Dimensions",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCC--Uf_xQNlCcbJEWF6Ijjg",
+    "channelTitle": "INEXED"
   },
   {
     "id": "QBEvosdra48",
@@ -2691,7 +4642,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCdmKGGQrNEhjK5j8cbwj3FQ",
+    "channelTitle": "NowhereTravelers"
   },
   {
     "id": "QqjVD-qPZ3M",
@@ -2704,7 +4657,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC7GcGJFBXJhCXWMmjfBCriQ",
+    "channelTitle": "Holod-TV"
   },
   {
     "id": "R6GPibqAoFY",
@@ -2717,7 +4672,38 @@
     "mood": [
       "rain",
       "calm"
-    ]
+    ],
+    "channelId": "UCKWOEUGWIsVYK9Yz4hVjbCg",
+    "channelTitle": "Focus Soundscapes"
+  },
+  {
+    "id": "TNYhjyaH9Uo",
+    "title": "1 Hour Chillwave Mix - Dreamy Synth Vibes for Focus & Study Music",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCTe5bglzMMWdXKlrX6RroCQ",
+    "channelTitle": "Neon Oasis"
+  },
+  {
+    "id": "Td0iFptEmo0",
+    "title": "SUMMER OF '85 | 2 Hour Synthwave, Chillwave & Retrowave Music Mix",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCVLL3_do-DlPMFcDziXUKyw",
+    "channelTitle": "wiredtales"
   },
   {
     "id": "TlWYgGyNnJo",
@@ -2730,7 +4716,24 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCSJ4gkVC6NrvII8umztf0Ow",
+    "channelTitle": "Lofi Girl"
+  },
+  {
+    "id": "UmrQPJlsxQA",
+    "title": "Mix Lo-Fi & Chillwave Sounds | Perfect Vibes for Study, Focus & Unwind | #chillw",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 253,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCasVsi7vJ5cJnn4yDubk4RQ",
+    "channelTitle": "RadioWave Zer0"
   },
   {
     "id": "WqS9qhHyyO8",
@@ -2740,7 +4743,9 @@
     ],
     "durationMin": 91,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCGkySq020j-8SbyE2-ebLJQ",
+    "channelTitle": "dream_wave fm"
   },
   {
     "id": "XB0e7pI3Q8I",
@@ -2753,7 +4758,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCKWOEUGWIsVYK9Yz4hVjbCg",
+    "channelTitle": "Focus Soundscapes"
   },
   {
     "id": "XWPlbUdrXIo",
@@ -2765,7 +4772,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCzlOGXbhNZNkw7wwljUxHBA",
+    "channelTitle": "KOT Edu"
   },
   {
     "id": "XeYWumdKio4",
@@ -2778,7 +4787,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCMv-yjuws3f3MV32HKEjH8g",
+    "channelTitle": "Chill Pulse Music"
+  },
+  {
+    "id": "_Gajv2yJt5M",
+    "title": "𝟭𝟵𝟵𝟵 𝗗𝗥𝗜𝗙𝗧 𝗜𝗡𝗧𝗢 𝗠𝗘𝗠𝗢𝗥𝗬 // Synthwave, Vaporwave, Cyberpunk, Chillwave, Retrowave,",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 127,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCpiM1VjFQ5Ke7lW6LICmYzA",
+    "channelTitle": "Moebius FM"
   },
   {
     "id": "am1VJP0RnmQ",
@@ -2791,7 +4816,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCuI7j5X-tNbW1_fQbuYFV5A",
+    "channelTitle": "Cosmic Hippo"
   },
   {
     "id": "cu_vihKMWeA",
@@ -2801,7 +4828,9 @@
     ],
     "durationMin": 120,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCJYDvJEIaQQ6dJRDKlxM1GA",
+    "channelTitle": "Devs FM"
   },
   {
     "id": "dgCnYsDTiXU",
@@ -2811,7 +4840,38 @@
     ],
     "durationMin": 42,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UCwoTj-pZgZZ8DInOXSSLMmA",
+    "channelTitle": "Odysseus"
+  },
+  {
+    "id": "elWaLhKE-3M",
+    "title": "ＣＹＢＥＲ　ＤＲＥＡＭ  7 [Chillwave - Synthwave Mix]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 108,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC-7RDShJHg-QfxLkcNXG-nQ",
+    "channelTitle": "Smooth S o u n d s"
+  },
+  {
+    "id": "gj8AkNynwWs",
+    "title": "Galactic Waves – A Downtempo Chillwave Mix [ Chill - Relax - Study ]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 58,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCMv-yjuws3f3MV32HKEjH8g",
+    "channelTitle": "Chill Pulse Music"
   },
   {
     "id": "isIj3tuQTDY",
@@ -2821,7 +4881,9 @@
     ],
     "durationMin": 49,
     "durationClass": "medium",
-    "mood": []
+    "mood": [],
+    "channelId": "UCpbH_7H71IPKq4eH7CD5spg",
+    "channelTitle": "Astral Throb"
   },
   {
     "id": "jUyk52REKKg",
@@ -2833,7 +4895,21 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCpiM1VjFQ5Ke7lW6LICmYzA",
+    "channelTitle": "Moebius FM"
+  },
+  {
+    "id": "lJGhDznqAes",
+    "title": "1985: The Year Feelings Meant Something 💿 | Synthwave • Retrowave • Dreamwave Mi",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 92,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCzug7MyLk56n8PcvLZhSglw",
+    "channelTitle": "Synthwave Rider"
   },
   {
     "id": "lT8JepVwxBQ",
@@ -2843,7 +4919,9 @@
     ],
     "durationMin": 74,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCXQPKEBehhfxC-7l-ih-f8Q",
+    "channelTitle": "VISION84"
   },
   {
     "id": "oSX1FE9R7JI",
@@ -2855,7 +4933,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCwoTj-pZgZZ8DInOXSSLMmA",
+    "channelTitle": "Odysseus"
   },
   {
     "id": "qGo88UjJCwI",
@@ -2865,7 +4945,23 @@
     ],
     "durationMin": 72,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCD-4g5w1h8xQpLaNS_ghU4g",
+    "channelTitle": "NewRetroWave"
+  },
+  {
+    "id": "qUundAa9j4M",
+    "title": "1 9 8 9　ＦRＥQ U E Ｎ C Y // Synthwave, Cyberwave, Retrowave, Chillsynth",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 117,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCXSlVr2hM09_ESKZxrxok2g",
+    "channelTitle": "Frequency"
   },
   {
     "id": "qk1nnAHI1mI",
@@ -2875,7 +4971,9 @@
     ],
     "durationMin": 127,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCmYTgpKxd-QOJCPDrmaXuqQ",
+    "channelTitle": "ThePrimeThanatos"
   },
   {
     "id": "rDBbaGCCIhk",
@@ -2887,7 +4985,23 @@
     "durationClass": "short",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UCD-4g5w1h8xQpLaNS_ghU4g",
+    "channelTitle": "NewRetroWave"
+  },
+  {
+    "id": "s0YRYgkmYBk",
+    "title": "ＣＹＢＥＲ　ＤＲＥＡＭ  6 [Chillwave - Synthwave Mix]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 108,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC-7RDShJHg-QfxLkcNXG-nQ",
+    "channelTitle": "Smooth S o u n d s"
   },
   {
     "id": "ssOmYzEq7VY",
@@ -2897,7 +5011,37 @@
     ],
     "durationMin": 78,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyyZCE-m6Chh4DpOBdsP_qg",
+    "channelTitle": "OutlandTV"
+  },
+  {
+    "id": "tLYL_3NcJck",
+    "title": "ＶＨＳ  １９９８． // Synthwave, Dreamwave, Vaporwave, Chillsynth",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 403,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCCAbqfxjIoebFKCn_KZJ76g",
+    "channelTitle": "Luminescence"
+  },
+  {
+    "id": "tyXeh8-U780",
+    "title": "1994 Hacked successfully // Synthwave, Retrowave, Outrun, Cyberpunk, Chillwave",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCBYuI0WiAnZ9eVtqdHQRICQ",
+    "channelTitle": "VHS FM Memory"
   },
   {
     "id": "utT6c323pxo",
@@ -2910,7 +5054,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC9Io3jYaG67thpeOGarkG2g",
+    "channelTitle": "Vaporwave Fm"
   },
   {
     "id": "wOMwO5T3yT4",
@@ -2923,7 +5069,37 @@
     "mood": [
       "focus",
       "night"
-    ]
+    ],
+    "channelId": "UCZyXa4H06Ws3Pwom9cYEdDA",
+    "channelTitle": "Asthenic"
+  },
+  {
+    "id": "xHYrngfxbAQ",
+    "title": "Deep Focus: Synthwave to Study and Concentrate To",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 26,
+    "durationClass": "short",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCodQz0Z3h0dDUcxhca37OqQ",
+    "channelTitle": "Jonathan Belle"
+  },
+  {
+    "id": "yhCuCqJbOVE",
+    "title": "ＣＹＢＥＲ　ＤＲＥＡＭ [Chillwave - Synthwave Mix]",
+    "genres": [
+      "synthwave"
+    ],
+    "durationMin": 120,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC-7RDShJHg-QfxLkcNXG-nQ",
+    "channelTitle": "Smooth S o u n d s"
   },
   {
     "id": "z-gbKzHhPbc",
@@ -2933,7 +5109,9 @@
     ],
     "durationMin": 240,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCj3460Ylt4JEcEiW6PxCH9Q",
+    "channelTitle": "SpaceWave - Cosmic Relaxation"
   },
   {
     "id": "zVlQ6F855L0",
@@ -2946,7 +5124,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCVLL3_do-DlPMFcDziXUKyw",
+    "channelTitle": "wiredtales"
   },
   {
     "id": "-QsXOmMRBX0",
@@ -2959,7 +5139,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCI3wHg4d3OioSxUfpLedxoQ",
+    "channelTitle": "Marcelo Feijó"
   },
   {
     "id": "-gDinVAmtA0",
@@ -2969,7 +5151,21 @@
     ],
     "durationMin": 111,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCbMVYFIWtp3NJR4LUvttbMQ",
+    "channelTitle": "Wonders of Classical Music"
+  },
+  {
+    "id": "-mUWjHAjMGk",
+    "title": "영혼을 울리는 쇼팽 녹턴 전곡 모음 (2시간)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 108,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCGewAyXy3klHwwW4kWgoPNg",
+    "channelTitle": "달빛위버 Moonbeam Weaver"
   },
   {
     "id": "-oUlaJTaI2s",
@@ -2982,7 +5178,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCvQI6QKWZ0wQuRx3JcIWfmQ",
+    "channelTitle": "Classical Tunes"
   },
   {
     "id": "0AlK7DMSvZs",
@@ -2994,7 +5192,21 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "0ElvHxbviis",
+    "title": "Nocturnes by Chopin",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 11,
+    "durationClass": "short",
+    "mood": [],
+    "channelId": "UC16RZLHZ13RrUrxqUhI_TeQ",
+    "channelTitle": "Abdulkadir Çağlar"
   },
   {
     "id": "0UN_HbOTTcI",
@@ -3006,7 +5218,23 @@
     "durationClass": "long",
     "mood": [
       "rain"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "2YyWAAM_O98",
+    "title": "Mozart Effect Makes You Think Like Albert Einstein. Classical Music for Studying",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 355,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCGh9c0wtR1vgLtlH7kUmjYw",
+    "channelTitle": "Classical Mastermind"
   },
   {
     "id": "32FpqysC1PY",
@@ -3016,7 +5244,21 @@
     ],
     "durationMin": 151,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "3AIxf7CFToQ",
+    "title": "Frédéric Chopin - All 21 Nocturnes | Class of Michail Lifits",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCwMm1XM8OTDbmRdZfo8ykAQ",
+    "channelTitle": "University of Music FRANZ LISZT Weimar"
   },
   {
     "id": "3AkZazth0a0",
@@ -3029,7 +5271,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "3SMhJep65TI",
@@ -3039,7 +5283,9 @@
     ],
     "durationMin": 120,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCRz8ZF1wpLbq8FxnX6w0VxA",
+    "channelTitle": "Ariane R. Hart"
   },
   {
     "id": "51Gm5q6Z07E",
@@ -3052,7 +5298,21 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "84i5wYLcN0s",
+    "title": "Chopin Nocturnes (Artur Rubinstein 1965)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 107,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCZPXmnq6z_JZ1q1X_02aOyw",
+    "channelTitle": "SuperClassic Channel"
   },
   {
     "id": "BMuknRb7woc",
@@ -3065,7 +5325,39 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "BZ-_KQezKmU",
+    "title": "Chopin - Nocturne Op 9 No.2 (1 HOUR)  Relaxing Classical Piano Music - Focus - S",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCUlqBQwWt59EbjONy9AiCfw",
+    "channelTitle": "Classical Waves"
+  },
+  {
+    "id": "CVEE54VFOJ4",
+    "title": "🎹 Chopin Peaceful Nocturnes — A Quiet Night of Piano Reflection",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 63,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UCuwPl6BETUTTawRzSnusr2Q",
+    "channelTitle": "Rain Whisper Classics"
   },
   {
     "id": "EQkNmAARSe0",
@@ -3075,7 +5367,36 @@
     ],
     "durationMin": 600,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCllkC1PWlkcrPQqNJvrW77Q",
+    "channelTitle": "CLASSICAL MUSIC"
+  },
+  {
+    "id": "GDGzAP6As2E",
+    "title": "Best of Chopin - 5 Most Popular Pieces",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 23,
+    "durationClass": "short",
+    "mood": [],
+    "channelId": "UC-mQngSGQ5QMaqPcxndWn9Q",
+    "channelTitle": "Hana Hashem"
+  },
+  {
+    "id": "GdwZHDIzsj4",
+    "title": "Mozart  Effect for 432HZ: Classical Music for Brain Development & Relaxation Sou",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 696,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "calm"
+    ],
+    "channelId": "UCduAQ9OFuB0Zq8BexUZGckA",
+    "channelTitle": "Classical Boost"
   },
   {
     "id": "GjtwQZq_rWI",
@@ -3088,7 +5409,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "GrSzbDT7IhM",
@@ -3101,7 +5424,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UClZ8RkOa06SUaMIc_zAxFmg",
+    "channelTitle": "Classical Music"
   },
   {
     "id": "Hlp6aawXVoY",
@@ -3113,7 +5438,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "IGM1T0t7qts",
@@ -3123,7 +5450,9 @@
     ],
     "durationMin": 108,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "IVpuTD-2SEo",
@@ -3133,7 +5462,9 @@
     ],
     "durationMin": 114,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "Jn09UdSb3aA",
@@ -3143,7 +5474,9 @@
     ],
     "durationMin": 192,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "KuGrV0ADzOQ",
@@ -3153,7 +5486,9 @@
     ],
     "durationMin": 120,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCGi1Mxuq2VNPqXZt9LkKjBQ",
+    "channelTitle": "Classical Music Collection"
   },
   {
     "id": "LwTv8S5co5Q",
@@ -3165,7 +5500,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCohcCsF4Eon2BWj3_QD__YQ",
+    "channelTitle": "Essential Classics"
   },
   {
     "id": "Nu48Z45ibxQ",
@@ -3178,7 +5515,9 @@
     "durationClass": "short",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCgjJcg0QXoQ1P0h66avrfDQ",
+    "channelTitle": "ArRubMusic"
   },
   {
     "id": "Nu9MDqGhIak",
@@ -3188,7 +5527,36 @@
     ],
     "durationMin": 163,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCdqDHwdJXgjb-o8-urkUw0w",
+    "channelTitle": "Abraham Wu"
+  },
+  {
+    "id": "PYGw3Sujd70",
+    "title": "Chopin - Nocturnes, Op. 9 (No. 1, 2, 3)",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 15,
+    "durationClass": "short",
+    "mood": [],
+    "channelId": "UCvuyusiYy9AcHZ1T5Q7DkCQ",
+    "channelTitle": "Golden Classic"
+  },
+  {
+    "id": "QHl6wYCwlcQ",
+    "title": "The Best Relaxing Classical Music Ever By Mozart - Relaxation Meditation Reading",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 150,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCvQI6QKWZ0wQuRx3JcIWfmQ",
+    "channelTitle": "Classical Tunes"
   },
   {
     "id": "RzEr66WYcm8",
@@ -3200,7 +5568,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCqzC-l6yxJFvg8kqX1J7E2g",
+    "channelTitle": "Patrick Brooks"
   },
   {
     "id": "TmUBH7ZgMSk",
@@ -3210,7 +5580,9 @@
     ],
     "durationMin": 118,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCzo-s-TNyLPq41bW7VUDQ0w",
+    "channelTitle": "Classical Oasis"
   },
   {
     "id": "UETuJ2LXJWQ",
@@ -3220,7 +5592,9 @@
     ],
     "durationMin": 74,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCUdSNOH7mAdXLXsv-QLIhbQ",
+    "channelTitle": "The Sound Of Life"
   },
   {
     "id": "WTe8TYx3QMQ",
@@ -3232,7 +5606,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "WdJxvBvUHEE",
@@ -3242,7 +5618,38 @@
     ],
     "durationMin": 162,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCBaqmiky-SG5_xEElSOgv5g",
+    "channelTitle": "EXCICL -Exciting Classic"
+  },
+  {
+    "id": "YrhvsD_nqFk",
+    "title": "Chopin — Nocturne Op.9 No.2 (432Hz) | Soothing Piano for Sleep & Calm Night (1 H",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UCuwPl6BETUTTawRzSnusr2Q",
+    "channelTitle": "Rain Whisper Classics"
+  },
+  {
+    "id": "_6EDGekYo8c",
+    "title": "Chopin Best 20 | Peaceful Nocturnes & Piano Classics for Relaxation",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 115,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCuwPl6BETUTTawRzSnusr2Q",
+    "channelTitle": "Rain Whisper Classics"
   },
   {
     "id": "cydS5G3uX2g",
@@ -3252,7 +5659,9 @@
     ],
     "durationMin": 181,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC9B6J4qn5M_TLMh7zX0ISBA",
+    "channelTitle": "Brilliant Classics"
   },
   {
     "id": "ePPMrX4YtkM",
@@ -3262,7 +5671,9 @@
     ],
     "durationMin": 130,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCf75uD8vqO5YHuHg_E9nMww",
+    "channelTitle": "SShogun872Shogun"
   },
   {
     "id": "fFPLd2m51Hk",
@@ -3272,7 +5683,9 @@
     ],
     "durationMin": 158,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCohcCsF4Eon2BWj3_QD__YQ",
+    "channelTitle": "Essential Classics"
   },
   {
     "id": "fLoWzp8gRK4",
@@ -3284,7 +5697,38 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "fVJ6iDoziiY",
+    "title": "EINAUDI, ZIMMER - Immersive Study, Focus & Work Music - Soft Felt Piano Collecti",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 123,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCiNpDDZ51Yz5qjma43107wg",
+    "channelTitle": "Giuseppe Centonze"
+  },
+  {
+    "id": "fzDqfdmvw2o",
+    "title": "4 Hours Chopin for Studying, Concentration & Relaxation",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 213,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCidPRduDamXM2vUM2SZHsEQ",
+    "channelTitle": "Classical Universe"
   },
   {
     "id": "g4N-X2YtNW4",
@@ -3298,7 +5742,9 @@
     "mood": [
       "calm",
       "night"
-    ]
+    ],
+    "channelId": "UCoRnqidM4QxhfHazjsZeiGA",
+    "channelTitle": "Music for Mind and Soul"
   },
   {
     "id": "i6D8B2wFJmw",
@@ -3308,7 +5754,9 @@
     ],
     "durationMin": 200,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "iUohO2MSot8",
@@ -3320,7 +5768,9 @@
     "durationClass": "long",
     "mood": [
       "rain"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "jgpJVI3tDbY",
@@ -3332,7 +5782,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UC68KnvCZ-nJzmmuSu_tKASA",
+    "channelTitle": "Just Instrumental Music"
   },
   {
     "id": "mGQLXRTl3Z0",
@@ -3342,7 +5794,9 @@
     ],
     "durationMin": 19,
     "durationClass": "short",
-    "mood": []
+    "mood": [],
+    "channelId": "UC2amHa99lYERs4f2O8-Qgbg",
+    "channelTitle": "Stealth banning and comment ghosting is despicable"
   },
   {
     "id": "mIYzp5rcTvU",
@@ -3355,7 +5809,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "mdJU5ogrPMY",
@@ -3367,7 +5823,33 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
+  },
+  {
+    "id": "o86o7iAb1Aw",
+    "title": "Chopin Nocturnes 10 Hours",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 600,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCaCE5pzy49M8nQ59plgmFOA",
+    "channelTitle": "Relax Cafe Music"
+  },
+  {
+    "id": "pRESLH7YHBg",
+    "title": "The Complete Chopin Nocturnes 432 Hz",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 118,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCzo-s-TNyLPq41bW7VUDQ0w",
+    "channelTitle": "Classical Oasis"
   },
   {
     "id": "pzQqvi1-hHE",
@@ -3380,7 +5862,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC68KnvCZ-nJzmmuSu_tKASA",
+    "channelTitle": "Just Instrumental Music"
+  },
+  {
+    "id": "qT9neos0YDk",
+    "title": "Mozart Effect in 432Hz – Boost Memory & Focus for Effective Learning",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 158,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCduAQ9OFuB0Zq8BexUZGckA",
+    "channelTitle": "Classical Boost"
   },
   {
     "id": "rOjHhS5MtvA",
@@ -3392,7 +5890,33 @@
     "durationClass": "long",
     "mood": [
       "epic"
-    ]
+    ],
+    "channelId": "UCl2Sa1BW9yF55yjqwSLro6Q",
+    "channelTitle": "Chicago Symphony Orchestra"
+  },
+  {
+    "id": "staQKJfxwYc",
+    "title": "classical lofi for mental clarity.",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 64,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCI49VO9_0LM9mydUYhXJ3xw",
+    "channelTitle": "SILEO"
+  },
+  {
+    "id": "wkTVnwxgwBo",
+    "title": "Chopin's Best Nocturnes",
+    "genres": [
+      "classical"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCzo-s-TNyLPq41bW7VUDQ0w",
+    "channelTitle": "Classical Oasis"
   },
   {
     "id": "xzN6VwiZYMo",
@@ -3402,7 +5926,9 @@
     ],
     "durationMin": 189,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCyOfqgtsQaM3S-VZnsYnHjQ",
+    "channelTitle": "HALIDONMUSIC"
   },
   {
     "id": "-7mb2bAODmw",
@@ -3412,7 +5938,9 @@
     ],
     "durationMin": 206,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCh6xB6tIf7jjbCyaMCZjkHw",
+    "channelTitle": "Best Old Music Hits"
   },
   {
     "id": "0VlLCl50f3s",
@@ -3424,7 +5952,49 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCdi8yQBdBfn1ECu3ayH_TnA",
+    "channelTitle": "Tim Janis"
+  },
+  {
+    "id": "1APBD-Qayoc",
+    "title": "The Irish Session | 3 Hours of Traditional Instrumental Folk & Pub Vibes",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
+    "channelTitle": "Atmosphere Worlds"
+  },
+  {
+    "id": "2-M9-6OSYMY",
+    "title": "1 Hour of Relaxing Celtic Harp Music by Adrian von Ziegler",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCSeJA6az0GrNM4_-pl3HQSQ",
+    "channelTitle": "Adrian von Ziegler"
+  },
+  {
+    "id": "2zLQ-JMOB6Q",
+    "title": "This Celtic Music Will Carry You Beyond Time | Ancient Sounds for Healing and Pe",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 45,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCaCYcx_J4-Dj6KfQOYJZU1g",
+    "channelTitle": "The Celtic Veil"
   },
   {
     "id": "3w6w0lcFWx4",
@@ -3436,7 +6006,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCg4DI_xYh1SwqDbvyEbKK9w",
+    "channelTitle": "Visual Melodies"
   },
   {
     "id": "54FTDVe3_VU",
@@ -3446,7 +6018,38 @@
     ],
     "durationMin": 79,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC9RP7mSttFd53U-jYZ5Ly5A",
+    "channelTitle": "Fjord Harmonies"
+  },
+  {
+    "id": "5Xr4i_IK_Cc",
+    "title": "[Celtic Music] Calm Celtic fantasy music for a quiet afternoon – The Hedgehog’s ",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 125,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCq8D5p7C0dSN9tMaU1h8wpw",
+    "channelTitle": "Wandering Melodies"
+  },
+  {
+    "id": "6aqQvH162y8",
+    "title": "Celtic Harp and Flute - Healing Music - Deeply Relaxing and Soothing Music, Moss",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 715,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UClyJSuEFjRxFithJMdiNCuA",
+    "channelTitle": " FanTaisia Ambience"
   },
   {
     "id": "7JojfPKvTM4",
@@ -3459,7 +6062,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC0xXgBipc1gmQMSFVLa7Zjg",
+    "channelTitle": "Echoes of Alba"
   },
   {
     "id": "8dGZsyV8WgU",
@@ -3469,7 +6074,9 @@
     ],
     "durationMin": 600,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCSeJA6az0GrNM4_-pl3HQSQ",
+    "channelTitle": "Adrian von Ziegler"
   },
   {
     "id": "9yN4JUyfxeU",
@@ -3482,7 +6089,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCArI74E5NjWNZYU0ckHoBjQ",
+    "channelTitle": "Celtic Soul "
   },
   {
     "id": "BiqlZZddZEo",
@@ -3494,7 +6103,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "CPkRCr5qVHs",
@@ -3504,7 +6115,9 @@
     ],
     "durationMin": 116,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC5SYSQTEDiv3adE724oM3Vw",
+    "channelTitle": "God is Chill"
   },
   {
     "id": "CzkmFJDqbgk",
@@ -3517,7 +6130,24 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCUA-DH7bnjNTo_XcMU_pbwg",
+    "channelTitle": "Elf Winds Music"
+  },
+  {
+    "id": "DB0CivK9LTw",
+    "title": "Celtic Music | Irish Highlands | Sleep, Study, Relax, Ambience",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 184,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC7YAjJbnZsg6rW17wqan_zg",
+    "channelTitle": "Lantern"
   },
   {
     "id": "DhAJBJnIPr8",
@@ -3530,7 +6160,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC0-ljV3KpN4EGc4JQy2XNWg",
+    "channelTitle": "FanTaisia Ambience"
   },
   {
     "id": "Ehb4l0SCV6Q",
@@ -3543,7 +6175,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCchSU8zf81mf2SQCRefynTA",
+    "channelTitle": "Lord Pecalon"
   },
   {
     "id": "GkSHE6wOzX0",
@@ -3555,7 +6189,21 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCRSg-mANRvOGLkV30EyW4jw",
+    "channelTitle": "Blue Turtle"
+  },
+  {
+    "id": "H7LboIeQN3c",
+    "title": "A Quiet Medieval Winter – Gentle Celtic Music for Reading, Rest & Solitude",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 70,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCchSU8zf81mf2SQCRefynTA",
+    "channelTitle": "Lord Pecalon"
   },
   {
     "id": "IdBs_9ZIh7Y",
@@ -3568,7 +6216,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC0xXgBipc1gmQMSFVLa7Zjg",
+    "channelTitle": "Echoes of Alba"
   },
   {
     "id": "KHFyUGCdvB4",
@@ -3580,7 +6230,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UClyJSuEFjRxFithJMdiNCuA",
+    "channelTitle": " FanTaisia Ambience"
   },
   {
     "id": "KL-BZmW2l1M",
@@ -3590,7 +6242,9 @@
     ],
     "durationMin": 112,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCRSg8zaVGyx_vDKGFqFJS6g",
+    "channelTitle": "Candace P. Soto"
   },
   {
     "id": "KSEvnZSz8FI",
@@ -3603,7 +6257,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCUA-DH7bnjNTo_XcMU_pbwg",
+    "channelTitle": "Elf Winds Music"
   },
   {
     "id": "KX_ht0g_e4w",
@@ -3616,7 +6272,24 @@
     "mood": [
       "focus",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCTfigkRGgscSPlJtL9QPhLg",
+    "channelTitle": "Crimson Goblet Tavern"
+  },
+  {
+    "id": "LnmY5Rgpb1Y",
+    "title": "Celtic Music - Fantasy Worlds Through Flute Sounds / Relaxing Medieval Music Mix",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 77,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCuXJkSktpA88J9vc_Nhk0tw",
+    "channelTitle": "tice music | Celtic Fantasy Music"
   },
   {
     "id": "M3Ayn2D4fsw",
@@ -3629,7 +6302,23 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC2uHgBl4hbiJ1B-Ehof7dtw",
+    "channelTitle": "Strings of Eternity"
+  },
+  {
+    "id": "McnPOrasfag",
+    "title": "Peaceful Music, Relaxing Music, Celtic Instrumental Music  \"Celtic Forest\" by Ti",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCdi8yQBdBfn1ECu3ayH_TnA",
+    "channelTitle": "Tim Janis"
   },
   {
     "id": "MzvxL9HrpQM",
@@ -3642,7 +6331,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC51AvVTGZbT9IkncF_iFr_w",
+    "channelTitle": "Ancient Forest Melodies"
   },
   {
     "id": "NIH_xns0fcw",
@@ -3654,7 +6345,21 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCdi8yQBdBfn1ECu3ayH_TnA",
+    "channelTitle": "Tim Janis"
+  },
+  {
+    "id": "OSKoVa5ZpnU",
+    "title": "Irish Pub Music 2, Over 2 hours of Lively Celtic Songs for Dancing and Fun",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UC2G8meUxrGkX-JX1nAtFJgA",
+    "channelTitle": "Masterpiece Music"
   },
   {
     "id": "PiIQlwGVxxA",
@@ -3664,7 +6369,9 @@
     ],
     "durationMin": 62,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCepkrs8UmRViWL7rhy05bkQ",
+    "channelTitle": "Book of Music by the Fiechters"
   },
   {
     "id": "UUxZkEIlb0w",
@@ -3676,7 +6383,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCourCyz-dnWthUnhTSDV9jQ",
+    "channelTitle": "BlueX Mystic Hollow"
+  },
+  {
+    "id": "V6R8uiaMtb0",
+    "title": "8 Hours of Mysterious Relaxing Music • Harp, Flute, Piano & Strings for Sleep & ",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 496,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "ZEPP3MuViLk",
@@ -3689,7 +6412,24 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCFGQHeJJEobHqkt8n61rmBg",
+    "channelTitle": "Fantasy World Melodies"
+  },
+  {
+    "id": "_yh410lA9yI",
+    "title": "Celtic Fantasy Music - Medieval Tavern Fantasy Music - Celtic Music for Good Sle",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 197,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCdwJqfr_TrO6_QoZDTMGZdg",
+    "channelTitle": "Fantasy Music Studio"
   },
   {
     "id": "a0F2nNHcEDo",
@@ -3702,7 +6442,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCq8D5p7C0dSN9tMaU1h8wpw",
+    "channelTitle": "Wandering Melodies"
   },
   {
     "id": "aIMhtT52fi8",
@@ -3715,7 +6457,51 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC2uHgBl4hbiJ1B-Ehof7dtw",
+    "channelTitle": "Strings of Eternity"
+  },
+  {
+    "id": "ac0GUDk4UEc",
+    "title": "Traditional Irish & Scottish Celtic Music Tunes | Instrumental Music for Study, ",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCg4DI_xYh1SwqDbvyEbKK9w",
+    "channelTitle": "Visual Melodies"
+  },
+  {
+    "id": "dR-BW-alOF4",
+    "title": "Ireland 4K - Scenic Relaxation Film With Celtic Music",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC95bEkaIgwhxSjSsdMFXYGg",
+    "channelTitle": "Scenic Relaxation"
+  },
+  {
+    "id": "f16NaLNz9sg",
+    "title": "Irish Spring 🍀 Calming Music & Gentle Instrumentals (3 Hours)",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 179,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
+    "channelTitle": "Atmosphere Worlds"
   },
   {
     "id": "fzb7qWwDWns",
@@ -3727,7 +6513,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCZtIOMbJLVf74UykRAN40Aw",
+    "channelTitle": "EVORA WOLF"
   },
   {
     "id": "ipFaubyDUT4",
@@ -3739,7 +6527,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCdwJqfr_TrO6_QoZDTMGZdg",
+    "channelTitle": "Fantasy Music Studio"
   },
   {
     "id": "jiwuQ6UHMQg",
@@ -3749,7 +6539,9 @@
     ],
     "durationMin": 123,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCSeJA6az0GrNM4_-pl3HQSQ",
+    "channelTitle": "Adrian von Ziegler"
   },
   {
     "id": "kAbOTQ8GB0Y",
@@ -3761,7 +6553,33 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCgkr-YjubUR31rj12ii0KOg",
+    "channelTitle": "Liana Tuisk"
+  },
+  {
+    "id": "kJCxTgrbB6c",
+    "title": "Irish Music | Beautiful Celtic Music | Traditional Irish Folk Music",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 182,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UC7YAjJbnZsg6rW17wqan_zg",
+    "channelTitle": "Lantern"
+  },
+  {
+    "id": "lGNISlD5-3M",
+    "title": "🎩☘️ Cozy Afternoon in a St. Patrick’s Day Classroom | Irish Music & Festive Vibe",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 115,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCH9VtGACUDlhS7RHnPHOdqQ",
+    "channelTitle": "Bookish Aesthetic "
   },
   {
     "id": "lO3cZmOs5xE",
@@ -3774,7 +6592,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCh0FGsSTKF0qM5aVIIOi2yA",
+    "channelTitle": "Medieval Tavern Tunes"
   },
   {
     "id": "lxRTIQISpNU",
@@ -3787,7 +6607,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCf4iMeUCDs0NFkJI03aJSbQ",
+    "channelTitle": "Musicoterapia "
   },
   {
     "id": "mm0QSsRwzUo",
@@ -3800,7 +6622,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC2uHgBl4hbiJ1B-Ehof7dtw",
+    "channelTitle": "Strings of Eternity"
   },
   {
     "id": "n5D02wNLFxQ",
@@ -3813,7 +6637,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCuXJkSktpA88J9vc_Nhk0tw",
+    "channelTitle": "tice music | Celtic Fantasy Music"
   },
   {
     "id": "pN9Ah1tPzq8",
@@ -3823,7 +6649,9 @@
     ],
     "durationMin": 180,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
+    "channelTitle": "Atmosphere Worlds"
   },
   {
     "id": "pUfGjWYpE-I",
@@ -3836,7 +6664,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCCVPA8UIeyG-UIh-GoOCW-g",
+    "channelTitle": "Peter Gundry | Composer"
   },
   {
     "id": "sJx_BqzbAEc",
@@ -3849,7 +6679,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCuXJkSktpA88J9vc_Nhk0tw",
+    "channelTitle": "tice music | Celtic Fantasy Music"
+  },
+  {
+    "id": "tJTZonVVkIU",
+    "title": "Irish Folk Music | Peaceful Celtic Instrumentals with Tin Whistle, Fiddle & Harp",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 41,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCe_S7X1aluC2Y5eZF2cm8DQ",
+    "channelTitle": "Fantasy Music Archives"
   },
   {
     "id": "talRDCCgN9Q",
@@ -3862,7 +6708,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC2uHgBl4hbiJ1B-Ehof7dtw",
+    "channelTitle": "Strings of Eternity"
   },
   {
     "id": "veP_d6sDuOE",
@@ -3875,7 +6723,24 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UCnzaR79MObN4ZRhjw24s8xw",
+    "channelTitle": "EliaS"
+  },
+  {
+    "id": "vuSDw8YUEA0",
+    "title": "[NO ADS] 12 Hours of Celtic Instrumental Music | Relaxation • Meditation • Focus",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 690,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCK8Gq9IeJ8u82VmJXAcYl9g",
+    "channelTitle": "Mythic Echoes"
   },
   {
     "id": "xAz5tD8QmnQ",
@@ -3888,7 +6753,21 @@
     "mood": [
       "focus",
       "fantasy"
-    ]
+    ],
+    "channelId": "UChsQByI7g9PpP_b-SIPG4qw",
+    "channelTitle": "Healing Harmony Piano"
+  },
+  {
+    "id": "ziECEE0k0JQ",
+    "title": "13th Moon Gravity Well - Irish Trad Session 2024.01.24",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 80,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UConnkwQdKd8-oqKJI5J6mQg",
+    "channelTitle": "Portland Irish Music"
   },
   {
     "id": "-XFJoMRMM4k",
@@ -3900,7 +6779,23 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCHRx3w9GE3r-iqpvIKsTgeQ",
+    "channelTitle": "nobody"
+  },
+  {
+    "id": "09r8XdHRWe8",
+    "title": "Enchanted Forest Music (528Hz) : Brings Positive Transformation | Mystical Fores",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 366,
+    "durationClass": "long",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UCM0YvsRfYfsniGAhjvYFOSA",
+    "channelTitle": "Meditative Mind"
   },
   {
     "id": "0MTkODK1hzg",
@@ -3913,7 +6808,9 @@
     "mood": [
       "focus",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCZMBbNhQ33R4FDrnDCHOnhA",
+    "channelTitle": "Agnes"
   },
   {
     "id": "2SvLPTiZG5Q",
@@ -3926,7 +6823,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCZMBbNhQ33R4FDrnDCHOnhA",
+    "channelTitle": "Agnes"
+  },
+  {
+    "id": "3F-J930ymJM",
+    "title": "Whimsical Fairy Wooden House ✨ Magical Forest Music + Peaceful Nature Ambience 🌿",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 378,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCT8Yt9c8H69YQJeyJ3Ngb_g",
+    "channelTitle": "Farley"
   },
   {
     "id": "4WIMyqBG9gs",
@@ -3939,7 +6853,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCwROsg8Tf2wkrQMTJYoLTtA",
+    "channelTitle": "Springs of Serenity"
   },
   {
     "id": "4Y6n-1XQSfE",
@@ -3949,7 +6865,37 @@
     ],
     "durationMin": 61,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCFSwyTXM2RPPMpb1MNH3J6A",
+    "channelTitle": "Bardify"
+  },
+  {
+    "id": "6MkUPUe0qow",
+    "title": "Elven Dreams | Celtic Fantasy Music - Enchanting Ambient Music",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 94,
+    "durationClass": "long",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UCl6PHeWJW_MUKMkE8GMJI9w",
+    "channelTitle": "Legends of Fantasia"
+  },
+  {
+    "id": "71nC7ovuGog",
+    "title": "Castle Beneath Falling Stars | Fantasy Music for Rest, Reading & Meditation",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 96,
+    "durationClass": "long",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UCFCv2SdkYJ0-xNGgcwBge6Q",
+    "channelTitle": "Sound of Fantasia"
   },
   {
     "id": "A3W40FIN-Dk",
@@ -3962,7 +6908,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UC0-ljV3KpN4EGc4JQy2XNWg",
+    "channelTitle": "FanTaisia Ambience"
   },
   {
     "id": "A5uNCyOW8gM",
@@ -3975,7 +6923,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCmGU7IuCWuFRhM8WXvOEM4A",
+    "channelTitle": "Symbology Cinematics"
   },
   {
     "id": "BkaWAU1z6EI",
@@ -3988,7 +6938,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCgDe0wogoFVcEIQ5CClyTNw",
+    "channelTitle": "Martia's Muses"
   },
   {
     "id": "CSGERHVaf2I",
@@ -3998,7 +6950,9 @@
     ],
     "durationMin": 164,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCtRtnC1san8KShHG231AItg",
+    "channelTitle": "Forest Of Light"
   },
   {
     "id": "CU3ljg1JJhg",
@@ -4011,7 +6965,23 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC6gvaQeYui6P4O6ZTwhNEOg",
+    "channelTitle": "Celesthyr"
+  },
+  {
+    "id": "CyqHICzufP8",
+    "title": "a classical fantasy playlist that makes you forget that you are reading",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 27,
+    "durationClass": "short",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UC0hpzdQ4JBfygpOl-5HVmSQ",
+    "channelTitle": "Ophelia Wilde"
   },
   {
     "id": "Ern8qUpJzVk",
@@ -4024,7 +6994,24 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
+  },
+  {
+    "id": "FUiOgdez5KA",
+    "title": "Elven Realm Ambience - Fantasy Enchanted Forest Vibe - Relaxing Celtic Medieval ",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 248,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCnljkLMneT8QHIwTTPgECNA",
+    "channelTitle": "Mystical Ambient Music"
   },
   {
     "id": "GxpNROc3Cr8",
@@ -4036,7 +7023,24 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCgDe0wogoFVcEIQ5CClyTNw",
+    "channelTitle": "Martia's Muses"
+  },
+  {
+    "id": "HhbbPxlHsWE",
+    "title": "Medieval Tavern Ambience | D&D Fantasy Tavern Music and Relaxing Melodies For Re",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 604,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC1bg7mMo8sgnWGk9Cg-VMaQ",
+    "channelTitle": "The Riverside Tavern"
   },
   {
     "id": "KIhGy-587Lk",
@@ -4048,7 +7052,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCdwJqfr_TrO6_QoZDTMGZdg",
+    "channelTitle": "Fantasy Music Studio"
   },
   {
     "id": "L2PQKda8bj0",
@@ -4060,7 +7066,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCM0YvsRfYfsniGAhjvYFOSA",
+    "channelTitle": "Meditative Mind"
   },
   {
     "id": "LTIbaqUFI_c",
@@ -4073,7 +7081,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCXqZqoI1UXKt78cpuSegVsQ",
+    "channelTitle": "Daydreaming of Persephone"
   },
   {
     "id": "NN9t40d1pm4",
@@ -4086,7 +7096,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCT5EyPI6lP8dJcgsgKeIQnQ",
+    "channelTitle": "Whispers of Serenity"
   },
   {
     "id": "NiM_brfnNk0",
@@ -4099,7 +7111,24 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCfSUheoljDlGDjerRylO4Nw",
+    "channelTitle": "Vindsvept, fantasy music"
+  },
+  {
+    "id": "OxMQjlBq6zQ",
+    "title": "Relaxing Medieval Music: Fantasy Harbor | Music for Sleep, Concentration, Work",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 198,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCdwJqfr_TrO6_QoZDTMGZdg",
+    "channelTitle": "Fantasy Music Studio"
   },
   {
     "id": "PG_rSu9rtfU",
@@ -4112,7 +7141,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCXqZqoI1UXKt78cpuSegVsQ",
+    "channelTitle": "Daydreaming of Persephone"
   },
   {
     "id": "SVrCG11zSPw",
@@ -4125,7 +7156,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UC8O01n9bla2e-o3GAsOkCEg",
+    "channelTitle": "Autumn Cozy"
   },
   {
     "id": "Tbca_a03UL8",
@@ -4138,7 +7171,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCZMBbNhQ33R4FDrnDCHOnhA",
+    "channelTitle": "Agnes"
   },
   {
     "id": "UKiHq-xT7ws",
@@ -4151,7 +7186,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCZ33CxqWeIjrFQaXrbA1_aQ",
+    "channelTitle": "Olde World Melodies"
   },
   {
     "id": "XbS3tPO9sUs",
@@ -4163,7 +7200,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UC-H0cIOQ2p7wfz0tBz7KFAg",
+    "channelTitle": "VacnaPaul"
   },
   {
     "id": "XxEhuSJF780",
@@ -4175,7 +7214,38 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCKCrKo2agNNuPMhywozxIIg",
+    "channelTitle": "The Vault of Ambience"
+  },
+  {
+    "id": "YrZucNxoqr8",
+    "title": "A Quiet Corner for the Wandering Scholar 📖 Medieval Tavern Music for Study & Foc",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 193,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCcWrs-bzlsKOeIYfKNyGdOw",
+    "channelTitle": "The Resting Bard"
+  },
+  {
+    "id": "_j_XH4TMjCk",
+    "title": "Solspire – Epic Medieval Fantasy Music OST | Atmospheric Soundtrack for Writing,",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 71,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "epic"
+    ],
+    "channelId": "UCRIR4NZMd0tgeB5srM6VrAA",
+    "channelTitle": "Fantasy Meditations"
   },
   {
     "id": "amwA16ye148",
@@ -4187,7 +7257,23 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCgDe0wogoFVcEIQ5CClyTNw",
+    "channelTitle": "Martia's Muses"
+  },
+  {
+    "id": "c8oBxFIT4fE",
+    "title": "strange the dreamer (a playlist) - instrumentals & ethereal ambience",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 26,
+    "durationClass": "short",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UC5Qip0GYFT3MYpMau0QLotw",
+    "channelTitle": "books of azwei"
   },
   {
     "id": "dx3JwmZe_E8",
@@ -4200,7 +7286,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UC9aY0LS2SI9E9q-dc_b7IfA",
+    "channelTitle": "Allan Ariza"
   },
   {
     "id": "fCT6btnrVDI",
@@ -4212,7 +7300,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCtRtnC1san8KShHG231AItg",
+    "channelTitle": "Forest Of Light"
   },
   {
     "id": "gazYvkjRUQk",
@@ -4225,7 +7315,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCRSg-mANRvOGLkV30EyW4jw",
+    "channelTitle": "Blue Turtle"
   },
   {
     "id": "hZ92_xPKSq8",
@@ -4238,7 +7330,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "iAuca-C8u4U",
@@ -4251,7 +7345,23 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCmd0nAr5eAYyNcuhIhmHCyQ",
+    "channelTitle": "Magical Forest Music"
+  },
+  {
+    "id": "ixgFm9svW_k",
+    "title": "｛𝓟𝓵𝓪𝔂𝓵𝓲𝓼𝓽｝pov: you’re in a dreamy fantasy  novel  (speed up)",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 23,
+    "durationClass": "short",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UC9ZVX-GlG0Z8kYWlB48TZuA",
+    "channelTitle": "exdxx"
   },
   {
     "id": "jcPmCOUrwNA",
@@ -4264,7 +7374,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCciDQsy_cvzTmtdGpyfcKyw",
+    "channelTitle": "chamoon"
   },
   {
     "id": "lHJbaPh5lhc",
@@ -4276,7 +7388,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UChWF9ObQUZ_1ZERDypUbVDg",
+    "channelTitle": "Wiktoria Zac"
   },
   {
     "id": "m5_AMV-p2Q8",
@@ -4289,7 +7403,39 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCZMBbNhQ33R4FDrnDCHOnhA",
+    "channelTitle": "Agnes"
+  },
+  {
+    "id": "miTS_29NQks",
+    "title": "Cozy Hobbit TreeHouse in Whisper Forest | Magical Fantasy Music & Fire Ambience ",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 701,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCT8Yt9c8H69YQJeyJ3Ngb_g",
+    "channelTitle": "Farley"
+  },
+  {
+    "id": "nLvv9YaO1wE",
+    "title": "Pixie Hollow🌿 Fairy Ambience Relaxing Fantasy Music & Enchanted Forest Vibe, Elv",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 194,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCnljkLMneT8QHIwTTPgECNA",
+    "channelTitle": "Mystical Ambient Music"
   },
   {
     "id": "o4UC3UUvXBw",
@@ -4301,7 +7447,54 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCvi8nlT9H3tooQl1AYw4o3Q",
+    "channelTitle": "Dream Woven Tales"
+  },
+  {
+    "id": "oCA8DkQHC40",
+    "title": "Relaxing Medieval Fantasy Study Music – Deep Focus for Study | Meet the kingdom’",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 70,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC39EzQ5QEOYNY5uQx8O809Q",
+    "channelTitle": "Melody of the Wanderer"
+  },
+  {
+    "id": "qTN0Jh0H72I",
+    "title": "Dream - Calming Fantasy Ambient Journey - Meditative Ambient Music for Sleep and",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCtVQDjCgRzyNuRZ0_6a08UA",
+    "channelTitle": "Eternal Depth"
+  },
+  {
+    "id": "qhp6W3nMtX4",
+    "title": "Fairy Lands | Relaxing Music in a Magical Forest | Fantasy Ambience",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCJBwkJ2GDg_qlL-zDo7VeCg",
+    "channelTitle": "Ambient Dream Escapes"
   },
   {
     "id": "sHA_4wfQhE8",
@@ -4314,7 +7507,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCM8abl1kDFEVBzjLk-NrWMQ",
+    "channelTitle": "Everrune"
   },
   {
     "id": "syp6Lsd8HOo",
@@ -4326,7 +7521,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UC0-ljV3KpN4EGc4JQy2XNWg",
+    "channelTitle": "FanTaisia Ambience"
   },
   {
     "id": "vyg5jJrZ42s",
@@ -4338,7 +7535,24 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCXqZqoI1UXKt78cpuSegVsQ",
+    "channelTitle": "Daydreaming of Persephone"
+  },
+  {
+    "id": "wIezjTY2bTI",
+    "title": "The Enchanted Forest Trail – Peaceful Medieval Music & Misty Woodland Ambience",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 77,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "fantasy"
+    ],
+    "channelId": "UCqn9q6c7a4LCHMH8x5EV4-A",
+    "channelTitle": "Medieval Echoes Music"
   },
   {
     "id": "xOQyovt-Jio",
@@ -4351,7 +7565,24 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCmd0nAr5eAYyNcuhIhmHCyQ",
+    "channelTitle": "Magical Forest Music"
+  },
+  {
+    "id": "xr5RmtOyexk",
+    "title": "(NO MID-ROLL ADS) Voices From The Past | Deep Focus Fantasy Music and Ambience f",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 480,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UC0-ljV3KpN4EGc4JQy2XNWg",
+    "channelTitle": "FanTaisia Ambience"
   },
   {
     "id": "xxYJONmXE8w",
@@ -4364,7 +7595,23 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UCNo_bJuwi7B-WE2ifnskjMA",
+    "channelTitle": "Gates of Vortalania"
+  },
+  {
+    "id": "ywH2C6KVFno",
+    "title": "(NO MID-ROLL ADS) Cozy Fantasy Village | Fantasy Music and Ambience 🍃🎶",
+    "genres": [
+      "fantasy"
+    ],
+    "durationMin": 129,
+    "durationClass": "long",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UCMZaf7IXCmb6Jw93MKwZyGw",
+    "channelTitle": "SoundScape Fantasy"
   },
   {
     "id": "yxjIrRxqtbM",
@@ -4376,7 +7623,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCM0YvsRfYfsniGAhjvYFOSA",
+    "channelTitle": "Meditative Mind"
   },
   {
     "id": "zBCI-JVe21Q",
@@ -4388,7 +7637,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCfR8HhkbpDAwvYxrecNg4Mg",
+    "channelTitle": "Ambient Worlds"
   },
   {
     "id": "-GMG0lQrWJQ",
@@ -4398,7 +7649,23 @@
     ],
     "durationMin": 67,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCItw3r7rMOejR_I5cJ3zcmQ",
+    "channelTitle": "koyuchi -Shamisen Beats-"
+  },
+  {
+    "id": "-yAVUu1WqGQ",
+    "title": "A Peaceful Moment with God 🌿 Relaxing Christian Music  |  Koto & Shakuhachi Inst",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 38,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCRFUFCC2DNlvIUyGeQOSn3g",
+    "channelTitle": "Haven of Faith"
   },
   {
     "id": "08KPRgHnxBw",
@@ -4410,7 +7677,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
   },
   {
     "id": "0nelYwDKk7o",
@@ -4422,7 +7691,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
   },
   {
     "id": "0oR29O9Uh_4",
@@ -4435,7 +7706,21 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCtAFn7bhMVpavKo5IZ9FM6g",
+    "channelTitle": "BGM maker"
+  },
+  {
+    "id": "1l1n3qWb1ZA",
+    "title": "Tranquil Japanese Zen Music to Revitalize the Spirit",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UCH-QH_cWmwN9wVJlV4HUEFw",
+    "channelTitle": "Bushido Pathways"
   },
   {
     "id": "2cKl45IeLIE",
@@ -4448,7 +7733,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
   },
   {
     "id": "3Zrt-_gM5cE",
@@ -4460,7 +7747,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCrkRaf_4UZSJZnuBxjmhL8g",
+    "channelTitle": "Sakura Ambient Japan"
   },
   {
     "id": "6OS_Ua8ja3k",
@@ -4472,7 +7761,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCTjeOXgV_551-5AjFSujGyg",
+    "channelTitle": "あのね - cozy crossing"
   },
   {
     "id": "6a-FnIqM0rI",
@@ -4485,7 +7776,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCUZNK80DemBN3kyxusDLwrA",
+    "channelTitle": "The Soul of Wind"
   },
   {
     "id": "7QvNyZoDY4o",
@@ -4497,7 +7790,9 @@
     "durationClass": "medium",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UC7hLx0TD0RHAYWFf3KbAT2w",
+    "channelTitle": "World Fantasia"
   },
   {
     "id": "AkyXjKxP6ww",
@@ -4507,7 +7802,9 @@
     ],
     "durationMin": 124,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC7hLx0TD0RHAYWFf3KbAT2w",
+    "channelTitle": "World Fantasia"
   },
   {
     "id": "DeHtznJfVmc",
@@ -4520,7 +7817,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCiL9JBeqZQzlWGYSw-uP2_A",
+    "channelTitle": "Relaxing Music Pro"
   },
   {
     "id": "GF_IbFpn-HA",
@@ -4530,7 +7829,23 @@
     ],
     "durationMin": 9,
     "durationClass": "short",
-    "mood": []
+    "mood": [],
+    "channelId": "UCbKxRuVNNUxjp7OB93_r4Yw",
+    "channelTitle": "Kosaqo"
+  },
+  {
+    "id": "Gq3mW43kpkU",
+    "title": "Beautiful Relaxing Music • Romantic Japanese Music for Relaxation",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 185,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCjzHeG1KWoonmf9d5KBvSiw",
+    "channelTitle": "Soothing Relaxation"
   },
   {
     "id": "Jpuff2Fm77g",
@@ -4542,7 +7857,23 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCNPMwbX6-SclEmvFX5_ihCw",
+    "channelTitle": "BGM channel by h/mix -秋山裕和 公式チャンネル-"
+  },
+  {
+    "id": "KX01ScyA52E",
+    "title": "Zenji – Traditional Japanese Ambient Music For a Calm Mind & Relaxation (禅寺)",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 124,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCGUORBjbJ25yKQ7JaXJba3Q",
+    "channelTitle": "Nameless Ronin"
   },
   {
     "id": "KwjemXWdTdg",
@@ -4555,7 +7886,9 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
   },
   {
     "id": "MzgMBrtrFc4",
@@ -4567,7 +7900,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCZSRQFdWx83jnVj4fXjwy1A",
+    "channelTitle": "Ambient With Flute"
+  },
+  {
+    "id": "N-iBXZGVYoM",
+    "title": "Time Alone with God 🌿 Relaxing Worship Music  |  Koto & Shakuhachi Instrumental ",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 38,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCRFUFCC2DNlvIUyGeQOSn3g",
+    "channelTitle": "Haven of Faith"
   },
   {
     "id": "PKPwV7Uu08Q",
@@ -4579,7 +7928,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCN0XHf8QvWpbza8tPU_lOIw",
+    "channelTitle": "Melody"
   },
   {
     "id": "Qtc6L2qpcpI",
@@ -4589,7 +7940,38 @@
     ],
     "durationMin": 357,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC5q5r9IvGXREGJw0VPp65uQ",
+    "channelTitle": "Aether Journey"
+  },
+  {
+    "id": "RZ2JVRiUo7E",
+    "title": "Japanese Traditional Music | Solo Koto (Night Ambience)",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 124,
+    "durationClass": "long",
+    "mood": [
+      "night"
+    ],
+    "channelId": "UCTgio9hV7b9QqdxXfTemaWQ",
+    "channelTitle": "Lucas Ferreira"
+  },
+  {
+    "id": "S1ssfVxL7Qk",
+    "title": "Japanese Shamisen 三味線 X Ambient Melodies【喵獸戲畫】Relaxing Background Music for Work",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 44,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCSUU5Y9O2pC0hAJil5EEENA",
+    "channelTitle": "Melodies of the Rising Sun"
   },
   {
     "id": "T7geY2PvzOY",
@@ -4601,7 +7983,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCSm96O5W1x1lK5kTvPusMHA",
+    "channelTitle": "xxxJunaJunaxxx"
   },
   {
     "id": "USJh1sypp3w",
@@ -4614,7 +7998,9 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UCkmVXnY62Y75Z_CuzahRZew",
+    "channelTitle": "モノの音楽箱 / Mono Music Box"
   },
   {
     "id": "Ub9rTtlMwDk",
@@ -4626,7 +8012,52 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCrkRaf_4UZSJZnuBxjmhL8g",
+    "channelTitle": "Sakura Ambient Japan"
+  },
+  {
+    "id": "VFK8_9RcaOc",
+    "title": "Koto Performance by ENOKIDO Fuyuki | Japan House London",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 20,
+    "durationClass": "short",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCoIFQMdO72fkaEue2WM-QGw",
+    "channelTitle": "Japan House London"
+  },
+  {
+    "id": "VpsFQGkPahA",
+    "title": "Calm Japanese Traditional Music | Koto & Shakuhachi Flute for Relaxation and Med",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 58,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCcL3kNOmgQThnp6YwsgwAwA",
+    "channelTitle": "Harmony Terra"
+  },
+  {
+    "id": "YBdAqCQW2aY",
+    "title": "🌸 Moonlit Japanese Garden | Relaxing Sleep Music with Koto, Shakuhachi & Night A",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 14,
+    "durationClass": "short",
+    "mood": [
+      "night",
+      "calm"
+    ],
+    "channelId": "UC6Ip6uECAGlNXJNcY9k_C2g",
+    "channelTitle": "Zig's Studio"
   },
   {
     "id": "ZCvzRo-G6X4",
@@ -4636,7 +8067,9 @@
     ],
     "durationMin": 188,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC1fU17Mv-07UYfQYNE6CMAQ",
+    "channelTitle": "Sora Tori /そらとり"
   },
   {
     "id": "Zd6L8bH9BuQ",
@@ -4648,7 +8081,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCTgio9hV7b9QqdxXfTemaWQ",
+    "channelTitle": "Lucas Ferreira"
   },
   {
     "id": "bHQvQYI_hEY",
@@ -4661,7 +8096,64 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
+  },
+  {
+    "id": "bIRTqfYbeHk",
+    "title": "Relaxing Japanese Music w/Koto, Shakuhachi & Shamisen| Soothing Instrumental for",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 69,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCHCMh7zmTkRIagL0xK0EF9w",
+    "channelTitle": "和楽 WARAKU"
+  },
+  {
+    "id": "cE6pBE_ygtU",
+    "title": "Japanese Zen Sanctuary 🍃 Koto, Shakuhachi & Bamboo Forest  Peaceful Meditation I",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC0FT4VcH6JbowGYuOvK6jKg",
+    "channelTitle": "Hushoria Calm"
+  },
+  {
+    "id": "d0-zCLErF0w",
+    "title": "Japanese Traditional Music | Koto, Shakuhachi (Relaxing Music)",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 123,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCTgio9hV7b9QqdxXfTemaWQ",
+    "channelTitle": "Lucas Ferreira"
+  },
+  {
+    "id": "eBMZPXEZKus",
+    "title": "40 min Meditation Music [Japanese Zen Garden] Koto ,Shakuhachi, GuZheng,Guqin Ro",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 40,
+    "durationClass": "medium",
+    "mood": [],
+    "channelId": "UCAbkc1v9Mg_D8NtZfbk1C7g",
+    "channelTitle": "Rodrigo Rodriguez (Shakuhachi 尺八)"
   },
   {
     "id": "f6Zy64QI1ig",
@@ -4673,7 +8165,37 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCtAFn7bhMVpavKo5IZ9FM6g",
+    "channelTitle": "BGM maker"
+  },
+  {
+    "id": "fJA53S6nFz8",
+    "title": "【フリーBGM】茶屋にて 1時間版【和風・日本風/作業用BGM】",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCIlrFm-fU-YG97NF67D_Ikg",
+    "channelTitle": "MATSU"
+  },
+  {
+    "id": "gXrnssguJdg",
+    "title": "Healing music in Japan.  koto. shakuhachi.shamisen. Relaxing Music. Meditation M",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCPjgEJWCdv2ejF_1xRigmdg",
+    "channelTitle": "Japanese Music"
   },
   {
     "id": "gg3Tib2xB2o",
@@ -4683,7 +8205,9 @@
     ],
     "durationMin": 68,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC4aLJqMt5wuOOkiaw-2BmmA",
+    "channelTitle": "Ancient Mix"
   },
   {
     "id": "i4_KiNGCEe8",
@@ -4693,7 +8217,9 @@
     ],
     "durationMin": 66,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCxj2YLYy4Sz7VL4WJsjbD1Q",
+    "channelTitle": "Nostalgic Japanese Tradition"
   },
   {
     "id": "iHjhFJ0MXmQ",
@@ -4706,7 +8232,9 @@
     "mood": [
       "calm",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCtAFn7bhMVpavKo5IZ9FM6g",
+    "channelTitle": "BGM maker"
   },
   {
     "id": "iNCCt-FqfT4",
@@ -4719,7 +8247,23 @@
     "mood": [
       "night",
       "focus"
-    ]
+    ],
+    "channelId": "UC0JNp7lS6jEoNdAnPboAYYg",
+    "channelTitle": "ユーキヒロセ【和風BGM】"
+  },
+  {
+    "id": "in86TBPZaYc",
+    "title": "Relaxing Traditional Japanese Music | Japanese Zither, Koto Music, Meditation, S",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 501,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UClnr-yilKU-5mND43CM3JRA",
+    "channelTitle": "Cathulhi Music"
   },
   {
     "id": "ixV7dOqCG6o",
@@ -4732,7 +8276,9 @@
     "mood": [
       "night",
       "calm"
-    ]
+    ],
+    "channelId": "UCtAFn7bhMVpavKo5IZ9FM6g",
+    "channelTitle": "BGM maker"
   },
   {
     "id": "jtN_1sppWSc",
@@ -4744,7 +8290,9 @@
     "durationClass": "long",
     "mood": [
       "night"
-    ]
+    ],
+    "channelId": "UC7hLx0TD0RHAYWFf3KbAT2w",
+    "channelTitle": "World Fantasia"
   },
   {
     "id": "kpUH1vfUPHg",
@@ -4756,7 +8304,9 @@
     "durationClass": "long",
     "mood": [
       "rain"
-    ]
+    ],
+    "channelId": "UC7hLx0TD0RHAYWFf3KbAT2w",
+    "channelTitle": "World Fantasia"
   },
   {
     "id": "lCxXo3LFDa4",
@@ -4766,7 +8316,23 @@
     ],
     "durationMin": 62,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UC7YAjJbnZsg6rW17wqan_zg",
+    "channelTitle": "Lantern"
+  },
+  {
+    "id": "lnR_62fV7fY",
+    "title": "【異世界和風音楽】和ノ国【作業用/勉強用/睡眠用】",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCkmVXnY62Y75Z_CuzahRZew",
+    "channelTitle": "モノの音楽箱 / Mono Music Box"
   },
   {
     "id": "lyieFu7BnHE",
@@ -4776,7 +8342,21 @@
     ],
     "durationMin": 62,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCjMZjGhrFq_4llVS_x2XJ_w",
+    "channelTitle": "Fantasy & World Music by the Fiechters"
+  },
+  {
+    "id": "o-WhM-0dWeE",
+    "title": "BUDŌ – Japanese Zen Music for Discipline, Meditation & Inner Strength (武道)",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCIEj67Db_0ZvUIOR3d0_MMQ",
+    "channelTitle": "RollinSound Relax"
   },
   {
     "id": "opMFlvW8dZU",
@@ -4788,7 +8368,23 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCxj2YLYy4Sz7VL4WJsjbD1Q",
+    "channelTitle": "Nostalgic Japanese Tradition"
+  },
+  {
+    "id": "oxlaAdCY4jA",
+    "title": "Beautiful Cherry Blossom Music - Relaxing Japanese Zen Music for Stress Relief",
+    "genres": [
+      "japanese"
+    ],
+    "durationMin": 200,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCfzTGKHeCCOo00T_U_V1x7g",
+    "channelTitle": "Athena IV"
   },
   {
     "id": "rblH2SbMNr8",
@@ -4800,7 +8396,9 @@
     "durationClass": "long",
     "mood": [
       "fantasy"
-    ]
+    ],
+    "channelId": "UCUOokntsr3t7dSTO9dCdziQ",
+    "channelTitle": "夜叉箏(Yashagoto) -  Japanese Dark Instrumentals"
   },
   {
     "id": "sahd3fzCdZg",
@@ -4810,7 +8408,9 @@
     ],
     "durationMin": 8,
     "durationClass": "short",
-    "mood": []
+    "mood": [],
+    "channelId": "UCVbPYTPzVnmPqy1t7xrJFVQ",
+    "channelTitle": "berumoth von holle"
   },
   {
     "id": "suUsDNq4WtM",
@@ -4822,7 +8422,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCaieEaMnK1OPYXtgQpensMw",
+    "channelTitle": "Robert J. Saleh"
   },
   {
     "id": "undE1G2OgYA",
@@ -4835,7 +8437,9 @@
     "mood": [
       "focus",
       "fantasy"
-    ]
+    ],
+    "channelId": "UCTKCddPRNU_ilJfsrfb0bcA",
+    "channelTitle": "幻想世界の音楽たち"
   },
   {
     "id": "vn1UJHZjQA0",
@@ -4847,7 +8451,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UCaB1TemERfb3FF7jPx0bJ5A",
+    "channelTitle": "Medieval Sounds"
   },
   {
     "id": "yf1fOStHUxo",
@@ -4860,7 +8466,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCtAFn7bhMVpavKo5IZ9FM6g",
+    "channelTitle": "BGM maker"
   },
   {
     "id": "-sZqtdT-GVw",
@@ -4873,7 +8481,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCwVQIkAtyZzQSA-OY1rsGig",
+    "channelTitle": "Chill Music Lab"
   },
   {
     "id": "0zbmR3G2Xhg",
@@ -4885,7 +8495,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCrpFW99zAUaJT8cKmqeagkg",
+    "channelTitle": "Jason Lewis - Mind Amend"
   },
   {
     "id": "2jxKy5LaiXU",
@@ -4897,7 +8509,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCFRYxLjDLtN2apjjqBPbR1Q",
+    "channelTitle": "Play'EM"
   },
   {
     "id": "52jRT0tSLxg",
@@ -4910,7 +8524,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCQYHdGR7u1d-4BUVvUPpjrw",
+    "channelTitle": "Dream EDM"
   },
   {
     "id": "5FCf7gEt3W8",
@@ -4922,7 +8538,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCCD_GyqAJ2w5UpH9R4yIEjw",
+    "channelTitle": "Reinhardt Buhr"
   },
   {
     "id": "6PR9_UiT5yU",
@@ -4932,7 +8550,9 @@
     ],
     "durationMin": 61,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCKe1yUm0X1LrMgiGOeKg_-A",
+    "channelTitle": "Bass Bangers"
   },
   {
     "id": "8O30VMlJyss",
@@ -4944,7 +8564,9 @@
     "durationClass": "medium",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC_jxnWLGJ2eQK4en3UblKEw",
+    "channelTitle": "MixHound"
   },
   {
     "id": "8VhF5gXqtBY",
@@ -4957,7 +8579,9 @@
     "mood": [
       "rain",
       "focus"
-    ]
+    ],
+    "channelId": "UC6VCN0rjk-Yc4czu8gxpcTA",
+    "channelTitle": "Kalpanik Bass"
   },
   {
     "id": "8l7MGomv33Q",
@@ -4970,7 +8594,9 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UCQYHdGR7u1d-4BUVvUPpjrw",
+    "channelTitle": "Dream EDM"
   },
   {
     "id": "9TbASs-ZjHA",
@@ -4983,7 +8609,9 @@
     "mood": [
       "fantasy",
       "focus"
-    ]
+    ],
+    "channelId": "UCI5Xx1hY448vXWH2djzj71A",
+    "channelTitle": "Xavrinox"
   },
   {
     "id": "9VL8NVvwfjo",
@@ -4996,7 +8624,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSeAAXCLe0iYwTHP3hMxghw",
+    "channelTitle": "Teeup Muzix"
   },
   {
     "id": "C3kDBTNCbv0",
@@ -5009,7 +8639,9 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UC98crz2BpJESHnLxKaOYm4g",
+    "channelTitle": "Paxtone"
   },
   {
     "id": "Ca5EtR-TAco",
@@ -5022,7 +8654,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCIAqhzUWu55IDxrRN9SpiFg",
+    "channelTitle": " Inner Deep Radio"
   },
   {
     "id": "F5lPywAN5cw",
@@ -5034,7 +8668,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCk3QM5rPQbpdAQ0FkpBqQ6w",
+    "channelTitle": "Lucien Chillout Official"
   },
   {
     "id": "G4OjyupTq3A",
@@ -5046,7 +8682,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UC11rApilYVjNeWxbRQ33sUA",
+    "channelTitle": "René Vermont"
   },
   {
     "id": "GsucddkiVUA",
@@ -5058,7 +8696,24 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCRHbvkKA0fK3MJp4T-tzhog",
+    "channelTitle": "Peripheral - Vinyl Sessions"
+  },
+  {
+    "id": "IVdN-klu_EE",
+    "title": "Deep Soulful House Instrumental Mix 2025 Chill & Warm",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 148,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "focus"
+    ],
+    "channelId": "UCeXziuhYNELyy8JMWMkB5hg",
+    "channelTitle": "Timeless Inspired"
   },
   {
     "id": "JrorYWOpsbs",
@@ -5071,7 +8726,9 @@
     "mood": [
       "night",
       "morning"
-    ]
+    ],
+    "channelId": "UCq1GTJe7iQNoCSrugWaDslQ",
+    "channelTitle": "Afro House Radio"
   },
   {
     "id": "K7d-c9BhWUc",
@@ -5084,7 +8741,35 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UCMaagmQNdlL-NDymV2ZZ8cg",
+    "channelTitle": "Deep Melodies"
+  },
+  {
+    "id": "LQLf8BuiK68",
+    "title": "Letting Go | Illenium, Nurko, Dabin & Friends | A Tribute Mix By SOUP",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 81,
+    "durationClass": "long",
+    "mood": [],
+    "channelId": "UCKe1yUm0X1LrMgiGOeKg_-A",
+    "channelTitle": "Bass Bangers"
+  },
+  {
+    "id": "MJiBpHVdzAg",
+    "title": "Upbeat Study Music Soft House (Koala Mix) - Peak Focus Beta Isochronic Tones",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCrpFW99zAUaJT8cKmqeagkg",
+    "channelTitle": "Jason Lewis - Mind Amend"
   },
   {
     "id": "MJpQINiU6PA",
@@ -5096,7 +8781,38 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCKRR8hVGxnrRHh46EXv1VFQ",
+    "channelTitle": "Rhythm Depths"
+  },
+  {
+    "id": "O_XMLBXTHxQ",
+    "title": "Lofi Future Bass Mix — Deep Ocean Focus / Study / Chill",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 15,
+    "durationClass": "short",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCkirB3eJR0RaSGtsmcgkUHg",
+    "channelTitle": "Largepainter"
+  },
+  {
+    "id": "QhMs-t7EhXY",
+    "title": "Best Deep House Songs Of All Time - Deep House Vibes 2026 | Tropical House Journ",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 201,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCIAqhzUWu55IDxrRN9SpiFg",
+    "channelTitle": " Inner Deep Radio"
   },
   {
     "id": "QiF0E3K_r-U",
@@ -5108,7 +8824,53 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCU7NovgDIyajjdY7Uci-Szw",
+    "channelTitle": "SOUND ISLAND"
+  },
+  {
+    "id": "RwKOWLSzFqE",
+    "title": "Focus Music for Work – Deep Concentration Chill Beats for Study and Coding",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCAzrnNBmVGigIhvjq10Txpg",
+    "channelTitle": "Chill Guide"
+  },
+  {
+    "id": "RxLQ9boJJCE",
+    "title": "Epic Melodic Dubstep & Future Bass Collection 2024 (ft. Seven Lions, MitiS, Nurk",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 132,
+    "durationClass": "long",
+    "mood": [
+      "epic",
+      "focus"
+    ],
+    "channelId": "UCpEYMEafq3FsKCQXNliFY9A",
+    "channelTitle": "Arctic Empire"
+  },
+  {
+    "id": "T2QZpy07j4s",
+    "title": "Music for Work — Deep Future Garage Mix for Concentration",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 170,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCwVQIkAtyZzQSA-OY1rsGig",
+    "channelTitle": "Chill Music Lab"
   },
   {
     "id": "TDcJJYY5sms",
@@ -5120,7 +8882,9 @@
     "durationClass": "long",
     "mood": [
       "calm"
-    ]
+    ],
+    "channelId": "UC_jxnWLGJ2eQK4en3UblKEw",
+    "channelTitle": "MixHound"
   },
   {
     "id": "U-vO38hfbT4",
@@ -5133,7 +8897,9 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UCrFFy9BMtlNsg2wsa4XbTPg",
+    "channelTitle": "We Are Diamond"
   },
   {
     "id": "VQlVKst1O8Y",
@@ -5146,7 +8912,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqba6mC7G39MnKO6LgIduzg",
+    "channelTitle": "BGMちゃん"
   },
   {
     "id": "VbPhhXXV1DA",
@@ -5159,7 +8927,52 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSeAAXCLe0iYwTHP3hMxghw",
+    "channelTitle": "Teeup Muzix"
+  },
+  {
+    "id": "Vm0lZAelVAk",
+    "title": "Chris Luno - Ibiza Deep House Mix @ Ocean Drive Talamanca",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 87,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCUd8LOTtare__-19BCTkbOw",
+    "channelTitle": "OD Hotels"
+  },
+  {
+    "id": "XJktaXYRWBg",
+    "title": "Melodic Techno & Progressive House  Mix 2024  Argy Omnia Monolink Rebūke Daniel ",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 100,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCB_i7laXYFEaa1IqPbWAT_Q",
+    "channelTitle": "Raf Fender"
+  },
+  {
+    "id": "YfUWXMRJy1E",
+    "title": "Epic Melodic Dubstep & Future Bass Collection 2022 [2 Hours]",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 128,
+    "durationClass": "long",
+    "mood": [
+      "epic",
+      "focus"
+    ],
+    "channelId": "UCpEYMEafq3FsKCQXNliFY9A",
+    "channelTitle": "Arctic Empire"
   },
   {
     "id": "a4fv-BtzNmY",
@@ -5172,7 +8985,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UC6mmtc9CwL6_-2Xq1cAg1Tg",
+    "channelTitle": "Gravity Music"
   },
   {
     "id": "a4tNJTZHzPg",
@@ -5184,7 +8999,54 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCrpFW99zAUaJT8cKmqeagkg",
+    "channelTitle": "Jason Lewis - Mind Amend"
+  },
+  {
+    "id": "aIA4fGtbC5g",
+    "title": "Dubstep Mix 1 - Study Work or Relax",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCD3uDNfZD9O3psSU89gjWPQ",
+    "channelTitle": "Chill Vibes"
+  },
+  {
+    "id": "b20j_p5_dwI",
+    "title": "EDM Relax #14: Ocean Vibes 🎧 Chill EDM for Peaceful Everyday Flow",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 29,
+    "durationClass": "short",
+    "mood": [
+      "calm",
+      "focus"
+    ],
+    "channelId": "UCvbRrx-ASjO4HT5sgUez1Ag",
+    "channelTitle": "Eli EDM"
+  },
+  {
+    "id": "bb3ikHykWLw",
+    "title": "【Chill Relaxing Mix】- 𝓙𝓪𝓹𝓪𝓷𝓮𝓼𝓮 𝓛𝓸𝓯𝓲 𝓕𝓾𝓽𝓾𝓻𝓮 𝓑𝓪𝓼𝓼 | Cute Aesthetic Study & Happy B",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 45,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCzBKXWMEPuNhbM-b1RqNbYA",
+    "channelTitle": "EnzoBeats"
   },
   {
     "id": "bgx7Lmzy-Rg",
@@ -5197,7 +9059,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCSgzVZctmPR-e_FNIrQOwRQ",
+    "channelTitle": "Afro Pulse Frequency"
   },
   {
     "id": "cMFGuwNl47Y",
@@ -5209,7 +9073,24 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCwvDSowNIlIdUWzsdCmqDLg",
+    "channelTitle": "Rayasa"
+  },
+  {
+    "id": "cNdNgofd6R8",
+    "title": "1 Hour of Epic Future Bass for Study, Work and Gaming",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "epic"
+    ],
+    "channelId": "UCMg7TTDtUXq2yTu3uqqoprQ",
+    "channelTitle": "Epidemic Electronic"
   },
   {
     "id": "csdBVbAp4F4",
@@ -5221,7 +9102,24 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCnFzvGNpxvk40m4cTggUdQg",
+    "channelTitle": "Melodic techno room"
+  },
+  {
+    "id": "eLUFwQqXOvA",
+    "title": "Kawaii Future Bass x Glitch Hop Mix 2025 - Upbeat Future Bass & Chiptune - Music",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "morning"
+    ],
+    "channelId": "UCRVvCdaZfR0tetUoh86iy8w",
+    "channelTitle": "Kawaii Bass Radio"
   },
   {
     "id": "gQyYD6wF_9U",
@@ -5233,7 +9131,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCpEYMEafq3FsKCQXNliFY9A",
+    "channelTitle": "Arctic Empire"
   },
   {
     "id": "jB8zCEsPn_I",
@@ -5245,7 +9145,38 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCU7NovgDIyajjdY7Uci-Szw",
+    "channelTitle": "SOUND ISLAND"
+  },
+  {
+    "id": "k2CjGx_mLOg",
+    "title": "CHILLOUT Sunset Mix (Elderbrook, Lane 8, Ben Böhmer, TWO LANES) - Bois de Rose b",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 59,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCGoneC-r5rZxcK-JQdeu1yA",
+    "channelTitle": "Settow"
+  },
+  {
+    "id": "kAlIi0iN0Ek",
+    "title": "Best of Deep House 2025 | Chill Mix & Deep Feelings #24",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 66,
+    "durationClass": "long",
+    "mood": [
+      "calm",
+      "focus"
+    ],
+    "channelId": "UCPv7ouORHRrnujb7VjdPQNQ",
+    "channelTitle": "DeepChill Melody"
   },
   {
     "id": "lsduGj42ZJA",
@@ -5257,7 +9188,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCnr8XmfD3_2Hib3U0mGPWgQ",
+    "channelTitle": "YOUNA"
   },
   {
     "id": "mv0ecx5XL84",
@@ -5269,7 +9202,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UC4LjfPz9JLjLMou89AJj9uA",
+    "channelTitle": "Dee Ocean"
   },
   {
     "id": "oZMra4X9UZM",
@@ -5281,7 +9216,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCGoneC-r5rZxcK-JQdeu1yA",
+    "channelTitle": "Settow"
   },
   {
     "id": "q44dSECIIqc",
@@ -5294,7 +9231,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCAzrnNBmVGigIhvjq10Txpg",
+    "channelTitle": "Chill Guide"
   },
   {
     "id": "sYSSLt5DKd0",
@@ -5307,7 +9246,37 @@
     "mood": [
       "calm",
       "focus"
-    ]
+    ],
+    "channelId": "UCD5OrZgBmby1XCIJD3TNCEw",
+    "channelTitle": "SHKHR"
+  },
+  {
+    "id": "uLY8RctKe6s",
+    "title": "focus no vocals deep house mix vol. 2",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 124,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCU7NovgDIyajjdY7Uci-Szw",
+    "channelTitle": "SOUND ISLAND"
+  },
+  {
+    "id": "vAhArgtEK-c",
+    "title": "Deep House & Melodic Techno Journey | Outgrow Skin",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 19,
+    "durationClass": "short",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCqWMccAbaUz7B9WiFLRJ2lA",
+    "channelTitle": "ZELYONIC "
   },
   {
     "id": "vBbzPx0KajA",
@@ -5320,7 +9289,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCSeAAXCLe0iYwTHP3hMxghw",
+    "channelTitle": "Teeup Muzix"
   },
   {
     "id": "waZXH8j9Aoo",
@@ -5332,7 +9303,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCHAJM6GGM4WCEk8o8-gLtBg",
+    "channelTitle": "ELISE"
   },
   {
     "id": "xAR6N9N8e6U",
@@ -5344,7 +9317,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCwVQIkAtyZzQSA-OY1rsGig",
+    "channelTitle": "Chill Music Lab"
   },
   {
     "id": "z_7F9q7EIoI",
@@ -5354,7 +9329,9 @@
     ],
     "durationMin": 180,
     "durationClass": "long",
-    "mood": []
+    "mood": [],
+    "channelId": "UCIFh-_62PuXdMkvGhVYZZ5g",
+    "channelTitle": "Luma Beats Street"
   },
   {
     "id": "01dn67QubYQ",
@@ -5367,7 +9344,39 @@
     "mood": [
       "morning",
       "calm"
-    ]
+    ],
+    "channelId": "UCtC0kMHkUGpPvwgkASgiLGg",
+    "channelTitle": "Lofi Kitty"
+  },
+  {
+    "id": "0UeusHi0EsI",
+    "title": "【フリーBGM】まろやかいちごみるく│Creamy Strawberry Milk【Chill/かわいい/Lofi/まったり/作業用BGM】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCrkWs22tzL3lBEbZoG6STaw",
+    "channelTitle": "Pico Music"
+  },
+  {
+    "id": "0mIi_TuIxUE",
+    "title": "【フリーBGM】Chill BGMメドレー 8曲2h 【作業用/配信用】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 121,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCrvz9x7mlNDmbU_CTR1y4YQ",
+    "channelTitle": "ふぁいの音楽置き場"
   },
   {
     "id": "1BbxUcGrP2o",
@@ -5380,7 +9389,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCDeACvo4dEjDwIBoLlFSkOg",
+    "channelTitle": "Electric Sounds"
   },
   {
     "id": "1ZD_5RMuc2I",
@@ -5393,7 +9404,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqba6mC7G39MnKO6LgIduzg",
+    "channelTitle": "BGMちゃん"
   },
   {
     "id": "5YEDCmK2Fs8",
@@ -5406,7 +9419,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCOkoDtOBY-XJmNx5GeXR8VA",
+    "channelTitle": "Sound Labo: Kawaii Future Bass"
   },
   {
     "id": "5Z1jsIxg6GQ",
@@ -5419,7 +9434,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqba6mC7G39MnKO6LgIduzg",
+    "channelTitle": "BGMちゃん"
   },
   {
     "id": "5t0n-12dy_Q",
@@ -5431,7 +9448,9 @@
     "durationClass": "short",
     "mood": [
       "morning"
-    ]
+    ],
+    "channelId": "UCUREmQP3WsDWkh4a9jY0fpQ",
+    "channelTitle": "reminisze𝝑𝝔"
   },
   {
     "id": "5ujBeURILN8",
@@ -5444,7 +9463,67 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCruAJsQjkJ6k3aGeAkzgxMg",
+    "channelTitle": "iFloss Entertainment"
+  },
+  {
+    "id": "6dCO_a44874",
+    "title": "【作業用BGM】流すだけでお姫様になれる ⑅୨୧  Princess Room ୨୧⑅ [メルヘン・クラシックワルツ]",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 66,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCRAm2gMUITcD3uIO1xO6g2A",
+    "channelTitle": "おとぎ話の音楽絵本"
+  },
+  {
+    "id": "83IX3hbL-8g",
+    "title": "Study Time with Snoopy 📖 Smooth Jazz Tunes to Boosts Your Focus",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 168,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCHXsfCoSKFEIsQdkY2G-eBg",
+    "channelTitle": "Jazzip"
+  },
+  {
+    "id": "99thYkXLGLw",
+    "title": "【フリーBGM】甘くて苦い、病みかわいいダークポップ💉🤍／チル／まったり／作業用／勉強用／配信用",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "morning"
+    ],
+    "channelId": "UCC0pQ9XRAoJqqMDGPDbk9Hw",
+    "channelTitle": "Pixel Room bgm"
+  },
+  {
+    "id": "9kzE8isXlQY",
+    "title": "Less talk....  more action. / Lo-fi for study, work ( with Rain sounds)",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 206,
+    "durationClass": "long",
+    "mood": [
+      "rain",
+      "focus"
+    ],
+    "channelId": "UCiC2wfbkgr8DU5uOQFz9OrQ",
+    "channelTitle": "chill chill journal"
   },
   {
     "id": "AbcBDUUD3I0",
@@ -5457,7 +9536,24 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UClSFAsddDXuuxoTXtHXPhDg",
+    "channelTitle": "pancYe"
+  },
+  {
+    "id": "Alida5da8qI",
+    "title": "Kawaii Music Playlist & 可愛いedm 2025🎧Kawaii Future Bass🎧フューチャーベース,かわいい音楽",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UC7b0bRbGb3LpJNT2qeCJhfw",
+    "channelTitle": "9Nine Cloud"
   },
   {
     "id": "BX7z7AvTCNw",
@@ -5470,7 +9566,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCzBKXWMEPuNhbM-b1RqNbYA",
+    "channelTitle": "EnzoBeats"
   },
   {
     "id": "B_oAnD_dbWc",
@@ -5483,7 +9581,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCqzWe5wwz7ugy9ziY_Zv_lg",
+    "channelTitle": "Encrid Manhwa"
   },
   {
     "id": "DDnLhgivqJY",
@@ -5495,7 +9595,9 @@
     "durationClass": "medium",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UClGVxTpBq3-itq75ha_NFPQ",
+    "channelTitle": "hannah 🫧"
   },
   {
     "id": "ESMFVzS4Iuw",
@@ -5508,7 +9610,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCZrxHlrFE6lGo9qrG15atBg",
+    "channelTitle": "xuanlofi"
+  },
+  {
+    "id": "Ebwp279ZESs",
+    "title": "Kpop Playlist 🎧 for Studying or chilling ⋅˚₊‧ ୨୧",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 28,
+    "durationClass": "short",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCO7ieVUFVU5gE9PZ9PELa4Q",
+    "channelTitle": "Tokki"
   },
   {
     "id": "HZrSpgWBAJU",
@@ -5521,7 +9640,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCDeACvo4dEjDwIBoLlFSkOg",
+    "channelTitle": "Electric Sounds"
   },
   {
     "id": "Ie2ZeXv1QD8",
@@ -5534,7 +9655,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCOJZXix0U1fAbw60zrP7aMw",
+    "channelTitle": "MoeTunes"
   },
   {
     "id": "Jo7ViabfXWg",
@@ -5547,7 +9670,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqba6mC7G39MnKO6LgIduzg",
+    "channelTitle": "BGMちゃん"
   },
   {
     "id": "MXyspoCaQls",
@@ -5560,7 +9685,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCrvz9x7mlNDmbU_CTR1y4YQ",
+    "channelTitle": "ふぁいの音楽置き場"
+  },
+  {
+    "id": "O42wSO-FEI8",
+    "title": "【フリーBGM】Night Glow【chill/かわいい/夜/まったり/作業用/配信用】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "night",
+      "focus"
+    ],
+    "channelId": "UCrvz9x7mlNDmbU_CTR1y4YQ",
+    "channelTitle": "ふぁいの音楽置き場"
   },
   {
     "id": "RJt4UHX6zmU",
@@ -5573,7 +9715,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCNrTkArJFI4xe3BM1_zw1nQ",
+    "channelTitle": "𝘢𝘴𝘩𝘢𝘯𝘵𝘪🪽"
   },
   {
     "id": "S__LgIaleQg",
@@ -5586,7 +9730,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCnl6UlIDPw2a40aijK94imw",
+    "channelTitle": "Lofi Capy Chill "
   },
   {
     "id": "TV4O8eLc2hM",
@@ -5599,7 +9745,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCNscuHYh-CVsLqPGHTEOEDA",
+    "channelTitle": "momoo."
   },
   {
     "id": "VSlMBv-KriE",
@@ -5612,7 +9760,24 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCDeACvo4dEjDwIBoLlFSkOg",
+    "channelTitle": "Electric Sounds"
+  },
+  {
+    "id": "WQ8b87GQpqw",
+    "title": "[𝓟𝓵𝓪𝔂𝓵𝓲𝓼𝓽] 🎀 Pink Bow Spring Café ☕ Lofi Study · Soft Focus · Warm Mornings",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 150,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCNscuHYh-CVsLqPGHTEOEDA",
+    "channelTitle": "momoo."
   },
   {
     "id": "Ym0WFiHMuyw",
@@ -5625,7 +9790,23 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC7b0bRbGb3LpJNT2qeCJhfw",
+    "channelTitle": "9Nine Cloud"
+  },
+  {
+    "id": "ZbyxjGE885I",
+    "title": "Jazz at the Library 📚 1 Hour Jazz Music 📖 Library Ambience | Studying Music | Wo",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 65,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCpqsTmIa9UbOJhzKhjC716w",
+    "channelTitle": "Chill Crossing Hour"
   },
   {
     "id": "_dszbTfcFhk",
@@ -5638,7 +9819,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqW-dfyYRcjB1vfJwXK3atQ",
+    "channelTitle": "Lofi Hammy"
   },
   {
     "id": "b3KMNIowUSo",
@@ -5651,7 +9834,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC_JpMIjkHEwJNT7af6l5v3Q",
+    "channelTitle": "Otterspace Lofi"
   },
   {
     "id": "eoWMzCXBqBw",
@@ -5664,7 +9849,24 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCYuME5gmm6gDCiVdJegFyaA",
+    "channelTitle": "jelly 🪼⋆.ೃ࿔*:･"
+  },
+  {
+    "id": "epPZTCDSYaQ",
+    "title": "【フリーBGM】すとろべりーどるちぇ | Strawberry Dolce【Chill/かわいい/pop/ゆめかわ/作業用BGM】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCrkWs22tzL3lBEbZoG6STaw",
+    "channelTitle": "Pico Music"
   },
   {
     "id": "f_QxCOqKOr8",
@@ -5677,7 +9879,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UClkPQkNAav-oTakPJA6mhVA",
+    "channelTitle": "Vitamin - Daily Music"
   },
   {
     "id": "goDcxp5K6ls",
@@ -5690,7 +9894,24 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UC7b0bRbGb3LpJNT2qeCJhfw",
+    "channelTitle": "9Nine Cloud"
+  },
+  {
+    "id": "iRpOEhCQyew",
+    "title": "【フリーBGM】甘さ控えめ🤍病みかわいいBGM‪／作業用／配信用／勉強用／ダークポップ／チル",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 64,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "morning"
+    ],
+    "channelId": "UCC0pQ9XRAoJqqMDGPDbk9Hw",
+    "channelTitle": "Pixel Room bgm"
   },
   {
     "id": "kazCFe89kyo",
@@ -5703,7 +9924,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UC3knAgFadzSuletKtSW8iMw",
+    "channelTitle": "skye 🎶"
   },
   {
     "id": "mgqPA6Rbu30",
@@ -5715,7 +9938,9 @@
     "durationClass": "long",
     "mood": [
       "focus"
-    ]
+    ],
+    "channelId": "UCgkRqHBj6FrmTrIRPKJ6F2w",
+    "channelTitle": "Emma Aiko"
   },
   {
     "id": "oKs_qkGMeRQ",
@@ -5728,7 +9953,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCf2mo_halVK4qGH0JSnYwuQ",
+    "channelTitle": "Dayrin"
   },
   {
     "id": "q0ff3e-A7DY",
@@ -5741,7 +9968,38 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCZrxHlrFE6lGo9qrG15atBg",
+    "channelTitle": "xuanlofi"
+  },
+  {
+    "id": "qn8wzzWKA_4",
+    "title": "【かわいいBGM】パステルかわいいBGMメドレー 27曲【フリーBGM・作業用・勉強用】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 86,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "morning"
+    ],
+    "channelId": "UCrkWs22tzL3lBEbZoG6STaw",
+    "channelTitle": "Pico Music"
+  },
+  {
+    "id": "r6qSGz-XTR8",
+    "title": "「sugar popcorn」【フリーBGM】【かわいいBGM】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "morning"
+    ],
+    "channelId": "UCir67pOSMAaswHt5dj47KDA",
+    "channelTitle": "柊 羽音Hiiragi Hanon"
   },
   {
     "id": "sARH9hJPuHI",
@@ -5754,7 +10012,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCOkoDtOBY-XJmNx5GeXR8VA",
+    "channelTitle": "Sound Labo: Kawaii Future Bass"
   },
   {
     "id": "siGSwQF6d8g",
@@ -5767,7 +10027,24 @@
     "mood": [
       "calm",
       "morning"
-    ]
+    ],
+    "channelId": "UCtC0kMHkUGpPvwgkASgiLGg",
+    "channelTitle": "Lofi Kitty"
+  },
+  {
+    "id": "tsXGVHjy6lo",
+    "title": "白いKawaii Future Bass【1時間耐久】",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCgmg1ePUt_V7ZcgqSos-AVA",
+    "channelTitle": "TOKYO ECHO SOUNDS"
   },
   {
     "id": "uLwZxnEUeVE",
@@ -5780,7 +10057,9 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCdpN_SlX2Ulz19C7BbBbM7w",
+    "channelTitle": "Stream Cafe"
   },
   {
     "id": "urm1kR7vewM",
@@ -5793,7 +10072,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCOJZXix0U1fAbw60zrP7aMw",
+    "channelTitle": "MoeTunes"
   },
   {
     "id": "uxCxlLRNySM",
@@ -5806,7 +10087,9 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCOJZXix0U1fAbw60zrP7aMw",
+    "channelTitle": "MoeTunes"
   },
   {
     "id": "vRZ3xIt6KMI",
@@ -5819,7 +10102,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCiaRi7Qtna_m6VNm_3NJ4XA",
+    "channelTitle": "Slow life sound"
   },
   {
     "id": "vTNjirQVzkY",
@@ -5832,7 +10117,23 @@
     "mood": [
       "morning",
       "focus"
-    ]
+    ],
+    "channelId": "UCCOmF6Z485xJG0ceMYdlM_g",
+    "channelTitle": "Dreamy Meow"
+  },
+  {
+    "id": "vWLnhvaaX-U",
+    "title": "Beachside Cafe 🍹 Smooth Bossa Nova Jazz + Waves for Study and Reading | Animal C",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 122,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCnhu-ZdjM1UQX7kZ8pSrvZw",
+    "channelTitle": "Leafeey"
   },
   {
     "id": "vWjl07A3rZg",
@@ -5845,7 +10146,9 @@
     "mood": [
       "focus",
       "calm"
-    ]
+    ],
+    "channelId": "UCWLkfr_IIWDXX3cJqy_wD2Q",
+    "channelTitle": "Chill Pills Studio"
   },
   {
     "id": "vf9cQiFIu70",
@@ -5858,7 +10161,23 @@
     "mood": [
       "focus",
       "morning"
-    ]
+    ],
+    "channelId": "UCqba6mC7G39MnKO6LgIduzg",
+    "channelTitle": "BGMちゃん"
+  },
+  {
+    "id": "wZVpusDUXbk",
+    "title": "Let's focus softly - study playlist",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 240,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCiaRi7Qtna_m6VNm_3NJ4XA",
+    "channelTitle": "Slow life sound"
   },
   {
     "id": "xpS4I7o8q-Q",
@@ -5870,6 +10189,37 @@
     "durationClass": "medium",
     "mood": [
       "morning"
-    ]
+    ],
+    "channelId": "UC5svQ7spujulk9qKk3rk4eg",
+    "channelTitle": "chouxx♡"
+  },
+  {
+    "id": "xsh4_9VX9jM",
+    "title": "pov: you're speed running overdue work!! (ᵕ—ᴗ—) (energy-boost playlist)",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 203,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCYuME5gmm6gDCiVdJegFyaA",
+    "channelTitle": "jelly 🪼⋆.ೃ࿔*:･"
+  },
+  {
+    "id": "ySnBNDSUu1g",
+    "title": "🌺Kawaii EDM & Future Bass Mix 2033🌺EDM, Cute, sweet anime Music, かわいい音楽 (ﾉ◕ヮ◕)ﾉ*",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 62,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCZPdJOiwa2opOEiMxj7cvAw",
+    "channelTitle": "BubbleBeam"
   }
 ]
