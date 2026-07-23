@@ -24,7 +24,7 @@
 
 - HTML 1枚(Vanilla JS、フレームワークなし)+ songs.json(曲カタログ)
 - YouTube IFrame Player API
-- GitHub Pages でホスティング可能な完全静的構成
+- 完全静的構成。Cloudflare Pages でホスティング(公開URL: https://todaybgm.pages.dev/ 。mainへのpushで自動デプロイ。GitHub Pages等でも動作可)
 - 曲カタログ: 全10ジャンル、埋め込み許可を確認済みの動画のみ収録。再生不能を検知した曲は端末側でも自動除外
 
 ## 曲カタログの更新(scripts/update_songs.py)
@@ -80,7 +80,7 @@ python -m http.server 8000
 3. 「OAuth 同意画面」を設定(User type: 外部 / 公開ステータスは「テスト」でOK。テストユーザーに自分のGoogleアカウントを追加)。スコープに `.../auth/drive.appdata` を追加
 4. 「認証情報」→「OAuth クライアント ID」を作成(種類: **ウェブアプリケーション**)
    - **承認済みの JavaScript 生成元**に公開URLとローカルを追加:
-     `https://zuno1000.github.io` と `http://localhost:8000`
+     `https://todaybgm.pages.dev` と `http://localhost:8000`
 5. 発行された「クライアント ID」(`xxxx.apps.googleusercontent.com`)を、`index.html` の
    `const GOOGLE_CLIENT_ID = "..."` に貼り付けてコミット
 

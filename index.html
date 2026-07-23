@@ -1250,7 +1250,7 @@ function renderSongInfo(song) {
   }
   const watchUrl = `https://www.youtube.com/watch?v=${song.id}`;
   $("btn-yt").href = watchUrl;
-  const SITE = "https://zuno1000.github.io/todaybgm/";
+  const SITE = "https://todaybgm.pages.dev/";
   const shareText = `今日の作業テーマ曲:「${song.title}」\n▶ ${watchUrl}\n#作業用BGM #今日の作業テーマ曲`;
   $("btn-share").href = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(SITE)}`;
   $("btn-share").dataset.msg = `${shareText}\n${SITE}`; // Xアプリ(twitter://)用の本文
@@ -2198,7 +2198,7 @@ async function buildShareCanvas(song) {
     { t: "スキャンして聴く", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
     { t: "YouTubeでこの曲を再生", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
     { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
-    { t: "zuno1000.github.io/todaybgm", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
+    { t: "todaybgm.pages.dev", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
   ];
   // ブロックをQR右の領域で中央寄せ(右余白とのバランス改善)、文頭はインク左端で揃える
   let maxW = 0;
