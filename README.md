@@ -55,6 +55,19 @@ python -m http.server 8000
 
 ※ file:// 直接開きでも動作するが、YouTube IFrame API の挙動確認は http 経由推奨。
 
+## セルフテスト(tests/)
+
+コアロジック(レコメンド・履歴・同期マージ・探す・リセット)の常設テスト。**リリース(push)前に全実行すること。**
+
+```
+powershell -ExecutionPolicy Bypass -File tests\run.ps1
+# → RESULT: ALLPASS-63 / ALL TESTS PASSED なら合格(exit 0)
+```
+
+- 別ポート(8765)+使い捨てブラウザプロファイルで実行するため、localhost:8000 の開発データには影響しない
+- 手動で見る場合: `python -m http.server 8765` → http://localhost:8765/tests/ (結果が表形式で出る)
+- テストページは localStorage を破壊的に書き換えるため **localhost 以外では起動しないガード付き**(本番URLで開いても実行されない)
+
 ## データ(localStorage)
 
 | キー | 内容 |

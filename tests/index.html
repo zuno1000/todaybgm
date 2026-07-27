@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>todaybgm セルフテスト</title>
+<style>
+  body { font-family: "Segoe UI", "Yu Gothic UI", sans-serif; background: #E8EDF5; color: #3A4256; margin: 0; padding: 16px; }
+  h1 { font-size: 18px; }
+  h2 { font-size: 14px; margin: 18px 0 6px; }
+  #summary { font-size: 16px; font-weight: bold; padding: 10px 14px; border-radius: 10px; background: #fff; }
+  #summary.pass { color: #1a7f37; }
+  #summary.fail { color: #c62828; }
+  table { border-collapse: collapse; width: 100%; background: #fff; border-radius: 10px; font-size: 12px; }
+  td { padding: 4px 8px; border-bottom: 1px solid #E8EDF5; }
+  td.ok { color: #1a7f37; white-space: nowrap; }
+  td.ng { color: #c62828; white-space: nowrap; }
+  td.detail { color: #8A93A8; }
+  #app-frame { width: 375px; height: 700px; border: 1px solid #cdd5e3; border-radius: 10px; background: #fff; }
+  .note { font-size: 12px; color: #8A93A8; }
+</style>
+</head>
+<body>
+<h1>todaybgm セルフテスト</h1>
+<p class="note">アプリを iframe に読み込み、localStorage を仕込みながらコアロジックを検証する。
+リリース前に <code>tests\run.ps1</code> で全実行すること(手動なら <code>python -m http.server 8765</code> → このページを開く)。</p>
+<div id="summary">実行中…</div>
+<div id="results"></div>
+<h2>テスト対象アプリ(iframe)</h2>
+<iframe id="app-frame" src="about:blank"></iframe>
+
+<script>
+"use strict";
+
+/* ==== 本番データ保護ガード ====
+ * このページは localStorage を破壊的に書き換えるため、localhost 以外では絶対に実行しない。
+ * (tests/ はデプロイにも含まれるので、本番URLで開かれた場合の事故を防ぐ) */
+const ALLOWED_HOSTS = ["localhost", "127.0.0.1"];
+if (!ALLOWED_HOSTS.includes(location.hostname)) {
+  document.body.innerHTML = "<h1>このテストは localhost 専用です</h1><p>localStorage を書き換えるため、本番ドメインでは実行しません。</p>";
+  throw new Error("not localhost");
+}
+
+/* ==== テストフレームワーク(最小) ==== */
+const results = []; // {suite, name, ok, detail}
+let currentSuite = "";
+function suite(name) { currentSuite = name; }
+function check(name, cond, detail) {
+  results.push({ suite: currentSuite, name, ok: !!cond, detail: cond ? "" : String(detail || "") });
+}
+function eq(name, actual, expected) {
+  const ok = JSON.stringify(actual) === JSON.stringify(expected);
+  results.push({ suite: currentSuite, name, ok, detail: ok ? "" : `got=${JSON.stringify(actual)} want=${JSON.stringify(expected)}` });
+}
+function near(name, actual, expected, tol) {
+  const ok = typeof actual === "number" && Math.abs(actual - expected) <= (tol || 1e-9);
+  results.push({ suite: currentSuite, name, ok, detail: ok ? "" : `got=${actual} want=${expected}` });
+}
+
+function renderResults() {
+  const total = results.length, ng = results.filter(r => !r.ok).length;
+  const sum = document.getElementById("summary");
+  sum.textContent = ng === 0 ? `ALL PASS (${total}/${total})` : `FAIL ${ng}/${total}`;
+  sum.className = ng === 0 ? "pass" : "fail";
+  const box = document.getElementById("results");
+  box.innerHTML = "";
+  let last = "";
+  let table = null;
+  for (const r of results) {
+    if (r.suite !== last) {
+      last = r.suite;
+      const h = document.createElement("h2");
+      h.textContent = r.suite;
+      box.appendChild(h);
+      table = document.createElement("table");
+      box.appendChild(table);
+    }
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="${r.ok ? "ok" : "ng"}">${r.ok ? "PASS" : "FAIL"}</td><td></td><td class="detail"></td>`;
+    tr.children[1].textContent = r.name;
+    tr.children[2].textContent = r.detail;
+    table.appendChild(tr);
+  }
+}
+
+// ヘッドレス実行用: 結果をHTTPサーバのアクセスログに残す(run.ps1 がこの行をgrepする)
+function reportToServer() {
+  const total = results.length, fails = results.filter(r => !r.ok);
+  let msg;
+  if (fails.length === 0) msg = `ALLPASS-${total}`;
+  else msg = `FAIL-${fails.length}of${total}--` + fails.slice(0, 5).map(r => r.name.slice(0, 40)).join(";");
+  fetch("/__RESULT__/" + encodeURIComponent(msg)).catch(() => {});
+}
+
+/* ==== アプリ(iframe)操作ヘルパー ==== */
+const frame = document.getElementById("app-frame");
+function win() { return frame.contentWindow; }
+function doc() { return frame.contentDocument; }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// localStorage は同一オリジン共有なので、このページから直接仕込める
+function seedLS(obj) {
+  localStorage.clear();
+  for (const [k, v] of Object.entries(obj || {})) localStorage.setItem(k, JSON.stringify(v));
+}
+
+// アプリをiframeに(再)読み込みし、boot完了(songs.json取得→今日の曲描画)まで待つ
+let bootCount = 0;
+async function bootApp(seed) {
+  seedLS(seed);
+  frame.src = "/index.html?selftest=" + (++bootCount);
+  const deadline = Date.now() + 20000;
+  while (Date.now() < deadline) {
+    try {
+      const d = doc();
+      const title = d && d.getElementById("song-title");
+      // renderSong が曲名を入れたら boot 完了(bgm_daily も書かれている)
+      if (title && title.textContent.trim() && localStorage.getItem("bgm_daily")) return;
+      if (title && title.textContent.includes("読み込めませんでした")) throw new Error("songs.json load failed");
+    } catch (e) { if (String(e).includes("songs.json")) throw e; }
+    await sleep(100);
+  }
+  throw new Error("boot timeout");
+}
+
+/* ==== テスト本体 ==== */
+async function main() {
+  const songsRes = await fetch("/songs.json", { cache: "no-cache" });
+  const CATALOG = await songsRes.json();
+  const byGenre = g => CATALOG.filter(s => s.genres.includes(g));
+  const pianoSong = byGenre("piano")[0];
+  const edmSong = byGenre("edm")[0];
+  const [songA, songB] = CATALOG.slice(0, 2);
+  const NOW_ISO = new Date().toISOString();
+
+  /* ---- Suite 1: 起動・カタログ健全性 ---- */
+  suite("1. 起動・カタログ健全性");
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } });
+  const w = win();
+  check("今日の曲が描画される(#song-titleが非空)", doc().getElementById("song-title").textContent.trim().length > 0);
+  const daily1 = JSON.parse(localStorage.getItem("bgm_daily"));
+  check("bgm_daily が今日の日付で保存される", daily1 && daily1.date === w.todayStr(), JSON.stringify(daily1));
+  check("選ばれた曲がカタログ内に存在する", CATALOG.some(s => s.id === daily1.currentId), daily1.currentId);
+  check("設定済みならセットアップ通知が非表示", doc().getElementById("setup-notice").style.display === "none");
+  const plays1 = JSON.parse(localStorage.getItem("bgm_plays") || "{}");
+  check("提示された曲が bgm_plays の first に記録される(recordShown)",
+    plays1[w.todayStr()] && plays1[w.todayStr()].first === daily1.currentId);
+  const recent1 = JSON.parse(localStorage.getItem("bgm_recent") || "{}");
+  check("提示された曲が bgm_recent(3日減衰用)に記録される",
+    (recent1[w.todayStr()] || []).includes(daily1.currentId));
+  check("decideToday(false) は同じ曲を返す(1日1曲の安定性)", w.decideToday(false).id === daily1.currentId);
+  const knownGenres = new Set(["nature","game","japanese","synthwave","classical","lofi","fantasy","celtic","jazz","kawaii","piano","edm"]);
+  const badSongs = CATALOG.filter(s => !s.id || !s.title || !Array.isArray(s.genres) || !s.genres.length ||
+    !["short","medium","long"].includes(s.durationClass) || !s.genres.every(g => knownGenres.has(g)));
+  check(`カタログ全${CATALOG.length}曲に id/title/genres/durationClass が揃い既知ジャンルのみ`, badSongs.length === 0,
+    badSongs.slice(0, 3).map(s => s.id).join(","));
+
+  /* ---- Suite 2: レコメンドロジック ---- */
+  suite("2. レコメンドロジック");
+  near("genreMatch: 全タグ一致=1.0", w.genreMatch({ genres: ["piano"] }, ["piano"]), 1.0);
+  near("genreMatch: 部分一致=hit/タグ数", w.genreMatch({ genres: ["piano", "jazz"] }, ["piano"]), 0.5);
+  near("genreMatch: 選択なし=0", w.genreMatch({ genres: ["piano"] }, []), 0);
+  near("durationMatch: 同クラス=1", w.durationMatch({ durationClass: "short" }, "short"), 1);
+  near("durationMatch: 隣接クラス=0.5", w.durationMatch({ durationClass: "short" }, "medium"), 0.5);
+  near("durationMatch: 2段差=0", w.durationMatch({ durationClass: "short" }, "long"), 0);
+  near("durationMatch: こだわらない=1", w.durationMatch({ durationClass: "short" }, "any"), 1);
+  eq("timeSlotMood: 朝5-11/昼11-17", [w.timeSlotMood(5), w.timeSlotMood(10), w.timeSlotMood(11), w.timeSlotMood(16)],
+    ["morning", "morning", "focus", "focus"]);
+  eq("timeSlotMood: 夕17-22/夜22-5", [w.timeSlotMood(17), w.timeSlotMood(21), w.timeSlotMood(22), w.timeSlotMood(4)],
+    ["calm", "calm", "night", "night"]);
+  const table5 = w.buildAffinityTable({ [pianoSong.id]: { rating: 5, ratedAt: NOW_ISO } });
+  check("buildAffinityTable: ★5でそのジャンルが正", table5["piano"] > 0, JSON.stringify(table5));
+  const table1 = w.buildAffinityTable({ [pianoSong.id]: { rating: 1, ratedAt: NOW_ISO } });
+  check("buildAffinityTable: ★1でそのジャンルが負", table1["piano"] < 0, JSON.stringify(table1));
+  check("buildAffinityTable: ★3は影響しない",
+    Object.keys(w.buildAffinityTable({ [pianoSong.id]: { rating: 3, ratedAt: NOW_ISO } })).length === 0);
+  near("ratingAffinity: タグ平均", w.ratingAffinity({ genres: ["piano"], mood: ["calm"] }, { piano: 1, calm: 0.5 }), 0.75);
+  // pickSong: 候補をA/Bの2曲に絞り、Bを★1にする → 必ずAが返る
+  const deadAllButAB = CATALOG.map(s => s.id).filter(id => id !== songA.id && id !== songB.id);
+  seedLS({ bgm_dead: deadAllButAB, bgm_ratings: { [songB.id]: { rating: 1, ratedAt: NOW_ISO } } });
+  check("pickSong: 再生不能(dead)と★1〜2は候補から除外", w.pickSong([]).id === songA.id);
+  // 全滅時の緩和: 唯一の候補Aが★1でも、低評価除外を緩和してAを返す
+  seedLS({ bgm_dead: CATALOG.map(s => s.id).filter(id => id !== songA.id),
+           bgm_ratings: { [songA.id]: { rating: 1, ratedAt: NOW_ISO } } });
+  check("pickSong: 候補全滅時は低評価除外を緩和して必ず返す", w.pickSong([]).id === songA.id);
+  seedLS({});
+  eq("todayMode: 未設定なら既定(1日1曲/3時間)", w.todayMode(), { mode: "daily", hours: 3 });
+  seedLS({ bgm_todaymode: { mode: "bogus", hours: 99 } });
+  eq("todayMode: 不正値は既定へフォールバック", w.todayMode(), { mode: "daily", hours: 3 });
+  seedLS({ bgm_todaymode: { mode: "interval", hours: 1 },
+           bgm_daily: { date: w.todayStr(), shownIds: [songA.id], currentId: songA.id, pickedAt: Date.now() - 2 * 3600 * 1000 } });
+  check("todayIntervalElapsed: 指定時間経過でtrue", w.todayIntervalElapsed() === true);
+  seedLS({ bgm_todaymode: { mode: "interval", hours: 1 },
+           bgm_daily: { date: w.todayStr(), shownIds: [songA.id], currentId: songA.id, pickedAt: Date.now() } });
+  check("todayIntervalElapsed: 未経過ならfalse", w.todayIntervalElapsed() === false);
+  seedLS({ bgm_todaymode: { mode: "last", hours: 3 },
+           bgm_daily: { date: "2000-01-01", shownIds: [songA.id], currentId: songA.id, pickedAt: 1 } });
+  const dLast = w.getDaily();
+  check("getDaily: 「前回の曲」モードは日付が変わっても曲を引き継ぐ",
+    dLast.date === w.todayStr() && dLast.currentId === songA.id, JSON.stringify(dLast));
+  seedLS({ bgm_daily: { date: "2000-01-01", shownIds: [songA.id], currentId: songA.id } });
+  const dNew = w.getDaily();
+  check("getDaily: 「1日1曲」モードは日付が変わると新規(currentId=null)",
+    dNew.date === w.todayStr() && dNew.currentId === null, JSON.stringify(dNew));
+
+  /* ---- Suite 3: 履歴・カタログ外曲 ---- */
+  suite("3. 履歴・カタログ外曲");
+  const EXT_ID = "zz_test_ext_1";
+  seedLS({ bgm_songmeta: { [EXT_ID]: { t: "テスト用カタログ外曲", g: "piano" } } });
+  const ext = w.externalSong(EXT_ID);
+  check("externalSong: メタありは タイトル/ジャンル を復元", ext.title === "テスト用カタログ外曲" && ext.genres[0] === "piano" && ext.metaKnown);
+  const ext2 = w.externalSong("zz_no_meta");
+  check("externalSong: メタなしは「カタログ外の曲」", ext2.title === "カタログ外の曲" && !ext2.metaKnown);
+  seedLS({});
+  w.saveSongMeta(pianoSong);
+  const meta1 = JSON.parse(localStorage.getItem("bgm_songmeta"));
+  check("saveSongMeta: タイトルと第1ジャンルを控える",
+    meta1[pianoSong.id] && meta1[pianoSong.id].t === pianoSong.title && meta1[pianoSong.id].g === pianoSong.genres[0]);
+  seedLS({ bgm_songmeta: { zz_unused: { t: "x", g: "y" } },
+           bgm_ratings: { [songA.id]: { rating: 5, ratedAt: NOW_ISO } }, bgm_plays: {} });
+  w.backfillSongMeta();
+  const meta2 = JSON.parse(localStorage.getItem("bgm_songmeta"));
+  check("backfillSongMeta: 在籍曲のメタを補完し、未参照メタを掃除",
+    meta2[songA.id] && meta2[songA.id].t === songA.title && !meta2["zz_unused"], JSON.stringify(meta2));
+  seedLS({ bgm_ratings: { [songA.id]: { rating: 4, ratedAt: "2026-07-20T12:00:00.000Z" } } });
+  localStorage.removeItem("bgm_plays");
+  w.migratePlaysFromRatings();
+  const mig = JSON.parse(localStorage.getItem("bgm_plays") || "{}");
+  const migDay = Object.keys(mig)[0];
+  check("migratePlaysFromRatings: 履歴なしなら評価から復元",
+    migDay && mig[migDay].first === songA.id && mig[migDay].plays.includes(songA.id), JSON.stringify(mig));
+  seedLS({ bgm_plays: {}, bgm_ratings: { [songA.id]: { rating: 4, ratedAt: NOW_ISO } } });
+  w.migratePlaysFromRatings();
+  eq("migratePlaysFromRatings: 既に履歴キーがあれば何もしない(リセット後の再移行防止)",
+    JSON.parse(localStorage.getItem("bgm_plays")), {});
+  // カレンダー描画: 今日=first未再生+別曲再生、別日=カタログ外曲
+  const today = w.todayStr();
+  const ym = today.slice(0, 7);
+  const otherDay = today.endsWith("-01") ? `${ym}-02` : `${ym}-01`;
+  seedLS({
+    bgm_plays: {
+      [today]: { first: songA.id, plays: [songB.id] },
+      [otherDay]: { first: EXT_ID, plays: [EXT_ID] },
+    },
+    bgm_songmeta: { [EXT_ID]: { t: "テスト用カタログ外曲", g: "piano" } },
+  });
+  w.renderCalendar();
+  const calTitle = doc().getElementById("cal-title").textContent;
+  const wantTitle = `${Number(today.slice(0, 4))}年${Number(today.slice(5, 7))}月`;
+  check("renderCalendar: 今月のタイトルを表示", calTitle === wantTitle, calTitle);
+  const thumbCells = doc().querySelectorAll("#cal-grid .cal-cell.has-thumb").length;
+  check("renderCalendar: 履歴のある2日にサムネセル", thumbCells === 2, `has-thumb=${thumbCells}`);
+  w.renderDayDetail(today);
+  const rowsToday = [...doc().querySelectorAll("#day-list .hist-item")];
+  check("renderDayDetail: 再生曲+first未再生の「未再生」行が出る",
+    rowsToday.length === 2 && rowsToday.some(li => li.textContent.includes("未再生")),
+    `rows=${rowsToday.length}`);
+  w.renderDayDetail(otherDay);
+  const rowsOther = [...doc().querySelectorAll("#day-list .hist-item")];
+  check("renderDayDetail: カタログ外曲がメタのタイトルとジャンルで表示",
+    rowsOther.length === 1 && rowsOther[0].textContent.includes("テスト用カタログ外曲") && rowsOther[0].textContent.includes("ピアノ"),
+    rowsOther.map(li => li.textContent).join("/"));
+
+  /* ---- Suite 4: 同期マージ(非破壊マージ+トンボストーン) ---- */
+  suite("4. 同期マージ");
+  const R = (rating, iso) => ({ rating, ratedAt: iso });
+  const mNull = w.mergeData({ updatedAt: 5, bgm_ratings: { a: R(5, "2026-01-02T00:00:00Z") } }, null);
+  check("リモートなし: ローカル+v:1 をそのまま返す", mNull.v === 1 && mNull.bgm_ratings.a.rating === 5);
+  const mNewR = w.mergeData(
+    { updatedAt: 0, bgm_ratings: { a: R(2, "2026-01-01T00:00:00Z") } },
+    { updatedAt: 0, bgm_ratings: { a: R(5, "2026-01-02T00:00:00Z") } });
+  check("評価: ratedAtが新しい方が勝つ(リモート新)", mNewR.bgm_ratings.a.rating === 5);
+  const mNewL = w.mergeData(
+    { updatedAt: 0, bgm_ratings: { a: R(4, "2026-01-03T00:00:00Z") } },
+    { updatedAt: 0, bgm_ratings: { a: R(1, "2026-01-02T00:00:00Z") } });
+  check("評価: ratedAtが新しい方が勝つ(ローカル新)", mNewL.bgm_ratings.a.rating === 4);
+  const resetT = new Date("2026-06-01T00:00:00Z").getTime();
+  const mReset = w.mergeData(
+    { updatedAt: 0, ratingsResetAt: resetT, bgm_ratings: {} },
+    { updatedAt: 0, bgm_ratings: { old: R(5, "2026-01-01T00:00:00Z"), fresh: R(4, "2026-07-01T00:00:00Z") } });
+  check("評価: ratingsResetAt以前のリモート評価は復活しない(以後の評価は残る)",
+    !mReset.bgm_ratings.old && mReset.bgm_ratings.fresh && mReset.ratingsResetAt === resetT,
+    JSON.stringify(mReset.bgm_ratings));
+  const mPlays = w.mergeData(
+    { updatedAt: 0, bgm_plays: { "2026-07-01": { first: null, plays: ["a"] } } },
+    { updatedAt: 0, bgm_plays: { "2026-07-01": { first: "b", plays: ["c"] }, "2026-07-02": { first: "d", plays: ["d"] } } });
+  check("履歴: 日別に和集合マージ+firstを補完",
+    mPlays.bgm_plays["2026-07-01"].first === "b" &&
+    JSON.stringify(mPlays.bgm_plays["2026-07-01"].plays.slice().sort()) === JSON.stringify(["a", "c"]) &&
+    mPlays.bgm_plays["2026-07-02"].first === "d",
+    JSON.stringify(mPlays.bgm_plays));
+  const mPReset = w.mergeData(
+    { updatedAt: 0, playsResetAt: new Date("2026-07-02T00:00:00").getTime(), bgm_plays: {} },
+    { updatedAt: 0, bgm_plays: { "2026-07-01": { first: "a", plays: ["a"] }, "2026-07-03": { first: "b", plays: ["b"] } } });
+  check("履歴: playsResetAtより前の日は復活しない(以後の日は残る)",
+    !mPReset.bgm_plays["2026-07-01"] && mPReset.bgm_plays["2026-07-03"],
+    JSON.stringify(mPReset.bgm_plays));
+  const mDead = w.mergeData({ updatedAt: 0, bgm_dead: ["x"] }, { updatedAt: 0, bgm_dead: ["x", "y"] });
+  eq("除外リスト(dead): 和集合", mDead.bgm_dead.slice().sort(), ["x", "y"]);
+  const setL = { genres: ["piano"], duration: "any" }, setR = { genres: ["edm"], duration: "short" };
+  const mSetR = w.mergeData({ updatedAt: 1, bgm_settings: setL }, { updatedAt: 2, bgm_settings: setR });
+  const mSetL = w.mergeData({ updatedAt: 3, bgm_settings: setL }, { updatedAt: 2, bgm_settings: setR });
+  check("設定: updatedAtが新しい側が勝つ(両方向)",
+    mSetR.bgm_settings.genres[0] === "edm" && mSetL.bgm_settings.genres[0] === "piano" && mSetR.updatedAt === 2 && mSetL.updatedAt === 3);
+  const mFwd = w.mergeData({ updatedAt: 0 }, { updatedAt: 0, bgm_future_key: { x: 1 } });
+  check("前方互換: 未知キーを保持する", mFwd.bgm_future_key && mFwd.bgm_future_key.x === 1);
+  localStorage.removeItem("bgm_ratings");
+  w.applyData({ bgm_ratings: "garbage", bgm_dead: "not-array", bgm_playmode: 123 });
+  check("applyData: 不正な型は書き込まない(壊れたリモートJSON対策)",
+    localStorage.getItem("bgm_ratings") === null && localStorage.getItem("bgm_dead") === null && localStorage.getItem("bgm_playmode") === null);
+  w.applyData({ bgm_ratings: { a: R(5, NOW_ISO) }, bgm_dead: ["x"], bgm_playmode: "repeat" });
+  check("applyData: 正しい型は書き込まれる",
+    JSON.parse(localStorage.getItem("bgm_ratings")).a.rating === 5 &&
+    JSON.parse(localStorage.getItem("bgm_dead"))[0] === "x" &&
+    JSON.parse(localStorage.getItem("bgm_playmode")) === "repeat");
+  seedLS({ bgm_ratings: { a: R(4, NOW_ISO) } });
+  w.setSyncMeta({ updatedAt: 123, ratingsResetAt: 7 });
+  const col = w.collectLocal();
+  check("collectLocal: 同期メタ(updatedAt/resetAt)とデータを収集",
+    col.updatedAt === 123 && col.ratingsResetAt === 7 && col.bgm_ratings.a.rating === 4, JSON.stringify(col));
+
+  /* ---- Suite 5: 探す(検索スコアリング) ---- */
+  suite("5. 探す(検索スコアリング)");
+  const pos = new Set(["edm"]), neg = new Set(["piano"]);
+  eq("axisMembership: 正極+1/負極-1/中立0",
+    [w.axisMembership("edm", pos, neg), w.axisMembership("piano", pos, neg), w.axisMembership("jazz", pos, neg)], [1, -1, 0]);
+  const wM = w.searchMoodWeights(-0.6), wN = w.searchMoodWeights(0.8), wZ = w.searchMoodWeights(0);
+  check("searchMoodWeights: 負=朝/正=夜/0=なし",
+    Math.abs(wM.morning - 0.6) < 1e-9 && wM.night === 0 && Math.abs(wN.night - 0.8) < 1e-9 && wZ.morning === 0 && wZ.night === 0);
+  near("searchMoodScore: 該当ムードの重みを合算",
+    w.searchMoodScore({ mood: ["morning", "rain"] }, { morning: 0.5, rain: 0.3 }), 0.8);
+  const critBase = { genres: [], time: 0, acoustic: 0, tempo: 0, rain: false, duration: "any" };
+  if (edmSong) {
+    seedLS({});
+    const gPick = w.pickSearchSong(Object.assign({}, critBase, { genres: ["edm"] }), []);
+    check("pickSearchSong: ジャンル指定はそのジャンルに絞る", gPick && gPick.genres.includes("edm"), gPick && gPick.id);
+  } else {
+    check("pickSearchSong: ジャンル指定はそのジャンルに絞る(edm曲なしでスキップ)", false, "カタログにedm曲がない");
+  }
+  seedLS({});
+  const onlyPick = w.pickSearchSong(critBase, CATALOG.map(s => s.id).filter(id => id !== songA.id));
+  check("pickSearchSong: excludeIdsで残り1曲ならその曲", onlyPick && onlyPick.id === songA.id, onlyPick && onlyPick.id);
+  seedLS({ bgm_dead: [songA.id] });
+  const deadPick = w.pickSearchSong(critBase, CATALOG.map(s => s.id).filter(id => id !== songA.id && id !== songB.id));
+  check("pickSearchSong: 再生不能(dead)を除外", deadPick && deadPick.id === songB.id, deadPick && deadPick.id);
+
+  /* ---- Suite 6: リセットとトンボストーン(破壊的なので最後) ---- */
+  suite("6. リセットとトンボストーン");
+  w.confirm = () => true; // 確認ダイアログを自動許可
+  seedLS({ bgm_ratings: { [songA.id]: R(5, NOW_ISO) }, bgm_plays: { [today]: { first: songA.id, plays: [songA.id] } } });
+  w.resetTaste();
+  const syncM1 = JSON.parse(localStorage.getItem("bgm_sync"));
+  check("resetTaste: 評価を消去し ratingsResetAt を記録(履歴は残す)",
+    localStorage.getItem("bgm_ratings") === null && syncM1.ratingsResetAt > 0 &&
+    JSON.parse(localStorage.getItem("bgm_plays"))[today].first === songA.id);
+  const mAfterReset = w.mergeData(w.collectLocal(), { updatedAt: 0, bgm_ratings: { [songA.id]: R(5, "2020-01-01T00:00:00Z") } });
+  eq("resetTaste後のマージ: 古いリモート評価が復活しない", mAfterReset.bgm_ratings, {});
+  w.resetHistory();
+  const syncM2 = JSON.parse(localStorage.getItem("bgm_sync"));
+  eq("resetHistory: 履歴を空オブジェクトにして playsResetAt を記録",
+    [JSON.parse(localStorage.getItem("bgm_plays")), syncM2.playsResetAt > 0], [{}, true]);
+  seedLS({ bgm_settings: { genres: ["piano"], duration: "any" },
+           bgm_ratings: { [songA.id]: R(5, NOW_ISO) },
+           bgm_plays: { "2020-01-01": { first: songA.id, plays: [songA.id] } } });
+  w.resetAll();
+  await sleep(300); // init(true) の再描画を待つ
+  const syncM3 = JSON.parse(localStorage.getItem("bgm_sync"));
+  const playsAfter = JSON.parse(localStorage.getItem("bgm_plays") || "{}");
+  check("resetAll: 設定・評価を消去し、両トンボストーンを記録",
+    localStorage.getItem("bgm_settings") === null && localStorage.getItem("bgm_ratings") === null &&
+    syncM3.ratingsResetAt > 0 && syncM3.playsResetAt > 0);
+  check("resetAll: 過去履歴は消え、今日の曲は選び直される",
+    !playsAfter["2020-01-01"] && !!JSON.parse(localStorage.getItem("bgm_daily")).currentId,
+    JSON.stringify(Object.keys(playsAfter)));
+  check("resetAll: セットアップ通知が再表示される", doc().getElementById("setup-notice").style.display !== "none");
+}
+
+/* ==== 実行 ==== */
+(async () => {
+  const watchdog = setTimeout(() => {
+    results.push({ suite: "実行", name: "タイムアウト(60秒以内に完了しない)", ok: false, detail: "" });
+    renderResults(); reportToServer();
+  }, 60000);
+  try {
+    await main();
+  } catch (e) {
+    results.push({ suite: "実行", name: "テスト実行中の例外", ok: false, detail: String(e && e.stack || e) });
+  }
+  clearTimeout(watchdog);
+  renderResults();
+  reportToServer();
+})();
+</script>
+</body>
+</html>
