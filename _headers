@@ -1,0 +1,12 @@
+# Cloudflare Pages カスタムヘッダ
+# CSPはまず Report-Only(ブロックせず違反をコンソール報告のみ)で観察し、
+# 違反ゼロを確認してから Content-Security-Policy に切り替えて強制化する。
+# 許可リストの根拠: YouTube埋め込み(www.youtube.com/i.ytimg.com)、
+# Google Fonts(fonts.googleapis.com/fonts.gstatic.com)、
+# 同期=GIS+Drive API(accounts.google.com/www.googleapis.com)、
+# 単一HTML構成のためインラインscript/styleは 'unsafe-inline' が必要。
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://accounts.google.com; frame-src https://www.youtube.com https://accounts.google.com; img-src 'self' data: blob: https://i.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://www.googleapis.com https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
