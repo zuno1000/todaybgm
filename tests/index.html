@@ -398,6 +398,17 @@ async function main() {
     en.style.display !== "none" && en.textContent.includes("動画プレイヤー") &&
     doc().getElementById("thumb").style.display === "");
   en.style.display = "none";
+  // 擬似全画面の初回ヒント(動画のみの全画面は⛶ボタンへ誘導): 一度だけ表示される
+  seedLS({});
+  w.setPseudoFullscreen(true);
+  const hint1 = doc().getElementById("fs-hint");
+  check("擬似全画面の初回ヒント: 表示され bgm_fshint が記録される",
+    !!hint1 && hint1.textContent.includes("全画面ボタン") && JSON.parse(localStorage.getItem("bgm_fshint")) === true);
+  w.setPseudoFullscreen(false);
+  if (hint1) hint1.remove();
+  w.setPseudoFullscreen(true);
+  check("擬似全画面の初回ヒント: 2回目以降は表示されない", !doc().getElementById("fs-hint"));
+  w.setPseudoFullscreen(false);
 }
 
 /* ==== 実行 ==== */
