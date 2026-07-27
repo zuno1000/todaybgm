@@ -1568,7 +1568,9 @@ function showFsHintOnce() {
   fsHintTimer = setTimeout(() => { hint.classList.remove("show"); setTimeout(() => hint.remove(), 400); }, 7000);
 }
 function syncFullscreenToOrientation() {
-  const wantFs = isMobileLike() && isLandscape() && isPlayingNow();
+  // 再生中だけでなく一時停止中(=再生開始済み playerStarted)も対象にする。
+  // 停止中に横向きへ回すと全画面にならず、中途半端なレイアウトが見えるため(iOS実機FB)
+  const wantFs = isMobileLike() && isLandscape() && (playerStarted || isPlayingNow());
   setPseudoFullscreen(wantFs);          // iOS/Android共通の主機構
   if (wantFs) {
     // Android等ではネイティブ全画面も試す(ユーザー操作起点なら成功、回転起点なら握り潰し)
