@@ -9,7 +9,8 @@
 
 param(
   [int]$Port = 8765,
-  [int]$TimeoutSec = 90
+  [int]$TimeoutSec = 90,
+  [string]$BrowserPath = ""   # optional: run in a specific Chromium browser (e.g. chrome.exe)
 )
 
 $root = Split-Path -Parent $PSScriptRoot
@@ -17,11 +18,16 @@ $log = Join-Path $env:TEMP "todaybgm-selftest-server.log"
 $profileDir = Join-Path $env:TEMP "todaybgm-selftest-profile"
 $testUrl = "http://127.0.0.1:$Port/tests/"
 
-$edge = @(
-  "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-  "C:\Program Files\Microsoft\Edge\Application\msedge.exe"
-) | Where-Object { Test-Path $_ } | Select-Object -First 1
-if (-not $edge) { Write-Output "ERROR: msedge.exe not found"; exit 2 }
+if (-not $BrowserPath) {
+  $BrowserPath = @(
+    "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+    "C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    "C:\Program Files\Google\Chrome\Application\chrome.exe",
+    "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+  ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+}
+if (-not $BrowserPath -or -not (Test-Path $BrowserPath)) { Write-Output "ERROR: no Chromium browser found (use -BrowserPath)"; exit 2 }
+Write-Output "BROWSER: $BrowserPath"
 
 if (Test-Path $log) { Remove-Item $log -Force }
 if (Test-Path $profileDir) { try { Remove-Item $profileDir -Recurse -Force -ErrorAction Stop } catch {} }
@@ -47,8 +53,8 @@ try {
     exit 2
   }
 
-  $browserArgs = @("--headless=new", "--disable-gpu", "--user-data-dir=$profileDir", $testUrl)
-  $browser = Start-Process -FilePath $edge -ArgumentList $browserArgs -PassThru
+  $browserArgs = @("--headless=new", "--disable-gpu", "--user-data-dir=$profileDir", "--no-first-run", $testUrl)
+  $browser = Start-Process -FilePath $BrowserPath -ArgumentList $browserArgs -PassThru
 
   # The test page reports its verdict by fetching /__RESULT__/<encoded summary>;
   # that request line lands in the http.server access log. Poll for it.
