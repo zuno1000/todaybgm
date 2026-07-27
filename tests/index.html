@@ -374,6 +374,30 @@ async function main() {
     !playsAfter["2020-01-01"] && !!JSON.parse(localStorage.getItem("bgm_daily")).currentId,
     JSON.stringify(Object.keys(playsAfter)));
   check("resetAll: セットアップ通知が再表示される", doc().getElementById("setup-notice").style.display !== "none");
+
+  /* ---- Suite 7: エッジケース(2026-07-27総点検で追加) ---- */
+  suite("7. エッジケース");
+  // 日付跨ぎ: タブを開いたままでも定期チェック(60秒間隔)で今日の曲が選び直される
+  seedLS({ bgm_daily: { date: "2000-01-01", shownIds: ["zz_old"], currentId: "zz_old" } });
+  w.refreshTodayIfNeeded(false);
+  const dRoll = JSON.parse(localStorage.getItem("bgm_daily"));
+  check("日付跨ぎ: 定期チェックで今日の曲を選び直す", dRoll && dRoll.date === w.todayStr() && !!dRoll.currentId, JSON.stringify(dRoll));
+  // 「開くたび」モードは定期チェックでは発動しない(タブを見ている最中に毎分曲が替わるのを防ぐ)
+  seedLS({ bgm_todaymode: { mode: "always", hours: 3 },
+           bgm_daily: { date: w.todayStr(), shownIds: [songA.id], currentId: songA.id, pickedAt: Date.now() } });
+  w.refreshTodayIfNeeded(false);
+  check("「開くたび」: 定期チェックでは選び直さない",
+    JSON.parse(localStorage.getItem("bgm_daily")).currentId === songA.id);
+  w.refreshTodayIfNeeded(true);
+  check("「開くたび」: バックグラウンド復帰では選び直す",
+    JSON.parse(localStorage.getItem("bgm_daily")).currentId !== songA.id);
+  // YT IFrame API読込失敗時: 案内を出して表示を再生前に戻す(幽霊再生履歴を残さない)
+  w.playbackUnavailable();
+  const en = doc().getElementById("error-notice");
+  check("YT API失敗: 案内表示+再生前の表示に戻す",
+    en.style.display !== "none" && en.textContent.includes("動画プレイヤー") &&
+    doc().getElementById("thumb").style.display === "");
+  en.style.display = "none";
 }
 
 /* ==== 実行 ==== */

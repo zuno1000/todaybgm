@@ -898,13 +898,34 @@ const LS = {
   PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
   TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
 };
+// localStorage が使えない環境(プライベートモード・サイトデータブロック・一部WebView)では
+// プロパティアクセス自体が例外になることがあるため、メモリ上のフォールバックへ切り替えて
+// アプリ自体は動かし続ける(保存はタブ限り。boot時に注意書きを出す)
+let storagePersistent = true;
+const store = (() => {
+  try {
+    const k = "__bgm_probe__";
+    localStorage.setItem(k, "1");
+    localStorage.removeItem(k);
+    return localStorage;
+  } catch (e) {
+    storagePersistent = false;
+    const mem = {};
+    return {
+      getItem: k => (k in mem ? mem[k] : null),
+      setItem: (k, v) => { mem[k] = String(v); },
+      removeItem: k => { delete mem[k]; },
+    };
+  }
+})();
 function load(key, fallback) {
   try {
-    const v = localStorage.getItem(key);
+    const v = store.getItem(key);
     return v ? JSON.parse(v) : fallback;
   } catch (e) { return fallback; }
 }
-function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+// 書込失敗(容量超過等)でタップ操作ごと壊れないよう、saveは失敗を握りつぶす
+function save(key, val) { try { store.setItem(key, JSON.stringify(val)); } catch (e) {} }
 
 function todayStr() {
   const d = new Date();
@@ -1000,7 +1021,7 @@ function externalSong(id) {
 }
 // 旧ユーザー向け: 評価履歴(bgm_ratings)から日別履歴を1度だけ復元する
 function migratePlaysFromRatings() {
-  if (localStorage.getItem(LS.PLAYS) != null) return; // 既に履歴があれば何もしない
+  if (store.getItem(LS.PLAYS) != null) return; // 既に履歴があれば何もしない
   const ratings = load(LS.RATINGS, {});
   const h = {};
   for (const [id, r] of Object.entries(ratings)) {
@@ -1337,12 +1358,15 @@ let playerStarted = false;
 /* ---- YouTube IFrame Player API ---- */
 let ytApiPromise = null; // 同時に複数箇所からawaitされてもコールバックを共有する
 function loadYtApi() {
-  if (window.YT && window.YT.Player) return Promise.resolve();
+  if (window.YT && window.YT.Player) return Promise.resolve(true);
   if (!ytApiPromise) {
     ytApiPromise = new Promise(resolve => {
-      window.onYouTubeIframeAPIReady = () => resolve();
+      window.onYouTubeIframeAPIReady = () => resolve(true);
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
+      // 読み込み失敗(オフライン・ブロッカー)は「失敗」として解決し、
+      // ytApiPromiseを空に戻して次回の再生操作で再試行できるようにする
+      tag.onerror = () => { ytApiPromise = null; tag.remove(); resolve(false); };
       document.head.appendChild(tag);
     });
   }
@@ -1379,9 +1403,24 @@ function createPlayerFor(song) {
 }
 
 async function preparePlayer(song) {
-  await loadYtApi();
+  const ok = await loadYtApi();
+  if (!ok) return; // 読み込めない環境では先読みを諦める(再生時に再試行される)
   if (currentSong !== song || player) return; // 曲が替わった/生成済みなら中止
   createPlayerFor(song);
+}
+
+// YT IFrame APIが読み込めなかった(オフライン等)場合: 表示を再生前に戻して案内を出す。
+// 4秒フォールバックも取り消し、再生していないのに再生履歴が付くのを防ぐ
+function playbackUnavailable() {
+  playWhenReady = false;
+  if (ratingFallbackTimer) { clearTimeout(ratingFallbackTimer); ratingFallbackTimer = null; }
+  setPlayButton("idle");
+  $("thumb-wrap").classList.remove("playing");
+  $("thumb").style.display = "";
+  const n = $("error-notice");
+  n.textContent = "動画プレイヤーを読み込めませんでした。通信状況を確認して、もう一度再生ボタンを押してください。";
+  n.style.display = "";
+  setTimeout(() => { n.style.display = "none"; }, 10000);
 }
 
 async function playCurrent() {
@@ -1396,8 +1435,9 @@ async function playCurrent() {
   if (player && playerReady) { player.playVideo(); return; } // 通常経路: 同期再生
   playWhenReady = true; // 準備が済み次第すぐ再生
   if (!player) {
-    await loadYtApi();
+    const ok = await loadYtApi();
     if (currentSong !== song) return;
+    if (!ok) { playbackUnavailable(); return; }
     if (!player) createPlayerFor(song);
   }
 }
@@ -2472,7 +2512,7 @@ function showExploreCandidate(song) {
  * 同期ペイロードに載せ、マージ時にそれ以前のデータを捨てることで両立する。 */
 function resetTaste() {
   if (!confirm("「好み」(★評価から学習したおすすめの傾向)をリセットします。再生履歴(カレンダー)はそのまま残ります。よろしいですか?")) return;
-  localStorage.removeItem(LS.RATINGS);
+  store.removeItem(LS.RATINGS);
   setSyncMeta({ ratingsResetAt: Date.now() });
   scheduleAutoSync();
   renderTaste();
@@ -2488,7 +2528,7 @@ function resetHistory() {
 }
 function resetAll() {
   if (!confirm("設定・評価・再生履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => localStorage.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => store.removeItem(k));
   // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴が復活しないように)
   save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now() });
   cachedToken = null; tokenExpiry = 0;
@@ -2593,7 +2633,7 @@ async function driveSave(token, id, content) {
 function collectLocal() {
   const meta = syncMeta();
   const o = { updatedAt: meta.updatedAt || 0, ratingsResetAt: meta.ratingsResetAt || 0, playsResetAt: meta.playsResetAt || 0 };
-  SYNC_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v != null) { try { o[k] = JSON.parse(v); } catch (e) {} } });
+  SYNC_KEYS.forEach(k => { const v = store.getItem(k); if (v != null) { try { o[k] = JSON.parse(v); } catch (e) {} } });
   return o;
 }
 // ローカルとリモートを非破壊マージ(評価=ratedAtが新しい方、履歴=和集合、除外=和集合、設定=updatedAtが新しい方)
@@ -2635,14 +2675,14 @@ function mergeData(local, remote) {
 // リモートJSONが壊れていても不正な型を書き込まないよう、型を検証してから反映する
 function applyData(m) {
   const isObj = v => v && typeof v === "object" && !Array.isArray(v);
-  if (isObj(m[LS.RATINGS])) localStorage.setItem(LS.RATINGS, JSON.stringify(m[LS.RATINGS]));
-  if (isObj(m[LS.PLAYS])) localStorage.setItem(LS.PLAYS, JSON.stringify(m[LS.PLAYS]));
-  if (isObj(m[LS.SONGMETA])) localStorage.setItem(LS.SONGMETA, JSON.stringify(m[LS.SONGMETA]));
-  if (Array.isArray(m[LS.DEAD])) localStorage.setItem(LS.DEAD, JSON.stringify(m[LS.DEAD]));
-  if (isObj(m[LS.SETTINGS])) localStorage.setItem(LS.SETTINGS, JSON.stringify(m[LS.SETTINGS]));
-  if (typeof m[LS.OPENAPP] === "boolean") localStorage.setItem(LS.OPENAPP, JSON.stringify(m[LS.OPENAPP]));
-  if (typeof m[LS.PLAYMODE] === "string") localStorage.setItem(LS.PLAYMODE, JSON.stringify(m[LS.PLAYMODE]));
-  if (isObj(m[LS.TODAYMODE])) localStorage.setItem(LS.TODAYMODE, JSON.stringify(m[LS.TODAYMODE]));
+  if (isObj(m[LS.RATINGS])) save(LS.RATINGS, m[LS.RATINGS]);
+  if (isObj(m[LS.PLAYS])) save(LS.PLAYS, m[LS.PLAYS]);
+  if (isObj(m[LS.SONGMETA])) save(LS.SONGMETA, m[LS.SONGMETA]);
+  if (Array.isArray(m[LS.DEAD])) save(LS.DEAD, m[LS.DEAD]);
+  if (isObj(m[LS.SETTINGS])) save(LS.SETTINGS, m[LS.SETTINGS]);
+  if (typeof m[LS.OPENAPP] === "boolean") save(LS.OPENAPP, m[LS.OPENAPP]);
+  if (typeof m[LS.PLAYMODE] === "string") save(LS.PLAYMODE, m[LS.PLAYMODE]);
+  if (isObj(m[LS.TODAYMODE])) save(LS.TODAYMODE, m[LS.TODAYMODE]);
 }
 function refreshAfterSync() {
   const settings = load(LS.SETTINGS, null);
@@ -2792,18 +2832,22 @@ if (!isMobileLike()) {
   if (l) l.textContent = "画像を保存";
   $("btn-share-img").setAttribute("aria-label", "今日の1曲の画像を保存(ダウンロード)");
 }
-// バックグラウンドから戻った時に「今日の曲」を更新モードに従って選び直す。
-// 再生開始済み(再生中・一時停止中)の曲には触れない
-document.addEventListener("visibilitychange", () => {
+// 「今日の曲」を更新モードに従って選び直す。再生開始済み(再生中・一時停止中)の曲には触れない。
+// includeAlways: 「開くたび」モードを発動させるか(バックグラウンド復帰=true / 定期チェック=false。
+// タブを見ている最中に毎分曲が替わってしまうのを防ぐ)
+function refreshTodayIfNeeded(includeAlways) {
   if (document.visibilityState !== "visible" || !SONGS.length) return;
   if (playerStarted || isPlayingNow()) return;
-  const mode = todayMode().mode;
+  const always = includeAlways && todayMode().mode === "always";
   const d = load(LS.DAILY, null);
   const newDay = !d || d.date !== todayStr();
-  if (mode === "always" || newDay || todayIntervalElapsed()) {
-    init(mode === "always" || todayIntervalElapsed());
+  if (always || newDay || todayIntervalElapsed()) {
+    init(always || todayIntervalElapsed());
   }
-});
+}
+document.addEventListener("visibilitychange", () => refreshTodayIfNeeded(true));
+// タブを開いたまま日付や「時間ごと」の指定時間を跨いだ場合も拾う(PCで開きっぱなし対策)
+setInterval(() => refreshTodayIfNeeded(false), 60 * 1000);
 
 (async function boot() {
   try {
@@ -2811,9 +2855,15 @@ document.addEventListener("visibilitychange", () => {
     if (!res.ok) throw new Error(res.status);
     SONGS = await res.json();
   } catch (e) {
-    $("song-title").textContent = "曲データ(songs.json)を読み込めませんでした。file://直開きでは動作しないため、ローカル確認は `python -m http.server` 経由で開いてください。";
+    $("song-title").textContent = "曲データ(songs.json)を読み込めませんでした。通信状況を確認して再読み込みしてください。(file://直開きでは動作しません。ローカル確認は `python -m http.server` 経由で)";
     $("controls").style.display = "none";
     return;
+  }
+  // localStorageが使えない環境(プライベートモード・サイトデータブロック等)への注意書き
+  if (!storagePersistent) {
+    const n = $("error-notice");
+    n.textContent = "この環境ではデータ保存が無効のため(プライベートモード等)、設定・評価・履歴はこのタブを閉じると消えます。";
+    n.style.display = "";
   }
   migratePlaysFromRatings(); // 旧ユーザーの評価履歴を日別履歴へ1度だけ復元
   backfillSongMeta(); // 履歴・評価にある曲のメタを控える(カタログから消えた後の履歴表示用)
