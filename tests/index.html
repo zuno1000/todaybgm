@@ -408,7 +408,12 @@ async function main() {
   if (hint1) hint1.remove();
   w.setPseudoFullscreen(true);
   check("擬似全画面の初回ヒント: 2回目以降は表示されない", !doc().getElementById("fs-hint"));
+  // 擬似全画面中はアプリのタブバーを隠す(iOS実機FB対応)
+  check("擬似全画面中: タブバーが非表示",
+    w.getComputedStyle(doc().querySelector(".tabbar")).display === "none");
   w.setPseudoFullscreen(false);
+  check("擬似全画面解除: タブバーが復帰",
+    w.getComputedStyle(doc().querySelector(".tabbar")).display !== "none");
 }
 
 /* ==== 実行 ==== */

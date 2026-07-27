@@ -165,6 +165,8 @@ button:focus-visible, a:focus-visible {
   pointer-events: none; opacity: 0; transition: opacity 0.3s;
 }
 .fs-hint.show { opacity: 1; }
+/* 擬似全画面中はアプリ自体のUI(タブバー)も隠し、動画以外の要素を画面から消す */
+body.fs-on .tabbar { display: none; }
 .live-badge {
   position: absolute; top: 12px; left: 12px; z-index: 2;
   background: rgba(61, 74, 99, 0.72);
@@ -1543,6 +1545,8 @@ function isMobileLike() {
 function setPseudoFullscreen(on) {
   const wrap = $("thumb-wrap");
   wrap.classList.toggle("fs-active", on);
+  // タブバーを隠す(iOSでは固定オーバーレイの上にタブバーが残って見えるため明示的に消す)
+  document.body.classList.toggle("fs-on", on);
   // 全画面の背後でページがスクロールしないように固定
   document.body.style.overflow = on ? "hidden" : "";
   if (on) showFsHintOnce();
