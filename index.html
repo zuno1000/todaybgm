@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>今日の作業テーマ曲</title>
-<meta name="description" content="開いた瞬間、今日の一曲が決まっている。選曲に迷う時間をゼロにする、毎日ひとつの作業用BGMレコメンド。使うほど、あなたの好みに寄り添う。">
+<meta name="description" content="毎日の作業に、ぴったりのBGMを。使うほど、あなた好みの選曲へ。">
 <meta name="theme-color" content="#E8EDF5">
 <!-- OGP / Xカード(共有時のプレビュー) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="今日の作業テーマ曲">
 <meta property="og:title" content="今日の作業テーマ曲 | TODAY'S BGM">
-<meta property="og:description" content="開いた瞬間、今日の一曲が決まっている。選曲に迷う時間をゼロにする、毎日ひとつの作業用BGMレコメンド。">
+<meta property="og:description" content="毎日の作業に、ぴったりのBGMを。使うほど、あなた好みの選曲へ。">
 <meta property="og:url" content="https://todaybgm.pages.dev/">
 <meta property="og:image" content="https://todaybgm.pages.dev/ogp.png">
 <meta property="og:image:width" content="1200">
@@ -391,6 +391,7 @@ body.fs-on .tabbar { display: none; }
 }
 /* リンクをピル型ボタンとして使う場合(このアプリについて等) */
 a.toggle-pill { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.about-links { margin-top: 18px; } /* 説明文とボタン列の間隔(他カードの見出し→ピルと同程度) */
 .save-btn {
   display: block;
   margin: 34px auto 10px;
@@ -831,8 +832,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
       <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.0.0</span><br>
-      開いた瞬間、今日の一曲が決まっている作業用BGMレコメンド。データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
-      <div class="pill-grid">
+      開いた瞬間、今日の一曲が決まっている作業用BGMレコメンド。<br>
+      データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
+      <div class="pill-grid about-links">
         <a class="toggle-pill" href="privacy.html">プライバシーポリシー</a>
         <a class="toggle-pill" href="mailto:todaybgm.contact@gmail.com?subject=%E3%80%8C%E4%BB%8A%E6%97%A5%E3%81%AE%E4%BD%9C%E6%A5%AD%E3%83%86%E3%83%BC%E3%83%9E%E6%9B%B2%E3%80%8D%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF">フィードバックを送る</a>
       </div>

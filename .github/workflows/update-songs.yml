@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # 失敗時の自動起票(通知)用
 
 jobs:
   update:
@@ -36,6 +37,43 @@ jobs:
         # --max-per-channel 3(既定)でジャンル内の同一チャンネル偏りを防ぐ
         run: python scripts/update_songs.py --max-per-genre 60 --per-query 25
 
+      # 更新内容をRunのSummaryに出す(カタログdiffの定期目視用)。
+      # 追加曲はリンク付きで一覧化されるので、変な曲の混入チェックがここで済む
+      - name: Write catalog diff summary
+        run: |
+          python - <<'EOF'
+          import json, subprocess, os
+          new = json.load(open("songs.json", encoding="utf-8"))
+          try:
+              old = json.loads(subprocess.check_output(
+                  ["git", "show", "HEAD:songs.json"], text=True, encoding="utf-8"))
+          except Exception:
+              old = []
+          oldids = {s["id"]: s for s in old}
+          newids = {s["id"]: s for s in new}
+          added = [s for i, s in newids.items() if i not in oldids]
+          removed = [s for i, s in oldids.items() if i not in newids]
+          retitled = [(oldids[i], s) for i, s in newids.items()
+                      if i in oldids and s["title"] != oldids[i]["title"]]
+          queries = json.load(open("scripts/queries.json", encoding="utf-8"))
+          n_queries = sum(len(v) for v in queries.values())
+          lines = ["## カタログ更新サマリー",
+                   f"- 合計: {len(old)} → {len(new)}曲(追加 {len(added)} / 削除 {len(removed)} / タイトル更新 {len(retitled)})",
+                   f"- APIクォータ見積り: 検索クエリ{n_queries}本 ≒ {n_queries * 100:,} / 10,000ユニット(日次上限)",
+                   ""]
+          if added:
+              lines.append("### 追加(検品ポイント: ジャンル相応か・トーク/切り抜きでないか)")
+              lines += [f"- [{s['title']}](https://youtu.be/{s['id']})({s['genres'][0]})" for s in added]
+          if removed:
+              lines.append("### 削除(再生不能)")
+              lines += [f"- {s['title']}({s['genres'][0]})" for s in removed]
+          if retitled:
+              lines.append("### タイトル更新(メタデータリフレッシュ)")
+              lines += [f"- {o['title']} → {s['title']}" for o, s in retitled]
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+              f.write("\n".join(lines) + "\n")
+          EOF
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
@@ -44,6 +82,18 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes."
           else
-            git commit -m "songs.json 自動更新(週次: 死活チェック+新曲追加)"
+            git commit -m "songs.json 自動更新(週次: 死活チェック+新曲追加+メタ更新)"
             git push
           fi
+
+      # 失敗したらIssueを自動起票(GitHubからの通知メールで気づける)
+      - name: Notify failure via issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "週次カタログ更新の失敗 ($(date -u +%Y-%m-%d))" \
+            --body "自動更新ワークフローが失敗しました。ログ: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          よくある原因: YouTube Data APIのクォータ超過(クエリ追加しすぎ)/APIキーの失効/検証エラー。"

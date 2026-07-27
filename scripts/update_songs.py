@@ -256,6 +256,21 @@ def main():
             if info.get("channelId") and not s.get("channelId"):
                 s["channelId"] = info["channelId"]
                 s["channelTitle"] = info.get("channelTitle", "")
+            # 既存曲のメタデータを週次でリフレッシュする
+            # (YouTube APIポリシー: 保存したAPIデータは30日以内に更新または削除。
+            #  週次実行=7日ごとの更新で準拠。ライブ収録曲は時間情報を持たないため対象外)
+            if info.get("title") and info["title"][:80] != s.get("title"):
+                s["title"] = info["title"][:80]
+                s["mood"] = guess_moods(s["title"])
+                print(f"  REFRESHED (title): {s['id']} {s['title']}")
+            if not s.get("live") and info.get("seconds"):
+                minutes = round(info["seconds"] / 60)
+                if minutes != s.get("durationMin"):
+                    s["durationMin"] = minutes
+                    s["durationClass"] = duration_class(minutes)
+            if info.get("channelTitle") and s.get("channelId") == info.get("channelId") \
+               and info["channelTitle"] != s.get("channelTitle"):
+                s["channelTitle"] = info["channelTitle"]
             kept.append(s)
         else:
             removed.append(s)
