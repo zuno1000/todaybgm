@@ -1,39 +1,62 @@
-# 今日の作業テーマ曲(todaybgm)
+# 今日の作業テーマ曲(TODAY'S BGM)
 
-**「アプリを開いた瞬間、今日の作業用BGMが1曲決まっている」**
+**開いた瞬間、今日の一曲が決まっている。**
 
-選曲に迷う時間をゼロにする、作業用BGMレコメンドWebアプリ(プロトタイプ v0.1)。
+選曲に迷う時間をゼロにする、無料の作業用BGMレコメンドWebアプリ。
 
-## 特徴
+👉 **https://todaybgm.pages.dev/**
 
-- ページを開くと「今日のテーマ曲」が1曲自動で提示される
-- YouTube 埋め込みプレイヤーでワンタップ再生
-- ★1〜5 の5段階評価。使うほどおすすめが自分好みに近づく(コンテンツベース推薦)
-- 事前設定: 好みのジャンル(Lo-fi / ジャズ / ピアノ / 環境音 / ゲームBGM / シンセウェーブ / クラシック / ケルト音楽 / ファンタジー / 和風)と動画時間
-- 「別の曲にする」再抽選(同日中は既出曲を除外)
-- 全データは端末内 localStorage のみ。サーバー送信なし・維持費0円
+![OGP](ogp.png)
 
-## 特徴(v0.2)
+## 使い方
 
-- 📊 「好み」タブ: 評価から学習したジャンル/ムード親和度をバーで可視化
-- 🔄 曲カタログ(songs.json)の自動更新: 週1のGitHub Actionsが死活チェック+新曲追加
-- 📱 「YouTubeアプリで開く」: YouTube Premium ならアプリ側でバックグラウンド再生できる
-- 🎨 アプリアイコン+manifest 同梱(ホーム画面に追加可能。生成は scripts/make_icon.py)
+1. **開くだけ**: アクセスした瞬間に「今日の1曲」が決まっています。再生ボタンをタップ
+2. **設定**: 好きなジャンル(Lo-fi / ジャズ / ピアノ / 環境音 / ゲームBGM / シンセウェーブ / クラシック / ケルト / ファンタジー / 和風 / EDM / かわいい)と動画時間を選ぶと、おすすめが条件に沿います
+3. **★評価**: 聴いたら5段階で評価。使うほど、おすすめがあなたの好みに寄り添います(「好み」タブで学習結果を確認できます)
+4. **探す**: 気分ミキサー(朝↔夜 / アコースティック↔電子音 / ゆったり↔アップテンポ+雨音)で、今の気分の1曲を能動的に探せます
+5. **履歴**: 聴いた曲がカレンダーに記録され、いつでもタップで再生できます
+6. **同期(任意)**: Googleでログインすると、評価・履歴・設定をあなた自身のGoogleドライブ経由で他の端末と同期できます
+7. **共有**: Xで共有 / 画像カード(QR付き)で共有 / YouTubeで開く(再生位置を引き継ぎ)
+
+スマホでは**ホーム画面に追加**(PWA)すると、アプリのように全画面で使えます。
+
+## プライバシー(要点)
+
+- アカウント登録不要。**開発者のサーバーは存在せず、データ収集もありません**
+- 評価・履歴・設定は端末内(localStorage)にのみ保存されます
+- 任意の同期を有効にした場合も、保存先は**あなた自身のGoogleドライブのアプリ専用領域**(開発者はアクセスできません)
+- 詳細: [プライバシーポリシー](https://todaybgm.pages.dev/privacy)
+
+## 既知の制限
+
+- 「YouTubeで開く」の再生位置引き継ぎは、YouTubeアプリが同じ動画を既に開いている場合は効きません(YouTubeアプリ側の仕様)
+- スマホのブラウザ内の埋め込み再生では広告を消せません。YouTube Premiumの方は設定の「常にYouTubeアプリで開く」をオンにすると広告なし+バックグラウンド再生ができます
+- 横向きの自動全画面はブラウザのUIまでは消せません。動画だけの全画面はプレイヤー右下の全画面ボタン、より没入するならホーム画面に追加(PWA)がおすすめです
+
+## フィードバック
+
+不具合報告・要望は [GitHub Issues](https://github.com/zuno1000/todaybgm/issues) または todaybgm.contact@gmail.com へ。
+
+---
+
+# 開発者向け
 
 ## 技術構成
 
 - HTML 1枚(Vanilla JS、フレームワークなし)+ songs.json(曲カタログ)
-- YouTube IFrame Player API
-- 完全静的構成。Cloudflare Pages でホスティング(公開URL: https://todaybgm.pages.dev/ 。mainへのpushで自動デプロイ。GitHub Pages等でも動作可)
-- 曲カタログ: 全10ジャンル、埋め込み許可を確認済みの動画のみ収録。再生不能を検知した曲は端末側でも自動除外
+- YouTube IFrame Player API / Google Identity Services + Drive API(任意同期)
+- 完全静的構成。Cloudflare Pages でホスティング(mainへのpushで自動デプロイ。GitHub Pages等でも動作可)
+- 曲カタログ: 全12ジャンル・約720曲。埋め込み許可を確認済みの動画のみ収録。再生不能を検知した曲は端末側でも自動除外
+- セキュリティヘッダ: `_headers` でCSP(強制モード)等を設定。**許可先を追加する時は一度 Report-Only に戻して観察してから強制化すること**
 
 ## 曲カタログの更新(scripts/update_songs.py)
 
 ```
-python scripts/update_songs.py [--max-per-genre 40] [--per-query 12] [--dry-run]
+python scripts/update_songs.py [--max-per-genre 60] [--per-query 25] [--dry-run]
 ```
 
 - 既存曲の死活チェック(再生不能になった動画を削除)+ ジャンル別クエリでの新曲検索・検証・追加
+- 同一チャンネルはジャンル内3曲まで(多様性の担保)
 - 環境変数 `YOUTUBE_API_KEY` があれば YouTube Data API v3、なければスクレイピングで動作
 - 検索クエリは `scripts/queries.json` で管理(ここを編集すると探すジャンル・傾向を変えられる)
 - GitHub Actions(`.github/workflows/update-songs.yml`)が毎週土曜 6:00 JST に自動実行。
@@ -57,14 +80,15 @@ python -m http.server 8000
 
 ## セルフテスト(tests/)
 
-コアロジック(レコメンド・履歴・同期マージ・探す・リセット)の常設テスト。**リリース(push)前に全実行すること。**
+コアロジック(レコメンド・履歴・同期マージ・探す・リセット・エッジケース)の常設テスト。**リリース(push)前に全実行すること。**
 
 ```
 powershell -ExecutionPolicy Bypass -File tests\run.ps1
-# → RESULT: ALLPASS-63 / ALL TESTS PASSED なら合格(exit 0)
+# → RESULT: ALLPASS-<件数> / ALL TESTS PASSED なら合格(exit 0)
 ```
 
 - 別ポート(8765)+使い捨てブラウザプロファイルで実行するため、localhost:8000 の開発データには影響しない
+- `-BrowserPath` でChrome等の別Chromiumブラウザでも実行できる(既定は自動検出)
 - 手動で見る場合: `python -m http.server 8765` → http://localhost:8765/tests/ (結果が表形式で出る)
 - テストページは localStorage を破壊的に書き換えるため **localhost 以外では起動しないガード付き**(本番URLで開いても実行されない)
 
@@ -78,9 +102,12 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
 | `bgm_recent` | 直近3日間の提示履歴(再提示減衰用) |
 | `bgm_dead` | 再生エラーになった動画ID(以後の候補から自動除外) |
 | `bgm_plays` | 日別の再生履歴 `{date: {first, plays[]}}`(カレンダー・履歴用) |
+| `bgm_songmeta` | 再生・評価した曲のタイトル/ジャンル控え(カタログ削除後の履歴表示用) |
 | `bgm_playmode` | 曲が終わったら: `next`/`repeat`/`stop` |
+| `bgm_todaymode` | 「今日の曲」の更新タイミング(`{mode, hours}`) |
 | `bgm_openapp` | 常にYouTubeアプリで開く |
-| `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync}`) |
+| `bgm_fshint` | 全画面ヒントを表示済みか |
+| `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt}`) |
 
 ## データ同期(端末間・Googleドライブ)の設定
 
@@ -98,6 +125,6 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
    `GOOGLE_CLIENT_ID_PROD` / `GOOGLE_CLIENT_ID_DEV` に貼り付けてコミット
 
 補足:
-- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode`(`bgm_daily`・`bgm_recent` は端末ごとに独立)
-- 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)
+- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode` / `bgm_todaymode` / `bgm_songmeta`(`bgm_daily`・`bgm_recent` は端末ごとに独立)
+- 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)+リセット時刻のトンボストーン
 - `drive.appdata` は現在のGoogleの分類では**非機密スコープ**(アプリ専用フォルダのみアクセス)。公開ステータスを「本番」にしてもスコープ審査は不要で、必要なのはブランディング検証のみ(2026-07確認)。開発用プロジェクトは「テスト」のままで審査もブランディングも不要

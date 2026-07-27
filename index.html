@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>今日の作業テーマ曲</title>
-<meta name="description" content="アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。">
+<meta name="description" content="開いた瞬間、今日の一曲が決まっている。選曲に迷う時間をゼロにする、毎日ひとつの作業用BGMレコメンド。使うほど、あなたの好みに寄り添う。">
 <meta name="theme-color" content="#E8EDF5">
+<!-- OGP / Xカード(共有時のプレビュー) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="今日の作業テーマ曲">
+<meta property="og:title" content="今日の作業テーマ曲 | TODAY'S BGM">
+<meta property="og:description" content="開いた瞬間、今日の一曲が決まっている。選曲に迷う時間をゼロにする、毎日ひとつの作業用BGMレコメンド。">
+<meta property="og:url" content="https://todaybgm.pages.dev/">
+<meta property="og:image" content="https://todaybgm.pages.dev/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -379,6 +389,8 @@ body.fs-on .tabbar { display: none; }
   background: var(--bg-deep);
   box-shadow: inset -4px -4px 8px var(--sh-light), inset 4px 4px 8px var(--sh-dark), inset 0 0 0 1px rgba(91, 108, 255, 0.25);
 }
+/* リンクをピル型ボタンとして使う場合(このアプリについて等) */
+a.toggle-pill { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
 .save-btn {
   display: block;
   margin: 34px auto 10px;
@@ -814,6 +826,16 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <h3 class="section-title">リセット <button class="help-btn" data-help="help-reset" aria-expanded="false" aria-label="リセットの説明を表示">?</button></h3>
       <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
       <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。<br>「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
+    </div>
+
+    <div class="set-card raised" id="about-card">
+      <h2 class="set-card-title">このアプリについて</h2>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.0.0</span><br>
+      開いた瞬間、今日の一曲が決まっている作業用BGMレコメンド。データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
+      <div class="pill-grid">
+        <a class="toggle-pill" href="privacy.html">プライバシーポリシー</a>
+        <a class="toggle-pill" href="mailto:todaybgm.contact@gmail.com?subject=%E3%80%8C%E4%BB%8A%E6%97%A5%E3%81%AE%E4%BD%9C%E6%A5%AD%E3%83%86%E3%83%BC%E3%83%9E%E6%9B%B2%E3%80%8D%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF">フィードバックを送る</a>
+      </div>
     </div>
   </section>
 

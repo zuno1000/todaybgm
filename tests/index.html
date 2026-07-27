@@ -150,6 +150,15 @@ async function main() {
   check("提示された曲が bgm_recent(3日減衰用)に記録される",
     (recent1[w.todayStr()] || []).includes(daily1.currentId));
   check("decideToday(false) は同じ曲を返す(1日1曲の安定性)", w.decideToday(false).id === daily1.currentId);
+  const og = p => { const m = doc().querySelector(`meta[property="${p}"]`); return m && m.getAttribute("content"); };
+  check("OGPメタタグ: og:title / og:image / twitter:card が揃っている",
+    og("og:title") && og("og:image") === "https://todaybgm.pages.dev/ogp.png" &&
+    doc().querySelector('meta[name="twitter:card"]'));
+  const about = doc().getElementById("about-card");
+  check("設定タブ:「このアプリについて」にバージョン・ポリシー・フィードバック導線",
+    about && about.querySelector("#app-version") &&
+    about.querySelector('a[href="privacy.html"]') &&
+    about.querySelector('a[href^="mailto:todaybgm.contact@gmail.com"]'));
   const knownGenres = new Set(["nature","game","japanese","synthwave","classical","lofi","fantasy","celtic","jazz","kawaii","piano","edm"]);
   const badSongs = CATALOG.filter(s => !s.id || !s.title || !Array.isArray(s.genres) || !s.genres.length ||
     !["short","medium","long"].includes(s.durationClass) || !s.genres.every(g => knownGenres.has(g)));
