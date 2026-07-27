@@ -2518,9 +2518,13 @@ function showView(name) {
 /* =========================================================
  * データ同期(Googleドライブ appDataFolder)
  * サーバー不要・ユーザー自身のGoogleドライブのアプリ専用領域にのみ保存する。
- * 使うには GOOGLE_CLIENT_ID を自分のOAuthクライアントIDに置き換えること(READMEに手順)。
+ * 使うには PROD/DEV のクライアントIDを自分のOAuthクライアントIDに置き換えること(READMEに手順)。
+ * 本番と localhost は別GCPプロジェクトの別クライアント(開発用はテストモードのまま)。
  * ========================================================= */
-const GOOGLE_CLIENT_ID = "663015425028-i423e2u0us0j8qpd8tqrlqtd2a4p0r41.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID_PROD = "663015425028-i423e2u0us0j8qpd8tqrlqtd2a4p0r41.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID_DEV = "925081963803-o8dj3c59ielatq6an3bstf1nog2ouqsf.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+  ? GOOGLE_CLIENT_ID_DEV : GOOGLE_CLIENT_ID_PROD;
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
 const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA];

@@ -73,18 +73,18 @@ python -m http.server 8000
 
 ログイン(Googleアカウント)で、評価・履歴・設定を**ユーザー自身のGoogleドライブのアプリ専用領域(appDataFolder)**経由で端末間同期できます。サーバー不要・無料で、データは開発者や第三者のサーバーには保存されません。
 
-使うには、`index.html` の `GOOGLE_CLIENT_ID` を自分のOAuthクライアントIDに置き換えます:
+クライアントIDは**本番用と localhost 開発用の2つ**(別GCPプロジェクト)に分離しており、`index.html` がホスト名で自動切替します(`localhost`/`127.0.0.1` → 開発用、それ以外 → 本番用)。自分用に設定するには:
 
-1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを作成
-2. 「APIとサービス」→「ライブラリ」で **Google Drive API** を有効化
-3. 「OAuth 同意画面」を設定(User type: 外部 / 公開ステータスは「テスト」でOK。テストユーザーに自分のGoogleアカウントを追加)。スコープに `.../auth/drive.appdata` を追加
+1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを作成(本番用・開発用の2つ)
+2. 各プロジェクトで「APIとサービス」→「ライブラリ」から **Google Drive API** を有効化
+3. 「OAuth 同意画面」を設定(User type: 外部)。スコープに `.../auth/drive.appdata` を追加
+   - 開発用は公開ステータス「テスト」のままでOK(テストユーザーに自分のGoogleアカウントを追加)
 4. 「認証情報」→「OAuth クライアント ID」を作成(種類: **ウェブアプリケーション**)
-   - **承認済みの JavaScript 生成元**に公開URLとローカルを追加:
-     `https://todaybgm.pages.dev` と `http://localhost:8000`
+   - **承認済みの JavaScript 生成元**: 本番用クライアントには公開URL(例: `https://todaybgm.pages.dev`)、開発用クライアントには `http://localhost:8000` を追加
 5. 発行された「クライアント ID」(`xxxx.apps.googleusercontent.com`)を、`index.html` の
-   `const GOOGLE_CLIENT_ID = "..."` に貼り付けてコミット
+   `GOOGLE_CLIENT_ID_PROD` / `GOOGLE_CLIENT_ID_DEV` に貼り付けてコミット
 
 補足:
 - 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode`(`bgm_daily`・`bgm_recent` は端末ごとに独立)
 - 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)
-- `drive.appdata` は Google の「機密」スコープ。公開ステータス「テスト」なら審査不要で最大100ユーザーまで利用可(未確認アプリの警告は続行で回避)。一般公開する場合は Google の確認申請が必要
+- `drive.appdata` は現在のGoogleの分類では**非機密スコープ**(アプリ専用フォルダのみアクセス)。公開ステータスを「本番」にしてもスコープ審査は不要で、必要なのはブランディング検証のみ(2026-07確認)。開発用プロジェクトは「テスト」のままで審査もブランディングも不要
