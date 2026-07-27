@@ -998,7 +998,7 @@
   },
   {
     "id": "6uddGul0oAc",
-    "title": "TOKYO Cafe: Relaxing Jazz Piano - Night Coffee Shop",
+    "title": "TOKYO Cafe: Beautiful Relaxing Jazz Piano Music for Stress Relief - Night Coffee",
     "genres": [
       "jazz",
       "piano"
@@ -1008,7 +1008,7 @@
     "live": true,
     "mood": [
       "night",
-      "calm"
+      "morning"
     ],
     "channelId": "UCJhjE7wbdYAae1G25m0tHAA",
     "channelTitle": "Cafe Music BGM channel"
@@ -1117,7 +1117,7 @@
   },
   {
     "id": "HMnrl0tmd3k",
-    "title": "Godot - The Fragrance of Dark Coffee(逆転裁判ジャズ)",
+    "title": "Turnabout Jazz Soul - Track 8 - Godot - The Fragrance of Dark Coffee",
     "genres": [
       "jazz",
       "game"
@@ -1125,8 +1125,7 @@
     "durationMin": 6,
     "durationClass": "short",
     "mood": [
-      "night",
-      "calm"
+      "morning"
     ],
     "channelId": "UCQgW4a2aehzp4WPCiZWB9Zw",
     "channelTitle": "Bloogeyz"
@@ -1213,7 +1212,7 @@
   },
   {
     "id": "NJuSStkIZBg",
-    "title": "Rainy Jazz Cafe - Slow Jazz in Coffee Shop Ambience",
+    "title": "Rainy Jazz Cafe - Slow Jazz Music in Coffee Shop Ambience for Work, Study and Re",
     "genres": [
       "jazz"
     ],
@@ -1221,7 +1220,7 @@
     "durationClass": "long",
     "mood": [
       "rain",
-      "calm"
+      "morning"
     ],
     "channelId": "UCJIOFQLGwB3GH9K9waxwynQ",
     "channelTitle": "Coffee Shop Vibes"
@@ -1277,7 +1276,7 @@
     "genres": [
       "jazz"
     ],
-    "durationMin": 125,
+    "durationMin": 126,
     "durationClass": "long",
     "mood": [
       "morning",
@@ -1458,7 +1457,7 @@
   },
   {
     "id": "fEvM-OUbaKs",
-    "title": "Coffee Jazz Music - Chill Out Lounge Radio(作業用カフェBGM)",
+    "title": "Coffee Jazz Music - Chill Out Lounge Jazz Music Radio - 24/7 Live Stream - Slow ",
     "genres": [
       "jazz"
     ],
@@ -1466,7 +1465,8 @@
     "durationClass": "long",
     "live": true,
     "mood": [
-      "focus"
+      "morning",
+      "calm"
     ],
     "channelId": "UCQINXHZqCU5i06HzxRkujfg",
     "channelTitle": "BGM channel"
@@ -1825,7 +1825,7 @@
   },
   {
     "id": "77ZozI0rw7w",
-    "title": "Relaxing Piano Music & Water Sounds - Soothing Relaxation",
+    "title": "Soothing Relaxation: Relaxing Piano Music & Water Sounds for Sleep, Meditation, ",
     "genres": [
       "piano",
       "nature"
@@ -2326,7 +2326,7 @@
   },
   {
     "id": "lFcSrYw-ARY",
-    "title": "Beautiful Relaxing Music for Stress Relief(ピアノ)",
+    "title": "Beautiful Relaxing Music for Stress Relief ~ Calming Music ~ Meditation, Relaxat",
     "genres": [
       "piano"
     ],
@@ -3137,15 +3137,14 @@
   },
   {
     "id": "eKFTSSKCzWA",
-    "title": "森の滝の自然音 - Natural Calm Forest Waterfall",
+    "title": "Relaxing Nature Sounds for Sleeping - Natural Calm Forest Waterfall Music Medita",
     "genres": [
       "nature"
     ],
     "durationMin": 500,
     "durationClass": "long",
     "mood": [
-      "calm",
-      "focus"
+      "calm"
     ],
     "channelId": "UC4UWbQ23IbWwU-XG7XIWxvQ",
     "channelTitle": "johnnielawson"
@@ -3197,7 +3196,7 @@
   },
   {
     "id": "mPZkdNFkNps",
-    "title": "窓を打つ雨と雷の音 - Rain Sound On Window",
+    "title": "Rain Sound On Window with Thunder SoundsㅣHeavy Rain for Sleep, Study and Relaxat",
     "genres": [
       "nature"
     ],
@@ -3205,7 +3204,7 @@
     "durationClass": "long",
     "mood": [
       "rain",
-      "calm"
+      "focus"
     ],
     "channelId": "UChyRMEp8zRio9nFnAjvzSnA",
     "channelTitle": "Relaxing Ambience ASMR"
@@ -3282,7 +3281,7 @@
   },
   {
     "id": "q76bMs-NwRk",
-    "title": "3 Hours of Gentle Night Rain(静かな夜の雨・暗い画面)",
+    "title": "3 Hours of Gentle Night Rain, Rain Sounds for Sleeping - Dark Screen to Beat ins",
     "genres": [
       "nature"
     ],
@@ -3384,15 +3383,13 @@
   },
   {
     "id": "xNN7iTA57jM",
-    "title": "Forest Sounds | 森と鳥のさえずり",
+    "title": "Forest Sounds | Woodland Ambience, Bird Song",
     "genres": [
       "nature"
     ],
     "durationMin": 180,
     "durationClass": "long",
-    "mood": [
-      "calm"
-    ],
+    "mood": [],
     "channelId": "UCvVWCrxq_aZr7fN_KpaGGTA",
     "channelTitle": "The Guild of Ambience"
   },
@@ -3498,7 +3495,7 @@
   },
   {
     "id": "55DE_ePBUAU",
-    "title": "Video Game Music for Studying 1",
+    "title": "Video Game Music for Studying 1 - SuperRedGames",
     "genres": [
       "game"
     ],
@@ -3553,15 +3550,13 @@
   },
   {
     "id": "8kBlKM71pjc",
-    "title": "cozy animal crossing music(あつ森BGM)",
+    "title": "cozy animal crossing music",
     "genres": [
       "game"
     ],
     "durationMin": 71,
     "durationClass": "long",
-    "mood": [
-      "calm"
-    ],
+    "mood": [],
     "channelId": "UCBL3XGCA5LiRQhVlMibTVpw",
     "channelTitle": "stellarsheik"
   },
@@ -3678,7 +3673,7 @@
   },
   {
     "id": "GdzrrWA8e7A",
-    "title": "Zelda & Chill(ゼルダ lofiアレンジ)",
+    "title": "Zelda & Chill",
     "genres": [
       "game",
       "lofi"
@@ -3686,8 +3681,7 @@
     "durationMin": 41,
     "durationClass": "medium",
     "mood": [
-      "calm",
-      "focus"
+      "calm"
     ],
     "channelId": "UCDVKYPXwdYUQfgA05CkyFSg",
     "channelTitle": "GameChops"
@@ -3895,6 +3889,20 @@
     "channelTitle": "MatthewStar"
   },
   {
+    "id": "ctL1r742ETI",
+    "title": "Mario Kart Music to Study /Work FAST | Tenpers",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 188,
+    "durationClass": "long",
+    "mood": [
+      "focus"
+    ],
+    "channelId": "UCmsxra7cb76e7rkkk3cGsZg",
+    "channelTitle": "Moki"
+  },
+  {
     "id": "esG-4oXd-Fk",
     "title": "Tiny Market 🛒｜Warm and Lively Bossa Nova｜Study & Work Music｜Animal Crossing Ambi",
     "genres": [
@@ -3997,14 +4005,15 @@
   },
   {
     "id": "knoUHYLoE3c",
-    "title": "Relaxing Video Game Music 8hr mix(FF・ゼルダ・Skyrim他)",
+    "title": "Relaxing Video Game Music | 8 hr mix | Best songs from Final Fantasy, Zelda, Sky",
     "genres": [
       "game"
     ],
     "durationMin": 492,
     "durationClass": "long",
     "mood": [
-      "calm"
+      "calm",
+      "fantasy"
     ],
     "channelId": "UCWybu_s5918jz_0bbnhGy5g",
     "channelTitle": "Gaming / Vibes / Audio"
@@ -4126,20 +4135,6 @@
     ],
     "channelId": "UCM3V01L7Oph084kB2anXqHw",
     "channelTitle": "Lunar Odyssey"
-  },
-  {
-    "id": "qhZ4GywVguA",
-    "title": "Nintendo music to let’s work slow and easy ️🎧",
-    "genres": [
-      "game"
-    ],
-    "durationMin": 180,
-    "durationClass": "long",
-    "mood": [
-      "focus"
-    ],
-    "channelId": "UCzZDJHzTNhHpuvOn_SMyUMQ",
-    "channelTitle": "Pastel Pixel"
   },
   {
     "id": "rZjBLC8e2Es",
@@ -4573,7 +4568,7 @@
   },
   {
     "id": "MV_3Dpw-BRY",
-    "title": "Kavinsky - Nightcall(Drive OST)",
+    "title": "Kavinsky - Nightcall (Drive Original Movie Soundtrack) (Official Audio)",
     "genres": [
       "synthwave"
     ],
@@ -5042,15 +5037,14 @@
   },
   {
     "id": "wOMwO5T3yT4",
-    "title": "SPACE TRIP [Chillwave - Synthwave - Retrowave Mix]",
+    "title": "ＳＰＡＣＥ　ＴＲＩＰ [ Chillwave - Synthwave - Retrowave Mix ]",
     "genres": [
       "synthwave"
     ],
     "durationMin": 37,
     "durationClass": "medium",
     "mood": [
-      "focus",
-      "night"
+      "calm"
     ],
     "channelId": "UCZyXa4H06Ws3Pwom9cYEdDA",
     "channelTitle": "Asthenic"
@@ -5474,16 +5468,14 @@
   },
   {
     "id": "Nu48Z45ibxQ",
-    "title": "ショパン ノクターン Op.9-2(ルービンシュタイン)",
+    "title": "Arthur Rubinstein - Chopin Nocturne Op. 9, No. 2 in E-flat Major",
     "genres": [
       "classical",
       "piano"
     ],
     "durationMin": 4,
     "durationClass": "short",
-    "mood": [
-      "calm"
-    ],
+    "mood": [],
     "channelId": "UCgjJcg0QXoQ1P0h66avrfDQ",
     "channelTitle": "ArRubMusic"
   },
@@ -5739,31 +5731,26 @@
   },
   {
     "id": "g4N-X2YtNW4",
-    "title": "Chopin: Complete Nocturnes(ノクターン全集)",
+    "title": "Chopin: Complete Nocturnes (Full Album)(No Ads)",
     "genres": [
       "classical",
       "piano"
     ],
     "durationMin": 119,
     "durationClass": "long",
-    "mood": [
-      "calm",
-      "night"
-    ],
+    "mood": [],
     "channelId": "UCoRnqidM4QxhfHazjsZeiGA",
     "channelTitle": "Music for Mind and Soul"
   },
   {
     "id": "jgpJVI3tDbY",
-    "title": "The Best of Classical Music(モーツァルト・ベートーヴェン他)",
+    "title": "The Best of Classical Music 🎻 Mozart, Beethoven, Bach, Chopin, Vivaldi 🎹 Most Fa",
     "genres": [
       "classical"
     ],
     "durationMin": 208,
     "durationClass": "long",
-    "mood": [
-      "focus"
-    ],
+    "mood": [],
     "channelId": "UC68KnvCZ-nJzmmuSu_tKASA",
     "channelTitle": "Just Instrumental Music"
   },
@@ -5848,15 +5835,13 @@
   },
   {
     "id": "rOjHhS5MtvA",
-    "title": "Muti Conducts Beethoven 9(ベートーヴェン交響曲第9番)",
+    "title": "Muti Conducts Beethoven 9",
     "genres": [
       "classical"
     ],
     "durationMin": 81,
     "durationClass": "long",
-    "mood": [
-      "epic"
-    ],
+    "mood": [],
     "channelId": "UCl2Sa1BW9yF55yjqwSLro6Q",
     "channelTitle": "Chicago Symphony Orchestra"
   },
@@ -7781,7 +7766,7 @@
     "genres": [
       "japanese"
     ],
-    "durationMin": 67,
+    "durationMin": 68,
     "durationClass": "long",
     "mood": [
       "focus",
@@ -9803,7 +9788,7 @@
     "genres": [
       "kawaii"
     ],
-    "durationMin": 95,
+    "durationMin": 85,
     "durationClass": "long",
     "mood": [
       "focus",
