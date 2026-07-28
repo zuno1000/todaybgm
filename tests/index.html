@@ -574,6 +574,8 @@ async function main() {
   eq("実績モーダル: 段階リストが全段階ぶん描画される",
     doc().querySelectorAll("#ach-tiers li").length, 6);
   check("実績モーダル: 達成済み段階に✓がつく", !!doc().querySelector("#ach-tiers li.done"));
+  check("実績モーダル: 進行中マークはSVG(iOSで▶が絵文字化するため)",
+    !!doc().querySelector("#ach-tiers li.now .tick svg"));
   doc().getElementById("ach-close").click();
   check("実績モーダル: 閉じるボタンで閉じる", doc().getElementById("ach-modal").hasAttribute("hidden"));
   check("プロフィール共有ボタン: 利用日があれば表示される",
