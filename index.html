@@ -525,19 +525,113 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .persona { text-align: center; font-size: 12px; color: var(--text-sub); margin: 14px 4px 0; }
 .persona b { color: var(--accent); }
 
-/* ---- あゆみ(実績バッジ): 達成=浮き+アクセント / 未達成=沈み+減光 ---- */
+/* ---- あゆみ(実績バッジ): 進化型=1系列1枠。達成済み=浮き+アクセント /
+        未達成=沈み+減光。タップで詳細モーダル(進捗・段階一覧・共有) ---- */
 .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .badge {
-  border-radius: var(--r-btn); padding: 12px 4px; text-align: center;
+  border-radius: var(--r-btn); padding: 12px 6px 10px; text-align: center;
   background: var(--bg);
   box-shadow: -4px -4px 9px var(--sh-light), 4px 4px 9px var(--sh-dark);
+  transition: transform 0.12s;
 }
+.badge:active { transform: scale(0.96); }
 .badge .b-name { display: block; font-size: 11px; font-weight: 700; }
-.badge .b-cond { display: block; font-size: 9px; color: var(--text-sub); margin-top: 3px; }
+.badge .b-bar {
+  display: block; height: 5px; margin: 8px 8px 0;
+  border-radius: var(--r-full);
+  background: var(--bg-deep);
+  box-shadow: inset 1px 1px 2px var(--sh-dark);
+  overflow: hidden;
+}
+.badge .b-fill {
+  display: block; height: 100%;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent-soft), var(--accent));
+}
+.badge .b-cond { display: block; font-size: 9px; color: var(--text-sub); margin-top: 5px; }
 .badge.on { color: var(--accent); }
 .badge.on .b-cond { color: var(--accent-soft); font-weight: 700; }
 .badge.off {
   color: var(--text-sub); opacity: 0.55;
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
+
+/* ---- 実績の詳細モーダル ---- */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(61, 74, 99, 0.35);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fadein 0.18s ease;
+}
+.modal-backdrop[hidden] { display: none; }
+.modal-card {
+  width: 100%; max-width: 360px; max-height: 86dvh; overflow-y: auto;
+  border-radius: var(--r-card);
+  padding: 26px 24px 24px;
+}
+.ach-level { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); }
+.ach-name { font-size: 20px; font-weight: 700; margin-top: 4px; }
+.ach-desc { font-size: 12px; color: var(--text-sub); margin-top: 6px; line-height: 1.7; }
+.ach-bar {
+  height: 16px; margin-top: 16px;
+  border-radius: var(--r-full);
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+  position: relative; overflow: hidden;
+}
+.ach-fill {
+  position: absolute; top: 3px; bottom: 3px; left: 0; width: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent-soft), var(--accent));
+  transition: width 0.4s ease;
+}
+.ach-progress { font-size: 12px; font-weight: 700; color: var(--text-sub); margin-top: 10px; line-height: 1.7; }
+.ach-tiers { list-style: none; margin-top: 12px; }
+.ach-tiers li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; padding: 6px 2px;
+  color: var(--text-sub); opacity: 0.75;
+}
+.ach-tiers li.done { color: var(--text); opacity: 1; }
+.ach-tiers li.now { color: var(--accent); font-weight: 700; opacity: 1; }
+.ach-tiers .tick {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 11px; line-height: 1;
+  box-shadow: inset 0 0 0 1.5px rgba(138, 150, 173, 0.4);
+}
+.ach-tiers li.done .tick {
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: none;
+}
+.ach-tiers li.now .tick { color: var(--accent); font-size: 8px; box-shadow: inset 0 0 0 1.5px var(--accent-soft); }
+.modal-actions { display: flex; gap: 12px; margin-top: 20px; }
+.modal-actions button {
+  flex: 1; padding: 13px 0;
+  border-radius: var(--r-btn);
+  font-size: 13px; font-weight: 700;
+  transition: transform 0.15s;
+}
+.modal-actions button:active { transform: scale(0.97); }
+.modal-close { color: var(--text-sub); }
+
+/* ---- プロフィールカード共有(ペルソナ行の下の小ボタン) ---- */
+.profile-share-row { text-align: center; margin-top: 14px; }
+.profile-share-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--r-full);
+  font-size: 12px; font-weight: 700; color: var(--text-sub);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.profile-share-btn svg { width: 15px; height: 15px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.profile-share-btn:active {
+  transform: scale(0.97);
   background: var(--bg-deep);
   box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
 }
@@ -610,8 +704,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .search-box { border-radius: var(--r-btn); padding: 2px 16px; margin-bottom: 16px; }
 .search-box input {
   width: 100%; border: none; background: none; outline: none;
-  font: inherit; font-size: 14px; color: var(--text);
-  padding: 11px 0;
+  /* 16px未満だとiOS Safariがフォーカス時に自動ズームする */
+  font: inherit; font-size: 16px; color: var(--text);
+  padding: 10px 0;
 }
 .search-box input::placeholder { color: var(--text-sub); }
 .search-box input::-webkit-search-cancel-button { -webkit-appearance: none; }
@@ -682,18 +777,88 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 }
 
 /* ============================================================
-   PCなど大画面(マウス主体)向け: スマホと同じ配置・サイズ比になるよう
-   内容全体を段階的に拡大する。bodyは100dvh指定があるためzoomを掛けず、
-   .app(内容)と.tabbar(タブバー)にのみ掛ける。
+   PCなど大画面(マウス主体)向けレイアウト
+   - 〜1023px: スマホレイアウトのまま少し拡大(ウィンドウ半分などの中間幅)
+   - 1024px〜: デスクトップレイアウト = タブバーを左サイドバー化し、
+     「今日の曲」「探す」は2カラム(音楽サービスのデスクトップ画面のパターン)
    ============================================================ */
-@media (pointer: fine) and (min-width: 720px) and (min-height: 820px) {
+/* 2カラム用ラッパーはスマホでは透過(レイアウトに一切影響させない) */
+.main-cols, .main-media, .main-side, .ex-cols, .ex-left, .ex-right { display: contents; }
+.nav-logo { display: none; }
+
+@media (pointer: fine) and (min-width: 720px) and (max-width: 1023.9px) and (min-height: 820px) {
   .app, .tabbar { zoom: 1.15; }
 }
-@media (pointer: fine) and (min-width: 900px) and (min-height: 960px) {
-  .app, .tabbar { zoom: 1.3; }
+@media (pointer: fine) and (min-width: 1024px) {
+  body { flex-direction: row; }
+  /* タブバー → 左サイドバー */
+  .tabbar {
+    order: -1;
+    flex-direction: column; justify-content: flex-start; gap: 6px;
+    width: 228px; flex-shrink: 0;
+    padding: 26px 18px;
+    box-shadow: 6px 0 20px rgba(136, 152, 184, 0.20);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 8px 22px;
+    font-size: 14px; font-weight: 700; color: var(--text);
+    white-space: nowrap;
+  }
+  .nav-logo-mark {
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: 11px;
+    display: grid; place-items: center;
+    background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+    box-shadow: -3px -3px 7px var(--sh-light), 3px 3px 8px rgba(91, 108, 255, 0.4);
+  }
+  .nav-logo-mark svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .tab {
+    flex-direction: row; justify-content: flex-start; gap: 12px;
+    font-size: 14px; font-weight: 700;
+    padding: 12px 14px;
+    border-radius: var(--r-btn);
+    transition: box-shadow 0.15s, color 0.15s;
+  }
+  .tab svg { width: 20px; height: 20px; }
+  .tab.active::after { content: none; }
+  .tab.active {
+    background: var(--bg-deep);
+    box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark);
+  }
+  /* 内容部: サイドバーがタイトルを担うため上部キャプションは不要 */
+  .caption { display: none; }
+  .app { max-width: 1100px; padding: 36px 56px 48px; }
+
+  /* 今日の曲: 左=アートワーク / 右=曲情報と操作。ビューポート内で縦中央寄せ */
+  .main-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 26fr) minmax(0, 21fr);
+    column-gap: 64px;
+    align-items: center;
+    min-height: min(660px, calc(100dvh - 150px));
+  }
+  .main-media, .main-side { display: block; min-width: 0; }
+  .main-media .pedestal { max-width: 560px; margin-top: 0; }
+  .main-side .song-title { font-size: 22px; }
+  .main-side .rating-tray, .main-side .share-tray { max-width: 360px; }
+
+  /* 探す: 左=条件 / 右=候補と曲名検索 */
+  .ex-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 60px;
+    align-items: start;
+  }
+  .ex-left, .ex-right { display: block; min-width: 0; }
+  .ex-right .ex-result { margin-top: 26px; }
+
+  /* 好み・履歴・設定: 中央1カラム(スマホよりゆとりのある幅) */
+  #view-taste, #view-history, #view-settings { max-width: 640px; margin: 0 auto; }
 }
-@media (pointer: fine) and (min-width: 1100px) and (min-height: 1150px) {
-  .app, .tabbar { zoom: 1.5; }
+/* 大型ディスプレイでは全体をわずかに拡大 */
+@media (pointer: fine) and (min-width: 1680px) {
+  .app, .tabbar { zoom: 1.2; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -713,13 +878,18 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
     <div id="error-notice" class="hint inset" style="display:none"></div>
 
+    <!-- PC(≥1024px)では .main-cols が2カラムグリッドになる(スマホでは display:contents で透過) -->
+    <div class="main-cols">
+    <div class="main-media">
     <div class="pedestal raised-lg">
       <div class="thumb-wrap" id="thumb-wrap">
         <img id="thumb" src="" alt="曲のサムネイル">
         <span id="live-badge" class="live-badge" style="display:none">LIVE</span>
       </div>
     </div>
+    </div>
 
+    <div class="main-side">
     <h1 class="song-title" id="song-title"></h1>
     <div class="song-meta" id="song-tags"></div>
 
@@ -757,12 +927,17 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <span class="sImg-label">画像で共有</span>
       </button>
     </div>
+    </div>
+    </div>
 
     <p class="sync-reminder" id="sync-reminder" style="display:none">最終同期から<span id="sync-reminder-days">–</span>日たっています · <a id="sync-reminder-btn" role="button" tabindex="0">今すぐ同期</a></p>
   </section>
 
   <!-- ===== 探す ===== -->
   <section id="view-explore" class="view">
+    <!-- PC(≥1024px)では .ex-cols が「左=条件 / 右=結果と曲名検索」の2カラムになる -->
+    <div class="ex-cols">
+    <div class="ex-left">
     <h2 class="section-title">ジャンル(任意・複数)</h2>
     <div class="pill-grid" id="explore-genres"></div>
 
@@ -793,7 +968,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="pill-grid" id="explore-dur"></div>
 
     <button class="save-btn accent-raised" id="btn-explore">この条件で探す</button>
+    </div>
 
+    <div class="ex-right">
     <div id="explore-result" class="ex-result" style="display:none">
       <div class="ex-card raised">
         <div class="ex-thumb-wrap">
@@ -815,6 +992,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
     <ul class="hist-list" id="song-search-list"></ul>
     <div class="empty" id="song-search-empty" style="display:none">見つかりませんでした</div>
+    </div>
+    </div>
   </section>
 
   <!-- ===== 好み ===== -->
@@ -832,6 +1011,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="tile raised"><div class="t-val t-fit" id="t-today">─</div><div class="t-label">今日の再生</div></div>
     </div>
     <p class="persona" id="persona" style="display:none"></p>
+    <div class="profile-share-row" id="profile-share-row" style="display:none">
+      <button class="profile-share-btn raised" id="btn-share-profile" aria-label="音楽プロフィールを画像カードで共有">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span id="profile-share-label">プロフィールカードを共有</span>
+      </button>
+    </div>
     <div id="aff-genres-card">
       <h2 class="section-title">ジャンルの好み度</h2>
       <div class="aff-card raised">
@@ -922,7 +1107,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.1.0</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.2.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -959,8 +1144,14 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 </div>
 </main>
 
-<!-- ===== タブバー ===== -->
+<!-- ===== タブバー(PCでは左サイドバーになる) ===== -->
 <nav class="tabbar" role="tablist">
+  <div class="nav-logo" aria-hidden="true">
+    <span class="nav-logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </span>
+    <span>今日の作業テーマ曲</span>
+  </div>
   <button class="tab active" data-view="main" role="tab" aria-selected="true">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
     今日の曲
@@ -982,6 +1173,24 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     設定
   </button>
 </nav>
+
+<!-- ===== 実績の詳細(バッジのタップで開くモーダル) ===== -->
+<div class="modal-backdrop" id="ach-modal" hidden>
+  <div class="modal-card raised-lg" role="dialog" aria-modal="true" aria-labelledby="ach-name">
+    <div class="ach-level" id="ach-level"></div>
+    <h3 class="ach-name" id="ach-name"></h3>
+    <p class="ach-desc" id="ach-desc"></p>
+    <div class="ach-bar"><div class="ach-fill" id="ach-fill"></div></div>
+    <p class="ach-progress" id="ach-progress"></p>
+    <ul class="ach-tiers" id="ach-tiers"></ul>
+    <div class="modal-actions">
+      <button class="modal-share accent-raised" id="ach-share">
+        <span id="ach-share-label">画像で共有</span>
+      </button>
+      <button class="modal-close raised" id="ach-close">閉じる</button>
+    </div>
+  </div>
+</div>
 
 <script>
 "use strict";
@@ -2333,31 +2542,45 @@ function drawQRCode(ctx, x, y, px, text) {
   const g = ctx.createLinearGradient(lx, ly, lx + lg, ly + lg);
   g.addColorStop(0, "#5B6CFF"); g.addColorStop(1, "#4353E8");
   ctx.fillStyle = g; ctx.fill();
-  drawNoteIcon(ctx, lx + lg * 0.18, ly + lg * 0.18, lg * 0.64);
+  drawNoteIcon(ctx, lx, ly, lg);
   return true;
 }
-// 連桁音符アイコン(アプリと同一のグリフ)を24単位座標系で box(x,y,size)内に中央描画
+// 連桁音符グリフ。アプリアイコン(icon.svg)と同一ジオメトリの512グリッドで、
+// box(x,y,size)を「アイコンのタイル全体」として描く(グリフ自体の余白も同一比率)。
+// ※細線+真円の簡略グリフは拡大すると符頭と縦棒の接続が崩れて見えるため使わない
 function drawNoteIcon(ctx, x, y, size) {
-  const s = size / 24;
+  const s = size / 512;
   ctx.save();
   ctx.translate(x, y); ctx.scale(s, s);
-  ctx.translate(-1.4, 0); // 連桁音符は重心が右上に寄るため、光学的中央へわずかに左寄せ
   ctx.strokeStyle = "#fff"; ctx.fillStyle = "#fff";
-  ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
-  ctx.beginPath(); ctx.moveTo(9, 18); ctx.lineTo(9, 5); ctx.lineTo(21, 3); ctx.lineTo(21, 16); ctx.stroke();
-  ctx.beginPath(); ctx.arc(6, 18, 3, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(18, 16, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.lineWidth = 30; // 縦棒2本
+  ctx.beginPath(); ctx.moveTo(188, 360); ctx.lineTo(188, 174); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(360, 332); ctx.lineTo(360, 146); ctx.stroke();
+  ctx.lineWidth = 58; // 連桁(太い)
+  ctx.beginPath(); ctx.moveTo(188, 174); ctx.lineTo(360, 146); ctx.stroke();
+  for (const [ex, ey] of [[163, 360], [335, 332]]) { // 符頭(回転楕円)
+    ctx.save();
+    ctx.translate(ex, ey); ctx.rotate(-18 * Math.PI / 180);
+    ctx.beginPath(); ctx.ellipse(0, 0, 45, 34, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
   ctx.restore();
 }
 
-async function buildShareCanvas(song) {
+/* ---- 共有カードの共通部(背景+ヘッダ / QRフッタ)----
+ * 「今日の1曲」「実績」「プロフィール」の3種のカードが同じ体裁を共有する。 */
+async function loadCardFonts() {
   if (document.fonts && document.fonts.load) {
     await Promise.all([
       document.fonts.load('900 58px "Zen Kaku Gothic New"'),
       document.fonts.load('700 30px "Zen Kaku Gothic New"'),
     ]).catch(() => {});
   }
-  const W = 1080, H = 1920, PAD = 88; // 9:16 縦長(スマホ全画面比)
+}
+// 1080×1920(9:16)のキャンバスに背景+ヘッダ(ロゴ・アプリ名・日付)を描いて返す
+function cardCanvasBase() {
+  const W = 1080, H = 1920, PAD = 88;
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const ctx = cv.getContext("2d");
@@ -2373,13 +2596,52 @@ async function buildShareCanvas(song) {
   const gg = ctx.createLinearGradient(gx, gy, gx + gs, gy + gs);
   gg.addColorStop(0, "#5B6CFF"); gg.addColorStop(1, "#4353E8");
   ctx.fillStyle = gg; ctx.fill();
-  drawNoteIcon(ctx, gx + gs * 0.16, gy + gs * 0.16, gs * 0.68); // 枠中央に音符
+  drawNoteIcon(ctx, gx, gy, gs); // タイル全体=アプリアイコンと同じ収まり
   ctx.fillStyle = "#3D4A63"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
   ctx.font = '700 33px "Zen Kaku Gothic New", sans-serif';
   ctx.fillText("今日の作業テーマ曲", gx + gs + 20, gy + gs / 2 + 1);
   ctx.fillStyle = "#8A96AD"; ctx.textAlign = "right";
   ctx.font = '700 28px "Zen Kaku Gothic New", sans-serif';
   ctx.fillText(todayStr().replace(/-/g, "."), W - PAD, gy + gs / 2 + 1);
+
+  return { cv, ctx, W, H, PAD, headerEnd: gy + gs };
+}
+// 下部の区切り線+QRパネル+テキスト導線。dividerY(本文が使える下限)を返す
+function drawCardFooter(ctx, W, H, PAD, url, flines) {
+  const qr = 260, qpad = 20, panel = qr + qpad * 2;
+  const panelX = PAD, panelY = H - PAD - panel;
+  const dividerY = panelY - 60;
+
+  ctx.strokeStyle = "rgba(136,152,184,.3)"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(PAD, dividerY); ctx.lineTo(W - PAD, dividerY); ctx.stroke();
+
+  ctx.save();
+  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 26; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 8;
+  roundRectPath(ctx, panelX, panelY, panel, panel, 28);
+  ctx.fillStyle = "#FFFFFF"; ctx.fill();
+  ctx.restore();
+  const okQR = drawQRCode(ctx, panelX + qpad, panelY + qpad, qr, url);
+  if (!okQR) {
+    ctx.fillStyle = "#8A96AD"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
+    ctx.fillText("QRを生成できません", panelX + panel / 2, panelY + panel / 2);
+  }
+
+  // QR右のテキスト導線: ブロックを領域内で中央寄せ、文頭はインク左端で揃える
+  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  let maxW = 0;
+  for (const L of flines) { ctx.font = L.f; maxW = Math.max(maxW, ctx.measureText(L.t).width); }
+  const region0 = panelX + panel, region1 = W - PAD;
+  const tx = Math.max(region0 + 44, region0 + (region1 - region0 - maxW) / 2);
+  for (const L of flines) { ctx.font = L.f; ctx.fillStyle = L.c; ctx.fillText(L.t, tx - inkLeftOffset(L.f, L.t), panelY + L.dy); }
+
+  return dividerY;
+}
+
+async function buildShareCanvas(song) {
+  await loadCardFonts();
+  const { cv, ctx, W, H, PAD, headerEnd } = cardCanvasBase();
+  const gy = headerEnd - 66, gs = 66; // 既存レイアウト式のためヘッダ位置を復元
 
   // 台座 + サムネ(16:9)
   const pedX = PAD, pedY = gy + gs + 54, pedW = W - PAD * 2, pedPad = 24;
@@ -2402,15 +2664,13 @@ async function buildShareCanvas(song) {
     fg.addColorStop(0, "#5B6CFF"); fg.addColorStop(1, "#AAB4FF");
     ctx.fillStyle = fg; ctx.fillRect(thX, thY, thW, thH);
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    drawNoteIcon(ctx, thX + thW / 2 - 70, thY + thH / 2 - 70, 140);
+    drawNoteIcon(ctx, thX + thW / 2 - 105, thY + thH / 2 - 105, 210);
   }
   ctx.restore();
   const pedEnd = pedY + pedH;
 
-  // ---- フッタ(QR + 導線)の位置を先に確定 ----
-  const qr = 260, qpad = 20, panel = qr + qpad * 2;      // QRパネル
-  const panelX = PAD, panelY = H - PAD - panel;
-  const dividerY = panelY - 60;
+  // フッタ(QR+導線)の上端。本文はこの線までの間で縦中央寄せする
+  const dividerY = H - PAD - 300 - 60;
 
   // ラベル + タイトル + ピル を、台座下〜区切り線の間で縦中央寄せ
   ctx.font = '700 58px "Zen Kaku Gothic New", sans-serif';
@@ -2434,72 +2694,259 @@ async function buildShareCanvas(song) {
   px += drawPill(ctx, px, y, "# " + (GENRE_LABELS[song.genres[0]] || song.genres[0]), "#E9ECFF", "#4353E8") + 16;
   drawPill(ctx, px, y, durationText(song).split("(")[0], "#FFFFFF", "#6E7A93");
 
-  // ---- 区切り線 ----
-  ctx.strokeStyle = "rgba(136,152,184,.3)"; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(PAD, dividerY); ctx.lineTo(W - PAD, dividerY); ctx.stroke();
-
-  // ---- QRパネル(白地・浮き)+ QR ----
-  ctx.save();
-  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 26; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 8;
-  roundRectPath(ctx, panelX, panelY, panel, panel, 28);
-  ctx.fillStyle = "#FFFFFF"; ctx.fill();
-  ctx.restore();
+  // ---- フッタ(区切り線+QRパネル+導線)----
   // QRはアプリのディープリンク(?v=)へ。スキャンした人がこのアプリでそのまま聴ける
-  const okQR = drawQRCode(ctx, panelX + qpad, panelY + qpad, qr, `https://todaybgm.pages.dev/?v=${song.id}`);
-  if (!okQR) {
-    ctx.fillStyle = "#8A96AD"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
-    ctx.fillText("QRを生成できません", panelX + panel / 2, panelY + panel / 2);
-  }
-
-  // ---- QR右のテキスト導線 ----
-  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
   const FF = 'Zen Kaku Gothic New", sans-serif';
-  const flines = [
+  drawCardFooter(ctx, W, H, PAD, `https://todaybgm.pages.dev/?v=${song.id}`, [
     { t: "スキャンして聴く", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
     { t: "アプリでこの曲がひらきます", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
     { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
     { t: "todaybgm.pages.dev", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
-  ];
-  // ブロックをQR右の領域で中央寄せ(右余白とのバランス改善)、文頭はインク左端で揃える
-  let maxW = 0;
-  for (const L of flines) { ctx.font = L.f; maxW = Math.max(maxW, ctx.measureText(L.t).width); }
-  const region0 = panelX + panel, region1 = W - PAD;
-  const tx = Math.max(region0 + 44, region0 + (region1 - region0 - maxW) / 2);
-  for (const L of flines) { ctx.font = L.f; ctx.fillStyle = L.c; ctx.fillText(L.t, tx - inkLeftOffset(L.f, L.t), panelY + L.dy); }
+  ]);
 
   return cv;
+}
+
+// 生成済みキャンバスを共有シート(スマホ)またはダウンロード(PC)へ渡す共通処理
+// (PCの共有ダイアログは保存先が分かりにくいため直接ダウンロードにする)
+async function deliverCardImage(cv, fname, shareText) {
+  const blob = await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error("toBlob")), "image/png"));
+  const file = new File([blob], fname, { type: "image/png" });
+  if (isMobileLike() && navigator.canShare && navigator.canShare({ files: [file] })) {
+    await navigator.share({ files: [file], text: shareText });
+  } else {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = fname;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+}
+// 画像共有ボタンの共通ラッパ: 生成中のラベル差し替えと失敗時の通知
+async function runImageShare(labelEl, build) {
+  const prev = labelEl ? labelEl.textContent : "";
+  if (labelEl) labelEl.textContent = "画像を作成中…";
+  try {
+    await build();
+  } catch (e) {
+    if (!(e && e.name === "AbortError")) alert("画像の生成に失敗しました。時間をおいて再度お試しください。");
+  } finally {
+    if (labelEl) labelEl.textContent = prev;
+  }
 }
 
 async function shareTodayImage() {
   if (!currentSong) return;
   const song = currentSong;
-  const link = $("btn-share-img");
-  const label = link.querySelector(".sImg-label");
-  const prev = label ? label.textContent : "";
-  if (label) label.textContent = "画像を作成中…";
-  try {
+  await runImageShare(document.querySelector(".sImg-label"), async () => {
     const cv = await buildShareCanvas(song);
-    const blob = await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error("toBlob")), "image/png"));
-    const fname = `today-bgm-${todayStr().replace(/-/g, "")}.png`; // 例: today-bgm-20260722.png
-    const file = new File([blob], fname, { type: "image/png" });
-    const shareText = `今日の作業テーマ曲:「${song.title}」\n#作業用BGM #今日の作業テーマ曲`;
-    // PC(pointer:fine)では共有シートを出さず直接ダウンロードする
-    // (PCの共有ダイアログは保存先が分かりにくいため。ボタン表記も「画像を保存」になる)
-    if (isMobileLike() && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ files: [file], text: shareText });
-    } else {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = fname;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-    }
-  } catch (e) {
-    if (!(e && e.name === "AbortError")) alert("画像の生成に失敗しました。時間をおいて再度お試しください。");
-  } finally {
-    if (label) label.textContent = prev;
-  }
+    await deliverCardImage(cv, `today-bgm-${todayStr().replace(/-/g, "")}.png`,
+      `今日の作業テーマ曲:「${song.title}」\n#作業用BGM #今日の作業テーマ曲`);
+  });
+}
+
+/* =========================================================
+ * 実績カード(実績詳細モーダルの「画像で共有」)
+ * ========================================================= */
+// 文字間隔つきテキストを中央揃えで描く(drawTrackedの中央寄せ版)
+function drawTrackedCentered(ctx, text, cx, y, spacing) {
+  ctx.textAlign = "left";
+  let w = 0;
+  for (const ch of text) w += ctx.measureText(ch).width + spacing;
+  w -= spacing;
+  drawTracked(ctx, text, cx - w / 2, y, spacing);
+}
+// 進捗バー(角丸トラック+アクセントグラデの塗り)
+function drawProgressBar(ctx, x, y, w, h, pct) {
+  roundRectPath(ctx, x, y, w, h, h / 2);
+  ctx.fillStyle = "#DBE1EC"; ctx.fill();
+  const fw = Math.max(h, w * Math.min(100, pct) / 100); // 低進捗でも角丸が保てる最小幅
+  const g = ctx.createLinearGradient(x, y, x + w, y);
+  g.addColorStop(0, "#AAB4FF"); g.addColorStop(1, "#5B6CFF");
+  roundRectPath(ctx, x, y + 3, fw, h - 6, (h - 6) / 2);
+  ctx.fillStyle = g; ctx.fill();
+}
+async function buildAchievementCanvas(a, st) {
+  await loadCardFonts();
+  const { cv, ctx, W, H, PAD } = cardCanvasBase();
+  const FF = 'Zen Kaku Gothic New", sans-serif';
+  const cx = W / 2;
+
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#5B6CFF"; ctx.font = '900 27px "' + FF;
+  drawTrackedCentered(ctx, "ACHIEVEMENT", cx, 400, 8);
+
+  // メダル: 白の台座円+アクセントグラデ円+音符+Lv.ピル
+  const my = 730, rOut = 205, rIn = 172;
+  ctx.save();
+  ctx.shadowColor = "rgba(136,152,184,.5)"; ctx.shadowBlur = 40; ctx.shadowOffsetX = 10; ctx.shadowOffsetY = 16;
+  ctx.beginPath(); ctx.arc(cx, my, rOut, 0, Math.PI * 2);
+  ctx.fillStyle = "#FFFFFF"; ctx.fill();
+  ctx.restore();
+  const mg = ctx.createLinearGradient(cx - rIn, my - rIn, cx + rIn, my + rIn);
+  mg.addColorStop(0, "#5B6CFF"); mg.addColorStop(1, "#4353E8");
+  ctx.beginPath(); ctx.arc(cx, my, rIn, 0, Math.PI * 2);
+  ctx.fillStyle = mg; ctx.fill();
+  drawNoteIcon(ctx, cx - 180, my - 195, 360); // メダル中央にグリフ実寸約190pxで
+  // レベルピル(円の下端に重ねる)
+  ctx.font = '700 34px "' + FF;
+  const lvText = `Lv.${st.level} / ${a.tiers.length}`;
+  const lw = ctx.measureText(lvText).width + 56, lh = 66, ly = my + rIn - 30;
+  ctx.save();
+  ctx.shadowColor = "rgba(136,152,184,.55)"; ctx.shadowBlur = 18; ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 6;
+  roundRectPath(ctx, cx - lw / 2, ly, lw, lh, lh / 2);
+  ctx.fillStyle = "#FFFFFF"; ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = "#4353E8"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(lvText, cx, ly + lh / 2 + 1);
+
+  // 実績名+系列
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#3D4A63"; ctx.font = '900 64px "' + FF;
+  ctx.fillText(st.cur ? st.cur.name : a.tiers[0].name, cx, 1120);
+  ctx.fillStyle = "#8A96AD"; ctx.font = '700 30px "' + FF;
+  ctx.fillText(a.series, cx, 1178);
+
+  // 進捗(全段階達成なら達成メッセージ)
+  const bw = 640, bx = cx - bw / 2;
+  drawProgressBar(ctx, bx, 1250, bw, 26, st.pct);
+  ctx.font = '700 29px "' + FF;
+  ctx.fillStyle = st.maxed ? "#5B6CFF" : "#8A96AD";
+  ctx.fillText(st.maxed
+    ? `全段階を達成!(現在 ${a.fmt(st.value)})`
+    : `${a.fmt(st.value)} / ${a.fmt(st.next.need)} — 次は「${st.next.name}」`, cx, 1340);
+
+  drawCardFooter(ctx, W, H, PAD, "https://todaybgm.pages.dev/", [
+    { t: "スキャンしてはじめる", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
+    { t: "実績をあつめて育てよう", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
+    { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
+    { t: "todaybgm.pages.dev", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
+  ]);
+  return cv;
+}
+async function shareAchievementImage() {
+  const a = getAchievement(achOpenId);
+  if (!a) return;
+  const st = achievementState(a, usageStats());
+  if (!st.cur) return;
+  await runImageShare($("ach-share-label"), async () => {
+    const cv = await buildAchievementCanvas(a, st);
+    await deliverCardImage(cv, `today-bgm-achievement-${todayStr().replace(/-/g, "")}.png`,
+      `実績「${st.cur.name}」を達成!(${a.series} Lv.${st.level})\n#今日の作業テーマ曲`);
+  });
+}
+
+/* =========================================================
+ * プロフィールカード(音楽MBTI風の4軸タイプ+聴き方ペルソナ)
+ * ========================================================= */
+/* 4軸: 各軸 v は -1(左の極)〜+1(右の極)。評価由来の好み度テーブルと
+ * 再生実績から導出する(データが無い軸は0=中立)。 */
+function musicProfile(table, stats) {
+  const t = k => table[k] || 0;
+  const gsum = set => { let v = 0; for (const g of set) v += t(g); return v; };
+  const clamp1 = v => Math.max(-1, Math.min(1, v));
+  const axes = [
+    { L: "集中", R: "癒し", lc: "F", rc: "H", v: clamp1(t("calm") - t("focus")) },
+    { L: "アコースティック", R: "電子音", lc: "A", rc: "E", v: clamp1(gsum(ELECTRONIC_GENRES) - gsum(ACOUSTIC_GENRES)) },
+    { L: "朝", R: "夜", lc: "M", rc: "N", v: clamp1(t("night") - t("morning")) },
+    { L: "定番派", R: "探求派", lc: "S", rc: "X", v: clamp1((stats.genres - 6) / 5) },
+  ];
+  const code = axes.map(x => x.v > 0 ? x.rc : x.lc).join("");
+  const nickname = `${axes[2].v > 0 ? "夜型" : "朝型"}の${axes[0].v > 0 ? "癒し" : "集中"}${axes[3].v > 0 ? "探求家" : "こだわり派"}`;
+  return { axes, code, nickname };
+}
+async function buildProfileCanvas() {
+  await loadCardFonts();
+  const stats = usageStats();
+  const table = buildAffinityTable(load(LS.RATINGS, {}));
+  const prof = musicProfile(table, stats);
+  const persona = personaLabel(table);
+  const { cv, ctx, W, H, PAD } = cardCanvasBase();
+  const FF = 'Zen Kaku Gothic New", sans-serif';
+  const cx = W / 2;
+
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#5B6CFF"; ctx.font = '900 27px "' + FF;
+  drawTrackedCentered(ctx, "MUSIC PROFILE", cx, 330, 8);
+
+  // タイプコード(4文字)をアクセントグラデで大きく
+  ctx.font = '900 150px "' + FF;
+  const tg = ctx.createLinearGradient(cx - 260, 0, cx + 260, 0);
+  tg.addColorStop(0, "#5B6CFF"); tg.addColorStop(1, "#4353E8");
+  ctx.fillStyle = tg;
+  drawTrackedCentered(ctx, prof.code, cx, 500, 30);
+
+  // ニックネーム+ペルソナ(既存の聴き方ペルソナ表記を踏襲)
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#3D4A63"; ctx.font = '900 48px "' + FF;
+  ctx.fillText(prof.nickname, cx, 596);
+  ctx.fillStyle = "#8A96AD"; ctx.font = '700 31px "' + FF;
+  const personaLine = (persona ? `${persona} 派 · ` : "") + `BGM歴 ${stats.days}日`;
+  ctx.fillText(personaLine, cx, 656);
+
+  // 4軸バー: 左右ラベル(優勢側をアクセント)+割合つき
+  const rows0 = 780, rowH = 122, tw = W - PAD * 2;
+  prof.axes.forEach((ax, i) => {
+    const y = rows0 + i * rowH;
+    const rightPct = Math.round(50 + ax.v * 50), leftPct = 100 - rightPct;
+    const lDom = leftPct >= rightPct;
+    ctx.font = '700 30px "' + FF;
+    ctx.fillStyle = lDom ? "#4353E8" : "#8A96AD";
+    ctx.textAlign = "left";
+    ctx.fillText(`${ax.L} ${leftPct}%`, PAD, y);
+    ctx.fillStyle = lDom ? "#8A96AD" : "#4353E8";
+    ctx.textAlign = "right";
+    ctx.fillText(`${ax.R} ${rightPct}%`, W - PAD, y);
+    // トラック+左端から右極%まで伸びる塗り+位置ノブ
+    roundRectPath(ctx, PAD, y + 22, tw, 24, 12);
+    ctx.fillStyle = "#DBE1EC"; ctx.fill();
+    const knobX = PAD + tw * rightPct / 100;
+    const g = ctx.createLinearGradient(PAD, 0, PAD + tw, 0);
+    g.addColorStop(0, "#AAB4FF"); g.addColorStop(1, "#5B6CFF");
+    roundRectPath(ctx, PAD, y + 25, Math.max(18, tw * rightPct / 100), 18, 9);
+    ctx.fillStyle = g; ctx.fill();
+    ctx.save();
+    ctx.shadowColor = "rgba(136,152,184,.6)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 3;
+    ctx.beginPath(); ctx.arc(Math.max(PAD + 16, Math.min(W - PAD - 16, knobX)), y + 34, 17, 0, Math.PI * 2);
+    ctx.fillStyle = "#FFFFFF"; ctx.fill();
+    ctx.restore();
+  });
+
+  // 統計ピル(BGM歴・出会った曲・総再生)を中央に1列
+  const pillY = rows0 + 4 * rowH + 10;
+  ctx.font = '700 30px "' + FF;
+  const pills = [
+    `BGM歴 ${stats.days}日`,
+    `出会った曲 ${stats.songs}曲`,
+    `総再生 ${stats.listenSec ? fmtListen(stats.listenSec) : "0分"}`,
+  ];
+  const gapP = 18;
+  const widths = pills.map(p => ctx.measureText(p).width + 64);
+  let px = cx - (widths.reduce((a2, b) => a2 + b, 0) + gapP * (pills.length - 1)) / 2;
+  pills.forEach((p, i) => { drawPill(ctx, px, pillY, p, "#FFFFFF", "#6E7A93"); px += widths[i] + gapP; });
+
+  // 実績の合計レベル
+  let lvSum = 0, lvMax = 0;
+  for (const a of ACHIEVEMENTS) { lvSum += achievementState(a, stats).level; lvMax += a.tiers.length; }
+  ctx.fillStyle = "#8A96AD"; ctx.font = '700 27px "' + FF; ctx.textAlign = "center";
+  ctx.fillText(`実績 ${lvSum} / ${lvMax} 段階を達成`, cx, pillY + 130);
+
+  drawCardFooter(ctx, W, H, PAD, "https://todaybgm.pages.dev/", [
+    { t: "スキャンしてはじめる", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
+    { t: "あなたの音楽タイプは?", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
+    { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
+    { t: "todaybgm.pages.dev", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
+  ]);
+  return cv;
+}
+async function shareProfileImage() {
+  const stats = usageStats();
+  const prof = musicProfile(buildAffinityTable(load(LS.RATINGS, {})), stats);
+  await runImageShare($("profile-share-label"), async () => {
+    const cv = await buildProfileCanvas();
+    await deliverCardImage(cv, `today-bgm-profile-${todayStr().replace(/-/g, "")}.png`,
+      `わたしの音楽プロフィール: ${prof.code}「${prof.nickname}」(BGM歴 ${stats.days}日)\n#今日の作業テーマ曲`);
+  });
 }
 
 // 履歴の曲をタップ → 今日の曲にセットして即再生
@@ -2581,36 +3028,132 @@ function recommendAccuracy() {
   const hit = arr => Math.round(arr.filter(r => r.rating >= 4).length / arr.length * 100);
   return { early: hit(rs.slice(0, n)), recent: hit(rs.slice(-n)), n, count: rs.length };
 }
+/* 実績は「系列 × 段階」の進化型。1つの枠が、達成するたびに次の段階へ進化する
+ * (例: 200曲の探求 達成 → 同じ枠が 500曲の探求 になる)。tiersは昇順。 */
 const ACHIEVEMENTS = [
-  { name: "はじめの一曲", need: "曲を再生する", cond: s => s.songs >= 1 },
-  { name: "3日のおとも", need: "3日連続で使う", cond: s => s.streakBest >= 3 },
-  { name: "1週間の習慣", need: "7日連続で使う", cond: s => s.streakBest >= 7 },
-  { name: "ひと月の相棒", need: "30日連続で使う", cond: s => s.streakBest >= 30 },
-  { name: "10曲の出会い", need: "10曲再生する", cond: s => s.songs >= 10 },
-  { name: "50曲の出会い", need: "50曲再生する", cond: s => s.songs >= 50 },
-  { name: "200曲の探求", need: "200曲再生する", cond: s => s.songs >= 200 },
-  { name: "はじめての★", need: "曲を評価する", cond: s => s.rated >= 1 },
-  { name: "目利きの耳", need: "50曲評価する", cond: s => s.rated >= 50 },
-  { name: "ジャンル探検家", need: "6ジャンル聴く", cond: s => s.genres >= 6 },
-  { name: "全ジャンル制覇", need: "12ジャンル聴く", cond: s => s.genres >= 12 },
-  { name: "10時間のBGM", need: "累計10時間聴く", cond: s => s.listenSec >= 10 * 3600 },
-  { name: "100時間のBGM", need: "累計100時間聴く", cond: s => s.listenSec >= 100 * 3600 },
+  { id: "songs", series: "曲との出会い", desc: "再生した曲の数(同じ曲は1曲と数えます)",
+    metric: s => s.songs, fmt: v => v + "曲",
+    tiers: [
+      { need: 1,    name: "はじめの一曲" },
+      { need: 10,   name: "10曲の出会い" },
+      { need: 50,   name: "50曲の出会い" },
+      { need: 200,  name: "200曲の探求" },
+      { need: 500,  name: "500曲の探求" },
+      { need: 1000, name: "1000曲の大航海" },
+    ] },
+  { id: "streak", series: "連続日数", desc: "連続で使った日数(これまでの最長記録)",
+    metric: s => s.streakBest, fmt: v => v + "日",
+    tiers: [
+      { need: 3,   name: "3日のおとも" },
+      { need: 7,   name: "1週間の習慣" },
+      { need: 30,  name: "ひと月の相棒" },
+      { need: 100, name: "100日の道連れ" },
+      { need: 365, name: "365日の伴走者" },
+    ] },
+  { id: "days", series: "BGM歴", desc: "アプリで曲と出会った日数(合計・連続でなくてOK)",
+    metric: s => s.days, fmt: v => v + "日",
+    tiers: [
+      { need: 7,   name: "7日のBGM歴" },
+      { need: 30,  name: "30日のBGM歴" },
+      { need: 100, name: "100日のBGM歴" },
+      { need: 365, name: "365日のBGM歴" },
+    ] },
+  { id: "rated", series: "評価", desc: "★をつけた曲の数",
+    metric: s => s.rated, fmt: v => v + "曲",
+    tiers: [
+      { need: 1,   name: "はじめての★" },
+      { need: 10,  name: "評価の習慣" },
+      { need: 50,  name: "目利きの耳" },
+      { need: 150, name: "違いのわかる耳" },
+      { need: 400, name: "伝説の目利き" },
+    ] },
+  { id: "genres", series: "ジャンル", desc: "聴いたことのあるジャンルの数",
+    metric: s => s.genres, fmt: v => v + "ジャンル",
+    tiers: [
+      { need: 3,  name: "3ジャンルの旅" },
+      { need: 6,  name: "ジャンル探検家" },
+      { need: 12, name: "全ジャンル制覇" },
+    ] },
+  { id: "listen", series: "再生時間", desc: "実際に再生した時間の合計",
+    metric: s => s.listenSec, fmt: v => v > 0 ? fmtListen(v) : "0分",
+    tiers: [
+      { need: 10 * 3600,   name: "10時間のBGM" },
+      { need: 100 * 3600,  name: "100時間のBGM" },
+      { need: 500 * 3600,  name: "500時間のBGM" },
+      { need: 2000 * 3600, name: "2000時間のBGM" },
+    ] },
 ];
+function getAchievement(id) { return ACHIEVEMENTS.find(a => a.id === id); }
+// 系列の現在地: value=現在値 / level=達成済み段階数 / cur=達成済みの最高段階 /
+// next=いま目指す段階(全達成ならnull)/ pct=次の段階への進捗(0〜100)
+function achievementState(a, stats) {
+  const value = a.metric(stats);
+  let level = 0;
+  while (level < a.tiers.length && value >= a.tiers[level].need) level++;
+  const maxed = level >= a.tiers.length;
+  const cur = level > 0 ? a.tiers[level - 1] : null;
+  const next = maxed ? null : a.tiers[level];
+  const pct = maxed ? 100 : Math.min(100, Math.floor(value / next.need * 100));
+  return { value, level, maxed, cur, next, pct };
+}
 function renderBadges(stats) {
   const grid = $("badge-grid");
   grid.innerHTML = "";
-  let got = 0;
+  let lvSum = 0, lvMax = 0;
   for (const a of ACHIEVEMENTS) {
-    const on = !!a.cond(stats);
-    if (on) got++;
-    const el = document.createElement("div");
-    el.className = "badge " + (on ? "on" : "off");
-    const nm = document.createElement("span"); nm.className = "b-name"; nm.textContent = a.name;
-    const cd = document.createElement("span"); cd.className = "b-cond"; cd.textContent = on ? "達成" : a.need;
-    el.appendChild(nm); el.appendChild(cd);
+    const st = achievementState(a, stats);
+    lvSum += st.level; lvMax += a.tiers.length;
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "badge " + (st.level > 0 ? "on" : "off");
+    el.setAttribute("aria-label", `実績「${a.series}」の詳細を見る`);
+    const nm = document.createElement("span"); nm.className = "b-name";
+    nm.textContent = st.cur ? st.cur.name : a.tiers[0].name;
+    const bar = document.createElement("span"); bar.className = "b-bar";
+    const fill = document.createElement("span"); fill.className = "b-fill";
+    fill.style.width = st.pct + "%";
+    bar.appendChild(fill);
+    const cd = document.createElement("span"); cd.className = "b-cond";
+    cd.textContent = st.maxed ? "全段階達成!" : `${a.fmt(st.value)} / ${a.fmt(st.next.need)}`;
+    el.appendChild(nm); el.appendChild(bar); el.appendChild(cd);
+    el.addEventListener("click", () => openAchievement(a.id));
     grid.appendChild(el);
   }
-  $("badge-note").textContent = `${got} / ${ACHIEVEMENTS.length} 達成`;
+  $("badge-note").textContent = `${lvSum} / ${lvMax} 段階を達成 · バッジをタップすると詳細`;
+}
+/* ---- 実績の詳細モーダル(進捗バー+段階リスト+画像共有) ---- */
+let achOpenId = null;
+function openAchievement(id) {
+  const a = getAchievement(id);
+  if (!a) return;
+  achOpenId = id;
+  const st = achievementState(a, usageStats());
+  $("ach-level").textContent = `${a.series} · Lv.${st.level} / ${a.tiers.length}`;
+  $("ach-name").textContent = st.cur ? st.cur.name : a.tiers[0].name;
+  $("ach-desc").textContent = a.desc;
+  $("ach-fill").style.width = st.pct + "%";
+  $("ach-progress").textContent = st.maxed
+    ? `全段階を達成しました!(現在 ${a.fmt(st.value)})`
+    : `${a.fmt(st.value)} / ${a.fmt(st.next.need)} — 「${st.next.name}」まであと${a.fmt(st.next.need - st.value)}`;
+  const ul = $("ach-tiers");
+  ul.innerHTML = "";
+  a.tiers.forEach((t, i) => {
+    const li = document.createElement("li");
+    li.className = i < st.level ? "done" : (i === st.level ? "now" : "");
+    const tick = document.createElement("span"); tick.className = "tick";
+    tick.textContent = i < st.level ? "✓" : (i === st.level ? "▶" : "");
+    const tx = document.createElement("span");
+    tx.textContent = `${t.name}(${a.fmt(t.need)})`;
+    li.appendChild(tick); li.appendChild(tx);
+    ul.appendChild(li);
+  });
+  // まだ1段階も達成していない系列は共有カードを出さない
+  $("ach-share").style.display = st.level > 0 ? "" : "none";
+  $("ach-modal").removeAttribute("hidden");
+}
+function closeAchievement() {
+  $("ach-modal").setAttribute("hidden", "");
+  achOpenId = null;
 }
 function renderPersona(table, stats) {
   const el = $("persona");
@@ -2691,6 +3234,8 @@ function renderTaste() {
                  ["t-today", stats.todaySec ? fmtListen(stats.todaySec) : "─"]];
   for (const [id, v] of tiles) { const el = $(id); el.textContent = v; fitTileValue(el); }
   renderPersona(table, stats);
+  // プロフィールカード共有は1日でも使っていれば出す(タイプは中立から始まり評価で育つ)
+  $("profile-share-row").style.display = stats.days ? "" : "none";
   renderAccuracy(stats);
   renderBadges(stats);
 }
@@ -3214,11 +3759,23 @@ $("btn-yt").addEventListener("click", () => {
 });
 $("btn-share-img").addEventListener("click", shareTodayImage);
 $("btn-share-img").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); shareTodayImage(); } });
-// PCでは共有シートではなくダウンロードになるため、表記も「画像を保存」にする
+// 実績の詳細モーダル(バッジのタップで開く)
+$("ach-close").addEventListener("click", closeAchievement);
+$("ach-modal").addEventListener("click", ev => { if (ev.target === $("ach-modal")) closeAchievement(); });
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape" && !$("ach-modal").hasAttribute("hidden")) closeAchievement();
+});
+$("ach-share").addEventListener("click", shareAchievementImage);
+// プロフィールカード(音楽MBTI風)の共有
+$("btn-share-profile").addEventListener("click", shareProfileImage);
+// PCでは共有シートではなくダウンロードになるため、表記も「保存」にする
 if (!isMobileLike()) {
   const l = document.querySelector(".sImg-label");
   if (l) l.textContent = "画像を保存";
   $("btn-share-img").setAttribute("aria-label", "今日の1曲の画像を保存(ダウンロード)");
+  $("ach-share-label").textContent = "画像を保存";
+  $("profile-share-label").textContent = "プロフィールカードを保存";
+  $("btn-share-profile").setAttribute("aria-label", "音楽プロフィールの画像カードを保存(ダウンロード)");
 }
 // 「今日の曲」を更新モードに従って選び直す。再生開始済み(再生中・一時停止中)の曲には触れない。
 // includeAlways: 「開くたび」モードを発動させるか(バックグラウンド復帰=true / 定期チェック=false。

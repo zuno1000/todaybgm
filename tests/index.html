@@ -524,10 +524,10 @@ async function main() {
   eq("usageStats: 日数・曲数・評価数", [st10.days, st10.songs, st10.rated], [2, 3, 1]);
   eq("usageStats: streakBest(連続2日)", st10.streakBest, 2);
   win().showView("taste");
-  check("あゆみ: バッジ13個+達成数の表示",
-    doc().querySelectorAll("#badge-grid .badge").length === 13 &&
-    doc().getElementById("badge-note").textContent.includes("/ 13"));
-  check("あゆみ: 達成済みバッジがある(はじめの一曲)", !!doc().querySelector("#badge-grid .badge.on"));
+  check("あゆみ: 進化型バッジ6系列+達成段階数の表示",
+    doc().querySelectorAll("#badge-grid .badge").length === 6 &&
+    doc().getElementById("badge-note").textContent.includes("段階"));
+  check("あゆみ: 達成済み系列がある(はじめの一曲)", !!doc().querySelector("#badge-grid .badge.on"));
   check("統計タイル: 総再生時間が表示される", doc().getElementById("t-listen").textContent === "1.0時間");
   check("ペルソナ: ラベルが表示される", doc().getElementById("persona").style.display !== "none");
   const tbl10 = win().buildAffinityTable({ [celticSong.id]: R(5, NOW_ISO) });
@@ -549,6 +549,46 @@ async function main() {
     { updatedAt: 2, bgm_listen: { "2026-07-21": 80, "2026-07-22": 30 } });
   eq("mergeData: bgm_listenは日別max", mL.bgm_listen,
     { "2026-07-20": 100, "2026-07-21": 80, "2026-07-22": 30 });
+
+  /* ---- Suite 11: 実績の進化型・プロフィールカード(2026-07-28 機能追加) ---- */
+  suite("11. 実績の進化・プロフィールカード");
+  // 進化型実績: 段階と進捗の導出(achievementStateは純粋関数)
+  const aSongs = win().getAchievement("songs");
+  const s137 = win().achievementState(aSongs, { songs: 137 });
+  eq("achievementState: 達成レベルと次の目標(137曲)", [s137.level, s137.next.need], [3, 200]);
+  eq("achievementState: 進捗%(137/200=68%)", s137.pct, 68);
+  eq("achievementState: 達成済み最高段階の名前", s137.cur.name, "50曲の出会い");
+  check("achievementState: 0曲はlevel 0で最初の段階が目標",
+    win().achievementState(aSongs, { songs: 0 }).level === 0 &&
+    win().achievementState(aSongs, { songs: 0 }).next.need === 1);
+  const gMax = win().achievementState(win().getAchievement("genres"), { genres: 12 });
+  check("achievementState: 全段階達成でmaxed+100%+nextなし",
+    gMax.maxed && gMax.pct === 100 && !gMax.next);
+  // バッジタップ → 詳細モーダル(進捗バー・段階リスト・閉じる)
+  seedLS({ bgm_plays: { [t0]: { first: pianoSong.id, plays: [pianoSong.id] } },
+           bgm_ratings: { [pianoSong.id]: R(5, NOW_ISO) } });
+  win().showView("taste");
+  doc().querySelector("#badge-grid .badge").click();
+  check("実績モーダル: バッジのタップで開く", !doc().getElementById("ach-modal").hasAttribute("hidden"));
+  check("実績モーダル: 進捗バーに幅が入る", doc().getElementById("ach-fill").style.width !== "");
+  eq("実績モーダル: 段階リストが全段階ぶん描画される",
+    doc().querySelectorAll("#ach-tiers li").length, 6);
+  check("実績モーダル: 達成済み段階に✓がつく", !!doc().querySelector("#ach-tiers li.done"));
+  doc().getElementById("ach-close").click();
+  check("実績モーダル: 閉じるボタンで閉じる", doc().getElementById("ach-modal").hasAttribute("hidden"));
+  check("プロフィール共有ボタン: 利用日があれば表示される",
+    doc().getElementById("profile-share-row").style.display !== "none");
+  // 音楽プロフィール(MBTI風4軸)の導出
+  const prof = win().musicProfile(
+    { focus: 0.8, calm: 0.1, night: 0.5, kawaii: 0.9, piano: 0.2 }, { genres: 10 });
+  eq("musicProfile: 4文字タイプコード(集中×電子×夜×探求)", prof.code, "FENX");
+  check("musicProfile: ニックネームが軸を反映", prof.nickname === "夜型の集中探求家", prof.nickname);
+  eq("musicProfile: データなしは中立(各軸の左極)", win().musicProfile({}, { genres: 0 }).code, "FAMS");
+  // 共有カードはどちらも 1080×1920(9:16)で生成される
+  const pcv = await win().buildProfileCanvas();
+  check("プロフィールカード: 1080×1920で生成", pcv.width === 1080 && pcv.height === 1920);
+  const acv = await win().buildAchievementCanvas(aSongs, win().achievementState(aSongs, win().usageStats()));
+  check("実績カード: 1080×1920で生成", acv.width === 1080 && acv.height === 1920);
 }
 
 /* ==== 実行 ==== */
