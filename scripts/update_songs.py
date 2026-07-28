@@ -51,6 +51,12 @@ TITLE_BLOCKLIST = re.compile(
     # 歌もの対策: 「no vocals」等の否定形は残す(インスト明記の可能性が高い)
     r"lyrics?|歌詞|歌ってみた|(?<!no )vocals?|ボーカル|feat\.",
     re.IGNORECASE)
+# 歌もの疑いの強いワード(2026-07-28 ユーザー報告より)。ただしインスト明記があれば通す。
+# ※「hip hop / chillhop」はインスト系Lo-fiの定番表記のため対象にしない
+VOCAL_HINT = re.compile(r"ラップ|\brap\b|k-?pop|邦楽", re.IGNORECASE)
+INSTRUMENTAL_OK = re.compile(
+    r"no ?(vocals?|rap)|instrumental|インスト|歌なし|歌詞なし|off ?vocal|non-?vocal",
+    re.IGNORECASE)
 
 MOOD_RULES = [
     (re.compile(r"rain|thunder|storm|雨|雷", re.I), "rain"),
@@ -338,6 +344,8 @@ def main():
             if info["live"] or info["seconds"] < MIN_SECONDS:
                 continue
             if not info["title"] or TITLE_BLOCKLIST.search(info["title"]):
+                continue
+            if VOCAL_HINT.search(info["title"]) and not INSTRUMENTAL_OK.search(info["title"]):
                 continue
             cid = info.get("channelId", "")
             if cid and chan_count.get((genre, cid), 0) >= args.max_per_channel:
