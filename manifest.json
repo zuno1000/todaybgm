@@ -1,7 +1,7 @@
 {
   "name": "今日の作業テーマ曲",
   "short_name": "TODAY'S BGM",
-  "description": "アプリを開いた瞬間、今日の作業用BGMが1曲決まっている。",
+  "description": "毎日の作業に、ぴったりのBGMを。使うほど、あなた好みの選曲へ。",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#E8EDF5",

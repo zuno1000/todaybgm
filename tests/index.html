@@ -423,6 +423,61 @@ async function main() {
   w.setPseudoFullscreen(false);
   check("擬似全画面解除: タブバーが復帰",
     w.getComputedStyle(doc().querySelector(".tabbar")).display !== "none");
+
+  /* ---- Suite 8: UIレイアウト(2026-07-28 修正分) ---- */
+  suite("8. UIレイアウト");
+  // 「いちばん好き」タイル: 長いジャンル名(ケルト音楽)でも語中改行せず1行に収まる
+  const celticSong = byGenre("celtic")[0];
+  seedLS({ bgm_ratings: { [celticSong.id]: R(5, NOW_ISO) } });
+  w.showView("taste");
+  const tTop = doc().getElementById("t-top");
+  check("いちばん好き: ケルト音楽が表示される", tTop.textContent === "ケルト音楽", tTop.textContent);
+  check("いちばん好き: 1行固定(white-space: nowrap)", w.getComputedStyle(tTop).whiteSpace === "nowrap");
+  check("いちばん好き: フォント自動縮小で幅に収まる(はみ出しなし)",
+    tTop.scrollWidth <= tTop.clientWidth, `scroll=${tTop.scrollWidth} client=${tTop.clientWidth}`);
+  // このアプリについて: 2つのリンクピルがスマホ幅(375px)でも横1列に並ぶ
+  w.showView("settings");
+  const linkPills = Array.from(doc().querySelectorAll(".about-links .toggle-pill"));
+  check("aboutリンク: 2つのピルが同じ行に並ぶ(offsetTop一致)",
+    linkPills.length === 2 && linkPills[0].offsetTop === linkPills[1].offsetTop,
+    linkPills.map(p => p.offsetTop).join(" vs "));
+  check("aboutリンク: ラベルがピルからはみ出していない",
+    linkPills.every(p => p.scrollWidth <= p.clientWidth + 1),
+    linkPills.map(p => `${p.scrollWidth}/${p.clientWidth}`).join(", "));
+  // 説明文: 「作業用BGM推薦アプリ。」が語中で改行されない(nowrap指定+1行に収まる)
+  const aboutNw = doc().querySelector("#about-card .nowrap");
+  check("about説明文: 語尾がnowrapで括られ1行に収まる",
+    !!aboutNw && aboutNw.getClientRects().length === 1,
+    aboutNw ? `rects=${aboutNw.getClientRects().length}` : "span missing");
+
+  /* ---- Suite 9: 同期リマインダー(2026-07-28追加) ---- */
+  suite("9. 同期リマインダー");
+  const DAY = 86400000;
+  // 連携済み+未同期の変更あり+最終同期から4日 → 表示
+  seedLS({ bgm_sync: { linked: true, lastSync: Date.now() - 4 * DAY, dirtySince: Date.now() - DAY } });
+  eq("最終同期4日前+変更あり: 経過日数を返す", w.syncReminderDays(), 4);
+  w.renderSyncReminder();
+  const rem = doc().getElementById("sync-reminder");
+  check("リマインダーが表示され日数が入る",
+    rem.style.display !== "none" && doc().getElementById("sync-reminder-days").textContent === "4");
+  // 閾値未満(1日)は出さない
+  seedLS({ bgm_sync: { linked: true, lastSync: Date.now() - 1 * DAY, dirtySince: Date.now() } });
+  eq("最終同期1日前: 出さない", w.syncReminderDays(), 0);
+  // 未同期の変更がなければ何日経っていても出さない
+  seedLS({ bgm_sync: { linked: true, lastSync: Date.now() - 30 * DAY, dirtySince: 0 } });
+  eq("変更なし(dirtySince=0): 出さない", w.syncReminderDays(), 0);
+  // 未連携なら出さない
+  seedLS({ bgm_sync: { linked: false, lastSync: 0, dirtySince: Date.now() } });
+  eq("未連携: 出さない", w.syncReminderDays(), 0);
+  w.renderSyncReminder();
+  check("非表示に戻る", doc().getElementById("sync-reminder").style.display === "none");
+  // データ変更(scheduleAutoSync)で dirtySince が記録される(同期成功でクリアされる想定)
+  seedLS({ bgm_sync: { linked: true, lastSync: Date.now() } });
+  w.scheduleAutoSync();
+  check("scheduleAutoSync: dirtySince を記録する", JSON.parse(localStorage.getItem("bgm_sync")).dirtySince > 0);
+  seedLS({ bgm_sync: { linked: false } });
+  w.scheduleAutoSync();
+  check("scheduleAutoSync: 未連携では記録しない", !JSON.parse(localStorage.getItem("bgm_sync")).dirtySince);
 }
 
 /* ==== 実行 ==== */

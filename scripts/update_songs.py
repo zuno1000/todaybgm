@@ -39,6 +39,7 @@ import urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SONGS_PATH = os.path.join(ROOT, "songs.json")
 QUERIES_PATH = os.path.join(ROOT, "scripts", "queries.json")
+NG_PATH = os.path.join(ROOT, "scripts", "ng_ids.json")  # 恒久除外(削除+再追加防止)
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
@@ -46,7 +47,9 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 MIN_SECONDS = 8 * 60          # 8分未満は自動追加しない
 TITLE_BLOCKLIST = re.compile(
     r"reaction|gameplay|walkthrough|let'?s play|tutorial|review|trailer|"
-    r"podcast|interview|shorts|episode \d|実況|解説|考察|ランキング",
+    r"podcast|interview|shorts|episode \d|実況|解説|考察|ランキング|"
+    # 歌もの対策: 「no vocals」等の否定形は残す(インスト明記の可能性が高い)
+    r"lyrics?|歌詞|歌ってみた|(?<!no )vocals?|ボーカル|feat\.",
     re.IGNORECASE)
 
 MOOD_RULES = [
@@ -233,7 +236,18 @@ def main():
     with open(QUERIES_PATH, encoding="utf-8") as f:
         queries = json.load(f)
 
-    known_ids = {s["id"] for s in songs}
+    # ---- 0. NGリスト(恒久除外)の適用 ----
+    ng_ids = set()
+    if os.path.exists(NG_PATH):
+        with open(NG_PATH, encoding="utf-8") as f:
+            ng_ids = {e["id"] for e in json.load(f).get("ng", [])}
+    banned = [s for s in songs if s["id"] in ng_ids]
+    for s in banned:
+        print(f"  REMOVED (ng list): {s['id']} {s['title']}")
+    songs = [s for s in songs if s["id"] not in ng_ids]
+
+    # NG入りのIDは検索候補からも除外する(削除しても週次更新で再追加されるのを防ぐ)
+    known_ids = {s["id"] for s in songs} | ng_ids
 
     # ---- 1. 既存エントリの死活チェック ----
     print(f"checking {len(songs)} existing entries...")
@@ -352,7 +366,7 @@ def main():
 
     # ---- 3. 保存 ----
     print(f"\nresult: {len(songs)} songs "
-          f"(+{len(added)} added, -{len(removed)} removed)")
+          f"(+{len(added)} added, -{len(removed)} dead, -{len(banned)} ng)")
     # ジャンル別のチャンネル多様性サマリー
     by_genre = {}
     for s in songs:

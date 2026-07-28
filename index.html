@@ -207,6 +207,13 @@ body.fs-on .tabbar { display: none; }
 .pill.inset, .aff-val.inset {
   box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
 }
+
+/* ---- 同期リマインダー(最終同期からN日+未同期の変更がある時だけ出す控えめな1行) ---- */
+.sync-reminder {
+  text-align: center; font-size: 12px; color: var(--text-sub);
+  margin: 16px 8px 0;
+}
+.sync-reminder a { cursor: pointer; font-weight: 700; }
 .pill.genre { color: var(--accent); font-weight: 700; }
 
 /* ---- 再生操作(主役は再生ボタンのみ。前/次は装飾なしのフラットアイコン=
@@ -391,7 +398,10 @@ body.fs-on .tabbar { display: none; }
 }
 /* リンクをピル型ボタンとして使う場合(このアプリについて等) */
 a.toggle-pill { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
-.about-links { margin-top: 18px; } /* 説明文とボタン列の間隔(他カードの見出し→ピルと同程度) */
+.about-links { margin-top: 18px; flex-wrap: nowrap; } /* 説明文とボタン列の間隔(他カードの見出し→ピルと同程度) */
+/* 2つのリンクピルはスマホ幅でも横1列に収める(#todaymode-pillsと同じ等幅化) */
+.about-links .toggle-pill { flex: 1; min-width: 0; padding: 10px 2px; white-space: nowrap; }
+.nowrap { white-space: nowrap; } /* 文節単位の折返し制御(語尾だけの孤立改行防止) */
 .save-btn {
   display: block;
   margin: 34px auto 10px;
@@ -506,6 +516,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   display: flex; flex-direction: column; justify-content: center;
 }
 .tile .t-val { font-size: 19px; font-weight: 700; line-height: 1.4; }
+/* 「いちばん好き」のジャンル名は語中で改行させない(収まらない時はJSでフォントを縮小) */
+#t-top { white-space: nowrap; }
 .tile .t-label { font-size: 10px; color: var(--text-sub); }
 
 .aff-card { border-radius: var(--r-card); padding: 22px 20px; }
@@ -637,6 +649,21 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   background: var(--accent);
 }
 
+/* ============================================================
+   PCなど大画面(マウス主体)向け: スマホと同じ配置・サイズ比になるよう
+   内容全体を段階的に拡大する。bodyは100dvh指定があるためzoomを掛けず、
+   .app(内容)と.tabbar(タブバー)にのみ掛ける。
+   ============================================================ */
+@media (pointer: fine) and (min-width: 720px) and (min-height: 820px) {
+  .app, .tabbar { zoom: 1.15; }
+}
+@media (pointer: fine) and (min-width: 900px) and (min-height: 960px) {
+  .app, .tabbar { zoom: 1.3; }
+}
+@media (pointer: fine) and (min-width: 1100px) and (min-height: 1150px) {
+  .app, .tabbar { zoom: 1.5; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, .view { animation: none !important; transition: none !important; }
 }
@@ -698,6 +725,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <span class="sImg-label">画像で共有</span>
       </button>
     </div>
+
+    <p class="sync-reminder" id="sync-reminder" style="display:none">最終同期から<span id="sync-reminder-days">–</span>日たっています · <a id="sync-reminder-btn" role="button" tabindex="0">今すぐ同期</a></p>
   </section>
 
   <!-- ===== 探す ===== -->
@@ -831,8 +860,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.0.0</span><br>
-      開いた瞬間、今日の一曲が決まっている作業用BGMレコメンド。<br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.0.1</span><br>
+      開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
         <a class="toggle-pill" href="privacy.html">プライバシーポリシー</a>
@@ -2369,6 +2398,16 @@ function affRow(label, value) {
   return row;
 }
 
+/* タイルの値(1行固定)が幅に収まらない時だけフォントを縮める(「ケルト音楽」等の語中改行防止) */
+function fitTileValue(el) {
+  el.style.fontSize = "";
+  let fs = parseFloat(getComputedStyle(el).fontSize) || 19;
+  while (fs > 11 && el.clientWidth > 0 && el.scrollWidth > el.clientWidth) {
+    fs -= 1;
+    el.style.fontSize = fs + "px";
+  }
+}
+
 function renderTaste() {
   const ratings = load(LS.RATINGS, {});
   const entries = Object.values(ratings);
@@ -2382,7 +2421,9 @@ function renderTaste() {
   const moodTags = Object.keys(MOOD_LABELS).filter(m => table[m] !== undefined);
 
   const best = genreTags.filter(g => table[g] > 0).sort((a, b) => table[b] - table[a])[0];
-  $("t-top").textContent = best ? GENRE_LABELS[best] : "─";
+  const top = $("t-top");
+  top.textContent = best ? GENRE_LABELS[best] : "─";
+  fitTileValue(top);
 
   const hasData = genreTags.length > 0 || moodTags.length > 0;
   $("taste-empty").style.display = hasData ? "none" : "";
@@ -2766,7 +2807,7 @@ async function driveSync(interactive) {
     if (id) { try { remote = await driveDownload(token, id); } catch (e) {} }
     const merged = mergeData(collectLocal(), remote);
     applyData(merged);
-    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, ratingsResetAt: merged.ratingsResetAt || 0, playsResetAt: merged.playsResetAt || 0, lastSync: Date.now(), error: false });
+    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, ratingsResetAt: merged.ratingsResetAt || 0, playsResetAt: merged.playsResetAt || 0, lastSync: Date.now(), error: false, dirtySince: 0 });
     await driveSave(token, id, JSON.stringify(merged));
     refreshAfterSync();
   } catch (e) {
@@ -2774,13 +2815,35 @@ async function driveSync(interactive) {
     if (interactive) alert("同期に失敗しました: " + (e && e.message ? e.message : e));
     setSyncMeta({ error: true });
   } finally {
-    syncing = false; renderSync();
+    syncing = false; renderSync(); renderSyncReminder();
   }
 }
 function scheduleAutoSync() {
   if (!syncConfigured() || !syncMeta().linked) return;
+  // 未同期のローカル変更ありを記録(同期成功でクリア)。同期リマインダーの判定に使う
+  if (!syncMeta().dirtySince) setSyncMeta({ dirtySince: Date.now() });
   clearTimeout(autoSyncTimer);
   autoSyncTimer = setTimeout(() => driveSync(false), 4000);
+}
+
+/* ---- 同期リマインダー ----
+ * トークンは約1時間で切れるため、久しく開いていない端末では自動同期が静かに止まり
+ * ローカルにだけ変更が溜まる。「最終同期からN日経過+未同期の変更あり」の時だけ、
+ * 今日の曲画面の下に1行のリマインダーを出す(タップ=ユーザー操作起点なのでポップアップが通る)。 */
+const SYNC_REMIND_DAYS = 3;
+function syncReminderDays() {
+  const m = syncMeta();
+  if (!syncConfigured() || !m.linked || !m.dirtySince) return 0;
+  const days = Math.floor((Date.now() - (m.lastSync || 0)) / 86400000);
+  return days >= SYNC_REMIND_DAYS ? days : 0;
+}
+function renderSyncReminder() {
+  const days = syncReminderDays();
+  $("sync-reminder").style.display = days ? "" : "none";
+  if (days) {
+    $("sync-reminder-days").textContent = days;
+    loadGIS().catch(() => {}); // 事前ロード(タップ時のポップアップをユーザー操作内で開くため)
+  }
 }
 function renderSync() {
   const box = $("sync-box");
@@ -2825,6 +2888,8 @@ document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("c
   setTimeout(() => b.classList.remove("pop"), 140);
   scheduleAutoSync();
 }));
+$("sync-reminder-btn").addEventListener("click", () => driveSync(true));
+$("sync-reminder-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); driveSync(true); } });
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 $("btn-reset-taste").addEventListener("click", resetTaste);
@@ -2927,6 +2992,7 @@ setInterval(() => refreshTodayIfNeeded(false), 60 * 1000);
   // 「開くたびに毎回」は起動ごとに選び直し、「一定時間ごと」は経過していれば選び直す
   init(todayMode().mode === "always" || todayIntervalElapsed());
   renderSync();
+  renderSyncReminder();
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)
   if (syncConfigured() && syncMeta().linked) driveSync(false);
 })();

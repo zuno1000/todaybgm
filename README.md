@@ -33,6 +33,10 @@
 - スマホのブラウザ内の埋め込み再生では広告を消せません。YouTube Premiumの方は設定の「常にYouTubeアプリで開く」をオンにすると広告なし+バックグラウンド再生ができます
 - 横向きの自動全画面はブラウザのUIまでは消せません。動画だけの全画面はプレイヤー右下の全画面ボタン、より没入するならホーム画面に追加(PWA)がおすすめです
 
+## コンテンツについて
+
+曲カタログはYouTube上の公開動画を機械的に収集・検証して掲載しています(動画の保存・再配布はしません)。そのため、**AI生成の音楽・サムネイルを含む動画や、無断転載が疑われる動画(ゲーム音楽等)が混ざる場合があります**。お気づきの際は下記フィードバック窓口へご連絡ください。確認のうえカタログから削除し、自動更新でも再追加されないよう除外リストで管理します。詳細は[プライバシーポリシー](https://todaybgm.pages.dev/privacy)の「コンテンツ(曲カタログ)について」をご覧ください。
+
 ## フィードバック
 
 不具合報告・要望は [GitHub Issues](https://github.com/zuno1000/todaybgm/issues) または todaybgm.contact@gmail.com へ。
@@ -57,6 +61,7 @@ python scripts/update_songs.py [--max-per-genre 60] [--per-query 25] [--dry-run]
 
 - 既存曲の死活チェック(再生不能になった動画を削除)+ ジャンル別クエリでの新曲検索・検証・追加
 - 同一チャンネルはジャンル内3曲まで(多様性の担保)
+- **NGリスト**: `scripts/ng_ids.json` にIDを追記すると、その曲をカタログから削除し、以後の自動更新でも再追加しない(歌もの・不適切コンテンツの恒久除外用)。タイトルに歌詞・ボーカルを明記した動画は自動追加時に除外される
 - 環境変数 `YOUTUBE_API_KEY` があれば YouTube Data API v3、なければスクレイピングで動作
 - 検索クエリは `scripts/queries.json` で管理(ここを編集すると探すジャンル・傾向を変えられる)
 - GitHub Actions(`.github/workflows/update-songs.yml`)が毎週土曜 6:00 JST に自動実行。
@@ -107,7 +112,7 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
 | `bgm_todaymode` | 「今日の曲」の更新タイミング(`{mode, hours}`) |
 | `bgm_openapp` | 常にYouTubeアプリで開く |
 | `bgm_fshint` | 全画面ヒントを表示済みか |
-| `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt}`) |
+| `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt, dirtySince}`)。`dirtySince`=未同期のローカル変更が発生した時刻(同期成功で0。同期リマインダーの判定に使用) |
 
 ## データ同期(端末間・Googleドライブ)の設定
 

@@ -1,0 +1,9 @@
+{
+  "_comment": "カタログから恒久的に除外する動画ID。update_songs.py が既存曲の削除と週次更新での再追加防止の両方に使う。手で追記してよい(id必須、reason/dateは記録用)。",
+  "ng": [
+    { "id": "Q-Jys6HQ_gg", "reason": "女性ボーカル入り(タイトル明記)", "date": "2026-07-28" },
+    { "id": "UUxZkEIlb0w", "reason": "Female Vocals入り(タイトル明記)", "date": "2026-07-28" },
+    { "id": "K7d-c9BhWUc", "reason": "Vocal House含むミックス(タイトル明記)", "date": "2026-07-28" },
+    { "id": "gQyYD6wF_9U", "reason": "ボーカル入り(feat.表記のMelodic Dubstepミックス・ユーザー確認済み)", "date": "2026-07-28" }
+  ]
+}
