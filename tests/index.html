@@ -591,6 +591,14 @@ async function main() {
   check("プロフィールカード: 1080×1920で生成", pcv.width === 1080 && pcv.height === 1920);
   const acv = await win().buildAchievementCanvas(aSongs, win().achievementState(aSongs, win().usageStats()));
   check("実績カード: 1080×1920で生成", acv.width === 1080 && acv.height === 1920);
+  // 横スクロール回帰: 検索結果(長い英語タイトル含む)を出しても内容部が横に伸びない
+  win().showView("explore");
+  doc().getElementById("song-search").value = "a";
+  win().renderSongSearch();
+  const sc11 = doc().querySelector(".scroll");
+  check("探す: 検索結果表示で横スクロールが発生しない",
+    doc().querySelector("#song-search-list .hist-item") && sc11.scrollWidth <= sc11.clientWidth,
+    `scrollWidth=${sc11.scrollWidth} clientWidth=${sc11.clientWidth}`);
 }
 
 /* ==== 実行 ==== */

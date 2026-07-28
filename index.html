@@ -60,7 +60,7 @@ html, body {
    タブバーは常に最下部に置く。position:fixed(bottom:0)がiOSでツールバー状態変化後に
    ズレる不具合(好み/履歴タブで発生)を根本から回避する。 */
 body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
-.scroll { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.scroll { flex: 1 1 auto; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
 
 button { font-family: inherit; border: none; cursor: pointer; color: inherit; background: none; }
 a { color: var(--accent); text-decoration: none; }
@@ -699,7 +699,9 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   border-radius: 8px; object-fit: cover; display: block;
   background: var(--bg-deep);
 }
-.hist-title { font-size: 13px; line-height: 1.5; flex: 1; }
+/* min-width:0 + overflow-wrap:anywhere で、空白のない長い英語タイトルでも
+   行内で折り返す(既定のままだと行の最小幅が最長単語の幅になり横あふれする) */
+.hist-title { font-size: 13px; line-height: 1.5; flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .hist-side { text-align: right; flex-shrink: 0; }
 .hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; display: block; margin-top: 4px; }
 .hist-date { font-size: 11px; color: var(--text-sub); margin-top: 4px; display: block; }
@@ -2792,10 +2794,10 @@ async function buildAchievementCanvas(a, st) {
   ctx.beginPath(); ctx.arc(cx, my, rIn, 0, Math.PI * 2);
   ctx.fillStyle = mg; ctx.fill();
   drawNoteIcon(ctx, cx - 180, my - 195, 360); // メダル中央にグリフ実寸約190pxで
-  // レベルピル(内円の下端に重ね、外周の白円には収める)
+  // レベルピル(内円の下端に重ね、外周の白円の縁にまたがせる)
   ctx.font = '700 34px "' + FF;
   const lvText = `Lv.${st.level} / ${a.tiers.length}`;
-  const lw = ctx.measureText(lvText).width + 56, lh = 60, ly = my + rIn - 30;
+  const lw = ctx.measureText(lvText).width + 56, lh = 66, ly = my + rIn - 30;
   ctx.save();
   ctx.shadowColor = "rgba(136,152,184,.55)"; ctx.shadowBlur = 18; ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 6;
   roundRectPath(ctx, cx - lw / 2, ly, lw, lh, lh / 2);
