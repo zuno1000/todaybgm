@@ -12,11 +12,11 @@
 
 1. **開くだけ**: アクセスした瞬間に「今日の1曲」が決まっています。再生ボタンをタップ
 2. **設定**: 好きなジャンル(Lo-fi / ジャズ / ピアノ / 環境音 / ゲームBGM / シンセウェーブ / クラシック / ケルト / ファンタジー / 和風 / EDM / かわいい)と動画時間を選ぶと、おすすめが条件に沿います
-3. **★評価**: 聴いたら5段階で評価。使うほど、おすすめがあなたの好みに寄り添います(「好み」タブで学習結果を確認できます)
-4. **探す**: 気分ミキサー(朝↔夜 / アコースティック↔電子音 / ゆったり↔アップテンポ+雨音)で、今の気分の1曲を能動的に探せます
+3. **★評価**: 聴いたら5段階で評価。使うほど、おすすめがあなたの好みに寄り添います(「好み」タブで学習結果のほか、連続日数・総再生時間・実績(あゆみ)・おすすめの成長も見られます)
+4. **探す**: 気分ミキサー(朝↔夜 / アコースティック↔電子音 / ゆったり↔アップテンポ+雨音)で、今の気分の1曲を能動的に探せます。曲名・ジャンル名での検索もできます
 5. **履歴**: 聴いた曲がカレンダーに記録され、いつでもタップで再生できます
 6. **同期(任意)**: Googleでログインすると、評価・履歴・設定をあなた自身のGoogleドライブ経由で他の端末と同期できます
-7. **共有**: Xで共有 / 画像カード(QR付き)で共有 / YouTubeで開く(再生位置を引き継ぎ)
+7. **共有**: Xで共有 / 画像カード(QR付き)で共有 / YouTubeで開く(再生位置を引き継ぎ)。画像のQRを読み込むと、このアプリでその曲がそのまま開きます(`?v=動画ID` のリンクでも同じことができます)
 
 スマホでは**ホーム画面に追加**(PWA)すると、アプリのように全画面で使えます。
 
@@ -110,6 +110,7 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
 | `bgm_songmeta` | 再生・評価した曲のタイトル/ジャンル控え(カタログ削除後の履歴表示用) |
 | `bgm_playmode` | 曲が終わったら: `next`/`repeat`/`stop` |
 | `bgm_todaymode` | 「今日の曲」の更新タイミング(`{mode, hours}`) |
+| `bgm_listen` | 日別の実再生時間 `{date: 累計秒}`(「好み」タブの統計・実績用) |
 | `bgm_openapp` | 常にYouTubeアプリで開く |
 | `bgm_fshint` | 全画面ヒントを表示済みか |
 | `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt, dirtySince}`)。`dirtySince`=未同期のローカル変更が発生した時刻(同期成功で0。同期リマインダーの判定に使用) |
@@ -130,6 +131,6 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
    `GOOGLE_CLIENT_ID_PROD` / `GOOGLE_CLIENT_ID_DEV` に貼り付けてコミット
 
 補足:
-- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode` / `bgm_todaymode` / `bgm_songmeta`(`bgm_daily`・`bgm_recent` は端末ごとに独立)
+- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode` / `bgm_todaymode` / `bgm_songmeta` / `bgm_listen`(`bgm_daily`・`bgm_recent` は端末ごとに独立。`bgm_listen` は日別maxでマージ=再マージでの二重計上を防ぐ)
 - 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)+リセット時刻のトンボストーン
 - `drive.appdata` は現在のGoogleの分類では**非機密スコープ**(アプリ専用フォルダのみアクセス)。公開ステータスを「本番」にしてもスコープ審査は不要で、必要なのはブランディング検証のみ(2026-07確認)。開発用プロジェクトは「テスト」のままで審査もブランディングも不要

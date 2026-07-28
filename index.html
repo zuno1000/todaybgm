@@ -516,9 +516,31 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   display: flex; flex-direction: column; justify-content: center;
 }
 .tile .t-val { font-size: 19px; font-weight: 700; line-height: 1.4; }
-/* 「いちばん好き」のジャンル名は語中で改行させない(収まらない時はJSでフォントを縮小) */
-#t-top { white-space: nowrap; }
+/* ジャンル名・時間表記は語中で改行させない(収まらない時はJSでフォントを縮小) */
+#t-top, .tile .t-fit { white-space: nowrap; }
 .tile .t-label { font-size: 10px; color: var(--text-sub); }
+.taste-tiles + .taste-tiles { margin-top: 16px; } /* タイル2列目は横gapと同じ間隔で */
+
+/* ---- 聴き方ペルソナ(統計タイル下の1行) ---- */
+.persona { text-align: center; font-size: 12px; color: var(--text-sub); margin: 14px 4px 0; }
+.persona b { color: var(--accent); }
+
+/* ---- あゆみ(実績バッジ): 達成=浮き+アクセント / 未達成=沈み+減光 ---- */
+.badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.badge {
+  border-radius: var(--r-btn); padding: 12px 4px; text-align: center;
+  background: var(--bg);
+  box-shadow: -4px -4px 9px var(--sh-light), 4px 4px 9px var(--sh-dark);
+}
+.badge .b-name { display: block; font-size: 11px; font-weight: 700; }
+.badge .b-cond { display: block; font-size: 9px; color: var(--text-sub); margin-top: 3px; }
+.badge.on { color: var(--accent); }
+.badge.on .b-cond { color: var(--accent-soft); font-weight: 700; }
+.badge.off {
+  color: var(--text-sub); opacity: 0.55;
+  background: var(--bg-deep);
+  box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark);
+}
 
 .aff-card { border-radius: var(--r-card); padding: 22px 20px; }
 .aff-scale {
@@ -584,6 +606,16 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .hist-stars { color: var(--star); font-size: 13px; letter-spacing: 1px; display: block; margin-top: 4px; }
 .hist-date { font-size: 11px; color: var(--text-sub); margin-top: 4px; display: block; }
 .hist-genre { font-size: 11px; font-weight: 700; color: var(--accent); display: block; }
+/* ---- 探す: 曲名検索 ---- */
+.search-box { border-radius: var(--r-btn); padding: 2px 16px; margin-bottom: 16px; }
+.search-box input {
+  width: 100%; border: none; background: none; outline: none;
+  font: inherit; font-size: 14px; color: var(--text);
+  padding: 11px 0;
+}
+.search-box input::placeholder { color: var(--text-sub); }
+.search-box input::-webkit-search-cancel-button { -webkit-appearance: none; }
+#song-search-list .hist-item { cursor: pointer; }
 .danger-btn {
   display: block; margin: 30px auto 10px;
   padding: 12px 28px;
@@ -776,6 +808,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       </div>
     </div>
     <div class="empty" id="explore-empty" style="display:none">条件に合う曲が見つかりませんでした。条件をゆるめてみてください。</div>
+
+    <h2 class="section-title">曲名で探す</h2>
+    <div class="search-box inset">
+      <input type="search" id="song-search" placeholder="タイトルやジャンルで収録曲を検索" autocomplete="off" aria-label="収録曲をタイトルやジャンルで検索">
+    </div>
+    <ul class="hist-list" id="song-search-list"></ul>
+    <div class="empty" id="song-search-empty" style="display:none">見つかりませんでした</div>
   </section>
 
   <!-- ===== 好み ===== -->
@@ -787,6 +826,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="tile raised"><div class="t-val" id="t-avg">─</div><div class="t-label">平均★</div></div>
       <div class="tile raised"><div class="t-val" id="t-top">─</div><div class="t-label">いちばん好き</div></div>
     </div>
+    <div class="taste-tiles">
+      <div class="tile raised"><div class="t-val t-fit" id="t-streak">─</div><div class="t-label">連続日数</div></div>
+      <div class="tile raised"><div class="t-val t-fit" id="t-listen">─</div><div class="t-label">総再生時間</div></div>
+      <div class="tile raised"><div class="t-val t-fit" id="t-today">─</div><div class="t-label">今日の再生</div></div>
+    </div>
+    <p class="persona" id="persona" style="display:none"></p>
     <div id="aff-genres-card">
       <h2 class="section-title">ジャンルの好み度</h2>
       <div class="aff-card raised">
@@ -804,6 +849,23 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     <div class="empty" id="taste-empty" style="display:none">
       曲を評価すると、ここに好み度が見えてきます。<br>まずは今日の1曲を聴いて評価してみてください。
     </div>
+
+    <div id="acc-card" style="display:none">
+      <h2 class="section-title">おすすめの成長 <button class="help-btn" data-help="help-acc" aria-expanded="false" aria-label="おすすめの成長の説明を表示">?</button></h2>
+      <p class="set-note help-note" id="help-acc" style="margin:0 2px 14px" hidden>★4以上をつけた割合の変化です。評価を重ねるほど、おすすめがあなたの好みに寄っていきます。</p>
+      <div class="aff-card raised">
+        <div class="aff-scale" id="acc-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+        <div id="acc-rows"></div>
+        <p class="footnote" id="acc-note" style="margin-top:8px"></p>
+      </div>
+    </div>
+
+    <h2 class="section-title">あゆみ(実績)</h2>
+    <div class="aff-card raised">
+      <div class="badge-grid" id="badge-grid"></div>
+      <p class="footnote" id="badge-note" style="margin-top:14px"></p>
+    </div>
+
     <button class="danger-btn raised" id="btn-reset-taste">好み(おすすめの傾向)をリセット</button>
   </section>
 
@@ -860,7 +922,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.0.1</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.1.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -961,6 +1023,7 @@ const LS = {
   OPENAPP: "bgm_openapp", // 常にYouTubeアプリで開く(Premium広告なし向け)
   PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
   TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
+  LISTEN: "bgm_listen", // 日別の実再生時間 {date: 累計秒} — 好みタブの統計・実績用
 };
 // localStorage が使えない環境(プライベートモード・サイトデータブロック・一部WebView)では
 // プロパティアクセス自体が例外になることがあるため、メモリ上のフォールバックへ切り替えて
@@ -997,6 +1060,42 @@ function todayStr() {
 }
 function dateStr(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+// "YYYY-MM-DD" にn日を加算(ローカル時刻基準。new Date("YYYY-MM-DD")はUTC解釈でズレるため使わない)
+function addDays(dstr, n) {
+  const [y, m, d] = dstr.split("-").map(Number);
+  return dateStr(new Date(y, m - 1, d + n));
+}
+
+/* ============ 実再生時間の記録(好みタブの統計・実績用) ============
+ * bgm_listen = { "YYYY-MM-DD": 累計秒 }。プレイヤーのPLAYING区間を実測する。
+ * 「常にYouTubeアプリで開く」や外部再生は計測できない(記録しない)。 */
+let listenStartAt = 0;
+function addListenSeconds(sec) {
+  sec = Math.round(sec);
+  if (!(sec > 0)) return;
+  const l = load(LS.LISTEN, {});
+  l[todayStr()] = (l[todayStr()] || 0) + sec;
+  save(LS.LISTEN, l);
+}
+// 再生中の経過分を確定する。stop=true で計測終了、false は起点だけ進める(途中フラッシュ)
+function flushListen(stop) {
+  if (listenStartAt) addListenSeconds((Date.now() - listenStartAt) / 1000);
+  listenStartAt = stop ? 0 : (listenStartAt ? Date.now() : 0);
+}
+function listenTotals() {
+  const l = load(LS.LISTEN, {});
+  let total = 0;
+  for (const v of Object.values(l)) total += (typeof v === "number" && v > 0 ? v : 0);
+  return { total, today: l[todayStr()] || 0 };
+}
+// 統計タイル用の短い表記(タイル幅に収まるよう時間は小数1桁まで)
+function fmtListen(sec) {
+  if (sec >= 3600) {
+    const h = sec / 3600;
+    return (h >= 10 ? Math.round(h) : h.toFixed(1)) + "時間";
+  }
+  return Math.max(1, Math.round(sec / 60)) + "分";
 }
 
 /* ============ 日別再生履歴(カレンダー・履歴タブ用) ============
@@ -1510,11 +1609,14 @@ function onPlayerStateChange(e) {
   if (e.data === YT.PlayerState.PLAYING) {
     setPlayButton("playing");
     markStarted();
+    if (!listenStartAt) listenStartAt = Date.now(); // 実再生時間の計測開始
     syncFullscreenToOrientation(); // 横向きで再生開始/次曲移行時に全画面化
   } else if (e.data === YT.PlayerState.PAUSED) {
     setPlayButton("paused");
+    flushListen(true);
   } else if (e.data === YT.PlayerState.ENDED) {
     setPlayButton("paused");
+    flushListen(true);
     const mode = playMode();
     if (mode === "repeat") {                 // 1曲リピート: 同じ曲を頭から
       if (player && player.seekTo) { player.seekTo(0, true); player.playVideo(); }
@@ -1649,6 +1751,7 @@ function handlePlaybackError(deadSong) {
 }
 
 function destroyPlayer() {
+  flushListen(true); // 再生中に曲を切り替えた場合もそこまでの再生時間を確定する
   playerStarted = false;
   loadedSong = null;
   playerReady = false;
@@ -1913,6 +2016,38 @@ function setAsToday(song, autoplay) {
   }
   renderSong(song);
   if (autoplay) playCurrent();
+}
+
+/* ---- 探す: 曲名検索(収録カタログから直接選んで再生) ---- */
+function searchCatalog(q) {
+  q = (q || "").trim().toLowerCase();
+  if (!q) return [];
+  return SONGS.filter(s =>
+    (s.title || "").toLowerCase().includes(q) ||
+    s.genres.some(g => g.includes(q) || (GENRE_LABELS[g] || "").toLowerCase().includes(q))
+  ).slice(0, 30);
+}
+function renderSongSearch() {
+  const list = $("song-search-list");
+  const q = $("song-search").value;
+  list.innerHTML = "";
+  const hits = searchCatalog(q);
+  $("song-search-empty").style.display = (q.trim() && !hits.length) ? "" : "none";
+  for (const s of hits) {
+    const li = document.createElement("li");
+    li.className = "hist-item raised";
+    li.setAttribute("role", "button");
+    li.tabIndex = 0;
+    li.setAttribute("aria-label", `「${s.title}」を今日の曲にして再生`);
+    li.innerHTML = '<img class="hist-thumb" loading="lazy" alt=""><span class="hist-title"></span><span class="hist-side"><span class="hist-genre"></span></span>';
+    li.querySelector(".hist-thumb").src = `https://i.ytimg.com/vi/${s.id}/mqdefault.jpg`;
+    li.querySelector(".hist-title").textContent = s.title;
+    li.querySelector(".hist-genre").textContent = "# " + (GENRE_LABELS[s.genres[0]] || s.genres[0]);
+    const go = () => setAsToday(s, true); // ユーザー操作起点なので自動再生が通る
+    li.addEventListener("click", go);
+    li.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); go(); } });
+    list.appendChild(li);
+  }
 }
 
 /* ---- YouTubeアプリ/外部で開く(Premium: 広告なし・バックグラウンド再生向け) ---- */
@@ -2309,7 +2444,8 @@ async function buildShareCanvas(song) {
   roundRectPath(ctx, panelX, panelY, panel, panel, 28);
   ctx.fillStyle = "#FFFFFF"; ctx.fill();
   ctx.restore();
-  const okQR = drawQRCode(ctx, panelX + qpad, panelY + qpad, qr, `https://youtu.be/${song.id}`);
+  // QRはアプリのディープリンク(?v=)へ。スキャンした人がこのアプリでそのまま聴ける
+  const okQR = drawQRCode(ctx, panelX + qpad, panelY + qpad, qr, `https://todaybgm.pages.dev/?v=${song.id}`);
   if (!okQR) {
     ctx.fillStyle = "#8A96AD"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.font = '700 26px "Zen Kaku Gothic New", sans-serif';
@@ -2321,7 +2457,7 @@ async function buildShareCanvas(song) {
   const FF = 'Zen Kaku Gothic New", sans-serif';
   const flines = [
     { t: "スキャンして聴く", f: '700 46px "' + FF, c: "#3D4A63", dy: 88 },
-    { t: "YouTubeでこの曲を再生", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
+    { t: "アプリでこの曲がひらきます", f: '700 31px "' + FF, c: "#8A96AD", dy: 140 },
     { t: "今日の作業テーマ曲", f: '700 28px "' + FF, c: "#8A96AD", dy: 228 },
     { t: "todaybgm.pages.dev", f: '700 25px "' + FF, c: "#AAB4C4", dy: 268 },
   ];
@@ -2398,6 +2534,115 @@ function affRow(label, value) {
   return row;
 }
 
+/* ============ あゆみ(利用統計・実績・おすすめの成長) ============
+ * すべて既存の再生履歴(bgm_plays)・評価(bgm_ratings)・実再生時間(bgm_listen)から
+ * その場で導出する(実績の解除状態などを別途保存しない=矛盾が生まれない)。 */
+function calcStreak() {
+  const plays = load(LS.PLAYS, {});
+  let d = todayStr();
+  if (!plays[d]) d = addDays(d, -1); // 今日まだ開いていなくても昨日までの連続は生きている扱い
+  let n = 0;
+  while (plays[d]) { n++; d = addDays(d, -1); }
+  return n;
+}
+function usageStats() {
+  const plays = load(LS.PLAYS, {});
+  const dates = Object.keys(plays).sort();
+  const byId = new Map(SONGS.map(s => [s.id, s]));
+  const played = new Set();
+  for (const d of dates) ((plays[d] && plays[d].plays) || []).forEach(id => played.add(id));
+  let streakBest = 0, cur = 0, prev = null;
+  for (const d of dates) {
+    cur = (prev && addDays(prev, 1) === d) ? cur + 1 : 1;
+    if (cur > streakBest) streakBest = cur;
+    prev = d;
+  }
+  const genres = new Set();
+  for (const id of played) { const s = byId.get(id); if (s) s.genres.forEach(g => genres.add(g)); }
+  const lt = listenTotals();
+  return { days: dates.length, streak: calcStreak(), streakBest,
+           songs: played.size, rated: Object.keys(load(LS.RATINGS, {})).length,
+           genres: genres.size, listenSec: lt.total, todaySec: lt.today };
+}
+// 好み度テーブルから「集中 × Lo-fi」のような聴き方ラベルを導く(データ不足ならnull)
+function personaLabel(table) {
+  const top = keys => keys.filter(k => (table[k] || 0) > 0).sort((a, b) => table[b] - table[a])[0];
+  const g = top(Object.keys(GENRE_LABELS)), m = top(Object.keys(MOOD_LABELS));
+  if (g && m) return `${MOOD_LABELS[m]} × ${GENRE_LABELS[g]}`;
+  return g ? GENRE_LABELS[g] : (m ? MOOD_LABELS[m] : null);
+}
+// おすすめの成長: ★4以上をつけた割合を「はじめのn件」と「直近n件」で比較(10件未満はnull)
+function recommendAccuracy() {
+  const rs = Object.values(load(LS.RATINGS, {}))
+    .filter(r => r && r.rating && r.ratedAt)
+    .sort((a, b) => new Date(a.ratedAt) - new Date(b.ratedAt));
+  if (rs.length < 10) return null;
+  const n = Math.min(20, Math.floor(rs.length / 2));
+  const hit = arr => Math.round(arr.filter(r => r.rating >= 4).length / arr.length * 100);
+  return { early: hit(rs.slice(0, n)), recent: hit(rs.slice(-n)), n, count: rs.length };
+}
+const ACHIEVEMENTS = [
+  { name: "はじめの一曲", need: "曲を再生する", cond: s => s.songs >= 1 },
+  { name: "3日のおとも", need: "3日連続で使う", cond: s => s.streakBest >= 3 },
+  { name: "1週間の習慣", need: "7日連続で使う", cond: s => s.streakBest >= 7 },
+  { name: "ひと月の相棒", need: "30日連続で使う", cond: s => s.streakBest >= 30 },
+  { name: "10曲の出会い", need: "10曲再生する", cond: s => s.songs >= 10 },
+  { name: "50曲の出会い", need: "50曲再生する", cond: s => s.songs >= 50 },
+  { name: "200曲の探求", need: "200曲再生する", cond: s => s.songs >= 200 },
+  { name: "はじめての★", need: "曲を評価する", cond: s => s.rated >= 1 },
+  { name: "目利きの耳", need: "50曲評価する", cond: s => s.rated >= 50 },
+  { name: "ジャンル探検家", need: "6ジャンル聴く", cond: s => s.genres >= 6 },
+  { name: "全ジャンル制覇", need: "12ジャンル聴く", cond: s => s.genres >= 12 },
+  { name: "10時間のBGM", need: "累計10時間聴く", cond: s => s.listenSec >= 10 * 3600 },
+  { name: "100時間のBGM", need: "累計100時間聴く", cond: s => s.listenSec >= 100 * 3600 },
+];
+function renderBadges(stats) {
+  const grid = $("badge-grid");
+  grid.innerHTML = "";
+  let got = 0;
+  for (const a of ACHIEVEMENTS) {
+    const on = !!a.cond(stats);
+    if (on) got++;
+    const el = document.createElement("div");
+    el.className = "badge " + (on ? "on" : "off");
+    const nm = document.createElement("span"); nm.className = "b-name"; nm.textContent = a.name;
+    const cd = document.createElement("span"); cd.className = "b-cond"; cd.textContent = on ? "達成" : a.need;
+    el.appendChild(nm); el.appendChild(cd);
+    grid.appendChild(el);
+  }
+  $("badge-note").textContent = `${got} / ${ACHIEVEMENTS.length} 達成`;
+}
+function renderPersona(table, stats) {
+  const el = $("persona");
+  const p = personaLabel(table);
+  const parts = [];
+  if (p) parts.push(`あなたは <b>${p}</b> 派`);
+  if (stats.days) parts.push(`BGM歴 <b>${stats.days}</b>日`);
+  el.style.display = parts.length ? "" : "none";
+  el.innerHTML = parts.join(" · "); // 内部定数ラベルのみ(ユーザー由来文字列は入らない)
+}
+function renderAccuracy(stats) {
+  const card = $("acc-card"), rows = $("acc-rows"), note = $("acc-note");
+  const acc = recommendAccuracy();
+  rows.innerHTML = "";
+  if (!acc && !stats.rated) { card.style.display = "none"; return; }
+  card.style.display = "";
+  $("acc-scale").style.display = acc ? "" : "none";
+  if (!acc) {
+    note.textContent = `★評価が10件たまると、おすすめの成長がここに見えてきます(いま${stats.rated}件)`;
+    return;
+  }
+  for (const [label, v] of [["はじめの頃", acc.early], ["このごろ", acc.recent]]) {
+    const row = affRow(label, v);
+    row.querySelector(".aff-val").textContent = v + "%";
+    rows.appendChild(row);
+  }
+  const diff = acc.recent - acc.early;
+  note.textContent = `★4以上をつけた割合(はじめの${acc.n}件 → 直近${acc.n}件)。` +
+    (diff > 0 ? `おすすめが ${diff}ポイント 好みに近づきました` :
+     diff === 0 ? "好みにしっかり寄り添えています" : "いまは好みを学習し直しています");
+}
+
 /* タイルの値(1行固定)が幅に収まらない時だけフォントを縮める(「ケルト音楽」等の語中改行防止) */
 function fitTileValue(el) {
   el.style.fontSize = "";
@@ -2438,6 +2683,16 @@ function renderTaste() {
   mBox.innerHTML = "";
   moodTags.sort((a, b) => table[b] - table[a])
     .forEach(m => mBox.appendChild(affRow(MOOD_LABELS[m], table[m])));
+
+  // ---- あゆみ(統計タイル2列目・ペルソナ・おすすめの成長・実績) ----
+  const stats = usageStats();
+  const tiles = [["t-streak", stats.streak ? stats.streak + "日" : "─"],
+                 ["t-listen", stats.listenSec ? fmtListen(stats.listenSec) : "─"],
+                 ["t-today", stats.todaySec ? fmtListen(stats.todaySec) : "─"]];
+  for (const [id, v] of tiles) { const el = $(id); el.textContent = v; fitTileValue(el); }
+  renderPersona(table, stats);
+  renderAccuracy(stats);
+  renderBadges(stats);
 }
 
 /* =========================================================
@@ -2618,6 +2873,7 @@ function resetTaste() {
 function resetHistory() {
   if (!confirm("再生履歴(カレンダー)をリセットします。★評価と「好み」はそのまま残ります。よろしいですか?")) return;
   save(LS.PLAYS, {}); // nullにしない=評価履歴からの再移行(migrate)を防ぐ
+  save(LS.LISTEN, {}); // 再生時間の統計も「再生の記録」の一部として一緒にリセット
   setSyncMeta({ playsResetAt: Date.now() });
   calSelectedDate = null;
   scheduleAutoSync();
@@ -2625,7 +2881,7 @@ function resetHistory() {
 }
 function resetAll() {
   if (!confirm("設定・評価・再生履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => store.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => store.removeItem(k));
   // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴が復活しないように)
   save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now() });
   cachedToken = null; tokenExpiry = 0;
@@ -2664,7 +2920,7 @@ const GOOGLE_CLIENT_ID = (location.hostname === "localhost" || location.hostname
   ? GOOGLE_CLIENT_ID_DEV : GOOGLE_CLIENT_ID_PROD;
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
-const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA];
+const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA, LS.LISTEN];
 let gisPromise = null, tokenClient = null, syncing = false, autoSyncTimer = null;
 
 function syncMeta() { return load("bgm_sync", {}); }
@@ -2758,6 +3014,14 @@ function mergeData(local, remote) {
   m[LS.DEAD] = [...new Set([...(local[LS.DEAD] || []), ...(remote[LS.DEAD] || [])])];
   // 曲メタの控えは和集合(単なるキャッシュなのでトンボストーン不要。不要分は起動時のbackfillが掃除する)
   m[LS.SONGMETA] = Object.assign({}, remote[LS.SONGMETA] || {}, local[LS.SONGMETA] || {});
+  // 実再生時間は日別max(和だと再マージのたびに二重計上されるため控えめ側に倒す)。
+  // 履歴リセット(playsResetAt)以前の日は履歴と同様に復活させない
+  const llt = local[LS.LISTEN] || {}, rlt = remote[LS.LISTEN] || {}, mlt = {};
+  for (const d of new Set([...Object.keys(llt), ...Object.keys(rlt)])) {
+    if (d < resetPDay) continue;
+    mlt[d] = Math.max(Number(llt[d]) || 0, Number(rlt[d]) || 0);
+  }
+  m[LS.LISTEN] = mlt;
   const remoteNewer = (remote.updatedAt || 0) > (local.updatedAt || 0);
   [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE].forEach(k => {
     const rv = remote[k], lv = local[k];
@@ -2775,6 +3039,7 @@ function applyData(m) {
   if (isObj(m[LS.RATINGS])) save(LS.RATINGS, m[LS.RATINGS]);
   if (isObj(m[LS.PLAYS])) save(LS.PLAYS, m[LS.PLAYS]);
   if (isObj(m[LS.SONGMETA])) save(LS.SONGMETA, m[LS.SONGMETA]);
+  if (isObj(m[LS.LISTEN])) save(LS.LISTEN, m[LS.LISTEN]);
   if (Array.isArray(m[LS.DEAD])) save(LS.DEAD, m[LS.DEAD]);
   if (isObj(m[LS.SETTINGS])) save(LS.SETTINGS, m[LS.SETTINGS]);
   if (typeof m[LS.OPENAPP] === "boolean") save(LS.OPENAPP, m[LS.OPENAPP]);
@@ -2911,6 +3176,8 @@ $("rain-toggle").addEventListener("click", () => {
 });
 $("btn-explore-reset").addEventListener("click", resetExplore);
 $("btn-explore").addEventListener("click", runExplore);
+let songSearchTimer = null;
+$("song-search").addEventListener("input", () => { clearTimeout(songSearchTimer); songSearchTimer = setTimeout(renderSongSearch, 120); });
 $("ex-again").addEventListener("click", exploreAgain);
 $("ex-set").addEventListener("click", () => setAsToday(exploreCandidate, true));
 // 端末の向きが変わったら全画面状態を同期(再生中×横向き→全画面、縦→解除)
@@ -2969,6 +3236,10 @@ function refreshTodayIfNeeded(includeAlways) {
 document.addEventListener("visibilitychange", () => refreshTodayIfNeeded(true));
 // タブを開いたまま日付や「時間ごと」の指定時間を跨いだ場合も拾う(PCで開きっぱなし対策)
 setInterval(() => refreshTodayIfNeeded(false), 60 * 1000);
+// 実再生時間: 再生中は30秒ごとに確定し、タブを閉じる/離れる時も取りこぼさない
+setInterval(() => { if (isPlayingNow()) flushListen(false); }, 30 * 1000);
+window.addEventListener("pagehide", () => flushListen(false));
+document.addEventListener("visibilitychange", () => { if (document.hidden) flushListen(false); });
 
 (async function boot() {
   try {
@@ -2991,6 +3262,17 @@ setInterval(() => refreshTodayIfNeeded(false), 60 * 1000);
   loadYtApi(); // 先読み(初回クリック時のAPIロード待ちをなくす)
   // 「開くたびに毎回」は起動ごとに選び直し、「一定時間ごと」は経過していれば選び直す
   init(todayMode().mode === "always" || todayIntervalElapsed());
+  // 起動パラメータ: ?v=動画ID(共有画像のQR等から指定曲を開く) / ?tab=タブ名(PWAショートカット)
+  try {
+    const qs = new URLSearchParams(location.search);
+    const vid = qs.get("v"), tab = qs.get("tab");
+    if (vid && /^[A-Za-z0-9_-]{11}$/.test(vid)) {
+      setAsToday(SONGS.find(s => s.id === vid) || externalSong(vid), false);
+    } else if (tab && ["explore", "taste", "history", "settings"].includes(tab)) {
+      showView(tab);
+    }
+    if (vid || tab) history.replaceState(null, "", location.pathname); // 再読込時に再発動させない
+  } catch (e) {}
   renderSync();
   renderSyncReminder();
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)

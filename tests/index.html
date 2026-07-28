@@ -107,9 +107,9 @@ function seedLS(obj) {
 
 // アプリをiframeに(再)読み込みし、boot完了(songs.json取得→今日の曲描画)まで待つ
 let bootCount = 0;
-async function bootApp(seed) {
+async function bootApp(seed, extraQuery) {
   seedLS(seed);
-  frame.src = "/index.html?selftest=" + (++bootCount);
+  frame.src = "/index.html?selftest=" + (++bootCount) + (extraQuery || "");
   const deadline = Date.now() + 20000;
   while (Date.now() < deadline) {
     try {
@@ -478,6 +478,77 @@ async function main() {
   seedLS({ bgm_sync: { linked: false } });
   w.scheduleAutoSync();
   check("scheduleAutoSync: 未連携では記録しない", !JSON.parse(localStorage.getItem("bgm_sync")).dirtySince);
+
+  /* ---- Suite 10: 曲指定再生・あゆみ(2026-07-28 機能追加) ---- */
+  suite("10. 曲指定再生・あゆみ");
+  // 曲名検索(カタログから直接選ぶ)
+  check("searchCatalog: タイトル部分一致で見つかる",
+    w.searchCatalog(pianoSong.title.slice(0, 12)).some(s => s.id === pianoSong.id));
+  check("searchCatalog: 空クエリは空配列", w.searchCatalog("  ").length === 0);
+  const qCeltic = w.searchCatalog("ケルト");
+  check("searchCatalog: ジャンル名(日本語)でも探せる",
+    qCeltic.length > 0 && qCeltic.every(s => s.genres.includes("celtic")));
+  doc().getElementById("song-search").value = pianoSong.title.slice(0, 12);
+  w.renderSongSearch();
+  check("検索UI: 結果行が描画される", !!doc().querySelector("#song-search-list .hist-item"));
+  // ディープリンク(?v=)とタブ直行(?tab=)
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } }, "&v=" + edmSong.id);
+  check("ディープリンク(?v=): 指定曲が今日の曲になる",
+    JSON.parse(localStorage.getItem("bgm_daily")).currentId === edmSong.id);
+  check("ディープリンク: 処理後にURLからパラメータが消える", !win().location.search.includes("v="));
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } }, "&tab=explore");
+  check("?tab=explore: 探すタブが開いた状態で起動する",
+    doc().getElementById("view-explore").classList.contains("active"));
+  // 実再生時間の記録と表記
+  seedLS({});
+  win().addListenSeconds(90);
+  win().addListenSeconds(30);
+  check("addListenSeconds: 今日の秒数に加算される",
+    JSON.parse(localStorage.getItem("bgm_listen"))[win().todayStr()] === 120);
+  eq("fmtListen: 分・時間の表記",
+    [win().fmtListen(300), win().fmtListen(5400), win().fmtListen(41040)],
+    ["5分", "1.5時間", "11時間"]);
+  // ストリーク(連続日数)
+  const t0 = win().todayStr(), t1 = win().addDays(t0, -1), t2 = win().addDays(t0, -2), t9 = win().addDays(t0, -9);
+  const P = id => ({ first: id, plays: [id] });
+  seedLS({ bgm_plays: { [t2]: P(songA.id), [t1]: P(songA.id), [t0]: P(songA.id) } });
+  eq("calcStreak: 3日連続", win().calcStreak(), 3);
+  seedLS({ bgm_plays: { [t9]: P(songA.id), [t0]: P(songA.id) } });
+  eq("calcStreak: 間が空くと1", win().calcStreak(), 1);
+  // usageStats+バッジ・統計タイル描画
+  seedLS({ bgm_plays: { [t1]: { first: pianoSong.id, plays: [pianoSong.id] },
+                        [t0]: { first: edmSong.id, plays: [edmSong.id, celticSong.id] } },
+           bgm_ratings: { [pianoSong.id]: R(5, NOW_ISO) },
+           bgm_listen: { [t0]: 3600 } });
+  const st10 = win().usageStats();
+  eq("usageStats: 日数・曲数・評価数", [st10.days, st10.songs, st10.rated], [2, 3, 1]);
+  eq("usageStats: streakBest(連続2日)", st10.streakBest, 2);
+  win().showView("taste");
+  check("あゆみ: バッジ13個+達成数の表示",
+    doc().querySelectorAll("#badge-grid .badge").length === 13 &&
+    doc().getElementById("badge-note").textContent.includes("/ 13"));
+  check("あゆみ: 達成済みバッジがある(はじめの一曲)", !!doc().querySelector("#badge-grid .badge.on"));
+  check("統計タイル: 総再生時間が表示される", doc().getElementById("t-listen").textContent === "1.0時間");
+  check("ペルソナ: ラベルが表示される", doc().getElementById("persona").style.display !== "none");
+  const tbl10 = win().buildAffinityTable({ [celticSong.id]: R(5, NOW_ISO) });
+  check("personaLabel: ジャンル名を含むラベルを返す",
+    (win().personaLabel(tbl10) || "").includes("ケルト音楽"), win().personaLabel(tbl10));
+  // おすすめの成長(★4以上率の推移)
+  const accRatings = {};
+  CATALOG.slice(0, 20).forEach((s, i) => {
+    accRatings[s.id] = { rating: i < 10 ? 2 : 5, ratedAt: new Date(2026, 0, 1 + i).toISOString() };
+  });
+  seedLS({ bgm_ratings: accRatings });
+  const acc10 = win().recommendAccuracy();
+  eq("recommendAccuracy: はじめ0%→直近100%(各10件)", [acc10.early, acc10.recent, acc10.n], [0, 100, 10]);
+  seedLS({ bgm_ratings: { [songA.id]: R(5, NOW_ISO) } });
+  check("recommendAccuracy: 10件未満はnull", win().recommendAccuracy() === null);
+  // 同期マージ: 実再生時間は日別max(二重計上しない)
+  const mL = win().mergeData(
+    { updatedAt: 1, bgm_listen: { "2026-07-20": 100, "2026-07-21": 50 } },
+    { updatedAt: 2, bgm_listen: { "2026-07-21": 80, "2026-07-22": 30 } });
+  eq("mergeData: bgm_listenは日別max", mL.bgm_listen,
+    { "2026-07-20": 100, "2026-07-21": 80, "2026-07-22": 30 });
 }
 
 /* ==== 実行 ==== */
