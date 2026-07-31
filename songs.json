@@ -15,6 +15,21 @@
     "channelTitle": "Lofi Girl"
   },
   {
+    "id": "-VjOjBLpMws",
+    "title": "Sunny Lofi Coffee Shop🌞|~ Lofi Coffee ☕ ~ Lofi Hip Hop🎵 ~ Lofi Music🎧 [ Study📖/ ",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 360,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCRxZghqmpGFcnfL5W-nCdfQ",
+    "channelTitle": "The Daily Grind"
+  },
+  {
     "id": "0-AvedkXSVE",
     "title": "Japanese Lofi Music & Sea Lofi ~ Morning Chillhop Japanese Vibes , Relaxing Lofi",
     "genres": [
@@ -1343,6 +1358,20 @@
     "channelTitle": "Bossa Nova Jazz"
   },
   {
+    "id": "YTpDlQvvT3Q",
+    "title": "Happy Jazz Music ☕ Bossa Nova background for Relaxing, Great Moods and Happy Moo",
+    "genres": [
+      "jazz"
+    ],
+    "durationMin": 71,
+    "durationClass": "long",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UC9sZ3SFRZg_V2U15wh_wfEw",
+    "channelTitle": "Golden Roast Jazz Club"
+  },
+  {
     "id": "ZY77QVGTKiA",
     "title": "Relaxing Jazz Instrumental Music for Work, Study 🌸 Spring Coffee Shop Ambience &",
     "genres": [
@@ -1400,7 +1429,7 @@
   },
   {
     "id": "c18WZZa4KIA",
-    "title": "Fall Coffee Shop Bookstore Ambience with Relaxing Jazz Music & Rain Sounds",
+    "title": "Fall Coffee Shop Bookstore Ambience with Relaxing Jazz Music & Rain Sounds [No M",
     "genres": [
       "jazz"
     ],
@@ -1473,14 +1502,13 @@
   },
   {
     "id": "h8UHTqQGpjU",
-    "title": "Relaxing Jazz Cafe Ambience for Stress Relief |  Gentle Jazz Piano with Nature S",
+    "title": "Relaxing Jazz Cafe Ambience for Stress Relief | Gentle Jazz Piano with Nature So",
     "genres": [
       "jazz"
     ],
     "durationMin": 200,
     "durationClass": "long",
     "mood": [
-      "focus",
       "calm"
     ],
     "channelId": "UCp1MGMbNdcfJqUkIpnETJew",
@@ -6051,6 +6079,20 @@
     "channelTitle": "Celtic Soul "
   },
   {
+    "id": "A6iRhzuLHuI",
+    "title": "Irish Folk Music | Peaceful Celtic Instrumentals with Whistle, Fiddle & Harp for",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 60,
+    "durationClass": "medium",
+    "mood": [
+      "calm"
+    ],
+    "channelId": "UCe_S7X1aluC2Y5eZF2cm8DQ",
+    "channelTitle": "Fantasy Music Archives"
+  },
+  {
     "id": "BiqlZZddZEo",
     "title": "Dance of Life: Relaxing Celtic Music for Meditation & Sleep by Peder B. Helland",
     "genres": [
@@ -8692,6 +8734,21 @@
     "channelTitle": "Rhythm Depths"
   },
   {
+    "id": "MkEqXsBCTqQ",
+    "title": "Chill EDM Mix 2024: Relaxing Electronic Beats for Study, Focus & Deep Work",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 522,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCz_jGcp94L4yVrScnlc7jcg",
+    "channelTitle": "Chillin' Dripz"
+  },
+  {
     "id": "O_XMLBXTHxQ",
     "title": "Lofi Future Bass Mix — Deep Ocean Focus / Study / Chill",
     "genres": [
@@ -8864,6 +8921,21 @@
     ],
     "channelId": "UCB_i7laXYFEaa1IqPbWAT_Q",
     "channelTitle": "Raf Fender"
+  },
+  {
+    "id": "XRP3VfudmfE",
+    "title": "Chill EDM Waves 🌊Relaxing Electronic Music Mix 2026 | Deep Chill, Study, Focus &",
+    "genres": [
+      "edm"
+    ],
+    "durationMin": 18,
+    "durationClass": "short",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCEuv3iwHdiYVf6IekL2h6Mw",
+    "channelTitle": "Chill EDM Waves"
   },
   {
     "id": "YfUWXMRJy1E",
@@ -9949,6 +10021,21 @@
     ],
     "channelId": "UCdpN_SlX2Ulz19C7BbBbM7w",
     "channelTitle": "Stream Cafe"
+  },
+  {
+    "id": "uNyuWn4ubJY",
+    "title": "✨Kawaii EDM & Future Bass Mix 2025✨EDM, Cute, sweet anime Music, かわいい音楽 (｡♥‿♥｡)",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 61,
+    "durationClass": "long",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCZPdJOiwa2opOEiMxj7cvAw",
+    "channelTitle": "BubbleBeam"
   },
   {
     "id": "urm1kR7vewM",
