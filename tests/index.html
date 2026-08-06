@@ -185,6 +185,22 @@ async function main() {
   check("buildAffinityTable: ★3は影響しない",
     Object.keys(w.buildAffinityTable({ [pianoSong.id]: { rating: 3, ratedAt: NOW_ISO } })).length === 0);
   near("ratingAffinity: タグ平均", w.ratingAffinity({ genres: ["piano"], mood: ["calm"] }, { piano: 1, calm: 0.5 }), 0.75);
+  // v1.3.0: 親和度=平均×確信度(件数で縮小)。★5一発でテーブルが振り切れない(旧実装は1.0)
+  near("buildAffinityTable: ★5一発の親和度は控えめ(平均1.0×確信度1/4=0.25)", table5["piano"], 0.25);
+  const manyR = {};
+  byGenre("piano").slice(0, 5).forEach(s => { manyR[s.id] = { rating: 5, ratedAt: NOW_ISO }; });
+  check("buildAffinityTable: 評価件数が増えるほど確信度が上がる(★5×5件 > ★5×1件)",
+    w.buildAffinityTable(manyR)["piano"] > table5["piano"] + 0.2,
+    String(w.buildAffinityTable(manyR)["piano"]));
+  // v1.3.0: 抽選プールのジャンル多様性ガード(同一ジャンル最大2曲)
+  const mk = (id, genres, score) => ({ s: { id, genres, mood: [] }, score });
+  const scoredFake = [mk("p1", ["piano"], 10), mk("p2", ["piano"], 9), mk("p3", ["piano"], 8),
+                      mk("p4", ["piano"], 7), mk("l1", ["lofi"], 6), mk("j1", ["jazz"], 5)];
+  eq("pickTopPool: 同一ジャンルは最大2曲+不足分はスコア順に補充",
+    w.pickTopPool(scoredFake, 5, 2).map(t => t.s.id), ["p1", "p2", "l1", "j1", "p3"]);
+  eq("pickTopPool: 単一ジャンルしか無くても必ずプールサイズまで埋まる",
+    w.pickTopPool([mk("a", ["piano"], 3), mk("b", ["piano"], 2), mk("c", ["piano"], 1)], 3, 2).map(t => t.s.id),
+    ["a", "b", "c"]);
   // pickSong: 候補をA/Bの2曲に絞り、Bを★1にする → 必ずAが返る
   const deadAllButAB = CATALOG.map(s => s.id).filter(id => id !== songA.id && id !== songB.id);
   seedLS({ bgm_dead: deadAllButAB, bgm_ratings: { [songB.id]: { rating: 1, ratedAt: NOW_ISO } } });
@@ -599,6 +615,28 @@ async function main() {
   check("探す: 検索結果表示で横スクロールが発生しない",
     doc().querySelector("#song-search-list .hist-item") && sc11.scrollWidth <= sc11.clientWidth,
     `scrollWidth=${sc11.scrollWidth} clientWidth=${sc11.clientWidth}`);
+
+  /* ---- Suite 12: アップデート確認(v1.3.0 機能追加) ---- */
+  suite("12. アップデート確認");
+  const idxHtml = await (await fetch("/index.html", { cache: "no-store" })).text();
+  const embedded = win().parseAppVersion(idxHtml);
+  check("parseAppVersion: 配信HTMLからバージョンを抽出できる", /^v\d+\.\d+\.\d+$/.test(embedded || ""), embedded);
+  check("アプリ内表記(#app-version)がAPP_VERSION定数と一致(一元管理)",
+    doc().getElementById("app-version").textContent.trim() === embedded,
+    doc().getElementById("app-version").textContent);
+  check("parseAppVersion: バージョンが無いHTMLはnull", win().parseAppVersion("<html></html>") === null);
+  check("設定:「アップデートを確認」ボタンがある", !!doc().getElementById("btn-check-update"));
+  // リマインダーの表示制御(renderUpdateReminderは引数で検出バージョンを受け取る)
+  win().renderUpdateReminder("v9.9.9");
+  check("更新リマインダー: 新バージョン検出で表示+バージョン表記",
+    doc().getElementById("update-reminder").style.display !== "none" &&
+    doc().getElementById("update-reminder-ver").textContent === "v9.9.9");
+  win().renderUpdateReminder(null);
+  check("更新リマインダー: 最新なら非表示", doc().getElementById("update-reminder").style.display === "none");
+  // checkForUpdate: 配信中のHTML=自分自身なので「最新」と判定される
+  await win().checkForUpdate();
+  check("checkForUpdate: 配信版と同一バージョンならリマインダーは出ない",
+    doc().getElementById("update-reminder").style.display === "none");
 }
 
 /* ==== 実行 ==== */

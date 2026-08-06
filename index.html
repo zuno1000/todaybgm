@@ -404,6 +404,9 @@ a.toggle-pill { text-decoration: none; display: inline-flex; align-items: center
 .about-links { margin-top: 18px; flex-wrap: nowrap; } /* 説明文とボタン列の間隔(他カードの見出し→ピルと同程度) */
 /* 2つのリンクピルはスマホ幅でも横1列に収める(#todaymode-pillsと同じ等幅化) */
 .about-links .toggle-pill { flex: 1; min-width: 0; padding: 10px 2px; white-space: nowrap; }
+/* アップデート確認は別行の全幅ピル(リンク2つの行に3つ目は375px幅で収まらない) */
+.about-update { margin-top: 10px; }
+.about-update .toggle-pill { flex: 1; min-width: 0; padding: 10px 2px; white-space: nowrap; }
 .nowrap { white-space: nowrap; } /* 文節単位の折返し制御(語尾だけの孤立改行防止) */
 .save-btn {
   display: block;
@@ -937,6 +940,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
 
     <p class="sync-reminder" id="sync-reminder" style="display:none">最終同期から<span id="sync-reminder-days">–</span>日たっています · <a id="sync-reminder-btn" role="button" tabindex="0">今すぐ同期</a></p>
+    <p class="sync-reminder" id="update-reminder" style="display:none">新しいバージョン <span id="update-reminder-ver">–</span> があります · <a id="update-reminder-btn" role="button" tabindex="0">今すぐ更新</a></p>
   </section>
 
   <!-- ===== 探す ===== -->
@@ -1113,13 +1117,17 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.2.2</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.3.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
         <a class="toggle-pill" href="privacy.html">プライバシーポリシー</a>
         <a class="toggle-pill" href="mailto:todaybgm.contact@gmail.com?subject=%E3%80%8C%E4%BB%8A%E6%97%A5%E3%81%AE%E4%BD%9C%E6%A5%AD%E3%83%86%E3%83%BC%E3%83%9E%E6%9B%B2%E3%80%8D%E3%83%95%E3%82%A3%E3%83%BC%E3%83%89%E3%83%90%E3%83%83%E3%82%AF">フィードバックを送る</a>
       </div>
+      <div class="pill-grid about-update">
+        <button class="toggle-pill" id="btn-check-update" type="button">アップデートを確認</button>
+      </div>
+      <p class="set-note" id="update-msg" style="display:none;margin-top:8px"></p>
     </div>
   </section>
 
@@ -1427,9 +1435,11 @@ function markStarted() {
 }
 
 /* =========================================================
- * レコメンドアルゴリズム(仕様5章+v0.3拡張)
+ * レコメンドアルゴリズム(仕様5章+v0.3拡張+v1.3.0改良)
  * score = 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity
  *       + 0.8*discover(未評価曲) + 1.0*timeMatch(時間帯) + ε
+ * v1.3.0: 親和度は「平均×確信度(評価件数で縮小)」+抽選プールに
+ *         ジャンル多様性ガード(同一ジャンル最大2曲)
  * ========================================================= */
 const W = { genre: 3.0, duration: 1.5, rating: 2.5, discover: 0.8, time: 1.0, eps: 1.0 };
 
@@ -1456,8 +1466,14 @@ function durationMatch(song, pref) {
 }
 
 // 評価履歴 → タグ親和度テーブル(-1〜+1)
+// 「平均(そのタグの曲をどれくらい気に入ったか)×確信度(評価件数)」で作る。
+// 確信度はベイズ的な縮小 n/(n+PRIOR): 評価1件だけのタグは±0.25程度に留まり、
+// 件数が積み上がるほど±1.0に近づく。v1.2.2までは合計を最大絶対値で正規化して
+// いたため、評価が少ない時期に1曲の★5でそのタグが1.0に振り切れ、
+// そのジャンルばかり推薦される問題があった。
+const AFFINITY_PRIOR = 3;
 function buildAffinityTable(ratings) {
-  const votes = {};
+  const votes = {}; // tag -> { sum: 評価差分の合計, n: 評価件数 }
   for (const [id, r] of Object.entries(ratings)) {
     const song = SONGS.find(s => s.id === id);
     if (!song) continue;
@@ -1466,12 +1482,15 @@ function buildAffinityTable(ratings) {
     else if (r.rating <= 2) delta = -(3 - r.rating); // -1, -2
     if (delta === 0) continue;
     for (const tag of [...song.genres, ...song.mood]) {
-      votes[tag] = (votes[tag] || 0) + delta;
+      const v = votes[tag] || (votes[tag] = { sum: 0, n: 0 });
+      v.sum += delta;
+      v.n += 1;
     }
   }
-  const maxAbs = Math.max(1, ...Object.values(votes).map(Math.abs));
   const table = {};
-  for (const [tag, v] of Object.entries(votes)) table[tag] = v / maxAbs;
+  for (const [tag, v] of Object.entries(votes)) {
+    table[tag] = (v.sum / v.n / 2) * (v.n / (v.n + AFFINITY_PRIOR)); // 平均(-1〜+1)×確信度
+  }
   return table;
 }
 
@@ -1480,6 +1499,27 @@ function ratingAffinity(song, table) {
   if (tags.length === 0) return 0;
   const sum = tags.reduce((acc, t) => acc + (table[t] || 0), 0);
   return sum / tags.length;
+}
+
+// スコア降順の候補列から、抽選プール(上位poolSize件)をジャンルが偏らないように選ぶ。
+// 同一ジャンルは最大perGenreCap曲まで(全ジャンルが上限に達している曲はスキップ)。
+// 高親和度の1ジャンルが上位を独占して「同じジャンルしか出ない」状態を構造的に防ぐ。
+// 縛りで埋めきれない場合(候補がほぼ単一ジャンル等)は残りをスコア順に補充する。
+function pickTopPool(scored, poolSize, perGenreCap) {
+  const pool = [];
+  const count = {};
+  for (const item of scored) {
+    if (pool.length >= poolSize) break;
+    const gs = item.s.genres || [];
+    if (gs.length && gs.every(g => (count[g] || 0) >= perGenreCap)) continue;
+    for (const g of gs) count[g] = (count[g] || 0) + 1;
+    pool.push(item);
+  }
+  for (const item of scored) {
+    if (pool.length >= poolSize) break;
+    if (!pool.includes(item)) pool.push(item);
+  }
+  return pool;
 }
 
 // 直近3日間に提示された動画IDの集合
@@ -1541,7 +1581,7 @@ function pickSong(excludeIds) {
   });
 
   scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, 5);
+  const top = pickTopPool(scored, 5, 2); // 上位5件・同一ジャンル最大2曲
 
   // 上位5件から重み付きランダム抽選
   const min = Math.min(...top.map(t => t.score));
@@ -3663,6 +3703,37 @@ function renderSyncReminder() {
     loadGIS().catch(() => {}); // 事前ロード(タップ時のポップアップをユーザー操作内で開くため)
   }
 }
+
+/* ---- アップデート確認 ----
+ * Service Workerを使わない構成のため、開きっぱなしのタブ(特にiOSのホーム画面起動)は
+ * デプロイ後も古いコードを保持し続ける。配信中の index.html を no-store で取得して
+ * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
+ * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
+ * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
+const APP_VERSION = "v1.3.0";
+function parseAppVersion(html) {
+  const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
+  return m ? m[1] : null;
+}
+async function fetchRemoteVersion() {
+  const res = await fetch("index.html", { cache: "no-store" });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return parseAppVersion(await res.text());
+}
+let updateAvailable = null; // 検出した新バージョン(なければnull)
+let lastUpdateCheck = 0;
+function renderUpdateReminder(ver) {
+  if (ver !== undefined) updateAvailable = ver;
+  $("update-reminder").style.display = updateAvailable ? "" : "none";
+  if (updateAvailable) $("update-reminder-ver").textContent = updateAvailable;
+}
+async function checkForUpdate() {
+  lastUpdateCheck = Date.now();
+  const v = await fetchRemoteVersion();
+  renderUpdateReminder(v && v !== APP_VERSION ? v : null);
+  return v;
+}
+function applyUpdate() { location.reload(); }
 function renderSync() {
   const box = $("sync-box");
   if (!box) return;
@@ -3708,6 +3779,28 @@ document.querySelectorAll("#stars .star-btn").forEach(b => b.addEventListener("c
 }));
 $("sync-reminder-btn").addEventListener("click", () => driveSync(true));
 $("sync-reminder-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); driveSync(true); } });
+$("update-reminder-btn").addEventListener("click", applyUpdate);
+$("update-reminder-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); applyUpdate(); } });
+// 設定の「アップデートを確認」: 手動確認。新版が見つかったら同じボタンが「今すぐ更新」になる
+$("btn-check-update").addEventListener("click", async () => {
+  const btn = $("btn-check-update"), msg = $("update-msg");
+  if (updateAvailable) { applyUpdate(); return; }
+  btn.disabled = true;
+  msg.style.display = "";
+  msg.textContent = "確認しています…";
+  try {
+    const v = await checkForUpdate();
+    if (updateAvailable) {
+      msg.textContent = "新しいバージョン " + updateAvailable + " があります。";
+      btn.textContent = "今すぐ更新";
+    } else {
+      msg.textContent = (v || APP_VERSION) + " — お使いのバージョンは最新です。";
+    }
+  } catch (e) {
+    msg.textContent = "確認できませんでした。通信状況を確認してください。";
+  }
+  btn.disabled = false;
+});
 $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 $("btn-reset-taste").addEventListener("click", resetTaste);
@@ -3805,6 +3898,10 @@ function refreshTodayIfNeeded(includeAlways) {
 document.addEventListener("visibilitychange", () => refreshTodayIfNeeded(true));
 // タブを開いたまま日付や「時間ごと」の指定時間を跨いだ場合も拾う(PCで開きっぱなし対策)
 setInterval(() => refreshTodayIfNeeded(false), 60 * 1000);
+// アップデートの自動確認: バックグラウンドからの復帰時、前回確認から1時間以上あいていれば
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && Date.now() - lastUpdateCheck > 3600 * 1000) checkForUpdate().catch(() => {});
+});
 // 実再生時間: 再生中は30秒ごとに確定し、タブを閉じる/離れる時も取りこぼさない
 setInterval(() => { if (isPlayingNow()) flushListen(false); }, 30 * 1000);
 window.addEventListener("pagehide", () => flushListen(false));
@@ -3844,6 +3941,8 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) flush
   } catch (e) {}
   renderSync();
   renderSyncReminder();
+  $("app-version").textContent = " " + APP_VERSION; // 表記の実体はAPP_VERSION定数(一元管理)
+  checkForUpdate().catch(() => {}); // 起動時に静かに確認(失敗しても何もしない)
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)
   if (syncConfigured() && syncMeta().linked) driveSync(false);
 })();
