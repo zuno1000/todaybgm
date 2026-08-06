@@ -46,7 +46,9 @@
   --r-full: 999px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* touch-action: manipulation = ダブルタップズームだけを無効化(ピンチ拡大・スクロールは残る)。
+ * 継承されないプロパティのため全要素に指定する(bodyだけでは子要素のタップでズームする) */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 html { -webkit-text-size-adjust: 100%; }
 
 html, body {
@@ -1117,7 +1119,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.3.0</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.3.1</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -1435,11 +1437,13 @@ function markStarted() {
 }
 
 /* =========================================================
- * レコメンドアルゴリズム(仕様5章+v0.3拡張+v1.3.0改良)
- * score = 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity
- *       + 0.8*discover(未評価曲) + 1.0*timeMatch(時間帯) + ε
+ * レコメンドアルゴリズム(仕様5章+v0.3拡張+v1.3.x改良)
+ * score = ( 3.0*genreMatch + 1.5*durationMatch + 2.5*ratingAffinity
+ *         + 0.8*discover(未評価曲) + 1.0*timeMatch(時間帯) ) × 0.8^ジャンル疲労 + ε
  * v1.3.0: 親和度は「平均×確信度(評価件数で縮小)」+抽選プールに
  *         ジャンル多様性ガード(同一ジャンル最大2曲)
+ * v1.3.1: ジャンル疲労(今日提示したジャンルほど減衰)+抽選を固定の順位重みに
+ *         (スコア差が開いても上位1〜2件が独占しない)
  * ========================================================= */
 const W = { genre: 3.0, duration: 1.5, rating: 2.5, discover: 0.8, time: 1.0, eps: 1.0 };
 
@@ -1499,6 +1503,33 @@ function ratingAffinity(song, table) {
   if (tags.length === 0) return 0;
   const sum = tags.reduce((acc, t) => acc + (table[t] || 0), 0);
   return sum / tags.length;
+}
+
+// ジャンル疲労: 今日すでに提示した曲(shownIds)のジャンル別回数。
+// 同じジャンルは提示のたびにスコアが0.8^回数で減衰し、「次の曲」を押すほど
+// 他ジャンルへ移っていく(曲単位の3日減衰だけではジャンル内の別の曲が
+// 次々出てきてしまうため、ジャンル単位でも抑制する)。日付が変わるとリセット。
+const GENRE_FATIGUE = 0.8;
+function genreFatigue(shownIds) {
+  const count = {};
+  for (const id of shownIds || []) {
+    const s = SONGS.find(x => x.id === id);
+    if (s) for (const g of s.genres) count[g] = (count[g] || 0) + 1;
+  }
+  return count;
+}
+
+// スコアの決定的部分(乱数εと直近3日減衰はpickSong側で加える)。
+// ジャンル疲労は乱数を足す前に掛ける=疲労しても乱数で「たまに」は出る(探索は残す)
+function scoreSong(s, ctx) {
+  const base =
+    W.genre * genreMatch(s, ctx.settings ? ctx.settings.genres : null) +
+    W.duration * durationMatch(s, ctx.settings ? ctx.settings.duration : null) +
+    W.rating * ratingAffinity(s, ctx.table) +
+    W.discover * (ctx.ratings[s.id] ? 0 : 1) +
+    W.time * (s.mood.includes(ctx.slotMood) ? 1 : 0);
+  const tired = s.genres.reduce((m, g) => Math.max(m, ctx.fatigue[g] || 0), 0);
+  return base * Math.pow(GENRE_FATIGUE, Math.min(tired, 5));
 }
 
 // スコア降順の候補列から、抽選プール(上位poolSize件)をジャンルが偏らないように選ぶ。
@@ -1566,26 +1597,26 @@ function pickSong(excludeIds) {
   if (candidates.length === 0) candidates = SONGS.filter(s => !dead.includes(s.id));
   if (candidates.length === 0) candidates = SONGS.slice();
 
-  const slotMood = timeSlotMood(new Date().getHours());
+  const ctx = {
+    settings, table, ratings,
+    slotMood: timeSlotMood(new Date().getHours()),
+    fatigue: genreFatigue(excludeIds), // excludeIds=今日すでに提示した曲
+  };
 
   const scored = candidates.map(s => {
-    let score =
-      W.genre * genreMatch(s, settings ? settings.genres : null) +
-      W.duration * durationMatch(s, settings ? settings.duration : null) +
-      W.rating * ratingAffinity(s, table) +
-      W.discover * (ratings[s.id] ? 0 : 1) +           // 発見ボーナス: 未評価曲を後押し
-      W.time * (s.mood.includes(slotMood) ? 1 : 0) +   // 時間帯レコメンド
-      W.eps * Math.random();
+    let score = scoreSong(s, ctx) + W.eps * Math.random();
     if (recent.has(s.id)) score *= 0.5; // 直近3日提示分は50%減衰
     return { s, score };
   });
 
   scored.sort((a, b) => b.score - a.score);
-  const top = pickTopPool(scored, 5, 2); // 上位5件・同一ジャンル最大2曲
+  const top = pickTopPool(scored, 7, 2); // 上位7件・同一ジャンル最大2曲
 
-  // 上位5件から重み付きランダム抽選
-  const min = Math.min(...top.map(t => t.score));
-  const weights = top.map(t => t.score - min + 0.1);
+  // 固定の順位重みで抽選(1位:最下位=5:1)。旧方式(score-min+0.1)はスコア差が
+  // 開くと上位1〜2件がほぼ独占し、多様性ガードで混ぜた他ジャンルが実際には
+  // ほとんど選ばれなかった。順位重みならスコア差の絶対量に左右されない
+  const RANK_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.4, 0.3, 0.2];
+  const weights = top.map((t, i) => RANK_WEIGHTS[i] || 0.15);
   const total = weights.reduce((a, b) => a + b, 0);
   let r = Math.random() * total;
   for (let i = 0; i < top.length; i++) {
@@ -3710,7 +3741,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.3.0";
+const APP_VERSION = "v1.3.1";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;

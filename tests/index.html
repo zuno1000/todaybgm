@@ -201,6 +201,23 @@ async function main() {
   eq("pickTopPool: 単一ジャンルしか無くても必ずプールサイズまで埋まる",
     w.pickTopPool([mk("a", ["piano"], 3), mk("b", ["piano"], 2), mk("c", ["piano"], 1)], 3, 2).map(t => t.s.id),
     ["a", "b", "c"]);
+  // v1.3.1: ジャンル疲労(今日提示したジャンルの回数を数え、スコアを0.8^回数で減衰)
+  const piano2 = byGenre("piano")[1];
+  const fat = w.genreFatigue([pianoSong.id, piano2.id, edmSong.id]);
+  check("genreFatigue: 提示済み曲からジャンル別回数を数える",
+    fat["piano"] === 2 && fat["edm"] === 1, JSON.stringify(fat));
+  eq("genreFatigue: 空なら空テーブル", w.genreFatigue([]), {});
+  const ctxBase = { settings: null, table: {}, ratings: {}, slotMood: "focus", fatigue: {} };
+  const sPno = { genres: ["piano"], mood: ["calm"], durationClass: "medium" };
+  const base0 = w.scoreSong(sPno, ctxBase);
+  const tired2 = w.scoreSong(sPno, Object.assign({}, ctxBase, { fatigue: { piano: 2 } }));
+  near("scoreSong: ジャンル疲労2回でスコア0.8^2=0.64倍", tired2 / base0, Math.pow(0.8, 2));
+  near("scoreSong: 疲労の減衰は0.8^5で頭打ち",
+    w.scoreSong(sPno, Object.assign({}, ctxBase, { fatigue: { piano: 99 } })) / base0, Math.pow(0.8, 5));
+  check("scoreSong: 疲労は自ジャンル以外に影響しない",
+    w.scoreSong({ genres: ["lofi"], mood: ["calm"], durationClass: "medium" },
+      Object.assign({}, ctxBase, { fatigue: { piano: 3 } })) ===
+    w.scoreSong({ genres: ["lofi"], mood: ["calm"], durationClass: "medium" }, ctxBase));
   // pickSong: 候補をA/Bの2曲に絞り、Bを★1にする → 必ずAが返る
   const deadAllButAB = CATALOG.map(s => s.id).filter(id => id !== songA.id && id !== songB.id);
   seedLS({ bgm_dead: deadAllButAB, bgm_ratings: { [songB.id]: { rating: 1, ratedAt: NOW_ISO } } });
@@ -637,6 +654,13 @@ async function main() {
   await win().checkForUpdate();
   check("checkForUpdate: 配信版と同一バージョンならリマインダーは出ない",
     doc().getElementById("update-reminder").style.display === "none");
+
+  /* ---- Suite 13: ダブルタップズーム抑止(v1.3.1) ---- */
+  suite("13. ダブルタップズーム抑止");
+  check("touch-action: manipulation が全要素に効いている(body/再生ボタン/タブ)",
+    win().getComputedStyle(doc().body).touchAction === "manipulation" &&
+    win().getComputedStyle(doc().getElementById("btn-play")).touchAction === "manipulation" &&
+    win().getComputedStyle(doc().querySelector(".tab")).touchAction === "manipulation");
 }
 
 /* ==== 実行 ==== */
