@@ -655,12 +655,17 @@ async function main() {
   check("checkForUpdate: 配信版と同一バージョンならリマインダーは出ない",
     doc().getElementById("update-reminder").style.display === "none");
 
-  /* ---- Suite 13: ダブルタップズーム抑止(v1.3.1) ---- */
+  /* ---- Suite 13: ダブルタップズーム抑止(v1.3.1〜v1.3.2) ---- */
   suite("13. ダブルタップズーム抑止");
   check("touch-action: manipulation が全要素に効いている(body/再生ボタン/タブ)",
     win().getComputedStyle(doc().body).touchAction === "manipulation" &&
     win().getComputedStyle(doc().getElementById("btn-play")).touchAction === "manipulation" &&
     win().getComputedStyle(doc().querySelector(".tab")).touchAction === "manipulation");
+  // iOSはtouch-actionだけではスマートズームが残ることがある → viewportでも無効化(v1.3.2)。
+  // ピンチ拡大はiOSがアクセシビリティのためこの指定を無視して常に可能
+  const vp = doc().querySelector('meta[name="viewport"]').getAttribute("content");
+  check("viewport: maximum-scale=1 + user-scalable=no でダブルタップズーム無効",
+    /maximum-scale=1(\.0)?/.test(vp) && /user-scalable=no/.test(vp) && /viewport-fit=cover/.test(vp), vp);
 }
 
 /* ==== 実行 ==== */
