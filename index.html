@@ -1354,7 +1354,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.1</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.2</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -3684,6 +3684,9 @@ const POMO_PRESETS = {
   p25: { work: 25 * 60, brk: 5 * 60, label: "25分+休憩5分" },
   p50: { work: 50 * 60, brk: 10 * 60, label: "50分+休憩10分" },
 };
+// 区切り(作業終了・休憩明け)を予定からこれ以上過ぎて検知したら、いまさら流れを
+// 再開せず完了扱いにする猶予。復帰経路(restorePomo / pomoComplete)共通の基準
+const POMO_RESUME_GRACE = 10 * 60 * 1000;
 const POMO_SETS_CHOICES = [1, 2, 3, 4];
 /* ポモドーロの設定(時間プリセット・セット数・自動開始)。作業タブと設定画面で共通の1つの値 */
 function pomoConf() {
@@ -3762,9 +3765,12 @@ function pomoTick() {
 // 休憩なら次のセットの作業を自動開始する。バックグラウンドで遅れて検知しても
 // 作業秒は endAt までしか数えない(pomoElapsedWorkが頭打ちする)
 function pomoComplete(s) {
+  // バックグラウンドから復帰してtickが遅れて発火した場合、予定から10分以上離れていたら
+  // いまさら休憩・次のセットを始めず完了扱いにする(リロード復帰=restorePomoと同じ基準)
+  const stale = Date.now() - s.endAt >= POMO_RESUME_GRACE;
   if (s.mode === "work") {
     addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
-    if (s.setNo >= s.sets) { // 最後のセット: 完了
+    if (s.setNo >= s.sets || stale) { // 最後のセット or 予定から離れすぎ: 完了
       pomoBeep(4);
       savePomo(pomoIdle());
       stopPomoTick();
@@ -3774,6 +3780,9 @@ function pomoComplete(s) {
                  endAt: Date.now() + POMO_PRESETS[s.preset].brk * 1000,
                  pausedLeft: null, acc: 0, runStartAt: null, lastRunAt: Date.now() });
     }
+  } else if (stale) { // 休憩明けを大幅に過ぎていた: 再開せず待機へ
+    savePomo(pomoIdle());
+    stopPomoTick();
   } else { // 休憩が明けた: 次のセットへ
     pomoBeep(2);
     pomoStartWork(s.setNo + 1, s.sets, s.preset);
@@ -3811,8 +3820,7 @@ function pomoStop() {
 }
 // 起動時の復元: 進行中なら刻みを再開。閉じている間に区切りを過ぎていた場合は
 // 作業分を記録したうえで、予定どおりの流れ(休憩の残り→次のセット)に追いつかせる。
-// ただし予定から10分以上遅れていたら、いまさら再開せず完了扱いで待機へ(音は鳴らさない)
-const POMO_RESUME_GRACE = 10 * 60 * 1000;
+// ただし予定からPOMO_RESUME_GRACE以上遅れていたら、いまさら再開せず完了扱いで待機へ(音は鳴らさない)
 function restorePomo() {
   const s = pomoState();
   if (s.mode === "idle") return;
@@ -3966,7 +3974,8 @@ function nextDueDate(due, repeat) {
 }
 function setTodoDone(id, done) {
   const t = todosMap(), it = t[id];
-  if (!it || it.deleted) return;
+  // 同じ状態の再適用は無視(冪等)。二重適用で繰り返しの次タスクが重複生成されるのを防ぐ
+  if (!it || it.deleted || !!it.done === !!done) return;
   it.done = !!done;
   it.doneAt = done ? Date.now() : null;
   it.updatedAt = Date.now();
@@ -4707,7 +4716,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.7.1";
+const APP_VERSION = "v1.7.2";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4840,19 +4849,22 @@ $("work-next").addEventListener("click", () => { if (workWeekOffset > 0) { workW
 $("pomo-inline-btn").addEventListener("click", () => showView("work"));
 $("pomo-inline-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showView("work"); } });
 function submitTodo() {
-  if (addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value,
-              $("todo-time").value, $("todo-tag").value)) {
-    $("todo-input").value = "";
-    $("todo-due").value = "";
-    $("todo-time").value = "";
-    $("todo-repeat").value = "";
-    $("todo-tag").value = "";
-    renderTodos();
-    renderWorkStats();
-  }
+  const id = addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value,
+                     $("todo-time").value, $("todo-tag").value);
+  if (!id) return;
+  $("todo-input").value = "";
+  $("todo-due").value = "";
+  $("todo-time").value = "";
+  $("todo-repeat").value = "";
+  $("todo-tag").value = "";
+  // 追加した項目がいまの絞り込みで見えないと「消えた」ように見えるので、
+  // その場合は絞り込みを「すべて」に戻す(ピルの選択状態も切り替わるので気づける)
+  if (!visibleTodos().some(it => it.id === id)) saveTodoView({ filter: "all", tag: null });
+  renderTodos();
+  renderWorkStats();
 }
 $("todo-add").addEventListener("click", submitTodo);
-// 並び替え(登録順/期限順)・絞り込み(すべて/今日まで)のピル
+// 並び替え(登録順/期限順)・絞り込み(期限・タグ)のピル
 for (const [boxId, key, defs] of [
   ["todo-sort", "sort", [["created", "登録順"], ["due", "期限順"]]],
   ["todo-filter", "filter", [["all", "すべて"], ["today", "今日まで"], ["tomorrow", "明日まで"], ["week", "1週間後まで"], ["due", "期限あり"]]],

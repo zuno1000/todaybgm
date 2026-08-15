@@ -1050,6 +1050,50 @@ async function main() {
   seedLS({});
   w16.renderTodos();
   check("タグがなければタグ絞り込み行は出ない", doc().getElementById("todo-tags").style.display === "none");
+
+  /* ---- Suite 17: セルフレビュー修正(v1.7.2) ---- */
+  suite("17. セルフレビュー修正(v1.7.2)");
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } });
+  const w17 = win();
+  const t17 = w17.todayStr();
+  // 復帰の一貫性: tick経由(画面復帰)でも、予定から10分以上過ぎた区切りは再開しない
+  w17.savePomo({ mode: "work", preset: "p25", sets: 2, setNo: 1, endAt: Date.now() - 20 * 60 * 1000,
+                 pausedLeft: null, acc: 0, runStartAt: Date.now() - 45 * 60 * 1000, lastRunAt: 0 });
+  w17.pomoTick();
+  const wk17 = JSON.parse(localStorage.getItem("bgm_work"))[t17];
+  check("tick復帰: 20分前に終わった作業は記録して待機へ(今さら休憩を始めない)",
+    w17.pomoState().mode === "idle" && wk17.pomo === 1 && Math.abs(wk17.sec - 1500) <= 2, JSON.stringify(wk17));
+  w17.savePomo({ mode: "break", preset: "p25", sets: 2, setNo: 1, endAt: Date.now() - 20 * 60 * 1000,
+                 pausedLeft: null, acc: 0, runStartAt: null, lastRunAt: 0 });
+  w17.pomoTick();
+  check("tick復帰: 20分前に明けた休憩から次のセットを始めない", w17.pomoState().mode === "idle");
+  // 遅れが小さい(猶予内)なら従来どおり流れを継続する
+  w17.savePomo({ mode: "work", preset: "p25", sets: 2, setNo: 1, endAt: Date.now() - 2 * 60 * 1000,
+                 pausedLeft: null, acc: 0, runStartAt: Date.now() - 27 * 60 * 1000, lastRunAt: 0 });
+  w17.pomoTick();
+  check("tick復帰: 2分遅れなら従来どおり休憩へ", w17.pomoState().mode === "break");
+  w17.pomoStop();
+  // setTodoDoneの冪等性: 同じ状態の再適用で繰り返しの次タスクが重複生成されない
+  const r17 = w17.addTodo("毎日のこと", t17, "daily");
+  w17.setTodoDone(r17, true);
+  w17.setTodoDone(r17, true); // 二重適用
+  const actives17 = Object.values(w17.todosMap()).filter(it => it.text === "毎日のこと" && !it.done && !it.deleted);
+  check("setTodoDone: 二重適用しても次のタスクは1つだけ", actives17.length === 1, String(actives17.length));
+  // 絞り込み中の追加: 見えない絞り込みなら「すべて」に戻して追加した項目を見せる
+  w17.saveTodoView({ filter: "today", tag: null });
+  w17.showView("work");
+  doc().getElementById("todo-input").value = "期限なしの追加";
+  doc().getElementById("todo-add").click();
+  check("絞り込み中の追加: 追加項目が見えない絞り込みは「すべて」に戻る",
+    w17.todoView().filter === "all" &&
+    [...doc().querySelectorAll("#todo-list .todo-text")].some(x => x.textContent === "期限なしの追加"));
+  // 見える絞り込みのときは維持される
+  w17.saveTodoView({ filter: "today", tag: null });
+  w17.renderTodos();
+  doc().getElementById("todo-input").value = "今日の追加";
+  doc().getElementById("todo-due").value = t17;
+  doc().getElementById("todo-add").click();
+  check("絞り込み中の追加: 追加項目が見える絞り込みは維持される", w17.todoView().filter === "today");
 }
 
 /* ==== 実行 ==== */
