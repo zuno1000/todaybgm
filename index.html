@@ -779,6 +779,11 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   width: 13px; height: 13px; flex-shrink: 0; margin-top: 4px;
   stroke: var(--accent); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
 }
+/* 設定: 終了音の音量(スライダー+現在値+確認ボタン) */
+.pomo-vol-row { display: flex; align-items: center; gap: 12px; margin: 0 6px; }
+.pomo-vol-row .mixer { flex: 1; min-width: 0; }
+.pomo-vol-val { width: 42px; text-align: right; font-size: 13px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+#pomovol-test { flex-shrink: 0; font-size: 12px; padding: 9px 14px; }
 
 /* ---- 履歴 ---- */
 .hist-list { list-style: none; }
@@ -1261,7 +1266,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="pill-grid" id="pomopreset-pills"></div>
       <h3 class="section-title">セット数</h3>
       <div class="pill-grid" id="pomosets-pills"></div>
-      <p class="set-note">この設定は「作業」タブのタイマーと共通です。</p>
+      <h3 class="section-title">終了音の音量</h3>
+      <div class="pomo-vol-row">
+        <input type="range" class="mixer" id="pomovol" min="0" max="100" step="5" value="70" aria-label="終了音の音量">
+        <span class="pomo-vol-val" id="pomovol-val">70%</span>
+        <button class="toggle-pill" id="pomovol-test" type="button">音を確認</button>
+      </div>
+      <p class="set-note">0%にすると音は鳴りません(対応端末のバイブレーションは残ります)。<br>この設定は「作業」タブのタイマーと共通です。</p>
     </div>
 
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
@@ -1279,7 +1290,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.5.0</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.5.1</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -2353,6 +2364,15 @@ function renderSettings() {
   };
   singleSelect($("pomopreset-pills"), Object.entries(POMO_PRESETS).map(([k, p]) => [k, p.label]), conf.preset);
   singleSelect($("pomosets-pills"), POMO_SETS_CHOICES.map(n => [n, n + "セット"]), conf.sets);
+  // 終了音の音量スライダー+確認ボタン(確認はスライダーの今の位置で鳴らす=保存前でも試せる)
+  const vol = $("pomovol");
+  vol.value = conf.vol;
+  $("pomovol-val").textContent = conf.vol + "%";
+  if (!vol.dataset.wired) {
+    vol.dataset.wired = "1";
+    vol.addEventListener("input", () => { $("pomovol-val").textContent = vol.value + "%"; });
+    $("pomovol-test").addEventListener("click", () => pomoBeep(1, Number(vol.value)));
+  }
 }
 
 function saveSettings() {
@@ -2366,7 +2386,8 @@ function saveSettings() {
   const psBtn = $("pomosets-pills").querySelector(".toggle-pill.on");
   save(LS.POMOCONF, { preset: ppBtn ? ppBtn.dataset.key : "p25",
                       sets: psBtn ? Number(psBtn.dataset.key) : 1,
-                      auto: $("pomoauto-toggle").classList.contains("on") });
+                      auto: $("pomoauto-toggle").classList.contains("on"),
+                      vol: Math.max(0, Math.min(100, Number($("pomovol").value) || 0)) });
   renderPomo(); // 作業タブの表示(待機中の時間・セット数)にも反映
   const pmBtn = $("playmode-pills").querySelector(".toggle-pill.on");
   save(LS.PLAYMODE, pmBtn ? pmBtn.dataset.key : "next");
@@ -3573,6 +3594,7 @@ function pomoConf() {
     preset: POMO_PRESETS[c.preset] ? c.preset : "p25",
     sets: POMO_SETS_CHOICES.includes(c.sets) ? c.sets : 1,
     auto: !!c.auto,
+    vol: (typeof c.vol === "number" && c.vol >= 0 && c.vol <= 100) ? Math.round(c.vol) : 70, // 終了音の音量%
   };
 }
 function savePomoConf(patch) {
@@ -3737,17 +3759,20 @@ function pomoAudioUnlock() {
     if (pomoAudio.state === "suspended") pomoAudio.resume().catch(() => {});
   } catch (e) {}
 }
-function pomoBeep(n) {
+function pomoBeep(n, vol) {
+  // 音量%→ゲイン。聴感に合わせた2乗カーブで、既定70%が従来の音量(ピーク0.25)相当になる
+  const v = (typeof vol === "number") ? Math.max(0, Math.min(100, vol)) : pomoConf().vol;
+  const peak = 0.5 * Math.pow(v / 100, 2);
   try {
     pomoAudioUnlock();
-    if (pomoAudio) {
+    if (pomoAudio && peak >= 0.001) { // 0%は無音(バイブレーションは残す)
       const t0 = pomoAudio.currentTime;
       for (let i = 0; i < n; i++) {
         const o = pomoAudio.createOscillator(), g = pomoAudio.createGain();
         o.type = "sine";
         o.frequency.value = 880;
         g.gain.setValueAtTime(0.001, t0 + i * 0.4);
-        g.gain.exponentialRampToValueAtTime(0.25, t0 + i * 0.4 + 0.03);
+        g.gain.exponentialRampToValueAtTime(peak, t0 + i * 0.4 + 0.03);
         g.gain.exponentialRampToValueAtTime(0.001, t0 + i * 0.4 + 0.3);
         o.connect(g);
         g.connect(pomoAudio.destination);
@@ -4445,7 +4470,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.5.0";
+const APP_VERSION = "v1.5.1";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;

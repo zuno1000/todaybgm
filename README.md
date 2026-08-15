@@ -117,7 +117,7 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
 | `bgm_work` | 日別の作業実績 `{date: {sec: 作業秒, pomo: 完了数}}`(「作業」タブのあゆみ用) |
 | `bgm_todos` | やることリスト `{id: {text, done, createdAt, doneAt, updatedAt, deleted}}`(削除はトンボストーン=30日で掃除。完了は内容の振り返り用に90日保持) |
 | `bgm_pomo` | ポモドーロタイマーの進行状態(端末ローカル・同期しない) |
-| `bgm_pomoconf` | ポモドーロの設定 `{preset, sets, auto}`(時間・セット数・開いたとき自動開始。「作業」タブと設定画面で共通) |
+| `bgm_pomoconf` | ポモドーロの設定 `{preset, sets, auto, vol}`(時間・セット数・開いたとき自動開始・終了音の音量%。「作業」タブと設定画面で共通) |
 | `bgm_fshint` | 全画面ヒントを表示済みか |
 | `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt, workResetAt, dirtySince}`)。`dirtySince`=未同期のローカル変更が発生した時刻(同期成功で0。同期リマインダーの判定に使用) |
 

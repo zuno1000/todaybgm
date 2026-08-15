@@ -850,15 +850,27 @@ async function main() {
     !!doc().getElementById("autoplay-toggle") && !!doc().getElementById("pomoauto-toggle") &&
     doc().querySelectorAll("#pomopreset-pills .toggle-pill").length === 2 &&
     doc().querySelectorAll("#pomosets-pills .toggle-pill").length === 4);
+  check("設定: 終了音の音量スライダーと確認ボタンがある",
+    !!doc().getElementById("pomovol") && !!doc().getElementById("pomovol-test") &&
+    doc().getElementById("pomovol").value === "70"); // 既定70%
   doc().getElementById("autoplay-toggle").click();
   doc().getElementById("pomoauto-toggle").click();
   doc().querySelector('#pomopreset-pills .toggle-pill[data-key="p50"]').click();
   doc().querySelector('#pomosets-pills .toggle-pill[data-key="3"]').click();
+  doc().getElementById("pomovol").value = 30;
   doc().getElementById("btn-save").click();
   await sleep(1000); // saveSettingsは700ms後に画面遷移する
   const conf14 = JSON.parse(localStorage.getItem("bgm_pomoconf"));
-  check("保存: ポモドーロ設定(50分×3セット・自動開始オン)が保存される",
-    conf14.preset === "p50" && conf14.sets === 3 && conf14.auto === true, JSON.stringify(conf14));
+  check("保存: ポモドーロ設定(50分×3セット・自動開始オン・音量30%)が保存される",
+    conf14.preset === "p50" && conf14.sets === 3 && conf14.auto === true && conf14.vol === 30, JSON.stringify(conf14));
+  // 音量: 不正値は既定70%へフォールバック、0%や指定音量でも鳴動処理が例外にならない
+  w14.save("bgm_pomoconf", { preset: "p50", sets: 3, auto: true, vol: "loud" });
+  check("pomoConf: 不正な音量は既定70%にフォールバック", w14.pomoConf().vol === 70);
+  w14.save("bgm_pomoconf", conf14); // 保存済みの設定に戻す
+  w14.pomoBeep(1, 0);
+  w14.pomoBeep(1, 100);
+  w14.pomoBeep(1);
+  check("pomoBeep: 音量0%・100%・設定値のいずれでも例外にならない", true);
   check("自動再生設定が保存される(bgm_autoplay=true)",
     localStorage.getItem("bgm_autoplay") === "true" && w14.autoplayOn() === true);
   check("mergeData: bgm_autoplayは新しい設定側が勝つ",
