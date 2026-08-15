@@ -14,7 +14,7 @@
 2. **設定**: 好きなジャンル(Lo-fi / ジャズ / ピアノ / 環境音 / ゲームBGM / シンセウェーブ / クラシック / ケルト / ファンタジー / 和風 / EDM / かわいい)と動画時間を選ぶと、おすすめが条件に沿います
 3. **★評価**: 聴いたら5段階で評価。使うほど、おすすめがあなたの好みに寄り添います(「好み」タブで学習結果のほか、連続日数・総再生時間・実績(あゆみ)・おすすめとの相性(月ごとの推移)も見られます。実績は達成すると次の段階へ進化し、バッジをタップすると進捗の詳細が開きます)
 4. **探す**: 気分ミキサー(朝↔夜 / アコースティック↔電子音 / ゆったり↔アップテンポ+雨音)で、今の気分の1曲を能動的に探せます。曲名・ジャンル名での検索もできます
-5. **作業**: BGMを流しながら使えるポモドーロタイマー(25分/50分)と、やることリスト。日ごとの作業時間・完了数は「作業のあゆみ」で振り返れます
+5. **作業**: BGMを流しながら使えるポモドーロタイマー(25分/50分 × 1〜4セット。休憩明けは次のセットが自動で始まります)と、やることリスト。日ごとの作業時間・完了数は「作業のあゆみ」で振り返れます(‹ ›で過去の週へ、日をタップでその日に完了したやることの内容も見られます)。タイマー進行中は「今日の曲」画面にも残り時間が出ます。設定で「開いたらタイマーを自動で開始」(時間・セット数も事前設定)にもできます
 6. **履歴**: 聴いた曲がカレンダーに記録され、いつでもタップで再生できます
 7. **同期(任意)**: Googleでログインすると、評価・履歴・設定・作業の記録をあなた自身のGoogleドライブ経由で他の端末と同期できます
 8. **共有**: Xで共有 / 画像カード(QR付き)で共有 / YouTubeで開く(再生位置を引き継ぎ)。画像のQRを読み込むと、このアプリでその曲がそのまま開きます(`?v=動画ID` のリンクでも同じことができます)。「好み」タブからは**音楽プロフィールカード**(MBTI風の4文字タイプ+聴き方の4軸)と**実績カード**も画像で共有できます
@@ -115,8 +115,9 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
 | `bgm_openapp` | 常にYouTubeアプリで開く |
 | `bgm_autoplay` | アプリを開いたら「今日の曲」を自動再生(ブラウザの自動再生制限でブロックされた場合は何もしない) |
 | `bgm_work` | 日別の作業実績 `{date: {sec: 作業秒, pomo: 完了数}}`(「作業」タブのあゆみ用) |
-| `bgm_todos` | やることリスト `{id: {text, done, createdAt, doneAt, updatedAt, deleted}}`(削除はトンボストーン。完了・削除から30日で掃除) |
+| `bgm_todos` | やることリスト `{id: {text, done, createdAt, doneAt, updatedAt, deleted}}`(削除はトンボストーン=30日で掃除。完了は内容の振り返り用に90日保持) |
 | `bgm_pomo` | ポモドーロタイマーの進行状態(端末ローカル・同期しない) |
+| `bgm_pomoconf` | ポモドーロの設定 `{preset, sets, auto}`(時間・セット数・開いたとき自動開始。「作業」タブと設定画面で共通) |
 | `bgm_fshint` | 全画面ヒントを表示済みか |
 | `bgm_sync` | データ同期の連携状態(`{linked, updatedAt, lastSync, ratingsResetAt, playsResetAt, workResetAt, dirtySince}`)。`dirtySince`=未同期のローカル変更が発生した時刻(同期成功で0。同期リマインダーの判定に使用) |
 
@@ -136,6 +137,6 @@ powershell -ExecutionPolicy Bypass -File tests\run.ps1
    `GOOGLE_CLIENT_ID_PROD` / `GOOGLE_CLIENT_ID_DEV` に貼り付けてコミット
 
 補足:
-- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode` / `bgm_todaymode` / `bgm_songmeta` / `bgm_listen` / `bgm_work` / `bgm_todos` / `bgm_autoplay`(`bgm_daily`・`bgm_recent`・`bgm_pomo` は端末ごとに独立。`bgm_listen`・`bgm_work` は日別maxでマージ=再マージでの二重計上を防ぐ。`bgm_todos` はIDごとに新しい方が勝ち、削除はトンボストーンで伝播)
+- 同期対象は `bgm_settings` / `bgm_ratings` / `bgm_plays` / `bgm_dead` / `bgm_openapp` / `bgm_playmode` / `bgm_todaymode` / `bgm_songmeta` / `bgm_listen` / `bgm_work` / `bgm_todos` / `bgm_autoplay` / `bgm_pomoconf`(`bgm_daily`・`bgm_recent`・`bgm_pomo` は端末ごとに独立。`bgm_listen`・`bgm_work` は日別maxでマージ=再マージでの二重計上を防ぐ。`bgm_todos` はIDごとに新しい方が勝ち、削除はトンボストーンで伝播)
 - 競合は非破壊マージ(評価=`ratedAt`が新しい方、履歴=和集合、設定=更新時刻が新しい方)+リセット時刻のトンボストーン
 - `drive.appdata` は現在のGoogleの分類では**非機密スコープ**(アプリ専用フォルダのみアクセス)。公開ステータスを「本番」にしてもスコープ審査は不要で、必要なのはブランディング検証のみ(2026-07確認)。開発用プロジェクトは「テスト」のままで審査もブランディングも不要

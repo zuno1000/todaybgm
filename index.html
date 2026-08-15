@@ -757,6 +757,28 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .todo-del:active { background: var(--bg-deep); box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark); }
 /* 作業のあゆみは時間の絶対量バーなので、好み度用の中央中立線は出さない */
 #work-rows .aff-track::after { content: none; }
+/* あゆみの週送りナビ(履歴カレンダーのナビを小ぶりに流用) */
+.work-week-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.work-week-head .cal-nav { width: 36px; height: 36px; font-size: 18px; }
+.work-week-head .cal-nav:disabled { opacity: 0.35; }
+.work-week-title { font-size: 13px; font-weight: 700; color: var(--text); }
+/* あゆみの行はタップでその日の詳細(完了したやること)を開ける */
+#work-rows .aff-row { cursor: pointer; }
+#work-rows .aff-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+#work-rows .aff-row.sel .aff-label { color: var(--accent); font-weight: 700; }
+.work-day-detail { margin-top: 4px; padding-top: 16px; border-top: 1px solid rgba(136, 152, 184, 0.28); }
+.work-day-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.work-day-sum { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
+.work-done-list { list-style: none; }
+.work-done-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; line-height: 1.6; padding: 3px 0;
+  min-width: 0; overflow-wrap: anywhere;
+}
+.work-done-list li svg {
+  width: 13px; height: 13px; flex-shrink: 0; margin-top: 4px;
+  stroke: var(--accent); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+}
 
 /* ---- 履歴 ---- */
 .hist-list { list-style: none; }
@@ -1015,6 +1037,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
     </div>
 
+    <p class="sync-reminder" id="pomo-inline" style="display:none"><a id="pomo-inline-btn" role="button" tabindex="0"></a></p>
     <p class="sync-reminder" id="sync-reminder" style="display:none">最終同期から<span id="sync-reminder-days">–</span>日たっています · <a id="sync-reminder-btn" role="button" tabindex="0">今すぐ同期</a></p>
     <p class="sync-reminder" id="update-reminder" style="display:none">新しいバージョン <span id="update-reminder-ver">–</span> があります · <a id="update-reminder-btn" role="button" tabindex="0">今すぐ更新</a></p>
   </section>
@@ -1085,11 +1108,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   <!-- ===== 作業(ポモドーロ・やること) ===== -->
   <section id="view-work" class="view">
     <h2 class="section-title">ポモドーロタイマー <button class="help-btn" data-help="help-pomo" aria-expanded="false" aria-label="ポモドーロタイマーの説明を表示">?</button></h2>
-    <p class="set-note help-note" id="help-pomo" style="margin:0 2px 14px" hidden>作業と休憩を交互に繰り返す集中法です。作業時間が終わると音でお知らせして休憩へ、休憩が終わると待機に戻ります。<br>完了した作業は下の「作業のあゆみ」に記録されます(途中でやめた分も、そこまでの時間は記録されます)。<br>※画面を閉じている・他のアプリを見ている間は、終了の音が鳴らないことがあります。</p>
+    <p class="set-note help-note" id="help-pomo" style="margin:0 2px 14px" hidden>作業と休憩を交互に繰り返す集中法です。作業時間が終わると音でお知らせして休憩へ、休憩が終わると次のセットの作業が自動で始まります(最後のセットは休憩なしで完了)。<br>完了した作業は下の「作業のあゆみ」に記録されます(途中でやめた分も、そこまでの時間は記録されます)。残り時間は「今日の曲」画面の下にも表示されます。<br>※画面を閉じている・他のアプリを見ている間は、終了の音が鳴らないことがあります。</p>
     <div class="pomo-card raised">
       <div class="pomo-phase" id="pomo-phase">作業 25分</div>
       <div class="pomo-time" id="pomo-time">25:00</div>
       <div class="pill-grid pomo-presets" id="pomo-presets"></div>
+      <div class="pill-grid pomo-presets" id="pomo-sets"></div>
       <div class="pomo-actions">
         <button class="pomo-main accent-raised" id="pomo-main">開始</button>
         <button class="pomo-sub raised" id="pomo-stop" style="display:none">やめる</button>
@@ -1108,8 +1132,19 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <h2 class="section-title">作業のあゆみ</h2>
     <div class="aff-card raised">
+      <div class="work-week-head">
+        <button class="cal-nav raised" id="work-prev" aria-label="前の7日間">‹</button>
+        <div class="work-week-title" id="work-week-title">直近7日</div>
+        <button class="cal-nav raised" id="work-next" aria-label="次の7日間" disabled>›</button>
+      </div>
       <div id="work-rows"></div>
       <p class="empty" id="work-empty" style="display:none">タイマーで作業すると、日ごとの作業時間がここに積み上がります。</p>
+      <div class="work-day-detail" id="work-day-detail" style="display:none">
+        <p class="work-day-title" id="work-day-title"></p>
+        <p class="work-day-sum" id="work-day-sum"></p>
+        <ul class="work-done-list" id="work-done-list"></ul>
+        <p class="empty" id="work-done-empty" style="display:none;text-align:left;padding:0 2px">この日に完了したやることはありません。</p>
+      </div>
       <p class="footnote" id="work-note" style="margin-top:8px;text-align:left"></p>
     </div>
   </section>
@@ -1215,6 +1250,20 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       </div>
     </div>
 
+    <div class="set-card raised">
+      <h2 class="set-card-title">作業(ポモドーロ)</h2>
+      <h3 class="section-title">開いたとき <button class="help-btn" data-help="help-pomoauto" aria-expanded="false" aria-label="タイマー自動開始の説明を表示">?</button></h3>
+      <div class="pill-grid">
+        <button class="toggle-pill" id="pomoauto-toggle" aria-pressed="false">タイマーを自動で開始</button>
+      </div>
+      <p class="set-note help-note" id="help-pomoauto" hidden>オンにすると、アプリを開いた瞬間に下の時間・セット数でポモドーロタイマーが走り出します。残り時間は「今日の曲」画面の下にも表示されます。<br>※終了・中断から1時間以内に開き直したときは自動開始しません(リロードのたびに始まるのを防ぐため)。<br>※自動開始後に一度も画面をタップしていない場合、終了の音が鳴らないことがあります。</p>
+      <h3 class="section-title">時間</h3>
+      <div class="pill-grid" id="pomopreset-pills"></div>
+      <h3 class="section-title">セット数</h3>
+      <div class="pill-grid" id="pomosets-pills"></div>
+      <p class="set-note">この設定は「作業」タブのタイマーと共通です。</p>
+    </div>
+
     <button class="save-btn accent-raised" id="btn-save">保存する</button>
     <div class="save-msg" id="save-msg"></div>
 
@@ -1230,7 +1279,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.4.0</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.5.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -1367,6 +1416,7 @@ const LS = {
   WORK: "bgm_work",     // 日別の作業実績 {date: {sec: 作業秒, pomo: 完了数}} — 作業タブのあゆみ用
   TODOS: "bgm_todos",   // やることリスト {id: {text, done, createdAt, doneAt, updatedAt, deleted}}
   POMO: "bgm_pomo",     // ポモドーロタイマーの進行状態(端末ローカル・同期しない)
+  POMOCONF: "bgm_pomoconf", // ポモドーロの設定 {preset, sets, auto} — 作業タブ・設定画面で共通
   AUTOPLAY: "bgm_autoplay", // アプリを開いたら「今日の曲」を自動再生
 };
 // localStorage が使えない環境(プライベートモード・サイトデータブロック・一部WebView)では
@@ -2270,8 +2320,9 @@ function renderSettings() {
     ths.appendChild(b);
   }
   $("todaymode-hours-box").style.display = tm.mode === "interval" ? "" : "none";
-  // 常にアプリで開く/開いたら自動再生 のトグル
-  for (const [id, on] of [["openapp-toggle", openAppOn()], ["autoplay-toggle", autoplayOn()]]) {
+  // 常にアプリで開く/開いたら自動再生/タイマー自動開始 のトグル
+  const conf = pomoConf();
+  for (const [id, on] of [["openapp-toggle", openAppOn()], ["autoplay-toggle", autoplayOn()], ["pomoauto-toggle", conf.auto]]) {
     const b = $(id);
     b.classList.toggle("on", on);
     b.setAttribute("aria-pressed", String(on));
@@ -2283,6 +2334,25 @@ function renderSettings() {
       });
     }
   }
+  // ポモドーロの時間・セット数(作業タブと共通の bgm_pomoconf。保存ボタンで確定)
+  const singleSelect = (box, entries, current) => {
+    box.innerHTML = "";
+    for (const [key, label] of entries) {
+      const b = document.createElement("button");
+      b.className = "toggle-pill" + (String(current) === String(key) ? " on" : "");
+      b.textContent = label;
+      b.dataset.key = key;
+      b.setAttribute("aria-pressed", String(current) === String(key));
+      b.addEventListener("click", () => {
+        box.querySelectorAll(".toggle-pill").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); });
+        b.classList.add("on");
+        b.setAttribute("aria-pressed", "true");
+      });
+      box.appendChild(b);
+    }
+  };
+  singleSelect($("pomopreset-pills"), Object.entries(POMO_PRESETS).map(([k, p]) => [k, p.label]), conf.preset);
+  singleSelect($("pomosets-pills"), POMO_SETS_CHOICES.map(n => [n, n + "セット"]), conf.sets);
 }
 
 function saveSettings() {
@@ -2292,6 +2362,12 @@ function saveSettings() {
   save(LS.SETTINGS, settings);
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
   save(LS.AUTOPLAY, $("autoplay-toggle").classList.contains("on"));
+  const ppBtn = $("pomopreset-pills").querySelector(".toggle-pill.on");
+  const psBtn = $("pomosets-pills").querySelector(".toggle-pill.on");
+  save(LS.POMOCONF, { preset: ppBtn ? ppBtn.dataset.key : "p25",
+                      sets: psBtn ? Number(psBtn.dataset.key) : 1,
+                      auto: $("pomoauto-toggle").classList.contains("on") });
+  renderPomo(); // 作業タブの表示(待機中の時間・セット数)にも反映
   const pmBtn = $("playmode-pills").querySelector(".toggle-pill.on");
   save(LS.PLAYMODE, pmBtn ? pmBtn.dataset.key : "next");
   const tmBtn = $("todaymode-pills").querySelector(".toggle-pill.on");
@@ -3489,23 +3565,51 @@ const POMO_PRESETS = {
   p25: { work: 25 * 60, brk: 5 * 60, label: "25分+休憩5分" },
   p50: { work: 50 * 60, brk: 10 * 60, label: "50分+休憩10分" },
 };
+const POMO_SETS_CHOICES = [1, 2, 3, 4];
+/* ポモドーロの設定(時間プリセット・セット数・自動開始)。作業タブと設定画面で共通の1つの値 */
+function pomoConf() {
+  const c = load(LS.POMOCONF, null) || {};
+  return {
+    preset: POMO_PRESETS[c.preset] ? c.preset : "p25",
+    sets: POMO_SETS_CHOICES.includes(c.sets) ? c.sets : 1,
+    auto: !!c.auto,
+  };
+}
+function savePomoConf(patch) {
+  save(LS.POMOCONF, Object.assign(pomoConf(), patch));
+  setSyncMeta({ updatedAt: Date.now() }); // 設定系としてリモートより新しい扱いに
+  scheduleAutoSync();
+}
 /* タイマー状態。endAt は実時刻(エポックms)なので、タブ切替・リロード・
  * バックグラウンドをまたいでも正しく進む。
- * acc = 一時停止までに積んだ作業秒 / runStartAt = 現在の連続稼働の開始時刻 */
+ * preset/sets = このラン開始時の設定の控え(途中で設定を変えても現在のランは変わらない)
+ * setNo = いま何セット目か / acc = 一時停止までに積んだ作業秒
+ * runStartAt = 現在の連続稼働の開始時刻 / lastRunAt = 最後にタイマーを使った時刻(自動開始の抑制用) */
 function pomoState() {
   const s = load(LS.POMO, null) || {};
+  const conf = pomoConf();
   return {
-    preset: POMO_PRESETS[s.preset] ? s.preset : "p25",
+    preset: POMO_PRESETS[s.preset] ? s.preset : conf.preset,
+    sets: POMO_SETS_CHOICES.includes(s.sets) ? s.sets : conf.sets,
+    setNo: (typeof s.setNo === "number" && s.setNo >= 1) ? s.setNo : 1,
     mode: (s.mode === "work" || s.mode === "break") ? s.mode : "idle",
     endAt: s.endAt || null,
     pausedLeft: (typeof s.pausedLeft === "number") ? s.pausedLeft : null,
     acc: (typeof s.acc === "number") ? s.acc : 0,
     runStartAt: s.runStartAt || null,
+    lastRunAt: s.lastRunAt || 0,
   };
 }
 function savePomo(s) { save(LS.POMO, s); }
-function pomoIdle(preset) {
-  return { preset: preset || pomoState().preset, mode: "idle", endAt: null, pausedLeft: null, acc: 0, runStartAt: null };
+function pomoIdle() {
+  return { mode: "idle", endAt: null, pausedLeft: null, acc: 0, runStartAt: null, setNo: 1, lastRunAt: Date.now() };
+}
+// setNoセット目の作業を開始する(手動開始・休憩明けの自動開始・起動時の自動開始の共通経路)
+function pomoStartWork(setNo, sets, preset) {
+  savePomo({ mode: "work", preset, sets, setNo,
+             endAt: Date.now() + POMO_PRESETS[preset].work * 1000,
+             pausedLeft: null, acc: 0, runStartAt: Date.now(), lastRunAt: Date.now() });
+  startPomoTick();
 }
 // 日別の作業実績に加算(sec=作業秒 / pomo=完了したポモドーロ数)
 function addWorkRecord(sec, pomo) {
@@ -3534,33 +3638,38 @@ function pomoTick() {
   if (Date.now() >= s.endAt) { pomoComplete(s); return; }
   renderPomo();
 }
-// 時間切れ: 作業なら記録して休憩へ、休憩なら待機へ。バックグラウンドで遅れて検知しても
+// 時間切れ: 作業なら記録して休憩へ(最後のセットは休憩なしで完了)、
+// 休憩なら次のセットの作業を自動開始する。バックグラウンドで遅れて検知しても
 // 作業秒は endAt までしか数えない(pomoElapsedWorkが頭打ちする)
 function pomoComplete(s) {
   if (s.mode === "work") {
     addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
-    pomoBeep(3);
-    const p = POMO_PRESETS[s.preset];
-    savePomo({ preset: s.preset, mode: "break", endAt: Date.now() + p.brk * 1000, pausedLeft: null, acc: 0, runStartAt: null });
-  } else {
+    if (s.setNo >= s.sets) { // 最後のセット: 完了
+      pomoBeep(4);
+      savePomo(pomoIdle());
+      stopPomoTick();
+    } else {
+      pomoBeep(3);
+      savePomo({ mode: "break", preset: s.preset, sets: s.sets, setNo: s.setNo,
+                 endAt: Date.now() + POMO_PRESETS[s.preset].brk * 1000,
+                 pausedLeft: null, acc: 0, runStartAt: null, lastRunAt: Date.now() });
+    }
+  } else { // 休憩が明けた: 次のセットへ
     pomoBeep(2);
-    savePomo(pomoIdle(s.preset));
-    stopPomoTick();
+    pomoStartWork(s.setNo + 1, s.sets, s.preset);
   }
   renderPomo();
   renderWorkStats();
 }
-// メインボタン: 待機=開始 / 作業中=一時停止 / 一時停止中=再開 / 休憩中=休憩を終える
+// メインボタン: 待機=開始 / 作業中=一時停止 / 一時停止中=再開 / 休憩中=休憩をとばす
 function pomoMain() {
   const s = pomoState();
   if (s.mode === "idle") {
     pomoAudioUnlock(); // ユーザー操作中にAudioContextを起こしておく(終了音を鳴らせるように)
-    const p = POMO_PRESETS[s.preset];
-    savePomo({ preset: s.preset, mode: "work", endAt: Date.now() + p.work * 1000, pausedLeft: null, acc: 0, runStartAt: Date.now() });
-    startPomoTick();
+    const c = pomoConf();
+    pomoStartWork(1, c.sets, c.preset);
   } else if (s.mode === "break") {
-    savePomo(pomoIdle(s.preset));
-    stopPomoTick();
+    pomoStartWork(s.setNo + 1, s.sets, s.preset); // 休憩をとばして次のセットへ
   } else if (s.pausedLeft != null) {
     savePomo(Object.assign(s, { endAt: Date.now() + s.pausedLeft * 1000, pausedLeft: null, runStartAt: Date.now() }));
     startPomoTick();
@@ -3571,27 +3680,50 @@ function pomoMain() {
   }
   renderPomo();
 }
-// 作業を中断: そこまでの作業秒は記録する(完了数は増えない)
+// やめる: ラン全体を中断。そこまでの作業秒は記録する(完了数は増えない)
 function pomoStop() {
   const s = pomoState();
   if (s.mode === "work") addWorkRecord(pomoElapsedWork(s, Date.now()), 0);
-  savePomo(pomoIdle(s.preset));
+  savePomo(pomoIdle());
   stopPomoTick();
   renderPomo();
   renderWorkStats();
 }
-// 起動時の復元: 閉じている間に作業時間が終わっていたら、その時点で完了扱いにして待機へ
-// (音は鳴らさない。古い休憩をいまさら始めない)。進行中なら刻みを再開する
+// 起動時の復元: 進行中なら刻みを再開。閉じている間に区切りを過ぎていた場合は
+// 作業分を記録したうえで、予定どおりの流れ(休憩の残り→次のセット)に追いつかせる。
+// ただし予定から10分以上遅れていたら、いまさら再開せず完了扱いで待機へ(音は鳴らさない)
+const POMO_RESUME_GRACE = 10 * 60 * 1000;
 function restorePomo() {
   const s = pomoState();
   if (s.mode === "idle") return;
   if (s.pausedLeft != null) { renderPomo(); return; } // 一時停止のまま復元
-  if (Date.now() >= s.endAt) {
-    if (s.mode === "work") addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
-    savePomo(pomoIdle(s.preset));
-  } else {
-    startPomoTick();
+  const now = Date.now();
+  if (now < s.endAt) { startPomoTick(); renderPomo(); return; }
+  if (s.mode === "work") {
+    addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
+    const breakEnd = s.endAt + POMO_PRESETS[s.preset].brk * 1000;
+    if (s.setNo >= s.sets) savePomo(pomoIdle()); // 最後のセットを終えていた
+    else if (now < breakEnd) { // 休憩の途中: 残りの休憩に入る
+      savePomo({ mode: "break", preset: s.preset, sets: s.sets, setNo: s.setNo,
+                 endAt: breakEnd, pausedLeft: null, acc: 0, runStartAt: null, lastRunAt: now });
+      startPomoTick();
+    } else if (now - breakEnd < POMO_RESUME_GRACE) pomoStartWork(s.setNo + 1, s.sets, s.preset);
+    else savePomo(pomoIdle());
+  } else { // 休憩まで終えていた
+    if (now - s.endAt < POMO_RESUME_GRACE) pomoStartWork(s.setNo + 1, s.sets, s.preset);
+    else savePomo(pomoIdle());
   }
+  renderPomo();
+}
+// 起動時の自動開始(設定「タイマーを自動で開始」)。進行中の復元があればそちらを優先し、
+// 終了・中断から1時間以内の開き直しでは始めない(リロードのたびに再始動するのを防ぐ)
+function maybeAutoStartPomo() {
+  const c = pomoConf();
+  if (!c.auto) return;
+  const s = pomoState();
+  if (s.mode !== "idle") return;
+  if (Date.now() - s.lastRunAt < 3600 * 1000) return;
+  pomoStartWork(1, c.sets, c.preset);
   renderPomo();
 }
 /* 終了音: 外部ファイル不要のWeb Audioで短いビープを生成(CSPの許可先も増やさない)。
@@ -3632,26 +3764,45 @@ function fmtClock(sec) {
 }
 function renderPomo() {
   const s = pomoState();
-  const p = POMO_PRESETS[s.preset];
+  const conf = pomoConf();
+  // 待機中は設定(conf)の値を、進行中はラン開始時に控えた値を表示する
+  const preset = s.mode === "idle" ? conf.preset : s.preset;
+  const sets = s.mode === "idle" ? conf.sets : s.sets;
+  const p = POMO_PRESETS[preset];
   const left = s.mode === "idle" ? p.work
     : s.pausedLeft != null ? s.pausedLeft
     : Math.max(0, Math.ceil((s.endAt - Date.now()) / 1000));
   $("pomo-time").textContent = fmtClock(left);
+  const setSuffix = sets > 1 ? `(${s.setNo}/${sets}セット)` : "";
   const phase = $("pomo-phase");
-  phase.textContent = s.mode === "break" ? "休憩"
-    : s.mode === "work" ? (s.pausedLeft != null ? "作業(一時停止中)" : "作業中")
-    : "作業 " + Math.round(p.work / 60) + "分";
+  phase.textContent = s.mode === "break" ? `休憩中${sets > 1 ? `(次は${s.setNo + 1}セット目)` : ""}`
+    : s.mode === "work" ? (s.pausedLeft != null ? `作業(一時停止中)${setSuffix}` : `作業中${setSuffix}`)
+    : `作業 ${Math.round(p.work / 60)}分 × ${sets}セット`;
   phase.classList.toggle("working", s.mode === "work" && s.pausedLeft == null);
   $("pomo-main").textContent = s.mode === "idle" ? "開始"
-    : s.mode === "break" ? "休憩を終える"
+    : s.mode === "break" ? "休憩をとばす"
     : s.pausedLeft != null ? "再開" : "一時停止";
-  $("pomo-stop").style.display = s.mode === "work" ? "" : "none";
-  // プリセット(25分/50分)は待機中だけ切り替え可能
+  $("pomo-stop").style.display = s.mode === "idle" ? "none" : "";
+  // プリセット(25分/50分)・セット数は待機中だけ切り替え可能
   document.querySelectorAll("#pomo-presets .toggle-pill").forEach(b => {
-    b.classList.toggle("on", b.dataset.key === s.preset);
-    b.setAttribute("aria-pressed", String(b.dataset.key === s.preset));
+    b.classList.toggle("on", b.dataset.key === preset);
+    b.setAttribute("aria-pressed", String(b.dataset.key === preset));
     b.disabled = s.mode !== "idle";
   });
+  document.querySelectorAll("#pomo-sets .toggle-pill").forEach(b => {
+    b.classList.toggle("on", Number(b.dataset.key) === sets);
+    b.setAttribute("aria-pressed", String(Number(b.dataset.key) === sets));
+    b.disabled = s.mode !== "idle";
+  });
+  // 「今日の曲」画面下の残り時間表示(タップで作業タブへ)
+  const inline = $("pomo-inline");
+  if (s.mode === "idle") {
+    inline.style.display = "none";
+  } else {
+    inline.style.display = "";
+    const lbl = s.mode === "break" ? "休憩中" : s.pausedLeft != null ? "作業(一時停止中)" : "作業中";
+    $("pomo-inline-btn").textContent = `${lbl} ${fmtClock(left)}${sets > 1 ? ` · ${s.setNo}/${sets}セット` : ""}`;
+  }
 }
 
 /* ---- やることリスト ---- */
@@ -3693,16 +3844,25 @@ function visibleTodos() {
     .sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1) : (a.createdAt || 0) - (b.createdAt || 0));
 }
 function todoDoneCount(date) {
-  return Object.values(todosMap())
-    .filter(it => it && !it.deleted && it.done && it.doneAt && dateStr(new Date(it.doneAt)) === date).length;
+  return todoDoneItems(date).length;
 }
-// 完了・削除から30日を過ぎたものは掃除する(起動時)。トンボストーンも30日で寿命
+// その日に完了したやること(あゆみの日別詳細で内容を振り返るためのリスト。完了順)
+function todoDoneItems(date) {
+  return Object.values(todosMap())
+    .filter(it => it && !it.deleted && it.done && it.doneAt && dateStr(new Date(it.doneAt)) === date)
+    .sort((a, b) => (a.doneAt || 0) - (b.doneAt || 0));
+}
+// 掃除(起動時): 削除トンボストーンは30日、完了済みは90日で物理削除
+// (完了内容は「作業のあゆみ」の日別詳細で振り返れるよう、削除より長く残す)
 function pruneTodos() {
   const t = todosMap();
-  const cutoff = Date.now() - 30 * 86400000;
+  const cut30 = Date.now() - 30 * 86400000, cut90 = Date.now() - 90 * 86400000;
   let changed = false;
   for (const [id, it] of Object.entries(t)) {
-    if (!it || ((it.deleted || it.done) && (it.updatedAt || 0) < cutoff)) { delete t[id]; changed = true; }
+    if (!it || (it.deleted && (it.updatedAt || 0) < cut30) || (it.done && (it.updatedAt || 0) < cut90)) {
+      delete t[id];
+      changed = true;
+    }
   }
   if (changed) save(LS.TODOS, t);
 }
@@ -3736,31 +3896,98 @@ function renderTodos() {
   }
 }
 
-/* ---- 作業のあゆみ(直近7日の作業時間+今日のまとめ) ---- */
+/* ---- 作業のあゆみ(7日ごとの作業時間。‹ ›で過去の週に切替、日をタップで詳細) ---- */
 const DOW_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
+let workWeekOffset = 0;     // 0=直近7日、1=その前の7日、…
+let workSelectedDate = null; // 詳細表示中の日付 "YYYY-MM-DD"
+// 記録が存在するいちばん古い日(週送りの下限に使う)
+function workEarliestDate() {
+  const dates = Object.keys(load(LS.WORK, {}));
+  for (const it of Object.values(todosMap())) {
+    if (it && !it.deleted && it.done && it.doneAt) dates.push(dateStr(new Date(it.doneAt)));
+  }
+  return dates.length ? dates.sort()[0] : todayStr();
+}
+function workDayLabel(d) {
+  if (d === todayStr()) return "今日";
+  if (d === addDays(todayStr(), -1)) return "昨日";
+  const [y, m, dd] = d.split("-").map(Number);
+  return `${m}/${dd}(${DOW_LABELS[new Date(y, m - 1, dd).getDay()]})`;
+}
 function renderWorkStats() {
   const wl = load(LS.WORK, {});
   const rows = $("work-rows");
   rows.innerHTML = "";
+  const end = addDays(todayStr(), -7 * workWeekOffset);
   const days = [];
-  for (let i = 6; i >= 0; i--) days.push(addDays(todayStr(), -i));
+  for (let i = 6; i >= 0; i--) days.push(addDays(end, -i));
+  // 週タイトルとナビ(›は直近週で無効、‹は記録のある最古日より前で無効)
+  const [, sm, sd] = days[0].split("-").map(Number);
+  const [, em, ed] = days[6].split("-").map(Number);
+  $("work-week-title").textContent = workWeekOffset === 0 ? "直近7日" : `${sm}/${sd} 〜 ${em}/${ed}`;
+  $("work-next").disabled = workWeekOffset === 0;
+  $("work-prev").disabled = days[0] <= workEarliestDate();
   const secs = days.map(d => (wl[d] && wl[d].sec) || 0);
+  const doneCounts = days.map(d => todoDoneCount(d));
   const maxSec = Math.max.apply(null, secs);
-  $("work-empty").style.display = maxSec ? "none" : "";
-  if (maxSec) {
+  const hasAny = maxSec > 0 || doneCounts.some(n => n > 0);
+  $("work-empty").style.display = hasAny ? "none" : "";
+  $("work-empty").textContent = workWeekOffset === 0
+    ? "タイマーで作業すると、日ごとの作業時間がここに積み上がります。"
+    : "この7日間の作業記録はありません。";
+  if (hasAny) {
     days.forEach((d, i) => {
-      const [y, m, dd] = d.split("-").map(Number);
-      const label = i === 6 ? "今日" : i === 5 ? "昨日" : `${m}/${dd}(${DOW_LABELS[new Date(y, m - 1, dd).getDay()]})`;
-      const row = affRow(label, (secs[i] / maxSec) * 2 - 1); // 週内最大を100%とした相対バー
+      const row = affRow(workDayLabel(d), maxSec ? (secs[i] / maxSec) * 2 - 1 : -1); // 週内最大を100%とした相対バー
       row.querySelector(".aff-val").textContent = secs[i] ? fmtListen(secs[i]) : "─";
+      row.classList.toggle("sel", d === workSelectedDate);
+      row.setAttribute("role", "button");
+      row.tabIndex = 0;
+      row.title = "タップでこの日の詳細(完了したやること)を表示";
+      row.setAttribute("aria-label", `${workDayLabel(d)}の作業の詳細を見る`);
+      const open = () => { workSelectedDate = (workSelectedDate === d) ? null : d; renderWorkStats(); };
+      row.addEventListener("click", open);
+      row.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); } });
       rows.appendChild(row);
     });
   }
-  const today = wl[todayStr()] || { sec: 0, pomo: 0 };
+  renderWorkDayDetail(workSelectedDate && days.includes(workSelectedDate) ? workSelectedDate : null);
+  // まとめ行: 直近7日は今日の内訳+週合計、過去の週はその週の合計
   const totalSec = secs.reduce((a, b) => a + b, 0);
-  $("work-note").textContent =
-    `今日: ${today.sec ? fmtListen(today.sec) : "0分"} · ポモドーロ${today.pomo || 0}回 · やること完了${todoDoneCount(todayStr())}件` +
-    (totalSec ? ` / 7日間の合計 ${fmtListen(totalSec)}` : "");
+  const totalPomo = days.reduce((a, d) => a + ((wl[d] && wl[d].pomo) || 0), 0);
+  const totalDone = doneCounts.reduce((a, b) => a + b, 0);
+  if (workWeekOffset === 0) {
+    const today = wl[todayStr()] || { sec: 0, pomo: 0 };
+    $("work-note").textContent =
+      `今日: ${today.sec ? fmtListen(today.sec) : "0分"} · ポモドーロ${today.pomo || 0}回 · やること完了${todoDoneCount(todayStr())}件` +
+      (totalSec ? ` / 7日間の合計 ${fmtListen(totalSec)}` : "");
+  } else {
+    $("work-note").textContent = hasAny
+      ? `この7日間: 合計 ${totalSec ? fmtListen(totalSec) : "0分"} · ポモドーロ${totalPomo}回 · やること完了${totalDone}件`
+      : "";
+  }
+}
+// 日別詳細: その日の作業量と、完了したやることの内容
+function renderWorkDayDetail(date) {
+  const box = $("work-day-detail");
+  if (!date) { box.style.display = "none"; return; }
+  box.style.display = "";
+  const [y, m, d] = date.split("-").map(Number);
+  $("work-day-title").textContent = `${m}月${d}日(${DOW_LABELS[new Date(y, m - 1, d).getDay()]})の作業`;
+  const wd = load(LS.WORK, {})[date] || { sec: 0, pomo: 0 };
+  const items = todoDoneItems(date);
+  $("work-day-sum").textContent =
+    `作業 ${wd.sec ? fmtListen(wd.sec) : "0分"} · ポモドーロ${wd.pomo || 0}回 · やること完了${items.length}件`;
+  const list = $("work-done-list");
+  list.innerHTML = "";
+  $("work-done-empty").style.display = items.length ? "none" : "";
+  for (const it of items) {
+    const li = document.createElement("li");
+    li.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+    const tx = document.createElement("span");
+    tx.textContent = it.text;
+    li.appendChild(tx);
+    list.appendChild(li);
+  }
 }
 function renderWork() {
   renderPomo();
@@ -3955,7 +4182,7 @@ function resetHistory() {
 function resetAll() {
   if (!confirm("設定・評価・再生履歴・作業の記録をすべてリセットします。よろしいですか?")) return;
   stopPomoTick(); // 進行中のポモドーロも止める
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.WORK, LS.TODOS, LS.POMO, LS.AUTOPLAY, "bgm_sync"].forEach(k => store.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.WORK, LS.TODOS, LS.POMO, LS.POMOCONF, LS.AUTOPLAY, "bgm_sync"].forEach(k => store.removeItem(k));
   // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴・作業記録が復活しないように)
   save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now(), workResetAt: Date.now() });
   cachedToken = null; tokenExpiry = 0;
@@ -3995,7 +4222,7 @@ const GOOGLE_CLIENT_ID = (location.hostname === "localhost" || location.hostname
   ? GOOGLE_CLIENT_ID_DEV : GOOGLE_CLIENT_ID_PROD;
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
-const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA, LS.LISTEN, LS.WORK, LS.TODOS, LS.AUTOPLAY];
+const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA, LS.LISTEN, LS.WORK, LS.TODOS, LS.AUTOPLAY, LS.POMOCONF];
 let gisPromise = null, tokenClient = null, syncing = false, autoSyncTimer = null;
 
 function syncMeta() { return load("bgm_sync", {}); }
@@ -4119,7 +4346,7 @@ function mergeData(local, remote) {
   m[LS.TODOS] = mtd;
   m.workResetAt = resetW;
   const remoteNewer = (remote.updatedAt || 0) > (local.updatedAt || 0);
-  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.AUTOPLAY].forEach(k => {
+  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.AUTOPLAY, LS.POMOCONF].forEach(k => {
     const rv = remote[k], lv = local[k];
     m[k] = remoteNewer ? (rv !== undefined ? rv : lv) : (lv !== undefined ? lv : rv);
   });
@@ -4144,6 +4371,7 @@ function applyData(m) {
   if (isObj(m[LS.WORK])) save(LS.WORK, m[LS.WORK]);
   if (isObj(m[LS.TODOS])) save(LS.TODOS, m[LS.TODOS]);
   if (typeof m[LS.AUTOPLAY] === "boolean") save(LS.AUTOPLAY, m[LS.AUTOPLAY]);
+  if (isObj(m[LS.POMOCONF])) save(LS.POMOCONF, m[LS.POMOCONF]);
 }
 function refreshAfterSync() {
   const settings = load(LS.SETTINGS, null);
@@ -4217,7 +4445,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.4.0";
+const APP_VERSION = "v1.5.0";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4315,6 +4543,7 @@ $("btn-reset-history").addEventListener("click", resetHistory);
 // 作業タブ: ポモドーロ・やること
 $("pomo-main").addEventListener("click", pomoMain);
 $("pomo-stop").addEventListener("click", pomoStop);
+// 時間・セット数のピル(作業タブは即時保存。設定画面の同項目と同じbgm_pomoconfを書く)
 for (const [key, p] of Object.entries(POMO_PRESETS)) {
   const b = document.createElement("button");
   b.className = "toggle-pill";
@@ -4323,12 +4552,31 @@ for (const [key, p] of Object.entries(POMO_PRESETS)) {
   b.setAttribute("aria-pressed", "false");
   b.addEventListener("click", () => {
     if (pomoState().mode !== "idle") return; // 進行中の切り替えは不可(renderPomoでdisabledにもする)
-    savePomo(pomoIdle(key));
+    savePomoConf({ preset: key });
     renderPomo();
   });
   $("pomo-presets").appendChild(b);
 }
-renderPomo(); // 保存されたプリセット・状態を初期表示に反映
+for (const n of POMO_SETS_CHOICES) {
+  const b = document.createElement("button");
+  b.className = "toggle-pill";
+  b.dataset.key = n;
+  b.textContent = n + "セット";
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => {
+    if (pomoState().mode !== "idle") return;
+    savePomoConf({ sets: n });
+    renderPomo();
+  });
+  $("pomo-sets").appendChild(b);
+}
+renderPomo(); // 保存された設定・状態を初期表示に反映
+// あゆみの週送り
+$("work-prev").addEventListener("click", () => { workWeekOffset++; workSelectedDate = null; renderWorkStats(); });
+$("work-next").addEventListener("click", () => { if (workWeekOffset > 0) { workWeekOffset--; workSelectedDate = null; renderWorkStats(); } });
+// 「今日の曲」画面の残り時間表示 → タップで作業タブへ
+$("pomo-inline-btn").addEventListener("click", () => showView("work"));
+$("pomo-inline-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showView("work"); } });
 function submitTodo() {
   if (addTodo($("todo-input").value)) {
     $("todo-input").value = "";
@@ -4482,8 +4730,9 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) flush
   } catch (e) {}
   renderSync();
   renderSyncReminder();
-  pruneTodos(); // 完了・削除から30日過ぎたやることを掃除
-  restorePomo(); // 進行中だったポモドーロを復元(閉じている間に終わっていれば完了扱い)
+  pruneTodos(); // 古いやることの掃除(削除30日・完了90日)
+  restorePomo(); // 進行中だったポモドーロを復元(遅れが小さければ休憩・次セットへ追いつかせる)
+  maybeAutoStartPomo(); // 設定「タイマーを自動で開始」(直近1時間使っていなければ)
   $("app-version").textContent = " " + APP_VERSION; // 表記の実体はAPP_VERSION定数(一元管理)
   checkForUpdate().catch(() => {}); // 起動時に静かに確認(失敗しても何もしない)
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)
