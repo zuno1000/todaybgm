@@ -566,16 +566,33 @@ async function main() {
   const tbl10 = win().buildAffinityTable({ [celticSong.id]: R(5, NOW_ISO) });
   check("personaLabel: ジャンル名を含むラベルを返す",
     (win().personaLabel(tbl10) || "").includes("ケルト音楽"), win().personaLabel(tbl10));
-  // おすすめの成長(★4以上率の推移)
+  // おすすめとの相性(月ごとの★4以上率の推移)。旧「はじめvs直近」比較は
+  // 初期の評価が全て高いと差が出ず指標にならないため、v1.4.0で推移方式に置き換えた
   const accRatings = {};
   CATALOG.slice(0, 20).forEach((s, i) => {
-    accRatings[s.id] = { rating: i < 10 ? 2 : 5, ratedAt: new Date(2026, 0, 1 + i).toISOString() };
+    accRatings[s.id] = { rating: i < 10 ? 2 : 5, ratedAt: new Date(2026, i < 10 ? 5 : 6, 1 + i).toISOString() };
   });
   seedLS({ bgm_ratings: accRatings });
-  const acc10 = win().recommendAccuracy();
-  eq("recommendAccuracy: はじめ0%→直近100%(各10件)", [acc10.early, acc10.recent, acc10.n], [0, 100, 10]);
+  const acc10 = win().accuracyTrend();
+  eq("accuracyTrend: 月ごとの★4以上率(6月0%→7月100%)",
+    acc10.months.map(m => [m.key, m.rate, m.n]), [["2026-06", 0, 10], ["2026-07", 100, 10]]);
   seedLS({ bgm_ratings: { [songA.id]: R(5, NOW_ISO) } });
-  check("recommendAccuracy: 10件未満はnull", win().recommendAccuracy() === null);
+  check("accuracyTrend: 10件未満はnull", win().accuracyTrend() === null);
+  // 初期の評価がすべて★5でも破綻しない(「100%が続く推移」として表示される)
+  const allHi = {};
+  CATALOG.slice(0, 15).forEach((s, i) => {
+    allHi[s.id] = { rating: 5, ratedAt: new Date(2026, i < 8 ? 5 : 6, 1 + (i % 27)).toISOString() };
+  });
+  seedLS({ bgm_ratings: allHi });
+  check("accuracyTrend: 全★5でも月ごと100%の推移(比較指標のように破綻しない)",
+    win().accuracyTrend().months.length === 2 && win().accuracyTrend().months.every(m => m.rate === 100));
+  // 評価3件未満の月はノイズとして省く
+  const sparse = {};
+  CATALOG.slice(0, 12).forEach((s, i) => {
+    sparse[s.id] = { rating: 5, ratedAt: new Date(2026, i < 10 ? 4 : 5, 1 + (i % 27)).toISOString() };
+  });
+  seedLS({ bgm_ratings: sparse });
+  eq("accuracyTrend: 評価3件未満の月は表示しない", win().accuracyTrend().months.map(m => m.key), ["2026-05"]);
   // 同期マージ: 実再生時間は日別max(二重計上しない)
   const mL = win().mergeData(
     { updatedAt: 1, bgm_listen: { "2026-07-20": 100, "2026-07-21": 50 } },
@@ -666,6 +683,109 @@ async function main() {
   const vp = doc().querySelector('meta[name="viewport"]').getAttribute("content");
   check("viewport: maximum-scale=1 + user-scalable=no でダブルタップズーム無効",
     /maximum-scale=1(\.0)?/.test(vp) && /user-scalable=no/.test(vp) && /viewport-fit=cover/.test(vp), vp);
+
+  /* ---- Suite 14: 作業サポート・自動再生(v1.4.0) ---- */
+  suite("14. 作業サポート・自動再生(v1.4.0)");
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } });
+  const w14 = win();
+  check("タブバーに作業タブがある(6タブ)",
+    doc().querySelectorAll(".tabbar .tab").length === 6 && !!doc().querySelector('.tab[data-view="work"]'));
+  w14.showView("work");
+  check("作業ビューが開き、タイマー・やること・あゆみが描画される",
+    doc().getElementById("view-work").classList.contains("active") &&
+    doc().getElementById("pomo-time").textContent === "25:00" &&
+    doc().getElementById("todo-empty").style.display !== "none" &&
+    doc().getElementById("work-empty").style.display !== "none");
+  // ポモドーロ: 状態遷移(実時間は待たず、保存状態を直接検証する)
+  w14.pomoMain(); // 開始
+  let ps14 = w14.pomoState();
+  check("開始: workモードで終了時刻が約25分後", ps14.mode === "work" &&
+    Math.abs((ps14.endAt - Date.now()) - 25 * 60 * 1000) < 3000, JSON.stringify(ps14));
+  w14.pomoMain(); // 一時停止
+  ps14 = w14.pomoState();
+  check("一時停止: 残り秒がpausedLeftに入る", ps14.pausedLeft > 0 && ps14.pausedLeft <= 25 * 60, JSON.stringify(ps14));
+  w14.pomoMain(); // 再開
+  ps14 = w14.pomoState();
+  check("再開: pausedLeft解除+終了時刻を再設定", ps14.pausedLeft === null && ps14.endAt > Date.now());
+  // 作業完了: 終了時刻を過去にしてtickさせる → 25分+完了1回を記録して休憩へ
+  w14.savePomo(Object.assign(w14.pomoState(), { endAt: Date.now() - 500, runStartAt: Date.now() - 25 * 60 * 1000 - 500, acc: 0 }));
+  w14.pomoTick();
+  const wk1 = JSON.parse(localStorage.getItem("bgm_work"))[w14.todayStr()];
+  check("作業完了: 休憩モードへ移行", w14.pomoState().mode === "break");
+  check("作業完了: 作業25分+完了1回が記録される", wk1 && wk1.pomo === 1 && Math.abs(wk1.sec - 1500) <= 2, JSON.stringify(wk1));
+  w14.pomoMain(); // 休憩を終える
+  check("休憩を終える: 待機に戻る", w14.pomoState().mode === "idle");
+  // 中断: そこまでの時間だけ記録し、完了数は増えない
+  w14.savePomo({ preset: "p25", mode: "work", endAt: Date.now() + 20 * 60 * 1000, pausedLeft: null, acc: 0, runStartAt: Date.now() - 5 * 60 * 1000 });
+  w14.pomoStop();
+  const wk2 = JSON.parse(localStorage.getItem("bgm_work"))[w14.todayStr()];
+  check("中断: 経過5分だけ加算・完了数は増えない", wk2.pomo === 1 && Math.abs(wk2.sec - 1800) <= 3, JSON.stringify(wk2));
+  // リロード復帰: 閉じている間に作業時間が終わっていたら完了扱いで待機へ(restorePomo)
+  w14.savePomo({ preset: "p25", mode: "work", endAt: Date.now() - 60000, pausedLeft: null, acc: 0, runStartAt: Date.now() - 26 * 60 * 1000 });
+  w14.restorePomo();
+  const wk3 = JSON.parse(localStorage.getItem("bgm_work"))[w14.todayStr()];
+  check("復帰時: 経過済みの作業は完了として記録して待機へ",
+    w14.pomoState().mode === "idle" && wk3.pomo === 2 && Math.abs(wk3.sec - 3300) <= 4, JSON.stringify(wk3));
+  // やることリスト
+  const tid = w14.addTodo("  テストのToDo  ");
+  check("addTodo: 前後の空白をトリムして追加", w14.todosMap()[tid].text === "テストのToDo");
+  check("addTodo: 空文字は追加しない", w14.addTodo("   ") === null);
+  w14.setTodoDone(tid, true);
+  check("setTodoDone: doneとdoneAtが記録される", w14.todosMap()[tid].done && w14.todosMap()[tid].doneAt > 0);
+  eq("todoDoneCount: 今日の完了数", w14.todoDoneCount(w14.todayStr()), 1);
+  w14.removeTodo(tid);
+  check("removeTodo: トンボストーン化(deleted)+一覧から消える",
+    w14.todosMap()[tid].deleted === true && w14.visibleTodos().length === 0);
+  const tOld = w14.addTodo("昨日終えたこと"), tKeep = w14.addTodo("まだのこと");
+  w14.setTodoDone(tOld, true);
+  const tm14 = w14.todosMap();
+  tm14[tOld].doneAt = Date.now() - 86400000; // 完了日を昨日に
+  w14.save("bgm_todos", tm14);
+  eq("visibleTodos: 未完了+今日完了のみ(昨日の完了分は一覧から消える)",
+    w14.visibleTodos().map(t => t.text), ["まだのこと"]);
+  w14.showView("work");
+  check("やること一覧が描画される", doc().querySelectorAll("#todo-list .todo-item").length === 1);
+  check("作業のあゆみ: 直近7日の行が描画される", doc().querySelectorAll("#work-rows .aff-row").length === 7);
+  const sc14 = doc().querySelector(".scroll");
+  check("作業タブ: 横スクロールが発生しない", sc14.scrollWidth <= sc14.clientWidth,
+    `scrollWidth=${sc14.scrollWidth} clientWidth=${sc14.clientWidth}`);
+  check("6タブ化してもタブバー・本文が横にあふれない", doc().body.scrollWidth <= win().innerWidth + 1,
+    `bodyScrollWidth=${doc().body.scrollWidth} innerWidth=${win().innerWidth}`);
+  check("作業のあゆみ: 今日のまとめ(時間・回数・完了数)",
+    /ポモドーロ2回/.test(doc().getElementById("work-note").textContent) &&
+    /やること完了0件/.test(doc().getElementById("work-note").textContent),
+    doc().getElementById("work-note").textContent);
+  // 同期マージ: 作業実績は日別max、やることはupdatedAtが新しい方+削除が伝播
+  const mW = w14.mergeData(
+    { updatedAt: 1, bgm_work: { "2026-08-10": { sec: 100, pomo: 1 } },
+      bgm_todos: { a: { text: "旧", done: false, updatedAt: 10 }, b: { text: "残る", done: false, updatedAt: 5 } } },
+    { updatedAt: 2, bgm_work: { "2026-08-10": { sec: 300, pomo: 0 }, "2026-08-11": { sec: 60, pomo: 1 } },
+      bgm_todos: { a: { text: "旧", done: false, deleted: true, updatedAt: 20 } } });
+  eq("mergeData: bgm_workは日別・項目ごとmax", mW.bgm_work,
+    { "2026-08-10": { sec: 300, pomo: 1 }, "2026-08-11": { sec: 60, pomo: 1 } });
+  check("mergeData: やることは新しい方が勝ち、削除が伝播する",
+    mW.bgm_todos.a.deleted === true && mW.bgm_todos.b.text === "残る");
+  const mWR = w14.mergeData(
+    { updatedAt: 1, workResetAt: Date.now() },
+    { updatedAt: 2, bgm_work: { "2026-08-01": { sec: 50, pomo: 1 } }, bgm_todos: { x: { text: "古い", updatedAt: 50 } } });
+  check("mergeData: workResetAt以前の作業実績・やることは復活しない",
+    Object.keys(mWR.bgm_work).length === 0 && !mWR.bgm_todos.x);
+  // 自動再生設定(開いたら今日の曲を自動で再生)
+  w14.showView("settings");
+  check("設定: 自動再生トグルがある", !!doc().getElementById("autoplay-toggle"));
+  doc().getElementById("autoplay-toggle").click();
+  doc().getElementById("btn-save").click();
+  await sleep(1000); // saveSettingsは700ms後に画面遷移する
+  check("自動再生設定が保存される(bgm_autoplay=true)",
+    localStorage.getItem("bgm_autoplay") === "true" && w14.autoplayOn() === true);
+  check("mergeData: bgm_autoplayは新しい設定側が勝つ",
+    w14.mergeData({ updatedAt: 1, bgm_autoplay: false }, { updatedAt: 2, bgm_autoplay: true }).bgm_autoplay === true);
+  // applyData: 作業系・自動再生の型ガード
+  seedLS({});
+  w14.applyData({ bgm_work: "broken", bgm_todos: 5, bgm_autoplay: "yes", bgm_ratings: { ok: { rating: 5, ratedAt: NOW_ISO } } });
+  check("applyData: 作業系・自動再生の不正型は書き込まない(正しい型は書く)",
+    localStorage.getItem("bgm_work") === null && localStorage.getItem("bgm_todos") === null &&
+    localStorage.getItem("bgm_autoplay") === null && !!localStorage.getItem("bgm_ratings"));
 }
 
 /* ==== 実行 ==== */

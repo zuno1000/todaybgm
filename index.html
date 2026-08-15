@@ -688,6 +688,76 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 }
 .empty { font-size: 13px; color: var(--text-sub); line-height: 1.8; padding: 8px 4px; text-align: center; }
 
+/* ---- 作業タブ(ポモドーロ・やること・作業のあゆみ) ---- */
+.pomo-card { border-radius: var(--r-card); padding: 26px 20px 24px; text-align: center; }
+.pomo-phase { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--text-sub); }
+.pomo-phase.working { color: var(--accent); }
+.pomo-time {
+  font-size: 54px; font-weight: 700; color: var(--text);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.04em;
+  margin: 2px 0 16px; line-height: 1.2;
+}
+.pomo-presets { justify-content: center; }
+.pomo-presets .toggle-pill { font-size: 12px; padding: 9px 14px; }
+.pomo-presets .toggle-pill:disabled { opacity: 0.45; }
+.pomo-actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; }
+.pomo-main {
+  min-width: 150px; padding: 13px 24px;
+  border-radius: var(--r-btn);
+  font-size: 14px; font-weight: 700;
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.pomo-main:active { transform: scale(0.97); }
+.pomo-sub {
+  padding: 13px 22px;
+  border-radius: var(--r-btn);
+  font-size: 13px; font-weight: 700; color: var(--text-sub);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.pomo-sub:active {
+  transform: scale(0.97);
+  background: var(--bg-deep);
+  box-shadow: inset -3px -3px 7px var(--sh-light), inset 3px 3px 7px var(--sh-dark);
+}
+.todo-card { border-radius: var(--r-card); padding: 18px 18px 14px; }
+.todo-input-row {
+  display: flex; align-items: center; gap: 10px;
+  border-radius: var(--r-btn);
+  padding: 2px 6px 2px 16px;
+}
+.todo-input-row input {
+  flex: 1; min-width: 0; border: none; background: none; outline: none;
+  /* 16px未満だとiOS Safariがフォーカス時に自動ズームする */
+  font: inherit; font-size: 16px; color: var(--text);
+  padding: 10px 0;
+}
+.todo-input-row input::placeholder { color: var(--text-sub); }
+.todo-add {
+  flex-shrink: 0; padding: 9px 18px;
+  border-radius: var(--r-full);
+  font-size: 12px; font-weight: 700;
+}
+.todo-list { list-style: none; margin-top: 6px; }
+.todo-item { display: flex; align-items: center; gap: 12px; padding: 11px 2px; }
+.todo-check {
+  width: 27px; height: 27px; flex-shrink: 0;
+  border-radius: 50%;
+  display: grid; place-items: center;
+}
+.todo-check svg { width: 14px; height: 14px; stroke: transparent; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.todo-item.done .todo-check {
+  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  box-shadow: 2px 2px 5px rgba(91, 108, 255, 0.35);
+}
+.todo-item.done .todo-check svg { stroke: #fff; }
+.todo-text { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.55; }
+.todo-item.done .todo-text { color: var(--text-sub); text-decoration: line-through; }
+.todo-del { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; }
+.todo-del svg { width: 13px; height: 13px; stroke: var(--text-sub); fill: none; stroke-width: 2; stroke-linecap: round; opacity: 0.7; }
+.todo-del:active { background: var(--bg-deep); box-shadow: inset -2px -2px 4px var(--sh-light), inset 2px 2px 4px var(--sh-dark); }
+/* 作業のあゆみは時間の絶対量バーなので、好み度用の中央中立線は出さない */
+#work-rows .aff-track::after { content: none; }
+
 /* ---- 履歴 ---- */
 .hist-list { list-style: none; }
 .hist-item {
@@ -778,7 +848,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .tab {
   display: flex; flex-direction: column; align-items: center; gap: 5px;
   font-size: 11px; color: var(--text-sub);
-  padding: 4px 10px;
+  padding: 4px 6px; /* 6タブ化(作業タブ追加)で小さいスマホでも収まる横幅 */
   position: relative;
   white-space: nowrap;
 }
@@ -868,8 +938,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   .ex-left, .ex-right { display: block; min-width: 0; }
   .ex-right .ex-result { margin-top: 26px; }
 
-  /* 好み・履歴・設定: 中央1カラム(スマホよりゆとりのある幅) */
-  #view-taste, #view-history, #view-settings { max-width: 640px; margin: 0 auto; }
+  /* 作業・好み・履歴・設定: 中央1カラム(スマホよりゆとりのある幅) */
+  #view-work, #view-taste, #view-history, #view-settings { max-width: 640px; margin: 0 auto; }
 }
 /* 大型ディスプレイでは全体をわずかに拡大 */
 @media (pointer: fine) and (min-width: 1680px) {
@@ -1012,6 +1082,38 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
   </section>
 
+  <!-- ===== 作業(ポモドーロ・やること) ===== -->
+  <section id="view-work" class="view">
+    <h2 class="section-title">ポモドーロタイマー <button class="help-btn" data-help="help-pomo" aria-expanded="false" aria-label="ポモドーロタイマーの説明を表示">?</button></h2>
+    <p class="set-note help-note" id="help-pomo" style="margin:0 2px 14px" hidden>作業と休憩を交互に繰り返す集中法です。作業時間が終わると音でお知らせして休憩へ、休憩が終わると待機に戻ります。<br>完了した作業は下の「作業のあゆみ」に記録されます(途中でやめた分も、そこまでの時間は記録されます)。<br>※画面を閉じている・他のアプリを見ている間は、終了の音が鳴らないことがあります。</p>
+    <div class="pomo-card raised">
+      <div class="pomo-phase" id="pomo-phase">作業 25分</div>
+      <div class="pomo-time" id="pomo-time">25:00</div>
+      <div class="pill-grid pomo-presets" id="pomo-presets"></div>
+      <div class="pomo-actions">
+        <button class="pomo-main accent-raised" id="pomo-main">開始</button>
+        <button class="pomo-sub raised" id="pomo-stop" style="display:none">やめる</button>
+      </div>
+    </div>
+
+    <h2 class="section-title">やることリスト</h2>
+    <div class="todo-card raised">
+      <div class="todo-input-row inset">
+        <input type="text" id="todo-input" maxlength="100" placeholder="やることを追加" autocomplete="off" aria-label="やることを追加">
+        <button id="todo-add" class="todo-add accent-raised" aria-label="やることを追加する">追加</button>
+      </div>
+      <ul class="todo-list" id="todo-list"></ul>
+      <p class="empty" id="todo-empty">今日やることを書き出して、1つずつ片づけていきましょう。<br>終わったものは翌日には一覧から消えます(完了数は下のあゆみに残ります)。</p>
+    </div>
+
+    <h2 class="section-title">作業のあゆみ</h2>
+    <div class="aff-card raised">
+      <div id="work-rows"></div>
+      <p class="empty" id="work-empty" style="display:none">タイマーで作業すると、日ごとの作業時間がここに積み上がります。</p>
+      <p class="footnote" id="work-note" style="margin-top:8px;text-align:left"></p>
+    </div>
+  </section>
+
   <!-- ===== 好み ===== -->
   <section id="view-taste" class="view">
     <h2 class="section-title">あなたの好み <button class="help-btn" data-help="help-taste" aria-expanded="false" aria-label="好み度の説明を表示">?</button></h2>
@@ -1052,8 +1154,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
 
     <div id="acc-card" style="display:none">
-      <h2 class="section-title">おすすめの成長 <button class="help-btn" data-help="help-acc" aria-expanded="false" aria-label="おすすめの成長の説明を表示">?</button></h2>
-      <p class="set-note help-note" id="help-acc" style="margin:0 2px 14px" hidden>★4以上をつけた割合の変化です。評価を重ねるほど、おすすめがあなたの好みに寄っていきます。</p>
+      <h2 class="section-title">おすすめとの相性 <button class="help-btn" data-help="help-acc" aria-expanded="false" aria-label="おすすめとの相性の説明を表示">?</button></h2>
+      <p class="set-note help-note" id="help-acc" style="margin:0 2px 14px" hidden>★4以上をつけた割合の、月ごとの推移です。高い状態が続いていれば、おすすめがあなたの好みに合っています。<br>(評価が3件に満たない月は表示されません)</p>
       <div class="aff-card raised">
         <div class="aff-scale" id="acc-scale"><span>0%</span><span>50%</span><span>100%</span></div>
         <div id="acc-rows"></div>
@@ -1089,6 +1191,11 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <button class="toggle-pill" id="openapp-toggle" aria-pressed="false">常にYouTubeアプリで開く</button>
       </div>
       <p class="set-note help-note" id="help-openapp" hidden>YouTube Premium なら、YouTubeアプリで開くと<b>広告なし+バックグラウンド再生</b>ができます。オンにすると再生ボタンでアプリが開きます。<br>※パソコンでYouTubeにログインし、サードパーティCookieを許可していると、埋め込み再生でも広告が出ない場合があります(スマホのブラウザ内再生では広告を消せません)。</p>
+      <h3 class="section-title">開いたとき <button class="help-btn" data-help="help-autoplay" aria-expanded="false" aria-label="自動再生の説明を表示">?</button></h3>
+      <div class="pill-grid">
+        <button class="toggle-pill" id="autoplay-toggle" aria-pressed="false">今日の曲を自動で再生</button>
+      </div>
+      <p class="set-note help-note" id="help-autoplay" hidden>オンにすると、アプリを開いたときに「今日の曲」の再生を自動で始めます。<br>※ブラウザや端末の自動再生制限で始まらないことがあります(その場合はこれまでどおり再生ボタンで開始してください)。「常にYouTubeアプリで開く」がオンの間は働きません。</p>
     </div>
 
     <div class="set-card raised">
@@ -1118,12 +1225,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <p class="set-note help-note" id="help-sync" hidden>データは端末内(localStorage)に保存されます。<br>Googleでログインすると、評価・履歴・設定を<b>あなた自身のGoogleドライブ</b>(アプリ専用の非表示領域)経由で他の端末と同期でき、同ドライブにも保存されます。<br>データは開発者や第三者のサーバーには送信されません。</p>
       <h3 class="section-title">リセット <button class="help-btn" data-help="help-reset" aria-expanded="false" aria-label="リセットの説明を表示">?</button></h3>
       <button class="danger-btn raised" id="btn-reset">データをすべてリセット</button>
-      <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴のすべてを消去します。<br>「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
+      <p class="set-note help-note" id="help-reset" hidden>設定・★評価・再生履歴・作業タブの記録(ポモドーロ・やること)のすべてを消去します。<br>「好み」だけ・「履歴」だけのリセットは、それぞれのタブの下部にあります。</p>
     </div>
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.3.2</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.4.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -1179,6 +1286,10 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   <button class="tab" data-view="explore" role="tab" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
     探す
+  </button>
+  <button class="tab" data-view="work" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><polyline points="12 9.5 12 13 14.5 15"/><line x1="10" y1="2" x2="14" y2="2"/><line x1="12" y1="2" x2="12" y2="5"/></svg>
+    作業
   </button>
   <button class="tab" data-view="taste" role="tab" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
@@ -1253,6 +1364,10 @@ const LS = {
   PLAYMODE: "bgm_playmode", // 曲が終わったら: "next"(次の曲) / "repeat"(1曲リピート) / "stop"
   TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
   LISTEN: "bgm_listen", // 日別の実再生時間 {date: 累計秒} — 好みタブの統計・実績用
+  WORK: "bgm_work",     // 日別の作業実績 {date: {sec: 作業秒, pomo: 完了数}} — 作業タブのあゆみ用
+  TODOS: "bgm_todos",   // やることリスト {id: {text, done, createdAt, doneAt, updatedAt, deleted}}
+  POMO: "bgm_pomo",     // ポモドーロタイマーの進行状態(端末ローカル・同期しない)
+  AUTOPLAY: "bgm_autoplay", // アプリを開いたら「今日の曲」を自動再生
 };
 // localStorage が使えない環境(プライベートモード・サイトデータブロック・一部WebView)では
 // プロパティアクセス自体が例外になることがあるため、メモリ上のフォールバックへ切り替えて
@@ -1895,8 +2010,27 @@ async function playCurrent() {
   }
 }
 
+/* ---- 起動時の自動再生(設定「今日の曲を自動で再生」) ----
+ * ユーザー操作起点ではないため、ブラウザにブロックされたら何もしない(UIは再生前のまま)。
+ * playCurrent()は使わない: あちらの4秒フォールバック(markStarted)は、ブロック時に
+ * 再生していないのに再生履歴と評価トレイが付いてしまうため。実際に再生が始まれば
+ * PLAYING検知(onPlayerStateChange)が表示切替と記録をすべて行う */
+async function tryAutoplay() {
+  if (!autoplayOn() || openAppOn() || !currentSong) return;
+  const song = currentSong;
+  const ok = await loadYtApi();
+  if (!ok || currentSong !== song || playerStarted) return;
+  if (!player) createPlayerFor(song);
+  if (playerReady) { try { player.playVideo(); } catch (e) {} }
+  else playWhenReady = true; // onReady次第すぐ再生
+}
+
 function onPlayerStateChange(e) {
   if (e.data === YT.PlayerState.PLAYING) {
+    // 自動再生など playCurrent() を経ない開始でも表示を再生中に揃える(通常経路では既に適用済み)
+    $("thumb-wrap").classList.add("playing");
+    $("thumb").style.display = "none";
+    $("live-badge").style.display = "none";
     setPlayButton("playing");
     markStarted();
     if (!listenStartAt) listenStartAt = Date.now(); // 実再生時間の計測開始
@@ -2136,16 +2270,18 @@ function renderSettings() {
     ths.appendChild(b);
   }
   $("todaymode-hours-box").style.display = tm.mode === "interval" ? "" : "none";
-  // 常にアプリで開くトグル
-  const oa = $("openapp-toggle");
-  oa.classList.toggle("on", openAppOn());
-  oa.setAttribute("aria-pressed", String(openAppOn()));
-  if (!oa.dataset.wired) {
-    oa.dataset.wired = "1";
-    oa.addEventListener("click", () => {
-      oa.classList.toggle("on");
-      oa.setAttribute("aria-pressed", oa.classList.contains("on"));
-    });
+  // 常にアプリで開く/開いたら自動再生 のトグル
+  for (const [id, on] of [["openapp-toggle", openAppOn()], ["autoplay-toggle", autoplayOn()]]) {
+    const b = $(id);
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", String(on));
+    if (!b.dataset.wired) {
+      b.dataset.wired = "1";
+      b.addEventListener("click", () => {
+        b.classList.toggle("on");
+        b.setAttribute("aria-pressed", b.classList.contains("on"));
+      });
+    }
   }
 }
 
@@ -2155,6 +2291,7 @@ function saveSettings() {
   const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
   save(LS.SETTINGS, settings);
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
+  save(LS.AUTOPLAY, $("autoplay-toggle").classList.contains("on"));
   const pmBtn = $("playmode-pills").querySelector(".toggle-pill.on");
   save(LS.PLAYMODE, pmBtn ? pmBtn.dataset.key : "next");
   const tmBtn = $("todaymode-pills").querySelector(".toggle-pill.on");
@@ -2342,6 +2479,7 @@ function renderSongSearch() {
 
 /* ---- YouTubeアプリ/外部で開く(Premium: 広告なし・バックグラウンド再生向け) ---- */
 function openAppOn() { return load(LS.OPENAPP, false); }
+function autoplayOn() { return !!load(LS.AUTOPLAY, false); }
 // アプリ内で再生途中なら、その位置からYouTube側で続きを再生できるよう t= を付ける。
 // 二重再生にならないよう、埋め込み側は一時停止してから開く
 function watchUrlWithTime() {
@@ -3099,15 +3237,31 @@ function personaLabel(table) {
   if (g && m) return `${MOOD_LABELS[m]} × ${GENRE_LABELS[g]}`;
   return g ? GENRE_LABELS[g] : (m ? MOOD_LABELS[m] : null);
 }
-// おすすめの成長: ★4以上をつけた割合を「はじめのn件」と「直近n件」で比較(10件未満はnull)
-function recommendAccuracy() {
-  const rs = Object.values(load(LS.RATINGS, {}))
-    .filter(r => r && r.rating && r.ratedAt)
-    .sort((a, b) => new Date(a.ratedAt) - new Date(b.ratedAt));
+// おすすめとの相性: ★4以上をつけた割合を月ごとに集計した推移(直近6ヶ月・10件未満はnull)。
+// 旧「はじめのn件 vs 直近n件」比較は、初期の評価がすべて高いユーザーでは差が出ず
+// 指標にならなかったため(v1.4.0)、時系列の推移として見せる方式に置き換えた。
+// 評価3件未満の月はノイズが大きいので省く(全月が3件未満なら省かず全部見せる)
+function accuracyTrend() {
+  const rs = Object.values(load(LS.RATINGS, {})).filter(r => r && r.rating && r.ratedAt);
   if (rs.length < 10) return null;
-  const n = Math.min(20, Math.floor(rs.length / 2));
-  const hit = arr => Math.round(arr.filter(r => r.rating >= 4).length / arr.length * 100);
-  return { early: hit(rs.slice(0, n)), recent: hit(rs.slice(-n)), n, count: rs.length };
+  const byMonth = {};
+  for (const r of rs) {
+    const d = new Date(r.ratedAt);
+    const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const m = byMonth[k] = byMonth[k] || { hit: 0, n: 0 };
+    m.n++;
+    if (r.rating >= 4) m.hit++;
+  }
+  let keys = Object.keys(byMonth).sort().filter(k => byMonth[k].n >= 3);
+  if (!keys.length) keys = Object.keys(byMonth).sort();
+  const months = keys.slice(-6).map(k =>
+    ({ key: k, rate: Math.round(byMonth[k].hit / byMonth[k].n * 100), n: byMonth[k].n }));
+  return { months, count: rs.length };
+}
+// "YYYY-MM" → 表示ラベル。今年は「8月」、年をまたいだ月だけ「25年12月」と年を添える
+function monthLabel(key) {
+  const [y, m] = key.split("-").map(Number);
+  return (y === new Date().getFullYear() ? "" : (y % 100) + "年") + m + "月";
 }
 /* 実績は「系列 × 段階」の進化型。1つの枠が、達成するたびに次の段階へ進化する
  * (例: 200曲の探求 達成 → 同じ枠が 500曲の探求 になる)。tiersは昇順。 */
@@ -3249,24 +3403,26 @@ function renderPersona(table, stats) {
 }
 function renderAccuracy(stats) {
   const card = $("acc-card"), rows = $("acc-rows"), note = $("acc-note");
-  const acc = recommendAccuracy();
+  const acc = accuracyTrend();
   rows.innerHTML = "";
   if (!acc && !stats.rated) { card.style.display = "none"; return; }
   card.style.display = "";
   $("acc-scale").style.display = acc ? "" : "none";
   if (!acc) {
-    note.textContent = `★評価が10件たまると、おすすめの成長がここに見えてきます(いま${stats.rated}件)`;
+    note.textContent = `★評価が10件たまると、おすすめとの相性がここに見えてきます(いま${stats.rated}件)`;
     return;
   }
-  for (const [label, v] of [["はじめの頃", acc.early], ["このごろ", acc.recent]]) {
-    const row = affRow(label, v);
-    row.querySelector(".aff-val").textContent = v + "%";
+  for (const m of acc.months) {
+    const row = affRow(`${monthLabel(m.key)}(${m.n}件)`, m.rate / 50 - 1); // rate% がそのままバー幅になる
+    row.querySelector(".aff-val").textContent = m.rate + "%";
     rows.appendChild(row);
   }
-  const diff = acc.recent - acc.early;
-  note.textContent = `★4以上をつけた割合(はじめの${acc.n}件 → 直近${acc.n}件)。` +
-    (diff > 0 ? `おすすめが ${diff}ポイント 好みに近づきました` :
-     diff === 0 ? "好みにしっかり寄り添えています" : "いまは好みを学習し直しています");
+  const first = acc.months[0].rate, last = acc.months[acc.months.length - 1].rate;
+  const trend = acc.months.length < 2 ? "月をまたいで使うと、推移が見えてきます"
+    : last - first > 5 ? "おすすめがあなたの好みに近づいています"
+    : first - last > 5 ? "いまは好みを学習し直しています"
+    : "おすすめは好みに寄り添えています";
+  note.textContent = `月ごとの★4以上をつけた割合。${trend}`;
 }
 
 /* タイルの値(1行固定)が幅に収まらない時だけフォントを縮める(「ケルト音楽」等の語中改行防止) */
@@ -3321,6 +3477,295 @@ function renderTaste() {
   $("profile-share-row").style.display = stats.days ? "" : "none";
   renderAccuracy(stats);
   renderBadges(stats);
+}
+
+/* =========================================================
+ * 作業サポート(ポモドーロタイマー・やることリスト・作業のあゆみ)
+ * 音楽の邪魔をしないよう「作業」タブ1つに集約する。
+ * bgm_work(日別実績)/bgm_todos(やること)は同期対象、
+ * bgm_pomo(タイマーの進行状態)は端末ローカル。
+ * ========================================================= */
+const POMO_PRESETS = {
+  p25: { work: 25 * 60, brk: 5 * 60, label: "25分+休憩5分" },
+  p50: { work: 50 * 60, brk: 10 * 60, label: "50分+休憩10分" },
+};
+/* タイマー状態。endAt は実時刻(エポックms)なので、タブ切替・リロード・
+ * バックグラウンドをまたいでも正しく進む。
+ * acc = 一時停止までに積んだ作業秒 / runStartAt = 現在の連続稼働の開始時刻 */
+function pomoState() {
+  const s = load(LS.POMO, null) || {};
+  return {
+    preset: POMO_PRESETS[s.preset] ? s.preset : "p25",
+    mode: (s.mode === "work" || s.mode === "break") ? s.mode : "idle",
+    endAt: s.endAt || null,
+    pausedLeft: (typeof s.pausedLeft === "number") ? s.pausedLeft : null,
+    acc: (typeof s.acc === "number") ? s.acc : 0,
+    runStartAt: s.runStartAt || null,
+  };
+}
+function savePomo(s) { save(LS.POMO, s); }
+function pomoIdle(preset) {
+  return { preset: preset || pomoState().preset, mode: "idle", endAt: null, pausedLeft: null, acc: 0, runStartAt: null };
+}
+// 日別の作業実績に加算(sec=作業秒 / pomo=完了したポモドーロ数)
+function addWorkRecord(sec, pomo) {
+  const w = load(LS.WORK, {});
+  const t = todayStr();
+  const cur = w[t] || { sec: 0, pomo: 0 };
+  cur.sec = (cur.sec || 0) + Math.max(0, Math.round(sec) || 0);
+  cur.pomo = (cur.pomo || 0) + Math.max(0, pomo || 0);
+  w[t] = cur;
+  save(LS.WORK, w);
+  scheduleAutoSync();
+}
+// いま作業モードで積み上がっている作業秒(一時停止までの分+進行中の経過。endAtで頭打ち)
+function pomoElapsedWork(s, nowMs) {
+  if (s.mode !== "work") return 0;
+  const run = s.runStartAt ? Math.max(0, Math.min(nowMs, s.endAt) - s.runStartAt) / 1000 : 0;
+  return Math.min(POMO_PRESETS[s.preset].work, s.acc + run);
+}
+
+let pomoTimer = null;
+function startPomoTick() { if (!pomoTimer) pomoTimer = setInterval(pomoTick, 500); }
+function stopPomoTick() { clearInterval(pomoTimer); pomoTimer = null; }
+function pomoTick() {
+  const s = pomoState();
+  if (s.mode === "idle" || s.pausedLeft != null) { stopPomoTick(); renderPomo(); return; }
+  if (Date.now() >= s.endAt) { pomoComplete(s); return; }
+  renderPomo();
+}
+// 時間切れ: 作業なら記録して休憩へ、休憩なら待機へ。バックグラウンドで遅れて検知しても
+// 作業秒は endAt までしか数えない(pomoElapsedWorkが頭打ちする)
+function pomoComplete(s) {
+  if (s.mode === "work") {
+    addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
+    pomoBeep(3);
+    const p = POMO_PRESETS[s.preset];
+    savePomo({ preset: s.preset, mode: "break", endAt: Date.now() + p.brk * 1000, pausedLeft: null, acc: 0, runStartAt: null });
+  } else {
+    pomoBeep(2);
+    savePomo(pomoIdle(s.preset));
+    stopPomoTick();
+  }
+  renderPomo();
+  renderWorkStats();
+}
+// メインボタン: 待機=開始 / 作業中=一時停止 / 一時停止中=再開 / 休憩中=休憩を終える
+function pomoMain() {
+  const s = pomoState();
+  if (s.mode === "idle") {
+    pomoAudioUnlock(); // ユーザー操作中にAudioContextを起こしておく(終了音を鳴らせるように)
+    const p = POMO_PRESETS[s.preset];
+    savePomo({ preset: s.preset, mode: "work", endAt: Date.now() + p.work * 1000, pausedLeft: null, acc: 0, runStartAt: Date.now() });
+    startPomoTick();
+  } else if (s.mode === "break") {
+    savePomo(pomoIdle(s.preset));
+    stopPomoTick();
+  } else if (s.pausedLeft != null) {
+    savePomo(Object.assign(s, { endAt: Date.now() + s.pausedLeft * 1000, pausedLeft: null, runStartAt: Date.now() }));
+    startPomoTick();
+  } else {
+    const left = Math.max(0, Math.ceil((s.endAt - Date.now()) / 1000));
+    savePomo(Object.assign(s, { pausedLeft: left, acc: s.acc + (Date.now() - s.runStartAt) / 1000, runStartAt: null }));
+    stopPomoTick();
+  }
+  renderPomo();
+}
+// 作業を中断: そこまでの作業秒は記録する(完了数は増えない)
+function pomoStop() {
+  const s = pomoState();
+  if (s.mode === "work") addWorkRecord(pomoElapsedWork(s, Date.now()), 0);
+  savePomo(pomoIdle(s.preset));
+  stopPomoTick();
+  renderPomo();
+  renderWorkStats();
+}
+// 起動時の復元: 閉じている間に作業時間が終わっていたら、その時点で完了扱いにして待機へ
+// (音は鳴らさない。古い休憩をいまさら始めない)。進行中なら刻みを再開する
+function restorePomo() {
+  const s = pomoState();
+  if (s.mode === "idle") return;
+  if (s.pausedLeft != null) { renderPomo(); return; } // 一時停止のまま復元
+  if (Date.now() >= s.endAt) {
+    if (s.mode === "work") addWorkRecord(pomoElapsedWork(s, s.endAt), 1);
+    savePomo(pomoIdle(s.preset));
+  } else {
+    startPomoTick();
+  }
+  renderPomo();
+}
+/* 終了音: 外部ファイル不要のWeb Audioで短いビープを生成(CSPの許可先も増やさない)。
+ * AudioContextは「開始」タップ(ユーザー操作)の中で作っておかないと後から鳴らせない */
+let pomoAudio = null;
+function pomoAudioUnlock() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!pomoAudio) pomoAudio = new AC();
+    if (pomoAudio.state === "suspended") pomoAudio.resume().catch(() => {});
+  } catch (e) {}
+}
+function pomoBeep(n) {
+  try {
+    pomoAudioUnlock();
+    if (pomoAudio) {
+      const t0 = pomoAudio.currentTime;
+      for (let i = 0; i < n; i++) {
+        const o = pomoAudio.createOscillator(), g = pomoAudio.createGain();
+        o.type = "sine";
+        o.frequency.value = 880;
+        g.gain.setValueAtTime(0.001, t0 + i * 0.4);
+        g.gain.exponentialRampToValueAtTime(0.25, t0 + i * 0.4 + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + i * 0.4 + 0.3);
+        o.connect(g);
+        g.connect(pomoAudio.destination);
+        o.start(t0 + i * 0.4);
+        o.stop(t0 + i * 0.4 + 0.32);
+      }
+    }
+  } catch (e) {}
+  if (navigator.vibrate) { try { navigator.vibrate([200, 120, 200]); } catch (e) {} }
+}
+function fmtClock(sec) {
+  sec = Math.max(0, Math.ceil(sec));
+  return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+}
+function renderPomo() {
+  const s = pomoState();
+  const p = POMO_PRESETS[s.preset];
+  const left = s.mode === "idle" ? p.work
+    : s.pausedLeft != null ? s.pausedLeft
+    : Math.max(0, Math.ceil((s.endAt - Date.now()) / 1000));
+  $("pomo-time").textContent = fmtClock(left);
+  const phase = $("pomo-phase");
+  phase.textContent = s.mode === "break" ? "休憩"
+    : s.mode === "work" ? (s.pausedLeft != null ? "作業(一時停止中)" : "作業中")
+    : "作業 " + Math.round(p.work / 60) + "分";
+  phase.classList.toggle("working", s.mode === "work" && s.pausedLeft == null);
+  $("pomo-main").textContent = s.mode === "idle" ? "開始"
+    : s.mode === "break" ? "休憩を終える"
+    : s.pausedLeft != null ? "再開" : "一時停止";
+  $("pomo-stop").style.display = s.mode === "work" ? "" : "none";
+  // プリセット(25分/50分)は待機中だけ切り替え可能
+  document.querySelectorAll("#pomo-presets .toggle-pill").forEach(b => {
+    b.classList.toggle("on", b.dataset.key === s.preset);
+    b.setAttribute("aria-pressed", String(b.dataset.key === s.preset));
+    b.disabled = s.mode !== "idle";
+  });
+}
+
+/* ---- やることリスト ---- */
+function todosMap() { return load(LS.TODOS, {}); }
+function addTodo(text) {
+  text = String(text || "").trim().slice(0, 100);
+  if (!text) return null;
+  const t = todosMap();
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  t[id] = { text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now() };
+  save(LS.TODOS, t);
+  scheduleAutoSync();
+  return id;
+}
+function setTodoDone(id, done) {
+  const t = todosMap(), it = t[id];
+  if (!it || it.deleted) return;
+  it.done = !!done;
+  it.doneAt = done ? Date.now() : null;
+  it.updatedAt = Date.now();
+  save(LS.TODOS, t);
+  scheduleAutoSync();
+}
+// 削除はトンボストーン(deleted=true)にして同期で他端末からも消えるようにする(物理削除はprune)
+function removeTodo(id) {
+  const t = todosMap(), it = t[id];
+  if (!it) return;
+  it.deleted = true;
+  it.updatedAt = Date.now();
+  save(LS.TODOS, t);
+  scheduleAutoSync();
+}
+// 一覧の表示対象: 未完了すべて+今日完了した分(昨日までの完了分は一覧から消え、完了数はあゆみに残る)
+function visibleTodos() {
+  const t = todayStr();
+  return Object.entries(todosMap())
+    .filter(([, it]) => it && !it.deleted && (!it.done || (it.doneAt && dateStr(new Date(it.doneAt)) === t)))
+    .map(([id, it]) => Object.assign({ id }, it))
+    .sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1) : (a.createdAt || 0) - (b.createdAt || 0));
+}
+function todoDoneCount(date) {
+  return Object.values(todosMap())
+    .filter(it => it && !it.deleted && it.done && it.doneAt && dateStr(new Date(it.doneAt)) === date).length;
+}
+// 完了・削除から30日を過ぎたものは掃除する(起動時)。トンボストーンも30日で寿命
+function pruneTodos() {
+  const t = todosMap();
+  const cutoff = Date.now() - 30 * 86400000;
+  let changed = false;
+  for (const [id, it] of Object.entries(t)) {
+    if (!it || ((it.deleted || it.done) && (it.updatedAt || 0) < cutoff)) { delete t[id]; changed = true; }
+  }
+  if (changed) save(LS.TODOS, t);
+}
+function renderTodos() {
+  const list = $("todo-list");
+  list.innerHTML = "";
+  const items = visibleTodos();
+  $("todo-empty").style.display = items.length ? "none" : "";
+  for (const it of items) {
+    const li = document.createElement("li");
+    li.className = "todo-item" + (it.done ? " done" : "");
+    const chk = document.createElement("button");
+    chk.className = "todo-check inset";
+    chk.setAttribute("role", "checkbox");
+    chk.setAttribute("aria-checked", String(!!it.done));
+    chk.setAttribute("aria-label", `「${it.text}」を${it.done ? "未完了に戻す" : "完了にする"}`);
+    chk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+    chk.addEventListener("click", () => { setTodoDone(it.id, !it.done); renderTodos(); renderWorkStats(); });
+    const tx = document.createElement("span");
+    tx.className = "todo-text";
+    tx.textContent = it.text;
+    const del = document.createElement("button");
+    del.className = "todo-del";
+    del.setAttribute("aria-label", `「${it.text}」を削除`);
+    del.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    del.addEventListener("click", () => { removeTodo(it.id); renderTodos(); renderWorkStats(); });
+    li.appendChild(chk);
+    li.appendChild(tx);
+    li.appendChild(del);
+    list.appendChild(li);
+  }
+}
+
+/* ---- 作業のあゆみ(直近7日の作業時間+今日のまとめ) ---- */
+const DOW_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
+function renderWorkStats() {
+  const wl = load(LS.WORK, {});
+  const rows = $("work-rows");
+  rows.innerHTML = "";
+  const days = [];
+  for (let i = 6; i >= 0; i--) days.push(addDays(todayStr(), -i));
+  const secs = days.map(d => (wl[d] && wl[d].sec) || 0);
+  const maxSec = Math.max.apply(null, secs);
+  $("work-empty").style.display = maxSec ? "none" : "";
+  if (maxSec) {
+    days.forEach((d, i) => {
+      const [y, m, dd] = d.split("-").map(Number);
+      const label = i === 6 ? "今日" : i === 5 ? "昨日" : `${m}/${dd}(${DOW_LABELS[new Date(y, m - 1, dd).getDay()]})`;
+      const row = affRow(label, (secs[i] / maxSec) * 2 - 1); // 週内最大を100%とした相対バー
+      row.querySelector(".aff-val").textContent = secs[i] ? fmtListen(secs[i]) : "─";
+      rows.appendChild(row);
+    });
+  }
+  const today = wl[todayStr()] || { sec: 0, pomo: 0 };
+  const totalSec = secs.reduce((a, b) => a + b, 0);
+  $("work-note").textContent =
+    `今日: ${today.sec ? fmtListen(today.sec) : "0分"} · ポモドーロ${today.pomo || 0}回 · やること完了${todoDoneCount(todayStr())}件` +
+    (totalSec ? ` / 7日間の合計 ${fmtListen(totalSec)}` : "");
+}
+function renderWork() {
+  renderPomo();
+  renderTodos();
+  renderWorkStats();
 }
 
 /* =========================================================
@@ -3508,10 +3953,11 @@ function resetHistory() {
   renderCalendar();
 }
 function resetAll() {
-  if (!confirm("設定・評価・再生履歴をすべてリセットします。よろしいですか?")) return;
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, "bgm_sync"].forEach(k => store.removeItem(k));
-  // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴が復活しないように)
-  save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now() });
+  if (!confirm("設定・評価・再生履歴・作業の記録をすべてリセットします。よろしいですか?")) return;
+  stopPomoTick(); // 進行中のポモドーロも止める
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.WORK, LS.TODOS, LS.POMO, LS.AUTOPLAY, "bgm_sync"].forEach(k => store.removeItem(k));
+  // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴・作業記録が復活しないように)
+  save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now(), workResetAt: Date.now() });
   cachedToken = null; tokenExpiry = 0;
   calSelectedDate = null;
   save(LS.PLAYS, {}); // migrate を再発火させない(空履歴として確定)
@@ -3534,6 +3980,7 @@ function showView(name) {
   if (name === "history") renderCalendar();
   if (name === "taste") renderTaste();
   if (name === "explore") renderExplore();
+  if (name === "work") renderWork();
 }
 
 /* =========================================================
@@ -3548,7 +3995,7 @@ const GOOGLE_CLIENT_ID = (location.hostname === "localhost" || location.hostname
   ? GOOGLE_CLIENT_ID_DEV : GOOGLE_CLIENT_ID_PROD;
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 const SYNC_FILE = "todaybgm.json";
-const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA, LS.LISTEN];
+const SYNC_KEYS = [LS.SETTINGS, LS.RATINGS, LS.PLAYS, LS.DEAD, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.SONGMETA, LS.LISTEN, LS.WORK, LS.TODOS, LS.AUTOPLAY];
 let gisPromise = null, tokenClient = null, syncing = false, autoSyncTimer = null;
 
 function syncMeta() { return load("bgm_sync", {}); }
@@ -3613,7 +4060,7 @@ async function driveSave(token, id, content) {
 }
 function collectLocal() {
   const meta = syncMeta();
-  const o = { updatedAt: meta.updatedAt || 0, ratingsResetAt: meta.ratingsResetAt || 0, playsResetAt: meta.playsResetAt || 0 };
+  const o = { updatedAt: meta.updatedAt || 0, ratingsResetAt: meta.ratingsResetAt || 0, playsResetAt: meta.playsResetAt || 0, workResetAt: meta.workResetAt || 0 };
   SYNC_KEYS.forEach(k => { const v = store.getItem(k); if (v != null) { try { o[k] = JSON.parse(v); } catch (e) {} } });
   return o;
 }
@@ -3650,8 +4097,29 @@ function mergeData(local, remote) {
     mlt[d] = Math.max(Number(llt[d]) || 0, Number(rlt[d]) || 0);
   }
   m[LS.LISTEN] = mlt;
+  // 作業実績は日別・項目ごとmax(bgm_listenと同じ理由=和だと再マージで二重計上)。
+  // 全リセット(workResetAt)以前の日は復活させない
+  const resetW = Math.max(local.workResetAt || 0, remote.workResetAt || 0);
+  const resetWDay = resetW ? dateStr(new Date(resetW)) : "";
+  const lw = local[LS.WORK] || {}, rw = remote[LS.WORK] || {}, mw = {};
+  for (const d of new Set([...Object.keys(lw), ...Object.keys(rw)])) {
+    if (d < resetWDay) continue;
+    const a = lw[d] || {}, b = rw[d] || {};
+    mw[d] = { sec: Math.max(Number(a.sec) || 0, Number(b.sec) || 0),
+              pomo: Math.max(Number(a.pomo) || 0, Number(b.pomo) || 0) };
+  }
+  m[LS.WORK] = mw;
+  // やることはIDごとにupdatedAtが新しい方。削除はdeletedフラグ(トンボストーン)で他端末にも伝わる
+  const ltd = local[LS.TODOS] || {}, rtd = remote[LS.TODOS] || {}, mtd = {};
+  for (const id of new Set([...Object.keys(ltd), ...Object.keys(rtd)])) {
+    const a = ltd[id], b = rtd[id];
+    const winner = !a ? b : !b ? a : ((b.updatedAt || 0) > (a.updatedAt || 0) ? b : a);
+    if (winner && (winner.updatedAt || 0) > resetW) mtd[id] = winner;
+  }
+  m[LS.TODOS] = mtd;
+  m.workResetAt = resetW;
   const remoteNewer = (remote.updatedAt || 0) > (local.updatedAt || 0);
-  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE].forEach(k => {
+  [LS.SETTINGS, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.AUTOPLAY].forEach(k => {
     const rv = remote[k], lv = local[k];
     m[k] = remoteNewer ? (rv !== undefined ? rv : lv) : (lv !== undefined ? lv : rv);
   });
@@ -3673,6 +4141,9 @@ function applyData(m) {
   if (typeof m[LS.OPENAPP] === "boolean") save(LS.OPENAPP, m[LS.OPENAPP]);
   if (typeof m[LS.PLAYMODE] === "string") save(LS.PLAYMODE, m[LS.PLAYMODE]);
   if (isObj(m[LS.TODAYMODE])) save(LS.TODAYMODE, m[LS.TODAYMODE]);
+  if (isObj(m[LS.WORK])) save(LS.WORK, m[LS.WORK]);
+  if (isObj(m[LS.TODOS])) save(LS.TODOS, m[LS.TODOS]);
+  if (typeof m[LS.AUTOPLAY] === "boolean") save(LS.AUTOPLAY, m[LS.AUTOPLAY]);
 }
 function refreshAfterSync() {
   const settings = load(LS.SETTINGS, null);
@@ -3682,6 +4153,7 @@ function refreshAfterSync() {
   if (id === "taste") renderTaste();
   if (id === "history") renderCalendar();
   if (id === "settings") renderSettings();
+  if (id === "work") renderWork();
 }
 async function driveSync(interactive) {
   if (!syncConfigured()) { if (interactive) alert("同期のセットアップが未完了です(Google Client ID未設定)。"); return; }
@@ -3700,7 +4172,7 @@ async function driveSync(interactive) {
     if (id) { try { remote = await driveDownload(token, id); } catch (e) {} }
     const merged = mergeData(collectLocal(), remote);
     applyData(merged);
-    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, ratingsResetAt: merged.ratingsResetAt || 0, playsResetAt: merged.playsResetAt || 0, lastSync: Date.now(), error: false, dirtySince: 0 });
+    setSyncMeta({ linked: true, updatedAt: merged.updatedAt, ratingsResetAt: merged.ratingsResetAt || 0, playsResetAt: merged.playsResetAt || 0, workResetAt: merged.workResetAt || 0, lastSync: Date.now(), error: false, dirtySince: 0 });
     await driveSave(token, id, JSON.stringify(merged));
     refreshAfterSync();
   } catch (e) {
@@ -3745,7 +4217,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.3.2";
+const APP_VERSION = "v1.4.0";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -3840,6 +4312,40 @@ $("btn-save").addEventListener("click", saveSettings);
 $("btn-reset").addEventListener("click", resetAll);
 $("btn-reset-taste").addEventListener("click", resetTaste);
 $("btn-reset-history").addEventListener("click", resetHistory);
+// 作業タブ: ポモドーロ・やること
+$("pomo-main").addEventListener("click", pomoMain);
+$("pomo-stop").addEventListener("click", pomoStop);
+for (const [key, p] of Object.entries(POMO_PRESETS)) {
+  const b = document.createElement("button");
+  b.className = "toggle-pill";
+  b.dataset.key = key;
+  b.textContent = p.label;
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => {
+    if (pomoState().mode !== "idle") return; // 進行中の切り替えは不可(renderPomoでdisabledにもする)
+    savePomo(pomoIdle(key));
+    renderPomo();
+  });
+  $("pomo-presets").appendChild(b);
+}
+renderPomo(); // 保存されたプリセット・状態を初期表示に反映
+function submitTodo() {
+  if (addTodo($("todo-input").value)) {
+    $("todo-input").value = "";
+    renderTodos();
+    renderWorkStats();
+  }
+}
+$("todo-add").addEventListener("click", submitTodo);
+$("todo-input").addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); submitTodo(); } });
+// キーボード表示中のタブバー非表示(曲名検索と同じiOS対策)
+$("todo-input").addEventListener("focus", () => { if (isMobileLike()) document.body.classList.add("kb-open"); });
+$("todo-input").addEventListener("blur", () => document.body.classList.remove("kb-open"));
+// バックグラウンド中はタイマーの刻みが止まる(またはまばらになる)ため、
+// 復帰時にすぐ判定して、終わっていた作業の記録と表示を追いつかせる
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && pomoState().mode !== "idle") { startPomoTick(); pomoTick(); }
+});
 // 「?」注釈トグル: data-help のidを持つ説明文(.help-note)を開閉する
 document.querySelectorAll(".help-btn").forEach(b => b.addEventListener("click", () => {
   const note = $(b.dataset.help);
@@ -3969,17 +4475,20 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) flush
     const vid = qs.get("v"), tab = qs.get("tab");
     if (vid && /^[A-Za-z0-9_-]{11}$/.test(vid)) {
       setAsToday(SONGS.find(s => s.id === vid) || externalSong(vid), false);
-    } else if (tab && ["explore", "taste", "history", "settings"].includes(tab)) {
+    } else if (tab && ["explore", "work", "taste", "history", "settings"].includes(tab)) {
       showView(tab);
     }
     if (vid || tab) history.replaceState(null, "", location.pathname); // 再読込時に再発動させない
   } catch (e) {}
   renderSync();
   renderSyncReminder();
+  pruneTodos(); // 完了・削除から30日過ぎたやることを掃除
+  restorePomo(); // 進行中だったポモドーロを復元(閉じている間に終わっていれば完了扱い)
   $("app-version").textContent = " " + APP_VERSION; // 表記の実体はAPP_VERSION定数(一元管理)
   checkForUpdate().catch(() => {}); // 起動時に静かに確認(失敗しても何もしない)
   // 連携済みなら起動時に静かに同期(トークンが取れなければ何もしない)
   if (syncConfigured() && syncMeta().linked) driveSync(false);
+  tryAutoplay(); // 設定「今日の曲を自動で再生」(ブロックされたら何もしない)
 })();
 </script>
 </body>
