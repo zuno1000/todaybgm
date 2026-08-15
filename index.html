@@ -1337,7 +1337,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.1</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.2</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -3841,9 +3841,10 @@ function pomoAudioUnlock() {
   } catch (e) {}
 }
 function pomoBeep(n, vol) {
-  // 音量%→ゲイン。聴感に合わせた2乗カーブで、既定70%が従来の音量(ピーク0.25)相当になる
+  // 音量%→ゲイン。聴感に合わせた2乗カーブ。100%=フルスケール(ゲイン1.0)。
+  // v1.6.2で全体を2倍に増幅(旧: 100%=0.5。「小さい」との報告のため)
   const v = (typeof vol === "number") ? Math.max(0, Math.min(100, vol)) : pomoConf().vol;
-  const peak = 0.5 * Math.pow(v / 100, 2);
+  const peak = Math.pow(v / 100, 2);
   try {
     pomoAudioUnlock();
     if (pomoAudio && peak >= 0.001) { // 0%は無音(バイブレーションは残す)
@@ -4637,7 +4638,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.6.1";
+const APP_VERSION = "v1.6.2";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
