@@ -926,16 +926,22 @@ async function main() {
   w15.saveTodoView({ filter: "today" });
   eq("絞り込み「今日まで」: 期限が今日以前のものだけ表示(期限切れ含む)",
     w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで"]);
-  // 「今週まで」(日曜はじまりの週=今度の土曜まで)と「期限あり」
-  const dNext = w15.addTodo("来週の分", w15.addDays(t15, 8)); // 8日後=必ず来週以降
+  // 「明日まで」「1週間後まで」と「期限あり」
+  const d8 = w15.addTodo("8日後の分", w15.addDays(t15, 8));
+  const d7 = w15.addTodo("7日後の分", w15.addDays(t15, 7));
+  w15.saveTodoView({ filter: "tomorrow" });
+  const tmrNames = w15.visibleTodos().map(x => x.text);
+  check("絞り込み「明日まで」: 明日以前の期限だけ(期限切れ含む)",
+    tmrNames.includes("期限切れの分") && tmrNames.includes("今日まで") && tmrNames.includes("明日まで") &&
+    !tmrNames.includes("7日後の分") && !tmrNames.includes("期限なし"), tmrNames.join(","));
   w15.saveTodoView({ filter: "week" });
   const weekNames = w15.visibleTodos().map(x => x.text);
-  check("絞り込み「今週まで」: 今週中の期限だけ(期限切れ含む・来週や期限なしは出ない)",
-    weekNames.includes("期限切れの分") && weekNames.includes("今日まで") &&
-    !weekNames.includes("来週の分") && !weekNames.includes("期限なし"), weekNames.join(","));
+  check("絞り込み「1週間後まで」: 7日後までの期限だけ(8日後や期限なしは出ない)",
+    weekNames.includes("期限切れの分") && weekNames.includes("今日まで") && weekNames.includes("7日後の分") &&
+    !weekNames.includes("8日後の分") && !weekNames.includes("期限なし"), weekNames.join(","));
   w15.saveTodoView({ filter: "due" });
   eq("絞り込み「期限あり」: 期限つきの全部(期限なしは出ない・この時点の並びは期限順)",
-    w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで", "明日まで", "来週の分"]);
+    w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで", "明日まで", "7日後の分", "8日後の分"]);
   w15.saveTodoView({ sort: "created", filter: "all" });
   // 繰り返し: 完了で次のタスクが生まれ、チェックを外すと取り消される
   w15.setTodoDone(dC, true);
@@ -955,7 +961,7 @@ async function main() {
   check("期限切れは赤の強調クラスで表示", !!doc().querySelector("#todo-list .todo-meta .due-over"));
   check("並び替え・絞り込みのピルと期限・繰り返しの入力がある",
     doc().querySelectorAll("#todo-sort .toggle-pill").length === 2 &&
-    doc().querySelectorAll("#todo-filter .toggle-pill").length === 4 &&
+    doc().querySelectorAll("#todo-filter .toggle-pill").length === 5 &&
     !!doc().getElementById("todo-due") && !!doc().getElementById("todo-repeat"));
   const sc15 = doc().querySelector(".scroll");
   check("作業タブ: 期限・繰り返しUI追加後も横スクロールが発生しない",
