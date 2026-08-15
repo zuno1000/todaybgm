@@ -761,13 +761,13 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 }
 /* 期限の時刻は日付より控えめな幅(日付が主・時刻は任意) */
 #todo-time { flex: 0 1 104px; }
-/* 並び替え・絞り込み */
-.todo-view-row { display: flex; justify-content: space-between; gap: 10px; margin: 12px 2px 0; flex-wrap: wrap; }
+/* 並び替え・絞り込み(一覧カードの先頭に置くので上余白は不要) */
+.todo-view-row { display: flex; justify-content: space-between; gap: 10px; margin: 0 2px; flex-wrap: wrap; }
 .todo-view-row .toggle-pill { font-size: 11px; padding: 7px 12px; }
 /* タグ絞り込みの行(タグがあるときだけ表示・折り返し) */
 .todo-tag-row { margin: 10px 2px 0; }
 .todo-tag-row .toggle-pill { font-size: 11px; padding: 7px 12px; }
-.todo-list { list-style: none; margin-top: 6px; }
+.todo-list { list-style: none; margin-top: 8px; }
 .todo-item { display: flex; align-items: center; gap: 12px; padding: 11px 2px; }
 .todo-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .todo-meta { font-size: 11px; color: var(--text-sub); }
@@ -1163,7 +1163,8 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       </div>
     </div>
 
-    <h2 class="section-title">やることリスト</h2>
+    <!-- 追加フォームと一覧は別カードに分け、どこまでが入力・どこからが一覧かを見た目で区別する -->
+    <h2 class="section-title">やることの追加</h2>
     <div class="todo-card raised">
       <div class="todo-input-row inset">
         <input type="text" id="todo-input" maxlength="100" placeholder="やることを追加" autocomplete="off" aria-label="やることを追加">
@@ -1189,6 +1190,10 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
           <datalist id="todo-tag-list"></datalist>
         </label>
       </div>
+    </div>
+
+    <h2 class="section-title">やること一覧</h2>
+    <div class="todo-card raised">
       <div class="todo-view-row">
         <div class="pill-grid" id="todo-sort"></div>
         <div class="pill-grid" id="todo-filter"></div>
@@ -1354,7 +1359,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.2</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.3</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -4716,7 +4721,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.7.2";
+const APP_VERSION = "v1.7.3";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
