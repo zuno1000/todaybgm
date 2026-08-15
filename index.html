@@ -1337,7 +1337,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.0</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.1</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -2445,9 +2445,14 @@ function renderSettings() {
 }
 
 function saveSettings() {
+  const prev = load(LS.SETTINGS, { genres: [], duration: "any" });
   const genres = [...$("genre-pills").querySelectorAll(".toggle-pill.on")].map(b => b.dataset.key);
   const durBtn = $("dur-pills").querySelector(".toggle-pill.on");
   const settings = { genres, duration: durBtn ? durBtn.dataset.key : "any" };
+  // 「おすすめの条件」(ジャンル・時間)が変わったときだけ今日の1曲を選び直す。
+  // 再生設定やタイマー設定だけの保存では、いま表示中・再生中の曲に触れない
+  const recommendChanged = settings.duration !== (prev.duration || "any") ||
+    genres.slice().sort().join(",") !== (prev.genres || []).slice().sort().join(",");
   save(LS.SETTINGS, settings);
   save(LS.OPENAPP, $("openapp-toggle").classList.contains("on"));
   save(LS.AUTOPLAY, $("autoplay-toggle").classList.contains("on"));
@@ -2465,6 +2470,12 @@ function saveSettings() {
   save(LS.TODAYMODE, { mode: tmBtn ? tmBtn.dataset.key : "daily", hours: thBtn ? Number(thBtn.dataset.key) : 3 });
   setSyncMeta({ updatedAt: Date.now() }); // 設定変更をリモートより新しいものとして扱う
   scheduleAutoSync();
+  if (!recommendChanged) {
+    // おすすめの条件は同じ: 曲はそのまま・画面も移動しない
+    $("save-msg").textContent = "保存しました。";
+    setTimeout(() => { $("save-msg").textContent = ""; }, 1500);
+    return;
+  }
   // 以後の選曲に反映: 今日の1曲を新しい設定で選び直す(仕様の受け入れ基準4)
   const daily = getDaily();
   daily.currentId = null;
@@ -3950,10 +3961,11 @@ function setTodoDone(id, done) {
   save(LS.TODOS, t);
   scheduleAutoSync();
 }
-// 表示設定(並び=登録順/期限順・絞り込み=すべて/今日まで)。端末ローカル
+// 表示設定(並び=登録順/期限順・絞り込み=すべて/今日まで/今週まで/期限あり)。端末ローカル
 function todoView() {
   const v = load(LS.TODOVIEW, {}) || {};
-  return { sort: v.sort === "due" ? "due" : "created", filter: v.filter === "today" ? "today" : "all" };
+  return { sort: v.sort === "due" ? "due" : "created",
+           filter: ["today", "week", "due"].includes(v.filter) ? v.filter : "all" };
 }
 function saveTodoView(patch) { save(LS.TODOVIEW, Object.assign(todoView(), patch)); }
 // 削除はトンボストーン(deleted=true)にして同期で他端末からも消えるようにする(物理削除はprune)
@@ -3966,7 +3978,8 @@ function removeTodo(id) {
   scheduleAutoSync();
 }
 // 一覧の表示対象: 未完了すべて+今日完了した分(昨日までの完了分は一覧から消え、完了数はあゆみに残る)。
-// そのうえで表示設定を適用(絞り込み「今日まで」=期限が今日以前のものだけ・期限切れ含む)
+// そのうえで表示設定を適用。「今日まで」「今週まで」は期限がその日以前のもの(期限切れ含む)、
+// 「今週まで」の週は履歴カレンダーと同じ日曜はじまり(=今度の土曜日まで)、「期限あり」は期限つき全部
 function visibleTodos() {
   const t = todayStr();
   const view = todoView();
@@ -3974,6 +3987,10 @@ function visibleTodos() {
     .filter(([, it]) => it && !it.deleted && (!it.done || (it.doneAt && dateStr(new Date(it.doneAt)) === t)))
     .map(([id, it]) => Object.assign({ id }, it));
   if (view.filter === "today") items = items.filter(it => it.due && it.due <= t);
+  else if (view.filter === "week") {
+    const weekEnd = addDays(t, 6 - new Date().getDay());
+    items = items.filter(it => it.due && it.due <= weekEnd);
+  } else if (view.filter === "due") items = items.filter(it => it.due);
   const byCreated = (a, b) => (a.createdAt || 0) - (b.createdAt || 0);
   const byDue = (a, b) => (a.due && b.due) ? (a.due < b.due ? -1 : a.due > b.due ? 1 : byCreated(a, b))
     : a.due ? -1 : b.due ? 1 : byCreated(a, b); // 期限なしは後ろ
@@ -4027,8 +4044,8 @@ function renderTodos() {
   list.innerHTML = "";
   const items = visibleTodos();
   $("todo-empty").style.display = items.length ? "none" : "";
-  $("todo-empty").innerHTML = view.filter === "today"
-    ? "今日までの期限のやることはありません。<br>「すべて」に切り替えると期限なしのものも見られます。"
+  $("todo-empty").innerHTML = view.filter !== "all"
+    ? "この絞り込みに当てはまるやることはありません。<br>「すべて」に切り替えると全部見られます。"
     : "今日やることを書き出して、1つずつ片づけていきましょう。<br>終わったものは翌日には一覧から消えます(完了数は下のあゆみに残ります)。";
   for (const it of items) {
     const li = document.createElement("li");
@@ -4620,7 +4637,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.6.0";
+const APP_VERSION = "v1.6.1";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4765,7 +4782,7 @@ $("todo-add").addEventListener("click", submitTodo);
 // 並び替え(登録順/期限順)・絞り込み(すべて/今日まで)のピル
 for (const [boxId, key, defs] of [
   ["todo-sort", "sort", [["created", "登録順"], ["due", "期限順"]]],
-  ["todo-filter", "filter", [["all", "すべて"], ["today", "今日まで"]]],
+  ["todo-filter", "filter", [["all", "すべて"], ["today", "今日まで"], ["week", "今週まで"], ["due", "期限あり"]]],
 ]) {
   for (const [val, label] of defs) {
     const b = document.createElement("button");

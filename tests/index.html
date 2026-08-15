@@ -926,6 +926,16 @@ async function main() {
   w15.saveTodoView({ filter: "today" });
   eq("絞り込み「今日まで」: 期限が今日以前のものだけ表示(期限切れ含む)",
     w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで"]);
+  // 「今週まで」(日曜はじまりの週=今度の土曜まで)と「期限あり」
+  const dNext = w15.addTodo("来週の分", w15.addDays(t15, 8)); // 8日後=必ず来週以降
+  w15.saveTodoView({ filter: "week" });
+  const weekNames = w15.visibleTodos().map(x => x.text);
+  check("絞り込み「今週まで」: 今週中の期限だけ(期限切れ含む・来週や期限なしは出ない)",
+    weekNames.includes("期限切れの分") && weekNames.includes("今日まで") &&
+    !weekNames.includes("来週の分") && !weekNames.includes("期限なし"), weekNames.join(","));
+  w15.saveTodoView({ filter: "due" });
+  eq("絞り込み「期限あり」: 期限つきの全部(期限なしは出ない・この時点の並びは期限順)",
+    w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで", "明日まで", "来週の分"]);
   w15.saveTodoView({ sort: "created", filter: "all" });
   // 繰り返し: 完了で次のタスクが生まれ、チェックを外すと取り消される
   w15.setTodoDone(dC, true);
@@ -945,7 +955,7 @@ async function main() {
   check("期限切れは赤の強調クラスで表示", !!doc().querySelector("#todo-list .todo-meta .due-over"));
   check("並び替え・絞り込みのピルと期限・繰り返しの入力がある",
     doc().querySelectorAll("#todo-sort .toggle-pill").length === 2 &&
-    doc().querySelectorAll("#todo-filter .toggle-pill").length === 2 &&
+    doc().querySelectorAll("#todo-filter .toggle-pill").length === 4 &&
     !!doc().getElementById("todo-due") && !!doc().getElementById("todo-repeat"));
   const sc15 = doc().querySelector(".scroll");
   check("作業タブ: 期限・繰り返しUI追加後も横スクロールが発生しない",
@@ -954,6 +964,19 @@ async function main() {
   w15.armAutoplayTapFallback();
   w15.armAutoplayTapFallback();
   check("armAutoplayTapFallback: 多重呼び出しでも例外にならない", true);
+  // 設定保存: 「おすすめの条件」を変えたときだけ今日の曲を選び直す(v1.6.1)
+  w15.showView("settings");
+  const dailyBefore15 = JSON.parse(localStorage.getItem("bgm_daily"));
+  doc().getElementById("btn-save").click(); // 条件は変えずに保存
+  await sleep(1000);
+  check("設定保存: おすすめの条件が同じなら曲は変えず設定画面のまま",
+    doc().getElementById("view-settings").classList.contains("active") &&
+    JSON.parse(localStorage.getItem("bgm_daily")).currentId === dailyBefore15.currentId);
+  doc().querySelector('#dur-pills .toggle-pill[data-key="short"]').click(); // 時間の希望を変更
+  doc().getElementById("btn-save").click();
+  await sleep(1000);
+  check("設定保存: おすすめの条件を変えたら選び直して今日の曲画面へ",
+    doc().getElementById("view-main").classList.contains("active"));
 }
 
 /* ==== 実行 ==== */
