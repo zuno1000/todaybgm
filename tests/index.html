@@ -977,6 +977,73 @@ async function main() {
   await sleep(1000);
   check("設定保存: おすすめの条件を変えたら選び直して今日の曲画面へ",
     doc().getElementById("view-main").classList.contains("active"));
+
+  /* ---- Suite 16: やることの期限時刻・タグ(v1.7.0) ---- */
+  suite("16. やることの期限時刻・タグ(v1.7.0)");
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } });
+  const w16 = win();
+  const t16 = w16.todayStr();
+  // 時刻つき期限
+  const e1 = w16.addTodo("朝イチの仕事", t16, "", "09:00", "仕事");
+  const e2 = w16.addTodo("夕方の仕事", t16, "", "18:00", "仕事");
+  const e3 = w16.addTodo("今日中(時刻なし)", t16, "", "", "仕事");
+  const e4 = w16.addTodo("時刻だけ指定", "", "", "12:30", "");
+  const e5 = w16.addTodo("勉強タスク", w16.addDays(t16, 1), "", "", " #勉強 ");
+  check("addTodo: 時刻が保存される", w16.todosMap()[e1].dueTime === "09:00");
+  check("addTodo: 時刻だけ指定→今日のその時刻になる",
+    w16.todosMap()[e4].due === t16 && w16.todosMap()[e4].dueTime === "12:30");
+  const eBad = w16.addTodo("不正な時刻", t16, "", "25:99", "");
+  check("addTodo: 不正な時刻はnull(日付は残る)",
+    w16.todosMap()[eBad].dueTime === null && w16.todosMap()[eBad].due === t16);
+  check("addTodo: タグは#と空白を取り除いて保存", w16.todosMap()[e5].tag === "勉強");
+  // 期限順: 同じ日は時刻順(時刻なしは終日=後ろ)
+  w16.saveTodoView({ sort: "due", filter: "all", tag: null });
+  eq("期限順: 同じ日の中は時刻の早い順・時刻なしは後ろ",
+    w16.visibleTodos().map(x => x.text).slice(0, 4),
+    ["朝イチの仕事", "時刻だけ指定", "夕方の仕事", "今日中(時刻なし)"]);
+  // 時刻まで見た期限切れ判定
+  check("todoDueMeta: 今日の00:00指定は期限切れ(赤)",
+    w16.todoDueMeta({ due: t16, dueTime: "00:00" }).cls === "due-over");
+  check("todoDueMeta: 今日の時刻なしは「今日まで」(アクセント)",
+    w16.todoDueMeta({ due: t16, dueTime: null }).cls === "due-today");
+  check("todoDueMeta: 時刻が表示ラベルに入る",
+    /09:00/.test(w16.todoDueMeta({ due: w16.addDays(t16, 3), dueTime: "09:00" }).label));
+  // タグ絞り込み
+  eq("todoTags: 使用中のタグ一覧", w16.todoTags(), ["仕事", "勉強"]);
+  w16.saveTodoView({ tag: "勉強" });
+  eq("タグ絞り込み: 選んだタグだけ表示", w16.visibleTodos().map(x => x.text), ["勉強タスク"]);
+  w16.saveTodoView({ tag: "存在しないタグ" });
+  check("タグ絞り込み: 存在しないタグは無視(全部表示に戻る)", w16.visibleTodos().length >= 5);
+  w16.saveTodoView({ sort: "created", filter: "all", tag: null });
+  // 繰り返しは時刻・タグを引き継ぐ
+  const e6 = w16.addTodo("毎朝の運動", t16, "daily", "07:00", "健康");
+  w16.setTodoDone(e6, true);
+  const sp16 = Object.entries(w16.todosMap()).find(([id, it]) => id !== e6 && it.text === "毎朝の運動" && !it.done && !it.deleted);
+  check("繰り返し: 次のタスクに時刻とタグが引き継がれる",
+    sp16 && sp16[1].dueTime === "07:00" && sp16[1].tag === "健康" && sp16[1].due === w16.addDays(t16, 1),
+    JSON.stringify(sp16));
+  // UI: タグピル行・メタ表示・datalist
+  w16.showView("work");
+  check("タグ絞り込みピル: タグがあるときだけ表示(すべて+タグ数)",
+    doc().getElementById("todo-tags").style.display !== "none" &&
+    doc().querySelectorAll("#todo-tags .toggle-pill").length === 4); // すべて+仕事/勉強/健康
+  check("タグ入力の補完(datalist)に使用中タグが入る",
+    doc().querySelectorAll("#todo-tag-list option").length === 3);
+  const metas16 = [...doc().querySelectorAll("#todo-list .todo-meta")];
+  check("行のメタに #タグ と時刻つき期限が出る",
+    metas16.some(m => /#仕事/.test(m.textContent)) &&
+    metas16.some(m => /18:00/.test(m.textContent)));
+  doc().querySelector('#todo-tags .toggle-pill:nth-child(2)').click(); // 最初のタグ(#仕事)
+  check("タグピルのタップで絞り込まれる(#仕事の3件)",
+    doc().querySelectorAll("#todo-list .todo-item").length === 3,
+    String(doc().querySelectorAll("#todo-list .todo-item").length));
+  const sc16 = doc().querySelector(".scroll");
+  check("作業タブ: 時刻・タグUI追加後も横スクロールが発生しない",
+    sc16.scrollWidth <= sc16.clientWidth, `scrollWidth=${sc16.scrollWidth} clientWidth=${sc16.clientWidth}`);
+  // タグなしで全消しした場合はタグ行が消える
+  seedLS({});
+  w16.renderTodos();
+  check("タグがなければタグ絞り込み行は出ない", doc().getElementById("todo-tags").style.display === "none");
 }
 
 /* ==== 実行 ==== */

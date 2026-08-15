@@ -759,15 +759,21 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 @media (pointer: coarse) {
   .todo-opt input, .todo-opt select { font-size: 16px; }
 }
+/* 期限の時刻は日付より控えめな幅(日付が主・時刻は任意) */
+#todo-time { flex: 0 1 104px; }
 /* 並び替え・絞り込み */
 .todo-view-row { display: flex; justify-content: space-between; gap: 10px; margin: 12px 2px 0; flex-wrap: wrap; }
 .todo-view-row .toggle-pill { font-size: 11px; padding: 7px 12px; }
+/* タグ絞り込みの行(タグがあるときだけ表示・折り返し) */
+.todo-tag-row { margin: 10px 2px 0; }
+.todo-tag-row .toggle-pill { font-size: 11px; padding: 7px 12px; }
 .todo-list { list-style: none; margin-top: 6px; }
 .todo-item { display: flex; align-items: center; gap: 12px; padding: 11px 2px; }
 .todo-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .todo-meta { font-size: 11px; color: var(--text-sub); }
 .todo-meta .due-over { color: var(--danger); font-weight: 700; }
 .todo-meta .due-today { color: var(--accent); font-weight: 700; }
+.todo-meta .todo-tag { color: var(--accent); font-weight: 700; }
 .todo-check {
   width: 27px; height: 27px; flex-shrink: 0;
   border-radius: 50%;
@@ -1164,7 +1170,12 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
         <button id="todo-add" class="todo-add accent-raised" aria-label="やることを追加する">追加</button>
       </div>
       <div class="todo-opt-row">
-        <label class="todo-opt">期限 <input type="date" id="todo-due" class="inset" aria-label="期限(任意)"></label>
+        <label class="todo-opt todo-opt-due">期限
+          <input type="date" id="todo-due" class="inset" aria-label="期限の日付(任意)">
+          <input type="time" id="todo-time" class="inset" aria-label="期限の時刻(任意)">
+        </label>
+      </div>
+      <div class="todo-opt-row">
         <label class="todo-opt">繰り返し
           <select id="todo-repeat" class="inset" aria-label="繰り返し(任意)">
             <option value="">なし</option>
@@ -1173,11 +1184,17 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
             <option value="monthly">毎月</option>
           </select>
         </label>
+        <label class="todo-opt">タグ
+          <input type="text" id="todo-tag" class="inset" list="todo-tag-list" maxlength="12" placeholder="なし" autocomplete="off" aria-label="タグ(任意)">
+          <datalist id="todo-tag-list"></datalist>
+        </label>
       </div>
       <div class="todo-view-row">
         <div class="pill-grid" id="todo-sort"></div>
         <div class="pill-grid" id="todo-filter"></div>
       </div>
+      <!-- タグ絞り込み(タグが1つでもあるときだけ現れる) -->
+      <div class="pill-grid todo-tag-row" id="todo-tags" style="display:none"></div>
       <ul class="todo-list" id="todo-list"></ul>
       <p class="empty" id="todo-empty">今日やることを書き出して、1つずつ片づけていきましょう。<br>終わったものは翌日には一覧から消えます(完了数は下のあゆみに残ります)。</p>
     </div>
@@ -1337,7 +1354,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.2</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -3916,14 +3933,19 @@ function renderPomo() {
 const TODO_REPEAT_LABELS = { daily: "毎日", weekly: "毎週", monthly: "毎月" };
 function todosMap() { return load(LS.TODOS, {}); }
 function newTodoId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-function addTodo(text, due, repeat) {
+function addTodo(text, due, repeat, dueTime, tag) {
   text = String(text || "").trim().slice(0, 100);
   if (!text) return null;
   const t = todosMap();
   const id = newTodoId();
+  const time = /^([01]\d|2[0-3]):[0-5]\d$/.test(dueTime || "") ? dueTime : null;
+  let d = /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : null;
+  if (!d && time) d = todayStr(); // 時刻だけ指定されたら「今日のその時刻」とみなす
   t[id] = { text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now(),
-            due: /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : null,
-            repeat: TODO_REPEAT_LABELS[repeat] ? repeat : null };
+            due: d,
+            dueTime: d ? time : null,
+            repeat: TODO_REPEAT_LABELS[repeat] ? repeat : null,
+            tag: String(tag || "").trim().replace(/^#/, "").slice(0, 12) || null };
   save(LS.TODOS, t);
   scheduleAutoSync();
   return id;
@@ -3949,10 +3971,12 @@ function setTodoDone(id, done) {
   it.doneAt = done ? Date.now() : null;
   it.updatedAt = Date.now();
   if (done && it.repeat) {
-    // 繰り返し: 完了と同時に次の期限で新しいタスクを作る(チェックを外したら取り消す)
+    // 繰り返し: 完了と同時に次の期限で新しいタスクを作る(チェックを外したら取り消す)。
+    // 時刻・タグも引き継ぐ(「毎日9:00の#仕事」がそのまま続く)
     const nid = newTodoId();
     t[nid] = { text: it.text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now(),
-               due: nextDueDate(it.due, it.repeat), repeat: it.repeat };
+               due: nextDueDate(it.due, it.repeat), dueTime: it.dueTime || null,
+               repeat: it.repeat, tag: it.tag || null };
     it.nextId = nid;
   } else if (!done && it.nextId) {
     const nx = t[it.nextId];
@@ -3962,11 +3986,12 @@ function setTodoDone(id, done) {
   save(LS.TODOS, t);
   scheduleAutoSync();
 }
-// 表示設定(並び=登録順/期限順・絞り込み=すべて/今日まで/今週まで/期限あり)。端末ローカル
+// 表示設定(並び=登録順/期限順・絞り込み=すべて/今日まで/今週まで/期限あり・タグ)。端末ローカル
 function todoView() {
   const v = load(LS.TODOVIEW, {}) || {};
   return { sort: v.sort === "due" ? "due" : "created",
-           filter: ["today", "week", "due"].includes(v.filter) ? v.filter : "all" };
+           filter: ["today", "week", "due"].includes(v.filter) ? v.filter : "all",
+           tag: (typeof v.tag === "string" && v.tag) ? v.tag : null };
 }
 function saveTodoView(patch) { save(LS.TODOVIEW, Object.assign(todoView(), patch)); }
 // 削除はトンボストーン(deleted=true)にして同期で他端末からも消えるようにする(物理削除はprune)
@@ -3981,19 +4006,32 @@ function removeTodo(id) {
 // 一覧の表示対象: 未完了すべて+今日完了した分(昨日までの完了分は一覧から消え、完了数はあゆみに残る)。
 // そのうえで表示設定を適用。「今日まで」「今週まで」は期限がその日以前のもの(期限切れ含む)、
 // 「今週まで」の週は履歴カレンダーと同じ日曜はじまり(=今度の土曜日まで)、「期限あり」は期限つき全部
+function todoBaseItems() { // 一覧の母集団(絞り込み前): 未完了すべて+今日完了した分
+  const t = todayStr();
+  return Object.entries(todosMap())
+    .filter(([, it]) => it && !it.deleted && (!it.done || (it.doneAt && dateStr(new Date(it.doneAt)) === t)))
+    .map(([id, it]) => Object.assign({ id }, it));
+}
+// いま使われているタグの一覧(タグ絞り込みピルの表示用)
+function todoTags() {
+  return [...new Set(todoBaseItems().map(it => it.tag).filter(Boolean))].sort();
+}
 function visibleTodos() {
   const t = todayStr();
   const view = todoView();
-  let items = Object.entries(todosMap())
-    .filter(([, it]) => it && !it.deleted && (!it.done || (it.doneAt && dateStr(new Date(it.doneAt)) === t)))
-    .map(([id, it]) => Object.assign({ id }, it));
+  let items = todoBaseItems();
   if (view.filter === "today") items = items.filter(it => it.due && it.due <= t);
   else if (view.filter === "week") {
     const weekEnd = addDays(t, 6 - new Date().getDay());
     items = items.filter(it => it.due && it.due <= weekEnd);
   } else if (view.filter === "due") items = items.filter(it => it.due);
+  // タグ絞り込み(選択中のタグがもう存在しない場合は無視=空のまま抜けられなくなるのを防ぐ)
+  if (view.tag && todoTags().includes(view.tag)) items = items.filter(it => it.tag === view.tag);
   const byCreated = (a, b) => (a.createdAt || 0) - (b.createdAt || 0);
-  const byDue = (a, b) => (a.due && b.due) ? (a.due < b.due ? -1 : a.due > b.due ? 1 : byCreated(a, b))
+  const timeOf = it => it.dueTime || "24:00"; // 時刻なしは終日扱い=同じ日の中では後ろ
+  const byDue = (a, b) => (a.due && b.due)
+    ? (a.due < b.due ? -1 : a.due > b.due ? 1
+       : timeOf(a) < timeOf(b) ? -1 : timeOf(a) > timeOf(b) ? 1 : byCreated(a, b))
     : a.due ? -1 : b.due ? 1 : byCreated(a, b); // 期限なしは後ろ
   return items.sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1)
     : (view.sort === "due" ? byDue(a, b) : byCreated(a, b)));
@@ -4021,14 +4059,19 @@ function pruneTodos() {
   }
   if (changed) save(LS.TODOS, t);
 }
-// 期限の表示ラベル(期限切れ=赤・今日=アクセント)
-function todoDueMeta(due) {
+// 期限の表示ラベル(期限切れ=赤・今日=アクセント)。時刻つきなら時刻まで見て判定する
+function todoDueMeta(it) {
   const t = todayStr();
-  const [, m, d] = due.split("-").map(Number);
-  if (due < t) return { label: `${m}/${d} 期限切れ`, cls: "due-over" };
-  if (due === t) return { label: "今日まで", cls: "due-today" };
-  if (due === addDays(t, 1)) return { label: "明日まで", cls: "" };
-  return { label: `${m}/${d}まで`, cls: "" };
+  const [, m, d] = it.due.split("-").map(Number);
+  const tm = it.dueTime ? " " + it.dueTime : "";
+  const now = new Date();
+  const nowTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  const dayLabel = it.due === t ? "今日" : it.due === addDays(t, 1) ? "明日" : `${m}/${d}`;
+  if (it.due < t || (it.due === t && it.dueTime && it.dueTime <= nowTime)) {
+    return { label: `${dayLabel}${tm} 期限切れ`, cls: "due-over" };
+  }
+  if (it.due === t) return { label: `今日${tm}まで`, cls: "due-today" };
+  return { label: `${dayLabel}${tm}まで`, cls: "" };
 }
 function renderTodos() {
   const view = todoView();
@@ -4041,6 +4084,25 @@ function renderTodos() {
     b.classList.toggle("on", b.dataset.key === view.filter);
     b.setAttribute("aria-pressed", String(b.dataset.key === view.filter));
   });
+  // タグ絞り込みピル(タグが1つでもあるときだけ行ごと表示)+入力補完のdatalist
+  const tags = todoTags();
+  const tagBox = $("todo-tags");
+  tagBox.style.display = tags.length ? "" : "none";
+  tagBox.innerHTML = "";
+  if (tags.length) {
+    for (const [key, label] of [["", "タグ: すべて"], ...tags.map(tg => [tg, "#" + tg])]) {
+      const b = document.createElement("button");
+      const on = (view.tag || "") === key;
+      b.className = "toggle-pill" + (on ? " on" : "");
+      b.textContent = label;
+      b.setAttribute("aria-pressed", String(on));
+      b.addEventListener("click", () => { saveTodoView({ tag: key || null }); renderTodos(); });
+      tagBox.appendChild(b);
+    }
+  }
+  const dl = $("todo-tag-list");
+  dl.innerHTML = "";
+  for (const tg of tags) { const o = document.createElement("option"); o.value = tg; dl.appendChild(o); }
   const list = $("todo-list");
   list.innerHTML = "";
   const items = visibleTodos();
@@ -4064,17 +4126,25 @@ function renderTodos() {
     tx.className = "todo-text";
     tx.textContent = it.text;
     body.appendChild(tx);
-    if (it.due || it.repeat) { // 期限・繰り返しのメタ行
+    if (it.due || it.repeat || it.tag) { // タグ・期限・繰り返しのメタ行
       const meta = document.createElement("span");
       meta.className = "todo-meta";
+      let sep = false;
+      const add = (node) => { if (sep) meta.appendChild(document.createTextNode(" · ")); meta.appendChild(node); sep = true; };
+      if (it.tag) {
+        const tg = document.createElement("span");
+        tg.className = "todo-tag";
+        tg.textContent = "#" + it.tag;
+        add(tg);
+      }
       if (it.due) {
-        const dm = todoDueMeta(it.due);
+        const dm = todoDueMeta(it);
         const sp = document.createElement("span");
         if (dm.cls) sp.className = dm.cls;
         sp.textContent = dm.label;
-        meta.appendChild(sp);
+        add(sp);
       }
-      if (it.repeat) meta.appendChild(document.createTextNode(`${it.due ? " · " : ""}${TODO_REPEAT_LABELS[it.repeat]}`));
+      if (it.repeat) add(document.createTextNode(TODO_REPEAT_LABELS[it.repeat]));
       body.appendChild(meta);
     }
     const del = document.createElement("button");
@@ -4638,7 +4708,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.6.2";
+const APP_VERSION = "v1.7.0";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4771,10 +4841,13 @@ $("work-next").addEventListener("click", () => { if (workWeekOffset > 0) { workW
 $("pomo-inline-btn").addEventListener("click", () => showView("work"));
 $("pomo-inline-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showView("work"); } });
 function submitTodo() {
-  if (addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value)) {
+  if (addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value,
+              $("todo-time").value, $("todo-tag").value)) {
     $("todo-input").value = "";
     $("todo-due").value = "";
+    $("todo-time").value = "";
     $("todo-repeat").value = "";
+    $("todo-tag").value = "";
     renderTodos();
     renderWorkStats();
   }
@@ -4796,9 +4869,11 @@ for (const [boxId, key, defs] of [
   }
 }
 $("todo-input").addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); submitTodo(); } });
-// キーボード表示中のタブバー非表示(曲名検索と同じiOS対策)
-$("todo-input").addEventListener("focus", () => { if (isMobileLike()) document.body.classList.add("kb-open"); });
-$("todo-input").addEventListener("blur", () => document.body.classList.remove("kb-open"));
+// キーボード表示中のタブバー非表示(曲名検索と同じiOS対策)。タグ入力も同様
+for (const id of ["todo-input", "todo-tag"]) {
+  $(id).addEventListener("focus", () => { if (isMobileLike()) document.body.classList.add("kb-open"); });
+  $(id).addEventListener("blur", () => document.body.classList.remove("kb-open"));
+}
 // バックグラウンド中はタイマーの刻みが止まる(またはまばらになる)ため、
 // 復帰時にすぐ判定して、終わっていた作業の記録と表示を追いつかせる。
 // また、スマホ(特にiOSのホーム画面起動)はアプリを閉じてもリロードされずに復帰する
