@@ -891,6 +891,69 @@ async function main() {
     localStorage.getItem("bgm_work") === null && localStorage.getItem("bgm_todos") === null &&
     localStorage.getItem("bgm_autoplay") === null && localStorage.getItem("bgm_pomoconf") === null &&
     !!localStorage.getItem("bgm_ratings"));
+
+  /* ---- Suite 15: やることの期限・繰り返し・UI調整(v1.6.0) ---- */
+  suite("15. やることの期限・繰り返し・UI調整(v1.6.0)");
+  await bootApp({ bgm_settings: { genres: ["piano"], duration: "any" } });
+  const w15 = win();
+  const t15 = w15.todayStr();
+  // レイアウト: タイマー行は今日の曲画面の先頭側(評価の星で下に押し出されない)
+  check("今日の曲: タイマー行がコンテンツより前に配置される",
+    !!(doc().getElementById("pomo-inline").compareDocumentPosition(doc().querySelector(".main-cols")) & 4));
+  check("作業タブ: 時間とセット数のピル行に隙間がある",
+    parseFloat(w15.getComputedStyle(doc().getElementById("pomo-sets")).marginTop) >= 10);
+  // 期限・繰り返しつきの追加
+  const dA = w15.addTodo("期限なし");
+  const dB = w15.addTodo("今日まで", t15);
+  const dC = w15.addTodo("明日まで", w15.addDays(t15, 1), "daily");
+  const dX = w15.addTodo("不正期限", "13月32日");
+  check("addTodo: 期限と繰り返しが保存される",
+    w15.todosMap()[dB].due === t15 && w15.todosMap()[dC].repeat === "daily" && dA !== null);
+  check("addTodo: 不正な期限はnull扱い", w15.todosMap()[dX].due === null);
+  // 次の期限の計算
+  eq("nextDueDate: 毎日=明日", w15.nextDueDate(null, "daily"), w15.addDays(t15, 1));
+  const wPast = w15.addDays(t15, -10);
+  const nw15 = w15.nextDueDate(wPast, "weekly");
+  check("nextDueDate: 毎週=今日より後の同じ曜日",
+    nw15 > t15 && new Date(nw15 + "T00:00:00").getDay() === new Date(wPast + "T00:00:00").getDay(), nw15);
+  check("nextDueDate: 毎月=今日より後の日付", w15.nextDueDate(t15, "monthly") > t15, w15.nextDueDate(t15, "monthly"));
+  // 並び替え: 期限順(期限なしは後ろ)
+  w15.saveTodoView({ sort: "due", filter: "all" });
+  eq("期限順: 期限が近い順→期限なしは登録順で後ろ",
+    w15.visibleTodos().map(x => x.text), ["今日まで", "明日まで", "期限なし", "不正期限"]);
+  // 絞り込み: 今日まで(期限切れ含む)
+  const dOver = w15.addTodo("期限切れの分", w15.addDays(t15, -1));
+  w15.saveTodoView({ filter: "today" });
+  eq("絞り込み「今日まで」: 期限が今日以前のものだけ表示(期限切れ含む)",
+    w15.visibleTodos().map(x => x.text), ["期限切れの分", "今日まで"]);
+  w15.saveTodoView({ sort: "created", filter: "all" });
+  // 繰り返し: 完了で次のタスクが生まれ、チェックを外すと取り消される
+  w15.setTodoDone(dC, true);
+  const spawnedEntry = Object.entries(w15.todosMap())
+    .find(([id, it]) => id !== dC && it.text === "明日まで" && !it.done && !it.deleted);
+  check("繰り返し: 完了すると次の期限で新しいタスクができる",
+    spawnedEntry && spawnedEntry[1].repeat === "daily" && spawnedEntry[1].due === w15.addDays(t15, 2),
+    JSON.stringify(spawnedEntry));
+  w15.setTodoDone(dC, false);
+  check("繰り返し: チェックを外すと自動作成された次のタスクは消える",
+    w15.todosMap()[spawnedEntry[0]].deleted === true && !w15.todosMap()[dC].nextId);
+  // UI: メタ表示・操作部品
+  w15.showView("work");
+  const metas15 = [...doc().querySelectorAll("#todo-list .todo-meta")];
+  check("やること行に期限・繰り返しのメタが表示される",
+    metas15.some(m => /今日まで/.test(m.textContent)) && metas15.some(m => /毎日/.test(m.textContent)));
+  check("期限切れは赤の強調クラスで表示", !!doc().querySelector("#todo-list .todo-meta .due-over"));
+  check("並び替え・絞り込みのピルと期限・繰り返しの入力がある",
+    doc().querySelectorAll("#todo-sort .toggle-pill").length === 2 &&
+    doc().querySelectorAll("#todo-filter .toggle-pill").length === 2 &&
+    !!doc().getElementById("todo-due") && !!doc().getElementById("todo-repeat"));
+  const sc15 = doc().querySelector(".scroll");
+  check("作業タブ: 期限・繰り返しUI追加後も横スクロールが発生しない",
+    sc15.scrollWidth <= sc15.clientWidth, `scrollWidth=${sc15.scrollWidth} clientWidth=${sc15.clientWidth}`);
+  // 自動再生の救済(タップ待ち)は多重呼び出しでも例外にならない
+  w15.armAutoplayTapFallback();
+  w15.armAutoplayTapFallback();
+  check("armAutoplayTapFallback: 多重呼び出しでも例外にならない", true);
 }
 
 /* ==== 実行 ==== */

@@ -223,6 +223,9 @@ body.kb-open .tabbar { display: none; }
   margin: 16px 8px 0;
 }
 .sync-reminder a { cursor: pointer; font-weight: 700; }
+/* 画面先頭に置くタイマー行(下端配置の.sync-reminderと違い上余白は不要) */
+.pomo-inline-top { margin: 2px 8px 10px; }
+.pomo-inline-top a { color: var(--accent); }
 .pill.genre { color: var(--accent); font-weight: 700; }
 
 /* ---- 再生操作(主役は再生ボタンのみ。前/次は装飾なしのフラットアイコン=
@@ -700,6 +703,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 .pomo-presets { justify-content: center; }
 .pomo-presets .toggle-pill { font-size: 12px; padding: 9px 14px; }
 .pomo-presets .toggle-pill:disabled { opacity: 0.45; }
+#pomo-sets { margin-top: 14px; } /* 時間の行とセット数の行が密着しないように */
 .pomo-actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; }
 .pomo-main {
   min-width: 150px; padding: 13px 24px;
@@ -737,8 +741,33 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
   border-radius: var(--r-full);
   font-size: 12px; font-weight: 700;
 }
+/* 期限・繰り返しの入力(追加時のオプション) */
+.todo-opt-row { display: flex; gap: 12px; margin: 12px 4px 0; flex-wrap: wrap; }
+.todo-opt {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; color: var(--text-sub); white-space: nowrap;
+}
+.todo-opt input, .todo-opt select {
+  flex: 1; min-width: 0;
+  border: none; outline: none; font: inherit; font-weight: 400;
+  font-size: 13px; color: var(--text);
+  padding: 8px 12px; border-radius: var(--r-full);
+  -webkit-appearance: none; appearance: none;
+}
+/* iOSはフォーカスした操作部品のフォントが16px未満だと画面ごとズームするため、タッチ端末では16px */
+@media (pointer: coarse) {
+  .todo-opt input, .todo-opt select { font-size: 16px; }
+}
+/* 並び替え・絞り込み */
+.todo-view-row { display: flex; justify-content: space-between; gap: 10px; margin: 12px 2px 0; flex-wrap: wrap; }
+.todo-view-row .toggle-pill { font-size: 11px; padding: 7px 12px; }
 .todo-list { list-style: none; margin-top: 6px; }
 .todo-item { display: flex; align-items: center; gap: 12px; padding: 11px 2px; }
+.todo-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.todo-meta { font-size: 11px; color: var(--text-sub); }
+.todo-meta .due-over { color: var(--danger); font-weight: 700; }
+.todo-meta .due-today { color: var(--accent); font-weight: 700; }
 .todo-check {
   width: 27px; height: 27px; flex-shrink: 0;
   border-radius: 50%;
@@ -990,6 +1019,10 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
     <div id="error-notice" class="hint inset" style="display:none"></div>
 
+    <!-- タイマー進行中の残り時間。画面の先頭に置き、評価の星などで下に押し出されて
+         スクロールしないと見えなくなるのを防ぐ(タップで作業タブへ) -->
+    <p class="sync-reminder pomo-inline-top" id="pomo-inline" style="display:none"><a id="pomo-inline-btn" role="button" tabindex="0"></a></p>
+
     <!-- PC(≥1024px)では .main-cols が2カラムグリッドになる(スマホでは display:contents で透過) -->
     <div class="main-cols">
     <div class="main-media">
@@ -1042,7 +1075,6 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
     </div>
     </div>
 
-    <p class="sync-reminder" id="pomo-inline" style="display:none"><a id="pomo-inline-btn" role="button" tabindex="0"></a></p>
     <p class="sync-reminder" id="sync-reminder" style="display:none">最終同期から<span id="sync-reminder-days">–</span>日たっています · <a id="sync-reminder-btn" role="button" tabindex="0">今すぐ同期</a></p>
     <p class="sync-reminder" id="update-reminder" style="display:none">新しいバージョン <span id="update-reminder-ver">–</span> があります · <a id="update-reminder-btn" role="button" tabindex="0">今すぐ更新</a></p>
   </section>
@@ -1130,6 +1162,21 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
       <div class="todo-input-row inset">
         <input type="text" id="todo-input" maxlength="100" placeholder="やることを追加" autocomplete="off" aria-label="やることを追加">
         <button id="todo-add" class="todo-add accent-raised" aria-label="やることを追加する">追加</button>
+      </div>
+      <div class="todo-opt-row">
+        <label class="todo-opt">期限 <input type="date" id="todo-due" class="inset" aria-label="期限(任意)"></label>
+        <label class="todo-opt">繰り返し
+          <select id="todo-repeat" class="inset" aria-label="繰り返し(任意)">
+            <option value="">なし</option>
+            <option value="daily">毎日</option>
+            <option value="weekly">毎週</option>
+            <option value="monthly">毎月</option>
+          </select>
+        </label>
+      </div>
+      <div class="todo-view-row">
+        <div class="pill-grid" id="todo-sort"></div>
+        <div class="pill-grid" id="todo-filter"></div>
       </div>
       <ul class="todo-list" id="todo-list"></ul>
       <p class="empty" id="todo-empty">今日やることを書き出して、1つずつ片づけていきましょう。<br>終わったものは翌日には一覧から消えます(完了数は下のあゆみに残ります)。</p>
@@ -1290,7 +1337,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.5.1</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.6.0</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -1425,7 +1472,8 @@ const LS = {
   TODAYMODE: "bgm_todaymode", // 今日の曲の更新: {mode: "daily"|"always"|"interval"|"last", hours: N}
   LISTEN: "bgm_listen", // 日別の実再生時間 {date: 累計秒} — 好みタブの統計・実績用
   WORK: "bgm_work",     // 日別の作業実績 {date: {sec: 作業秒, pomo: 完了数}} — 作業タブのあゆみ用
-  TODOS: "bgm_todos",   // やることリスト {id: {text, done, createdAt, doneAt, updatedAt, deleted}}
+  TODOS: "bgm_todos",   // やることリスト {id: {text, done, createdAt, doneAt, updatedAt, deleted, due, repeat, nextId}}
+  TODOVIEW: "bgm_todoview", // やることリストの表示設定 {sort, filter}(端末ローカル)
   POMO: "bgm_pomo",     // ポモドーロタイマーの進行状態(端末ローカル・同期しない)
   POMOCONF: "bgm_pomoconf", // ポモドーロの設定 {preset, sets, auto} — 作業タブ・設定画面で共通
   AUTOPLAY: "bgm_autoplay", // アプリを開いたら「今日の曲」を自動再生
@@ -2075,15 +2123,36 @@ async function playCurrent() {
  * ユーザー操作起点ではないため、ブラウザにブロックされたら何もしない(UIは再生前のまま)。
  * playCurrent()は使わない: あちらの4秒フォールバック(markStarted)は、ブロック時に
  * 再生していないのに再生履歴と評価トレイが付いてしまうため。実際に再生が始まれば
- * PLAYING検知(onPlayerStateChange)が表示切替と記録をすべて行う */
-async function tryAutoplay() {
-  if (!autoplayOn() || openAppOn() || !currentSong) return;
+ * PLAYING検知(onPlayerStateChange)が表示切替と記録をすべて行う。
+ * force=true は設定保存など「ユーザー操作の流れ」での呼び出し(設定オフでも再生を試みる)。
+ * iOS Safari等はジェスチャなしの音付き自動再生を常にブロックするため、2.5秒たっても
+ * 始まらなければ「次のどこかのタップで再生開始」を仕込む(armAutoplayTapFallback) */
+async function tryAutoplay(force) {
+  if (!(force || autoplayOn()) || openAppOn() || !currentSong) return;
   const song = currentSong;
   const ok = await loadYtApi();
   if (!ok || currentSong !== song || playerStarted) return;
   if (!player) createPlayerFor(song);
   if (playerReady) { try { player.playVideo(); } catch (e) {} }
   else playWhenReady = true; // onReady次第すぐ再生
+  setTimeout(() => {
+    if (!playerStarted && !isPlayingNow() && currentSong === song) armAutoplayTapFallback();
+  }, 2500);
+}
+// ブロックされた自動再生の救済: 次のタップ(どの操作でもよい=同期的なユーザー操作内なら
+// クロスオリジンiframeの再生が通る)で今日の曲を再生する。1回で解除、必要なら再度仕込まれる
+let autoplayTapArmed = false;
+function armAutoplayTapFallback() {
+  if (autoplayTapArmed) return;
+  autoplayTapArmed = true;
+  const h = () => {
+    document.removeEventListener("click", h, true);
+    autoplayTapArmed = false;
+    if (playerStarted || isPlayingNow() || !currentSong || openAppOn()) return;
+    if (player && playerReady) { try { player.playVideo(); } catch (e) {} }
+    else playWhenReady = true;
+  };
+  document.addEventListener("click", h, true); // clickはスクロールでは発火しない(誤爆防止)
 }
 
 function onPlayerStateChange(e) {
@@ -2405,6 +2474,7 @@ function saveSettings() {
     $("save-msg").textContent = "";
     showView("main");
     init(true);
+    tryAutoplay(true); // 保存操作の流れで選び直した曲を自動再生(ブロックされたら次のタップで開始)
   }, 700);
 }
 
@@ -3831,16 +3901,34 @@ function renderPomo() {
 }
 
 /* ---- やることリスト ---- */
+const TODO_REPEAT_LABELS = { daily: "毎日", weekly: "毎週", monthly: "毎月" };
 function todosMap() { return load(LS.TODOS, {}); }
-function addTodo(text) {
+function newTodoId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function addTodo(text, due, repeat) {
   text = String(text || "").trim().slice(0, 100);
   if (!text) return null;
   const t = todosMap();
-  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  t[id] = { text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now() };
+  const id = newTodoId();
+  t[id] = { text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now(),
+            due: /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : null,
+            repeat: TODO_REPEAT_LABELS[repeat] ? repeat : null };
   save(LS.TODOS, t);
   scheduleAutoSync();
   return id;
+}
+// 繰り返しの次の期限: 今日より後の直近の該当日(毎週=同じ曜日、毎月=同じ日・ない月は月末)
+function nextDueDate(due, repeat) {
+  let d = /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : todayStr();
+  do {
+    if (repeat === "daily") d = addDays(d, 1);
+    else if (repeat === "weekly") d = addDays(d, 7);
+    else { // monthly
+      const [y, m, dd] = d.split("-").map(Number);
+      const lastN = new Date(y, m + 1, 0).getDate(); // 翌月の末日
+      d = dateStr(new Date(y, m, Math.min(dd, lastN)));
+    }
+  } while (d <= todayStr());
+  return d;
 }
 function setTodoDone(id, done) {
   const t = todosMap(), it = t[id];
@@ -3848,9 +3936,26 @@ function setTodoDone(id, done) {
   it.done = !!done;
   it.doneAt = done ? Date.now() : null;
   it.updatedAt = Date.now();
+  if (done && it.repeat) {
+    // 繰り返し: 完了と同時に次の期限で新しいタスクを作る(チェックを外したら取り消す)
+    const nid = newTodoId();
+    t[nid] = { text: it.text, done: false, createdAt: Date.now(), doneAt: null, updatedAt: Date.now(),
+               due: nextDueDate(it.due, it.repeat), repeat: it.repeat };
+    it.nextId = nid;
+  } else if (!done && it.nextId) {
+    const nx = t[it.nextId];
+    if (nx && !nx.done && !nx.deleted) { nx.deleted = true; nx.updatedAt = Date.now(); }
+    it.nextId = null;
+  }
   save(LS.TODOS, t);
   scheduleAutoSync();
 }
+// 表示設定(並び=登録順/期限順・絞り込み=すべて/今日まで)。端末ローカル
+function todoView() {
+  const v = load(LS.TODOVIEW, {}) || {};
+  return { sort: v.sort === "due" ? "due" : "created", filter: v.filter === "today" ? "today" : "all" };
+}
+function saveTodoView(patch) { save(LS.TODOVIEW, Object.assign(todoView(), patch)); }
 // 削除はトンボストーン(deleted=true)にして同期で他端末からも消えるようにする(物理削除はprune)
 function removeTodo(id) {
   const t = todosMap(), it = t[id];
@@ -3860,13 +3965,20 @@ function removeTodo(id) {
   save(LS.TODOS, t);
   scheduleAutoSync();
 }
-// 一覧の表示対象: 未完了すべて+今日完了した分(昨日までの完了分は一覧から消え、完了数はあゆみに残る)
+// 一覧の表示対象: 未完了すべて+今日完了した分(昨日までの完了分は一覧から消え、完了数はあゆみに残る)。
+// そのうえで表示設定を適用(絞り込み「今日まで」=期限が今日以前のものだけ・期限切れ含む)
 function visibleTodos() {
   const t = todayStr();
-  return Object.entries(todosMap())
+  const view = todoView();
+  let items = Object.entries(todosMap())
     .filter(([, it]) => it && !it.deleted && (!it.done || (it.doneAt && dateStr(new Date(it.doneAt)) === t)))
-    .map(([id, it]) => Object.assign({ id }, it))
-    .sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1) : (a.createdAt || 0) - (b.createdAt || 0));
+    .map(([id, it]) => Object.assign({ id }, it));
+  if (view.filter === "today") items = items.filter(it => it.due && it.due <= t);
+  const byCreated = (a, b) => (a.createdAt || 0) - (b.createdAt || 0);
+  const byDue = (a, b) => (a.due && b.due) ? (a.due < b.due ? -1 : a.due > b.due ? 1 : byCreated(a, b))
+    : a.due ? -1 : b.due ? 1 : byCreated(a, b); // 期限なしは後ろ
+  return items.sort((a, b) => (a.done !== b.done) ? (a.done ? 1 : -1)
+    : (view.sort === "due" ? byDue(a, b) : byCreated(a, b)));
 }
 function todoDoneCount(date) {
   return todoDoneItems(date).length;
@@ -3891,11 +4003,33 @@ function pruneTodos() {
   }
   if (changed) save(LS.TODOS, t);
 }
+// 期限の表示ラベル(期限切れ=赤・今日=アクセント)
+function todoDueMeta(due) {
+  const t = todayStr();
+  const [, m, d] = due.split("-").map(Number);
+  if (due < t) return { label: `${m}/${d} 期限切れ`, cls: "due-over" };
+  if (due === t) return { label: "今日まで", cls: "due-today" };
+  if (due === addDays(t, 1)) return { label: "明日まで", cls: "" };
+  return { label: `${m}/${d}まで`, cls: "" };
+}
 function renderTodos() {
+  const view = todoView();
+  // 並び替え・絞り込みピルの選択状態
+  document.querySelectorAll("#todo-sort .toggle-pill").forEach(b => {
+    b.classList.toggle("on", b.dataset.key === view.sort);
+    b.setAttribute("aria-pressed", String(b.dataset.key === view.sort));
+  });
+  document.querySelectorAll("#todo-filter .toggle-pill").forEach(b => {
+    b.classList.toggle("on", b.dataset.key === view.filter);
+    b.setAttribute("aria-pressed", String(b.dataset.key === view.filter));
+  });
   const list = $("todo-list");
   list.innerHTML = "";
   const items = visibleTodos();
   $("todo-empty").style.display = items.length ? "none" : "";
+  $("todo-empty").innerHTML = view.filter === "today"
+    ? "今日までの期限のやることはありません。<br>「すべて」に切り替えると期限なしのものも見られます。"
+    : "今日やることを書き出して、1つずつ片づけていきましょう。<br>終わったものは翌日には一覧から消えます(完了数は下のあゆみに残ります)。";
   for (const it of items) {
     const li = document.createElement("li");
     li.className = "todo-item" + (it.done ? " done" : "");
@@ -3906,16 +4040,32 @@ function renderTodos() {
     chk.setAttribute("aria-label", `「${it.text}」を${it.done ? "未完了に戻す" : "完了にする"}`);
     chk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
     chk.addEventListener("click", () => { setTodoDone(it.id, !it.done); renderTodos(); renderWorkStats(); });
+    const body = document.createElement("div");
+    body.className = "todo-body";
     const tx = document.createElement("span");
     tx.className = "todo-text";
     tx.textContent = it.text;
+    body.appendChild(tx);
+    if (it.due || it.repeat) { // 期限・繰り返しのメタ行
+      const meta = document.createElement("span");
+      meta.className = "todo-meta";
+      if (it.due) {
+        const dm = todoDueMeta(it.due);
+        const sp = document.createElement("span");
+        if (dm.cls) sp.className = dm.cls;
+        sp.textContent = dm.label;
+        meta.appendChild(sp);
+      }
+      if (it.repeat) meta.appendChild(document.createTextNode(`${it.due ? " · " : ""}${TODO_REPEAT_LABELS[it.repeat]}`));
+      body.appendChild(meta);
+    }
     const del = document.createElement("button");
     del.className = "todo-del";
     del.setAttribute("aria-label", `「${it.text}」を削除`);
     del.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
     del.addEventListener("click", () => { removeTodo(it.id); renderTodos(); renderWorkStats(); });
     li.appendChild(chk);
-    li.appendChild(tx);
+    li.appendChild(body);
     li.appendChild(del);
     list.appendChild(li);
   }
@@ -4207,7 +4357,7 @@ function resetHistory() {
 function resetAll() {
   if (!confirm("設定・評価・再生履歴・作業の記録をすべてリセットします。よろしいですか?")) return;
   stopPomoTick(); // 進行中のポモドーロも止める
-  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.WORK, LS.TODOS, LS.POMO, LS.POMOCONF, LS.AUTOPLAY, "bgm_sync"].forEach(k => store.removeItem(k));
+  [LS.SETTINGS, LS.RATINGS, LS.DAILY, LS.RECENT, LS.DEAD, LS.QUEUE, LS.PLAYS, LS.LISTEN, LS.OPENAPP, LS.PLAYMODE, LS.TODAYMODE, LS.WORK, LS.TODOS, LS.TODOVIEW, LS.POMO, LS.POMOCONF, LS.AUTOPLAY, "bgm_sync"].forEach(k => store.removeItem(k));
   // 連携は解除しつつリセットの事実は残す(再連携時に古い評価・履歴・作業記録が復活しないように)
   save("bgm_sync", { ratingsResetAt: Date.now(), playsResetAt: Date.now(), workResetAt: Date.now() });
   cachedToken = null; tokenExpiry = 0;
@@ -4470,7 +4620,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.5.1";
+const APP_VERSION = "v1.6.0";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4603,21 +4753,45 @@ $("work-next").addEventListener("click", () => { if (workWeekOffset > 0) { workW
 $("pomo-inline-btn").addEventListener("click", () => showView("work"));
 $("pomo-inline-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showView("work"); } });
 function submitTodo() {
-  if (addTodo($("todo-input").value)) {
+  if (addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value)) {
     $("todo-input").value = "";
+    $("todo-due").value = "";
+    $("todo-repeat").value = "";
     renderTodos();
     renderWorkStats();
   }
 }
 $("todo-add").addEventListener("click", submitTodo);
+// 並び替え(登録順/期限順)・絞り込み(すべて/今日まで)のピル
+for (const [boxId, key, defs] of [
+  ["todo-sort", "sort", [["created", "登録順"], ["due", "期限順"]]],
+  ["todo-filter", "filter", [["all", "すべて"], ["today", "今日まで"]]],
+]) {
+  for (const [val, label] of defs) {
+    const b = document.createElement("button");
+    b.className = "toggle-pill";
+    b.dataset.key = val;
+    b.textContent = label;
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => { saveTodoView({ [key]: val }); renderTodos(); });
+    $(boxId).appendChild(b);
+  }
+}
 $("todo-input").addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); submitTodo(); } });
 // キーボード表示中のタブバー非表示(曲名検索と同じiOS対策)
 $("todo-input").addEventListener("focus", () => { if (isMobileLike()) document.body.classList.add("kb-open"); });
 $("todo-input").addEventListener("blur", () => document.body.classList.remove("kb-open"));
 // バックグラウンド中はタイマーの刻みが止まる(またはまばらになる)ため、
-// 復帰時にすぐ判定して、終わっていた作業の記録と表示を追いつかせる
+// 復帰時にすぐ判定して、終わっていた作業の記録と表示を追いつかせる。
+// また、スマホ(特にiOSのホーム画面起動)はアプリを閉じてもリロードされずに復帰する
+// ことが多く、bootの「開いたとき」処理が走らない。復帰もアプリを開いたとみなして
+// タイマー自動開始・自動再生をここでも効かせる(自動開始は1時間スロットルつき)
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden && pomoState().mode !== "idle") { startPomoTick(); pomoTick(); }
+  if (document.hidden) return;
+  if (pomoState().mode !== "idle") { startPomoTick(); pomoTick(); }
+  else maybeAutoStartPomo();
+  // 「開くたび」モードの選び直し(別リスナーのrefreshTodayIfNeeded)が済んだ後に、その曲を再生する
+  if (autoplayOn()) setTimeout(() => tryAutoplay(), 300);
 });
 // 「?」注釈トグル: data-help のidを持つ説明文(.help-note)を開閉する
 document.querySelectorAll(".help-btn").forEach(b => b.addEventListener("click", () => {
