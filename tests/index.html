@@ -1094,6 +1094,17 @@ async function main() {
   doc().getElementById("todo-due").value = t17;
   doc().getElementById("todo-add").click();
   check("絞り込み中の追加: 追加項目が見える絞り込みは維持される", w17.todoView().filter === "today");
+  // 日付・時刻入力のつぶれ対策(v1.7.4): 高さ確保+未入力プレースホルダーの表示制御
+  check("期限の日付・時刻入力: 未入力でもつぶれない高さ(min-height 40px)",
+    w17.getComputedStyle(doc().getElementById("todo-due")).minHeight === "40px" &&
+    w17.getComputedStyle(doc().getElementById("todo-time")).minHeight === "40px");
+  doc().getElementById("todo-due").value = t17;
+  doc().getElementById("todo-due").dispatchEvent(new w17.Event("change"));
+  const filled17 = doc().getElementById("todo-due").classList.contains("filled");
+  doc().getElementById("todo-due").value = "";
+  doc().getElementById("todo-due").dispatchEvent(new w17.Event("change"));
+  check("日付入力: 値の有無で.filled(プレースホルダー消灯)が切り替わる",
+    filled17 === true && !doc().getElementById("todo-due").classList.contains("filled"));
 }
 
 /* ==== 実行 ==== */

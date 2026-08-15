@@ -759,6 +759,18 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 @media (pointer: coarse) {
   .todo-opt input, .todo-opt select { font-size: 16px; }
 }
+/* iOS Safariの日付・時刻入力は、未入力だと中身が空になり枠がつぶれて何の欄か分からない
+   (PCのような yyyy/mm/dd のヒント表示がない)。高さを確保したうえで、タッチ端末では
+   未入力の間だけプレースホルダー文言を疑似要素で出す(値が入るとJSが.filledを付けて消す。
+   PCのChrome等はinputの::beforeを描画しないため影響なし) */
+.todo-opt input[type="date"], .todo-opt input[type="time"] {
+  min-height: 40px;
+  display: flex; align-items: center;
+}
+@media (pointer: coarse) {
+  .todo-opt input[type="date"]:not(.filled):not(:focus)::before { content: "日付を選ぶ"; color: var(--text-sub); }
+  .todo-opt input[type="time"]:not(.filled):not(:focus)::before { content: "時刻"; color: var(--text-sub); }
+}
 /* 期限の時刻は日付より控えめな幅(日付が主・時刻は任意) */
 #todo-time { flex: 0 1 104px; }
 /* 並び替え・絞り込み(一覧カードの先頭に置くので上余白は不要) */
@@ -1359,7 +1371,7 @@ input[type="range"].mixer:focus-visible { outline: 2px solid var(--accent); outl
 
     <div class="set-card raised" id="about-card">
       <h2 class="set-card-title">このアプリについて</h2>
-      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.3</span><br>
+      <p class="set-note">今日の作業テーマ曲(TODAY'S BGM)<span id="app-version"> v1.7.4</span><br>
       開いた瞬間、今日の一曲が決まっている<span class="nowrap">作業用BGM推薦アプリ。</span><br>
       データは端末内(と、同期を使う場合はあなた自身のGoogleドライブ)にのみ保存されます。</p>
       <div class="pill-grid about-links">
@@ -4721,7 +4733,7 @@ function renderSyncReminder() {
  * 埋め込みの APP_VERSION と比較し、新しければ「今日の曲」画面に1行リマインダーを出す
  * (設定の「アップデートを確認」からは手動確認も可)。更新はリロードするだけでよい
  * (HTMLは max-age=0 で再検証されるため、リロードで新版が読み込まれる)。 */
-const APP_VERSION = "v1.7.3";
+const APP_VERSION = "v1.7.4";
 function parseAppVersion(html) {
   const m = /const APP_VERSION = "(v[0-9.]+)"/.exec(html || "");
   return m ? m[1] : null;
@@ -4853,6 +4865,14 @@ $("work-next").addEventListener("click", () => { if (workWeekOffset > 0) { workW
 // 「今日の曲」画面の残り時間表示 → タップで作業タブへ
 $("pomo-inline-btn").addEventListener("click", () => showView("work"));
 $("pomo-inline-btn").addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showView("work"); } });
+// 日付・時刻入力の「未入力プレースホルダー」表示制御(値があれば.filledを付けて疑似要素の文言を消す)
+function syncTodoDateHints() {
+  for (const id of ["todo-due", "todo-time"]) $(id).classList.toggle("filled", !!$(id).value);
+}
+for (const id of ["todo-due", "todo-time"]) {
+  $(id).addEventListener("change", syncTodoDateHints);
+  $(id).addEventListener("input", syncTodoDateHints);
+}
 function submitTodo() {
   const id = addTodo($("todo-input").value, $("todo-due").value, $("todo-repeat").value,
                      $("todo-time").value, $("todo-tag").value);
@@ -4862,6 +4882,7 @@ function submitTodo() {
   $("todo-time").value = "";
   $("todo-repeat").value = "";
   $("todo-tag").value = "";
+  syncTodoDateHints();
   // 追加した項目がいまの絞り込みで見えないと「消えた」ように見えるので、
   // その場合は絞り込みを「すべて」に戻す(ピルの選択状態も切り替わるので気づける)
   if (!visibleTodos().some(it => it.id === id)) saveTodoView({ filter: "all", tag: null });
