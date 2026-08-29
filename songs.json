@@ -3423,21 +3423,6 @@
     "channelTitle": "Calmed By Nature"
   },
   {
-    "id": "0_kIy_euC6k",
-    "title": "a playlist nitendo chill music to work, study in the morning",
-    "genres": [
-      "game"
-    ],
-    "durationMin": 154,
-    "durationClass": "long",
-    "mood": [
-      "morning",
-      "focus"
-    ],
-    "channelId": "UC_uncveWHNQXQc6EuviFgiQ",
-    "channelTitle": "Ninteen Gaming"
-  },
-  {
     "id": "1LV8oY0Litk",
     "title": "Video game music to be productive to | Upbeat, relaxing vgm study work playlist",
     "genres": [
@@ -4094,6 +4079,21 @@
     ],
     "channelId": "UCQ-I1Xcrf5i7v2_gv75r3OA",
     "channelTitle": "Brainwave Music"
+  },
+  {
+    "id": "nRUa2vc_Jas",
+    "title": "fishing vibes... relaxing video game music calms your mind to study, sleep, work",
+    "genres": [
+      "game"
+    ],
+    "durationMin": 181,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCuQ30EXUJGrJiV0Q41ce9_Q",
+    "channelTitle": "Fancy Fox Gaming"
   },
   {
     "id": "osLuXZCUsbg",
