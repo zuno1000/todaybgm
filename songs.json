@@ -420,7 +420,7 @@
   },
   {
     "id": "RTXVOczHR_0",
-    "title": "Chillhop Daydream // Coffee & Spliff // Vinyl Selection",
+    "title": "Chillhop Daydream // Coffee & Spliff // Vinyl Selection  | no. 12",
     "genres": [
       "lofi"
     ],
@@ -2541,7 +2541,7 @@
   },
   {
     "id": "xd0XIMd2Kco",
-    "title": "a playlist for a quiet morning in August🌻 soft piano for study & deep focus",
+    "title": "a playlist for a quiet morning in September 🌻 soft piano for study & deep focus",
     "genres": [
       "piano"
     ],
@@ -5611,7 +5611,7 @@
     "durationClass": "long",
     "mood": [],
     "channelId": "UCBaqmiky-SG5_xEElSOgv5g",
-    "channelTitle": "EXCICL -Exciting Classic"
+    "channelTitle": "EXCICL"
   },
   {
     "id": "YrhvsD_nqFk",
@@ -6150,6 +6150,20 @@
     ],
     "channelId": "UC7YAjJbnZsg6rW17wqan_zg",
     "channelTitle": "Lantern"
+  },
+  {
+    "id": "DQ_KPUXyY7o",
+    "title": "Whispers of the Ancient Forest｜Mystical Celtic Music for Deep Reverie",
+    "genres": [
+      "celtic"
+    ],
+    "durationMin": 140,
+    "durationClass": "long",
+    "mood": [
+      "fantasy"
+    ],
+    "channelId": "UC0xXgBipc1gmQMSFVLa7Zjg",
+    "channelTitle": "Echoes of Alba"
   },
   {
     "id": "DhAJBJnIPr8",
@@ -6714,21 +6728,6 @@
     ],
     "channelId": "UCK8Gq9IeJ8u82VmJXAcYl9g",
     "channelTitle": "Mythic Echoes"
-  },
-  {
-    "id": "xAz5tD8QmnQ",
-    "title": "Medieval & Celtic Fantasy Music for Working and Studying",
-    "genres": [
-      "celtic"
-    ],
-    "durationMin": 191,
-    "durationClass": "long",
-    "mood": [
-      "focus",
-      "fantasy"
-    ],
-    "channelId": "UChsQByI7g9PpP_b-SIPG4qw",
-    "channelTitle": "Healing Harmony Piano"
   },
   {
     "id": "ziECEE0k0JQ",
@@ -9301,21 +9300,6 @@
     "channelTitle": "Luma Beats Street"
   },
   {
-    "id": "01dn67QubYQ",
-    "title": "Coffee Lofi ☕1 Hour Cafe Song 🎵 Stream cafe ✨cute & relaxing music 🍪 Make Your D",
-    "genres": [
-      "kawaii"
-    ],
-    "durationMin": 64,
-    "durationClass": "long",
-    "mood": [
-      "morning",
-      "calm"
-    ],
-    "channelId": "UCtC0kMHkUGpPvwgkASgiLGg",
-    "channelTitle": "Lofi Kitty"
-  },
-  {
     "id": "0UeusHi0EsI",
     "title": "【フリーBGM】まろやかいちごみるく│Creamy Strawberry Milk【Chill/かわいい/Lofi/まったり/作業用BGM】",
     "genres": [
@@ -9404,6 +9388,20 @@
     ],
     "channelId": "UCqba6mC7G39MnKO6LgIduzg",
     "channelTitle": "BGMちゃん"
+  },
+  {
+    "id": "5aNWmI0zQiU",
+    "title": "\"R = VD\" - 청량감 대폭발 일본풍 퓨처베이스/Kawaii FutureBass 플레이리스트(보컬없음)",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 25,
+    "durationClass": "short",
+    "mood": [
+      "morning"
+    ],
+    "channelId": "UCkXo4uZcFUXaJWTDTmU3WnA",
+    "channelTitle": "낮달"
   },
   {
     "id": "5t0n-12dy_Q",
@@ -9893,6 +9891,21 @@
     "channelTitle": "skye 🎶"
   },
   {
+    "id": "lzw_qYjrhyI",
+    "title": "(kawaii) Future Bass mix",
+    "genres": [
+      "kawaii"
+    ],
+    "durationMin": 39,
+    "durationClass": "medium",
+    "mood": [
+      "morning",
+      "focus"
+    ],
+    "channelId": "UCgLVpKN_6KsNZKECJbCkHsw",
+    "channelTitle": "KAiOH"
+  },
+  {
     "id": "mgqPA6Rbu30",
     "title": "work towards your happiness - it's good for your soul ♥ (focus playlist)",
     "genres": [
@@ -9979,21 +9992,6 @@
     ],
     "channelId": "UCOkoDtOBY-XJmNx5GeXR8VA",
     "channelTitle": "Sound Labo: Kawaii Future Bass"
-  },
-  {
-    "id": "siGSwQF6d8g",
-    "title": "Cafe Music 🍵🍓Matcha Latte 🍪1 Hour Cafe Song🎐Stream cafe🌼cute & relaxing🍰 Make Yo",
-    "genres": [
-      "kawaii"
-    ],
-    "durationMin": 63,
-    "durationClass": "long",
-    "mood": [
-      "calm",
-      "morning"
-    ],
-    "channelId": "UCtC0kMHkUGpPvwgkASgiLGg",
-    "channelTitle": "Lofi Kitty"
   },
   {
     "id": "tsXGVHjy6lo",
