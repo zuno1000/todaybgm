@@ -8437,7 +8437,7 @@
   },
   {
     "id": "-sZqtdT-GVw",
-    "title": "Chill Music — Deep Focus & Inspiring Mix",
+    "title": "Get in the Zone — Chill Music for Deep Focus | No AI Music",
     "genres": [
       "edm"
     ],
@@ -8825,13 +8825,15 @@
   },
   {
     "id": "T2QZpy07j4s",
-    "title": "Lost in the Neon City — Atmospheric Future Garage | No AI Music",
+    "title": "Escape the Noise. Find Your Focus. — Future Garage | No AI Music",
     "genres": [
       "edm"
     ],
     "durationMin": 170,
     "durationClass": "long",
-    "mood": [],
+    "mood": [
+      "focus"
+    ],
     "channelId": "UCwVQIkAtyZzQSA-OY1rsGig",
     "channelTitle": "Chill Music Lab"
   },
