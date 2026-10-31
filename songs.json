@@ -404,6 +404,21 @@
     "channelTitle": "CALM CITY"
   },
   {
+    "id": "Q74YUAxqs00",
+    "title": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 Tokyo Lo-fi Hiphop ☕️ Chill Beats for Study & Relax",
+    "genres": [
+      "lofi"
+    ],
+    "durationMin": 180,
+    "durationClass": "long",
+    "mood": [
+      "focus",
+      "calm"
+    ],
+    "channelId": "UCkK2B6D3imy6EnpqfrYm-5A",
+    "channelTitle": "LoFi Tokyo"
+  },
+  {
     "id": "Q89Dzox4jAE",
     "title": "Lofi Work Space 📂 Deep Focus Study/Work Concentration [chill lo-fi hip hop beats",
     "genres": [
@@ -682,21 +697,6 @@
     "mood": [],
     "channelId": "UC0fiLCwTmAukotCXYnqfj0A",
     "channelTitle": "the bootleg boy"
-  },
-  {
-    "id": "mVycGYAPehY",
-    "title": "Lofi Coffee in Japanese ☕ Cherry Blossom Views 🌸 Deep Focus Beats for Spring Stu",
-    "genres": [
-      "lofi"
-    ],
-    "durationMin": 715,
-    "durationClass": "long",
-    "mood": [
-      "morning",
-      "focus"
-    ],
-    "channelId": "UChtHTED2PJxtCFKCLOtuysw",
-    "channelTitle": "Lofi Soul"
   },
   {
     "id": "nNgIMdc6wqU",
@@ -5939,7 +5939,7 @@
     "durationClass": "long",
     "mood": [],
     "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
-    "channelTitle": "Atmosphere Worlds"
+    "channelTitle": "The Irish Session"
   },
   {
     "id": "2-M9-6OSYMY",
@@ -6503,7 +6503,7 @@
       "calm"
     ],
     "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
-    "channelTitle": "Atmosphere Worlds"
+    "channelTitle": "The Irish Session"
   },
   {
     "id": "fzb7qWwDWns",
@@ -6653,7 +6653,7 @@
     "durationClass": "long",
     "mood": [],
     "channelId": "UCHdn5hvKlqHHki2aZ5MnPmA",
-    "channelTitle": "Atmosphere Worlds"
+    "channelTitle": "The Irish Session"
   },
   {
     "id": "pUfGjWYpE-I",
